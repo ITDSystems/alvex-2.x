@@ -1,0 +1,6 @@
+<component>
+	<region-id>itd-tasks-list</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/itd/tasks-list-ui</uri>
+</component>

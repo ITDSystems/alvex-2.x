@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Alvex Updates Info</shortname>
+	<description>Information on Alvex updates</description>
+	<url>/components/admin/alvex-updates-info-admin</url>
+	<family>admin-console</family>
+</webscript>

@@ -1,0 +1,6 @@
+<component>
+	<region-id>itd-workflows-list</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/itd/workflows-list-ui</uri>
+</component>

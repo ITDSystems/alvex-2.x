@@ -1,0 +1,17 @@
+alfresco/web-extension/itd-share-generic-ui-context.xml
+alfresco/web-extension/messages/itd-share-generic-ui_ru.properties
+alfresco/web-extension/messages/itd-share-generic-ui.properties
+alfresco/web-extension/messages/itd-share-generic-ui_en.properties
+alfresco/web-extension/itd-share-generic-ui-config.xml
+alfresco/web-extension/site-webscripts/about-share/about-share.get.desc.xml
+alfresco/web-extension/site-webscripts/about-share/about-share.get.js
+alfresco/web-extension/site-webscripts/about-share/about-share.get.html.ftl
+alfresco/web-extension/site-data/presets/presets.xml
+alfresco/itd-share-generic-ui-file-list.txt
+alfresco/site-data/extensions/itd-share-generic-ui.xml
+alfresco/webscripts/itd/share-generic-ui/footer.get.properties
+alfresco/webscripts/itd/share-generic-ui/footer.get_en.properties
+alfresco/webscripts/itd/share-generic-ui/footer.get_ru.properties
+META-INF/share-config-custom.xml
+META-INF/components/images/header/alvex-updates.png
+ru/itdsystems/alfresco/ShareGenericUiExtension.class

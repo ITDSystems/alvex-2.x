@@ -1,0 +1,8 @@
+alfresco/module/memo-service/alfresco-global.properties
+alfresco/extension/messages/itd-memo-service.properties
+alfresco/extension/messages/itd-memo-service_en.properties
+alfresco/extension/messages/itd-memo-service_ru.properties
+alfresco/extension/itd-memo-service-context.xml
+alfresco/itd-memo-service-file-list.txt
+ru/itdsystems/alfresco/MemoServiceExtension.class
+ru/itdsystems/alfresco/memo/MemoService.class

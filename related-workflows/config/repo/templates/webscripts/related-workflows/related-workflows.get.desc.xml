@@ -1,0 +1,12 @@
+<webscript>
+  <shortname>Returns related workflows</shortname>
+  <description><![CDATA[
+    Returns list of workflows related to current task
+    ]]>
+  </description>
+  <url>/api/itd/related-workflows?taskId={taskIdentifier}&amp;propName={propertyName}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="itd-repo-extension-registry" class="ru.itdsystems.alfresco.RepositoryExtensionRegistry">
+		<property name="repository" ref="repositoryHelper" />
+	</bean>
+	<bean id="itd-repo-extension-registry-js" class="ru.itdsystems.alfresco.jscript.JSRepositoryExtensionRegistry" depends-on="itd-repo-extension-registry" parent="baseJavaScriptExtension">
+		<property name="extensionName">
+			<value>extensionRegistry</value>
+		</property>
+		<property  name="repositoryExtensionRegistry" ref="itd-repo-extension-registry"/>
+	</bean>
+</beans>

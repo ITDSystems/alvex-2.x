@@ -1,0 +1,7 @@
+<component>
+	<region-id>itd-task-edit-header</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/itd/task-edit-header</uri>
+</component>
+

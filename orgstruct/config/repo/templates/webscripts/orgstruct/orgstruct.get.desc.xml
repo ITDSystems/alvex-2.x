@@ -1,0 +1,16 @@
+<webscript>
+  <shortname>orgstruct</shortname>
+  <description><![CDATA[
+  Returns organization structure
+  Parameters:
+  rootGroup — ID of the group to start from
+  addManagers — include group managers into output
+  addMembers — include group members into output
+  includeNodeRefs — include nodeRefs into output
+  ]]></description>
+  <url>/api/itd/orgstruct?rootGroup={groupID}&amp;addManagers={true|false?}&amp;addMembers={true|false?}&amp;includeNodeRefs={true|false?}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

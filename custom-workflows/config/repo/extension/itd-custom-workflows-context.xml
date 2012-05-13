@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="itd-custom-workflows-deployer" parent="workflowDeployer" depends-on="itd-related-workflows-deployer">
+		<!-- Register workflows -->
+		<property name="workflowDefinitions">
+			<list>
+				<props>
+					<prop key="engineId">activiti</prop>
+					<prop key="location">alfresco/extension/workflows/itd-basic-workflow.bpmn20.xml</prop>
+					<prop key="mimetype">text/xml</prop>
+					<prop key="redeploy">false</prop>
+				</props>
+			</list>
+		</property>
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.itd-custom-workflows</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/itd-custom-workflows-task-model.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="itd-custom-workflows" class="ru.itdsystems.alfresco.CustomWorkflowsExtension" depends-on="itd-repo-extension-registry">
+		<property name="extensionRegistry" ref="itd-repo-extension-registry" />
+	</bean>
+</beans>

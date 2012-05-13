@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>Manage Workflow Shortcut Properties</shortname>
+	<url>/api/itd/workflow-shortcut/admin/workflows?group={group}</url>
+	<authentication>admin</authentication>
+	<format default="json"/>
+	<transaction>required</transaction>
+	<lifecycle>public_api</lifecycle>
+</webscript>

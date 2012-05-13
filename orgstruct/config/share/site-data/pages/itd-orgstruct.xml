@@ -1,0 +1,4 @@
+<page>
+	<template-instance>itd-orgstruct</template-instance>
+	<authentication>user</authentication>
+</page>

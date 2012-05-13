@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="webscript.itd.workflow-instances-detailed.workflow-instances-detailed.get" 
+		class="ru.itdsystems.alfresco.web.scripts.workflow.WorkflowInstancesDetailedGet" 
+		parent="abstractWorkflowWebScript">
+	</bean>
+	<bean id="itd-my-workflows-dashlet-deployer" parent="workflowDeployer" depends-on="">
+		<!-- Register workflows -->
+		<!--property name="workflowDefinitions">
+			<list>
+				<props>
+					<prop key="engineId">jbpm</prop>
+					<prop key="location">alfresco/extension/workflows/</prop>
+					<prop key="mimetype">text/xml</prop>
+					<prop key="redeploy">true</prop>
+				</props>
+			</list>
+		</property-->
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.itd-my-workflows-dashlet</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<!--property name="models">
+				<list>
+						<value>alfresco/extension/models</value>
+				</list>
+		</property-->
+	</bean>
+	<bean id="itd-my-workflows-dashlet" class="ru.itdsystems.alfresco.MyWorkflowsDashletExtension" depends-on="itd-repo-extension-registry">
+		<property name="extensionRegistry" ref="itd-repo-extension-registry" />
+	</bean>
+</beans>

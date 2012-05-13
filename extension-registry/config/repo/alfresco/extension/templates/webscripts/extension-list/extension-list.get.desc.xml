@@ -1,0 +1,11 @@
+<webscript>
+	<shortname>extension-list</shortname>
+	<description>
+		<![CDATA[
+		Lists all installed extensions
+		]]>
+	</description>
+	<url>/api/itd/extension/list</url>
+	<format default="json">extension</format>
+	<transaction>required</transaction>
+</webscript>

@@ -1,0 +1,47 @@
+Custom orgchart control for Alfresco Share
+======================================
+
+Author: ITD Systems
+
+This project defines a custom control that provides a way of choosing 
+people from orgchart in Share workflow form.
+
+Installation
+------------
+
+The add-on has been developed to install on top of an existing Alfresco
+3.4 installation.
+
+An Ant build script is provided to build a JAR file containing the 
+custom files, which can then be installed into the 'tomcat/shared/lib' folder 
+of your Alfresco installation.
+
+To build the JAR file, run the following command from the base project 
+directory.
+
+    ant clean dist-jar
+
+The command should build a JAR file in the 'build/dist' directory within your project.
+
+To deploy the control files into a local Tomcat instance for testing, you can 
+use the hotcopy-tomcat-jar task. You will need to set the tomcat.home
+property in Ant.
+
+    ant -Dtomcat.home=/home/username/Alfresco/tomcat clean hotcopy-tomcat-jar
+    
+Once you have run this you will need to restart Tomcat so that the classpath 
+resources in the JAR file are picked up.
+
+Using the control
+-----------------
+
+Copy JAR file to tomcat lib directory.
+
+Update your share form configuration files to use the control
+<field id="bpm:assignees" set="other">
+   <control template="/orgchart-picker.ftl" />
+</field>
+
+Customizing control
+-------------
+

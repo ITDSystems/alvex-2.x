@@ -1,0 +1,14 @@
+<webscript>
+  <shortname>orgstruct-members</shortname>
+  <description><![CDATA[
+  Removes users from the group.
+  Parameters:
+  groupID — id of the group to work with
+  data — array of users to remove
+  ]]></description>
+  <url>/api/itd/orgstruct/{groupID}/members</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

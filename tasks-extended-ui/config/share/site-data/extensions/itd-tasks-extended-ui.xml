@@ -1,0 +1,44 @@
+<extension>
+	<modules>
+		<module>
+			<id>ITD Tasks Extended UI (show completed tasks)</id>
+			<auto-deploy>true</auto-deploy>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>itd.tasks-extended-ui</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+		<module>
+			<id>ITD Tasks Extended UI (custom task-edit page header)</id>
+			<auto-deploy>true</auto-deploy>
+			<evaluator type="itd.evaluators.sharePage">
+				<params>
+					<page>task-edit</page>
+				</params>
+			</evaluator>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>itd.task-edit-page</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+		<module>
+			<id>ITD Tasks Extended UI (custom task-details page header)</id>
+			<auto-deploy>true</auto-deploy>
+			<evaluator type="itd.evaluators.sharePage">
+				<params>
+					<page>task-details</page>
+				</params>
+			</evaluator>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>itd.task-details-page</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+	</modules>
+</extension>

@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgstruct-init</shortname>
+  <description><![CDATA[
+  Initialiaze sorganization structure
+  ]]></description>
+  <url>/api/itd/orgstruct/init</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

@@ -1,0 +1,17 @@
+alfresco/module/related-workflows/alfresco-global.properties
+alfresco/templates/webscripts/related-workflows/related-workflows.get.js
+alfresco/templates/webscripts/related-workflows/related-workflows-tree.get.desc.xml
+alfresco/templates/webscripts/related-workflows/related-workflows.get.desc.xml
+alfresco/templates/webscripts/related-workflows/related-workflows-tree.get.json.ftl
+alfresco/templates/webscripts/related-workflows/related-workflows.get.json.ftl
+alfresco/templates/webscripts/related-workflows/related-workflows-tree.get.js
+alfresco/templates/webscripts/list-definitions/list-definitions.get.desc.xml
+alfresco/templates/webscripts/list-definitions/list-definitions.get.json.ftl
+alfresco/templates/webscripts/list-definitions/list-definitions.get.js
+alfresco/extension/messages/itd-related-workflows_ru.properties
+alfresco/extension/messages/itd-related-workflows.properties
+alfresco/extension/messages/itd-related-workflows_en.properties
+alfresco/extension/itd-related-workflows-context.xml
+alfresco/extension/models/itd-related-workflows-task-model.xml
+alfresco/itd-related-workflows-file-list.txt
+ru/itdsystems/alfresco/RelatedWorkflowsExtension.class

@@ -1,0 +1,6 @@
+<alfresco-config>
+	<config evaluator="string-compare" condition="Workflow">
+		<hidden-tasks>
+		</hidden-tasks>
+	</config>
+</alfresco-config>

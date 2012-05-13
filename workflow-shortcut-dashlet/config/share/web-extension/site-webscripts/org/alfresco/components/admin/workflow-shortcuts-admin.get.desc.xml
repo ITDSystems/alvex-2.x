@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Workflow Shortcut Administration</shortname>
+	<description>Configure workflow shortcut dashlet</description>
+	<url>/components/admin/workflow-shortcuts-admin</url>
+	<family>admin-console</family>
+</webscript>

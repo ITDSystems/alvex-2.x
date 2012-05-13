@@ -1,0 +1,6 @@
+<component>
+	<region-id>itd-workflow-details-header</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/itd/workflow-details-header</uri>
+</component>

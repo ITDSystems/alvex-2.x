@@ -1,0 +1,23 @@
+<alfresco-config>
+	<config>
+		<forms>      
+			<dependencies>
+				<css src="/yui/datatable/assets/skins/sam/datatable.css" />
+				<css src="/components/profile/profile.css" />
+				<css src="/grouped-data-table/grouped-data-table.css" />
+				<css src="/yui/assets/skins/sam/treeview.css" />
+				<js  src="/yui/yahoo-dom-event/yahoo-dom-event.js" />
+				<js  src="/yui/element/element.js" />
+				<js  src="/yui/uploader/uploader.js" />
+				<js  src="/yui/datasource/datasource.js" />
+				<js  src="/yui/datatable/datatable.js" />
+				<js  src="/yui/cookie/cookie.js" />
+				<js  src="/jit/jit-yc.js" />
+				<js  src="/yui/resize/resize.js" />
+				<js  src="/yui/treeview/treeview.js" />
+				<js  src="/components/itd/orgstruct/orgchart-view.js" />
+				<js  src="/grouped-data-table/grouped-data-table.js" />
+			</dependencies>
+		</forms>
+	</config>
+</alfresco-config>

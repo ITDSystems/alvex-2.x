@@ -1,0 +1,76 @@
+/* Toolbars */
+
+.my-workflows .toolbar .yui-pg-container,
+.my-workflows .toolbar .yui-pg-container .yui-pg-current
+{
+   line-height: 2;
+   margin: 0 0 0 0.3em;
+   padding: 0;
+}
+
+/* Body */
+
+.my-workflows .body h4
+{
+   margin-bottom: 0.2em;
+}
+
+.my-workflows .body .unassigned-task
+{
+   padding: 0.15em;
+   text-transform: uppercase;
+   font-size: 80%;
+}
+
+/* Data Table */
+
+.my-workflows .yui-dt-col-isPooled div
+{
+   text-align: center   
+}
+
+.my-workflows .yui-dt-col-isPooled img
+{
+   margin-bottom: 0.5em;
+}
+
+.my-workflows .yui-dt-col-title .yui-dt-liner
+{
+   line-height: 1.4;
+   padding-top: 0;
+}
+
+.my-workflows .workflow-delayed
+{
+   padding-left: 1.5em;
+   background: url(../images/warning-16.png) no-repeat; 
+}
+
+.my-workflows a.view-workflow,
+.my-workflows a.edit-workflow
+{
+   cursor: pointer;
+   padding: 1em 0.75em;
+   visibility: hidden;
+}
+
+.my-workflows a.view-workflow
+{
+   background: url(../images/task-16.png) no-repeat center;
+}
+
+.my-workflows a.edit-workflow
+{
+   background: url(../images/edit-16.png) no-repeat center;
+}
+
+.my-workflows .yui-dt-col-name a:active,
+.my-workflows .yui-dt-col-name a:hover
+{
+   text-decoration: none;
+}
+
+.my-workflows .yui-dt-highlighted a
+{
+   visibility: visible;
+}

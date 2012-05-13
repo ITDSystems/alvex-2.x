@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="itdwf:workflow_model">
+	<!--Import necessary namespaces -->
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
+		<import uri="http://itd-systems.ru/alfresco/prefix/itdrwf" prefix="itdrwf" />
+	</imports>
+	<namespaces>
+		<namespace prefix="itdwf"
+			uri="http://itd-systems.ru/alfresco/prefix/itdwf" />
+	</namespaces>
+	<!--List of types -->
+	<types>
+		<!--Type for itdwf:startTask task -->
+		<type name="itdwf:startTask">
+			<parent>bpm:startTask</parent>
+			<properties>
+				<property name="itdwf:confirmationRequired">
+					<type>d:boolean</type>
+					<default>false</default>
+				</property>
+			</properties>
+			<!--Task mandatory aspects -->
+			<mandatory-aspects>
+				<aspect>bpm:assignee</aspect>
+				<aspect>itdwf:assignees</aspect>
+			</mandatory-aspects>
+		</type>
+		<!--Type for itdwf:executeTask task -->
+		<type name="itdwf:executeTask">
+			<parent>bpm:workflowTask</parent>
+			<!--overrides default properties values -->
+			<overrides>
+				<property name="bpm:packageActionGroup">
+					<default>add_package_item_actions</default>
+				</property>
+			</overrides>
+			<!--Task mandatory aspects -->
+			<mandatory-aspects>
+				<aspect>itdrwf:relatedWorkflows</aspect>
+			</mandatory-aspects>
+		</type>
+		<!--Type for itdwf:assistTask task -->
+		<type name="itdwf:assistTask">
+			<parent>bpm:workflowTask</parent>
+			<!--Task mandatory aspects -->
+			<mandatory-aspects>
+				<aspect>itdrwf:relatedWorkflows</aspect>
+			</mandatory-aspects>
+		</type>		
+		<!--Type for itdwf:controlTask task -->
+		<type name="itdwf:controlTask">
+			<parent>bpm:activitiOutcomeTask</parent>
+			<!--Add outcome property for activiti tasks-->
+			<properties>
+				<property name="itdwf:controlOutcome">
+					<type>d:text</type>
+					<default>rejected</default>
+					<constraints>
+						<constraint type="LIST" name="itdwf:controlOutcomeConstraint">
+							<parameter name="allowedValues">
+								<list>
+									<value>accepted</value>
+									<value>rejected</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+			<overrides>
+				<property name="bpm:outcomePropertyName">
+					<default>{http://itd-systems.ru/alfresco/prefix/itdwf}controlOutcome</default>
+				</property>
+			</overrides>
+			
+		</type>
+	</types>
+	<aspects>
+		<aspect name="itdwf:assignees">
+		<associations>
+			<association name="itdwf:assignees">
+				<source>
+					<mandatory>false</mandatory>
+					<many>false</many>
+				</source>
+				<target>
+					<class>cm:person</class>
+					<mandatory>false</mandatory>
+					<many>true</many>
+				</target>
+			</association>
+
+		</associations>
+	</aspect>
+	</aspects>
+</model>

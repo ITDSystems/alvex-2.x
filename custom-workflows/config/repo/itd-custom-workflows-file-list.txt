@@ -1,0 +1,10 @@
+alfresco/module/custom-workflows/alfresco-global.properties
+alfresco/extension/messages/itd-custom-workflows_ru.properties
+alfresco/extension/messages/itd-custom-workflows.properties
+alfresco/extension/messages/itd-custom-workflows_en.properties
+alfresco/extension/templates/custom-workflows.lib.js
+alfresco/extension/workflows/itd-basic-workflow.bpmn20.xml
+alfresco/extension/itd-custom-workflows-context.xml
+alfresco/extension/models/itd-custom-workflows-task-model.xml
+alfresco/itd-custom-workflows-file-list.txt
+ru/itdsystems/alfresco/CustomWorkflowsExtension.class

@@ -1,0 +1,44 @@
+<extension>
+	<modules>
+		<module>
+			<id>ITD Workflows Extended UI (show completed workflows)</id>
+			<auto-deploy>true</auto-deploy>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>itd.workflows-extended-ui</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+		<module>
+			<id>ITD Workflows Extended UI (custom workflow-details page header)</id>
+			<auto-deploy>true</auto-deploy>
+			<evaluator type="itd.evaluators.sharePage">
+				<params>
+					<page>workflow-details</page>
+				</params>
+			</evaluator>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>itd.workflow-details-page</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+		<module>
+			<id>ITD Workflows Extended UI (custom workflow form on workflow-details page)</id>
+			<auto-deploy>false</auto-deploy>
+			<evaluator type="itd.evaluators.sharePage">
+				<params>
+					<page>workflow-details-test</page>
+				</params>
+			</evaluator>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>itd.workflow-details-form</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+	</modules>
+</extension>

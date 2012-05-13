@@ -1,0 +1,14 @@
+<webscript>
+  <shortname>orgstruct-roles</shortname>
+  <description><![CDATA[
+  Removes users from group managers list.
+  Parameters:
+  groupID — id of the group to work with
+  data — array of roles to remove
+  ]]></description>
+  <url>/api/itd/orgstruct/{groupID}/roles</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

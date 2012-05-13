@@ -1,0 +1,15 @@
+alfresco/web-extension/messages/itd-uploader_ru.properties
+alfresco/web-extension/messages/itd-uploader.properties
+alfresco/web-extension/messages/itd-uploader_en.properties
+alfresco/web-extension/itd-uploader-config.xml
+alfresco/web-extension/itd-uploader-context.xml
+alfresco/site-webscripts/itd-uploader.js.ftl
+alfresco/site-webscripts/itd-uploader.ftl
+alfresco/itd-uploader-file-list.txt
+META-INF/components/itd/uploader/complete-16.png
+META-INF/components/itd/uploader/document-download-16.png
+META-INF/components/itd/uploader/itd-uploader.js
+META-INF/components/itd/uploader/fail-16.png
+META-INF/components/itd/uploader/document-delete-16.png
+META-INF/components/itd/uploader/document-edit-properties-16.png
+ru/itdsystems/alfresco/UploaderExtension.class

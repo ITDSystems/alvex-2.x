@@ -1,0 +1,7 @@
+alfresco/web-extension/messages/itd-custom-workflows_ru.properties
+alfresco/web-extension/messages/itd-custom-workflows.properties
+alfresco/web-extension/messages/itd-custom-workflows_en.properties
+alfresco/web-extension/itd-custom-workflows-context.xml
+alfresco/web-extension/itd-custom-workflows-config.xml
+alfresco/itd-custom-workflows-file-list.txt
+ru/itdsystems/alfresco/CustomWorkflowsExtension.class

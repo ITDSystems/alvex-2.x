@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+	<title>Start workflow directly</title>
+	<title-id>page.startWorkflowDirectly.title</title-id>
+	<description>Page for starting a workflow without selector</description>
+	<description-id>page.startWorkflowDirectly.description</description-id>
+	<template-instance>itd-start-workflow</template-instance>
+	<authentication>user</authentication>
+</page>

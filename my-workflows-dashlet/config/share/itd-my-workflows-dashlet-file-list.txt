@@ -1,0 +1,17 @@
+alfresco/itd-my-workflows-dashlet-file-list.txt
+alfresco/web-extension/itd-my-workflows-dashlet-context.xml
+alfresco/web-extension/messages/itd-my-workflows-dashlet_en.properties
+alfresco/web-extension/messages/itd-my-workflows-dashlet_ru.properties
+alfresco/web-extension/messages/itd-my-workflows-dashlet.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get.head.ftl
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get_en.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get.js
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get_ru.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get.html.ftl
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get.desc.xml
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/itd-my-workflows.get.config.xml
+alfresco/web-extension/itd-my-workflows-dashlet-config.xml
+META-INF/components/my-workflows-dashlet/my-workflows.js
+META-INF/components/my-workflows-dashlet/my-workflows.css
+ru/itdsystems/alfresco/MyWorkflowsDashletExtension.class

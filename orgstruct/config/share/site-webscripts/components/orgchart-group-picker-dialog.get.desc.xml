@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>organization-tree-form</shortname>
+	<description>Renders form to hold organization tree picker</description>
+	<url>/components/workflow/itd/organization-tree-picker-form</url>
+</webscript>

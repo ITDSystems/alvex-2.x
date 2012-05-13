@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Workflow Shortcuts</shortname>
+	<description>Allows to start workflows directly from dashboard</description>
+	<family>dashlet</family>
+	<url>/components/dashlets/workflow-shortcuts</url>
+</webscript>

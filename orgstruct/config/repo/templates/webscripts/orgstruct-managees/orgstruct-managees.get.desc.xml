@@ -1,0 +1,14 @@
+<webscript>
+  <shortname>orgstruct</shortname>
+  <description><![CDATA[
+  Returns managees for auser
+  Parameters:
+  userId — id of the user to return managees for
+  includeNodeRefs — include nodeRefs into output
+  ]]></description>
+  <url>/api/itd/orgstruct/{userId}/managees?includeNodeRefs={true|false?}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>
