@@ -1,6 +1,7 @@
 <import resource="classpath:alfresco/site-webscripts/org/alfresco/components/workflow/workflow.lib.js">
 
 model.hiddenWorkflowsNames = getHiddenWorkflowNames();
+model.hiddenTasksTypes = getHiddenTaskTypes();
 
 var myConfig = new XML(config.script),
    filters = [];

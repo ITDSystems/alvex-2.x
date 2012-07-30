@@ -31,6 +31,8 @@ if (typeof ITD == "undefined" || !ITD)
 		YAHOO.Bubbling.on("formValueChanged", this.onExistingItemAttach, this);
 		YAHOO.Bubbling.on("formContentReady", this.onFormContentReady, this);
 		YAHOO.Bubbling.on("uploaderRemoveFile", this.onCancelUploadClick, this);
+		YAHOO.Bubbling.on("formVisibilityChanged", this.recalcUILayer, this);
+		YAHOO.Bubbling.on("formContainerDestroyed", this.onFormDestroyed, this);
 		return this;
 	};
 
@@ -44,6 +46,8 @@ if (typeof ITD == "undefined" || !ITD)
 			uploadQueue: [],
 			// Hash to map files ids to row nums
 			fileIdHash: {},
+			// Hash to map ids in events and real 'long' ids
+			eventIdHash: {},
 			// Data table to show files
 			dataTable: null,
 			dataSource: null,
@@ -58,21 +62,40 @@ if (typeof ITD == "undefined" || !ITD)
 			createUploadDirectory: '',
 			createUploadDirectoryHierarchy: '',
 			contentType: '',
-			started: false
+			viewType: "normal",
+			init: false,
+			oldItemsProcessed: false
+		},
+
+		onFormDestroyed: function f(layer, args)
+		{
+			YAHOO.Bubbling.unsubscribe("formValueChanged", this.onExistingItemAttach, this);
+			YAHOO.Bubbling.unsubscribe("formContentReady", this.onFormContentReady, this);
+			YAHOO.Bubbling.unsubscribe("uploaderRemoveFile", this.onCancelUploadClick, this);
+			YAHOO.Bubbling.unsubscribe("formVisibilityChanged", this.recalcUILayer, this);
+			YAHOO.Bubbling.unsubscribe("formContainerDestroyed", this.onFormDestroyed, this);
 		},
 
 		onReady: function Uploader_init()
 		{
-			if( this.options.disabled )
-				this.showItems();
+			// We disable init by onReady event - sometimes it causes init BEFORE form is ready
+			// In this case flash layer is generated in some strange place and it does not work
+			//if( !this.options.init )
+			//	this.init();
 		},
 
 		onFormContentReady: function Uploader_onFormContentReady()
 		{
-			if( !this.options.disabled ) {
+			if( !this.options.init )
+				this.init();
+		},
+
+		init: function f()
+		{
+			this.options.init = true;
+			if( !this.options.disabled )
 				this.createUploader();
-				this.showItems();
-			}
+			this.initUI();
 		},
 
 		createUploader: function Uploader_createUploader()
@@ -80,11 +103,8 @@ if (typeof ITD == "undefined" || !ITD)
 			if( (!this.options.disabled) && (document.getElementById(this.id + "-cntrl-addFilesButton") != null) )
 			{
 				var addFilesButton = new YAHOO.widget.Button(this.id + "-cntrl-addFilesButton");
-				// Create UI layer for uploader
-				var uiLayer = YAHOO.util.Dom.getRegion(this.id + "-cntrl-addFilesButton");
-				var overlay = YAHOO.util.Dom.get(this.id + "-cntrl-uploaderOverlay");
-				YAHOO.util.Dom.setStyle(overlay, 'width', uiLayer.right-uiLayer.left + "px");
-				YAHOO.util.Dom.setStyle(overlay, 'height', uiLayer.bottom-uiLayer.top + "px");
+
+				this.recalcUILayer();
 
 				// Custom URL for the uploader swf file (same folder).
 				YAHOO.widget.Uploader.SWFURL = Alfresco.constants.URL_CONTEXT+"yui/uploader/assets/uploader.swf";
@@ -112,13 +132,22 @@ if (typeof ITD == "undefined" || !ITD)
 			}
 		},
 
+		recalcUILayer: function f()
+		{
+			// Update UI layer for uploader
+			var uiLayer = YAHOO.util.Dom.getRegion(this.id + "-cntrl-addFilesButton");
+			var overlay = YAHOO.util.Dom.get(this.id + "-cntrl-uploaderOverlay");
+			YAHOO.util.Dom.setStyle(overlay, 'width', uiLayer.right-uiLayer.left + "px");
+			YAHOO.util.Dom.setStyle(overlay, 'height', uiLayer.bottom-uiLayer.top + "px");
+		},
+
 		// This function creates datatable and inits its state
-		showItems: function Uploader_showItems()
+		initUI: function Uploader_initUI()
 		{
 			if( document.getElementById(this.id + "-cntrl-dataTableContainer") != null)
 			{
 				// Add table template to UI.
-				this.createDataTable(this.options.uploadQueue);
+				this.createDataTable();
 
 				// Usually UI events regarding existing packageItems are triggered by picker. But:
 				//    (a) if it is forbidden to add new items - there is no picker,
@@ -126,16 +155,8 @@ if (typeof ITD == "undefined" || !ITD)
 				//    (c) in form.mode == 'view' picker does not trigger event.
 				// In this case we should cover it, process existing files and set 'started' state manually.
 				// Otherwise 'onExistingItemAttach' will go crazy on the first run because 'started' state is not set.
-				if( !(this.options.picker) || (document.getElementById(this.id).value == '') || (this.options.disabled) ) {
-					if ( (this.options.packageItemActionGroup == "remove_package_item_actions")
-							|| (this.options.packageItemActionGroup == "edit_and_remove_package_item_actions")
-							|| (this.options.packageItemActionGroup == "start_package_item_actions") ) {
-						this.addExistingFiles(true);
-					} else if (this.options.packageItemActionGroup != "") {
-						this.addExistingFiles(false);
-					}
-					this.options.started = true;
-				}
+				if( !(this.options.picker) || (document.getElementById(this.id).value == '') || (this.options.disabled) )
+					this.attachOldItems();
 
 				// Remember initial value
 				document.getElementById(this.id + "-cntrl-initial").value 
@@ -162,25 +183,30 @@ if (typeof ITD == "undefined" || !ITD)
 			});
 
 			// Handle 'valueChange' that happens on form load
-			if( !this.options.started ) {
-				if ( (this.options.packageItemActionGroup == "remove_package_item_actions")
-					|| (this.options.packageItemActionGroup == "edit_and_remove_package_item_actions")
-					|| (this.options.packageItemActionGroup == "start_package_item_actions") ) {
-						this.addExistingFiles(true);
-				} else if (this.options.packageItemActionGroup != "") {
-						this.addExistingFiles(false);
-				}
-				this.options.started = true;
+			if( !this.options.oldItemsProcessed ) {
+				this.attachOldItems();
 				return;
 			}
 
 			// Move newly attached files to *-added field
 			var items = document.getElementById( this.id ).value.split(',');
-			for(var item in items)
-				document.getElementById(this.id + "-cntrl-added").value += items[item] + ',';	
+			if( items.length > 0 )
+				document.getElementById(this.id + "-cntrl-added").value += ',' + items.join(',');
 
 			// Update UI
 			this.addExistingFiles(true);
+		},
+
+		attachOldItems: function f()
+		{
+			if ( (this.options.packageItemActionGroup == "remove_package_item_actions")
+					|| (this.options.packageItemActionGroup == "edit_and_remove_package_item_actions")
+					|| (this.options.packageItemActionGroup == "start_package_item_actions") ) {
+				this.addExistingFiles(true);
+			} else if (this.options.packageItemActionGroup != "") {
+				this.addExistingFiles(false);
+			}
+			this.options.oldItemsProcessed = true;
 		},
 
 		getUploadDirectory: function Uploader_getUploadDirectory()
@@ -207,7 +233,7 @@ if (typeof ITD == "undefined" || !ITD)
 				var secs = cur_date.getSeconds();
 				if(secs < 10) { secs = "0" + secs; }
 
-				var userName = this.decodeBase64( YAHOO.util.Cookie.get("alfUsername2") );
+				var userName = Alfresco.constants.USERNAME;
 
 				// Use hierarchy to avoid too many files in one flat folder that slows down everything
 				uploadDirectory += '/' + year + '/' + month + '/' + day + '/' 
@@ -273,7 +299,9 @@ if (typeof ITD == "undefined" || !ITD)
 					else if(entry.status == "not_started") {
 						entry.status = "in_progress";
 						files_ready = false;
-						this.options.uploader.upload( entry.id,
+						var uploader_id = entry.id.replace(/-.*$/,"");
+						// Do NOT delete jsessionid here - shitty flash requires it
+						this.options.uploader.upload( uploader_id,
 							Alfresco.constants.PROXY_URI + "api/itd/upload;jsessionid=" 
 									+ YAHOO.util.Cookie.get("JSESSIONID"),
 							"POST", {
@@ -295,44 +323,33 @@ if (typeof ITD == "undefined" || !ITD)
 				}
 
 				// TODO - invent smth to prevent submission while upload in progress
-				// If files are ready - set overall response value
 				if(files_ready) {
 					// Do smth
 				}
 			}	
 
-			// TODO - do we need it here?
 			this.activateWorkflowButtons();
 		},
 
 		activateWorkflowButtons: function Uploader_activateWorkflowButtons()
 		{
-			// Send formValueChanged event
-			// TODO - think if we need it, or KeyboardEvent below, or both, or none.
-			YAHOO.Bubbling.fire("formValueChanged",
-			{
-				eventGroup: this.options.uploader
-			});
-			// TODO - rethink it based on Y.B.fire
-			// Send keyboard event to activate / deactivate workflow buttons
-			var refs = document.getElementById( this.id );
-			var ev = document.createEvent('KeyboardEvent');
-			// Hack to make it cross-browser
-			if(ev.initKeyboardEvent)
-				ev.initKeyboardEvent("keyup", true, true, window, false, false, false, false, 0, 32);
-			else
-				ev.initKeyEvent("keyup", true, true, window, false, false, false, false, 0, 32);
-			refs.dispatchEvent(ev);
+			YAHOO.Bubbling.fire("mandatoryControlValueUpdated", this);
 		},
 
 		// Adds new files into upload queue and triggers recheck upload status.
 		onFileSelect: function Uploader_onFileSelect(event)
 		{
+			this.options.eventIdHash = {};
 			if(event.fileList != null) {
 				for(var i in event.fileList) {
+					this.options.eventIdHash[ event.fileList[i].id ] = event.fileList[i].id+'-'+event.fileList[i].name;
 					var new_file = true;
 					for(var j in this.options.uploadQueue) {
-						if(this.options.uploadQueue[j].id == event.fileList[i].id) {
+						// We check BOTH id and name because sometimes numbering is 'dropped' and 'restarted'.
+						// After that cases we get file0, file1, etc again. 
+						// If we do not check names - new uploads are forbidden because we have fil10, etc already.
+						if( (this.options.uploadQueue[j].id == event.fileList[i].id+'-'+event.fileList[i].name) )
+						{
 							new_file = false;
 							break;
 						}
@@ -340,30 +357,25 @@ if (typeof ITD == "undefined" || !ITD)
 					if(new_file) {
 						var pos = this.options.uploadQueue.length;
 						this.options.uploadQueue.push(event.fileList[i]);
+						this.options.uploadQueue[pos].id += '-' + this.options.uploadQueue[pos].name;
 						this.options.uploadQueue[pos].status = "not_started";
 						this.options.uploadQueue[pos].node_ref = null;
+						this.options.uploadQueue[pos].type = "local_attach";
 				
 						this.options.fileIdHash[this.options.uploadQueue[pos].id] = pos;
 						this.options.dataTable.addRow({ 
 								name: this.formatFileName( this.options.uploadQueue[pos].name, 
 											this.options.uploadQueue[pos].node_ref ),
-								actions: this.getActionsHTML( this.options.uploadQueue[pos].node_ref,
+								status: this.getStatusHTML( this.options.uploadQueue[pos].node_ref,
 											this.options.uploadQueue[pos].name,
 											'none', this.msg("itd.uploader.waiting") ),
-								remove: this.getRemoveHTML( this.options.uploadQueue[pos].id, true )
+								actions: this.getActionsHTML( this.options.uploadQueue[pos].id, true, 
+															null, null)
 							});
-
-						YAHOO.util.Event.onAvailable(this.id + '-remove-link-' + this.options.uploadQueue[pos].id,
-								this.attachRemoveClickListener, this.options.uploadQueue[pos].id, this);
 					}
 				}
 			}
 			this.recheckUploads(this.options.uploadQueue);
-		},
-
-		attachRemoveClickListener: function Uploader_attachRemoveClickListener(id)
-		{
-			YAHOO.util.Event.on(this.id + '-remove-link-' + id, 'click', this.onCancelUploadClick, id, this);
 		},
 
 		// Gets the list of existing files uploaded on other workflow stages and adds them to the list
@@ -399,40 +411,56 @@ if (typeof ITD == "undefined" || !ITD)
 				for (f in files_names.data.items)
 					if (files_names.data.items[f].nodeRef == old_files_refs[i])
 						item.name = files_names.data.items[f].name;
-				item.id = old_files_refs[i].replace(/;/g, "").replace(/:/g, "").replace(/\//g, "");
+				item.id = old_files_refs[i].replace(/;/g, "").replace(/:/g, "").replace(/\//g, "")  + '-' + item.name;
 				item.size = 0;
 				item.node_ref = old_files_refs[i];
 				item.status = "complete";
+				item.type = "repo_link";
 
 				this.options.uploadQueue.push(item);
 				this.options.fileIdHash[item.id] = this.options.uploadQueue.length-1;
 				this.options.dataTable.addRow({
 							name: this.formatFileName( item["name"], item["node_ref"] ),
-							actions: this.getActionsHTML( item.node_ref, item.name,
+							status: this.getStatusHTML( item.node_ref, item.name,
 								 'ok', this.msg("itd.uploader.complete") ), 
-							remove: this.getRemoveHTML( item.id, allow_delete )
+							actions: this.getActionsHTML( item.id, allow_delete, item.node_ref, item.name )
 						});
-
-				YAHOO.util.Event.onAvailable(this.id + '-remove-link-' + item.id,
-						this.attachRemoveClickListener, item.id, this);
 			}
 
-			document.getElementById(this.id + "-cntrl-current").value 
-						+= document.getElementById(this.id).value + ',';
+			if( old_files_refs.length > 0 )
+				this.addRefToControl( this.id + "-cntrl-current", old_files_refs.join(',') );
+
 			document.getElementById(this.id).value 
 						= document.getElementById(this.id + "-cntrl-current").value;
+
 			this.recheckUploads(this.options.uploadQueue);
 		},
 
 		// Creates new datatable.
 		// It is called only once - at control init. After it table is updated, not rebuilt.
-		createDataTable: function Uploader_createDataTable(entries)
+		createDataTable: function Uploader_createDataTable()
 		{
-			var columnDefs = [
-				{key:"name", label: this.msg("itd.uploader.filename"), sortable:false, resizeable:true, width:200},
-				{key:"actions", label: '', sortable:false, resizeable:true, width:200},
-				{key:"remove", label: '', sortable:false, resizeable:true, width:100}
-			];
+			var columnDefs = []
+
+			if( this.options.viewType === "mini" ) {
+				columnDefs = [
+					{key:"name", label: this.msg("itd.uploader.filename"), sortable:false, resizeable:true, width:300},
+					{key:"status", label: '', sortable:false, resizeable:true, width:100},
+					{key:"actions", label: '', sortable:false, resizeable:true, width:100}
+				];
+			} else if( this.options.viewType === "micro" ) {
+				columnDefs = [
+					{key:"name", label: this.msg("itd.uploader.filename"), sortable:false, resizeable:true, width:200},
+					{key:"status", label: '', sortable:false, resizeable:true, width:60},
+					{key:"actions", label: '', sortable:false, resizeable:true, width:75}
+				];
+			} else {
+				columnDefs = [
+					{key:"name", label: this.msg("itd.uploader.filename"), sortable:false, resizeable:true, width:200},
+					{key:"status", label: '', sortable:false, resizeable:true, width:200},
+					{key:"actions", label: '', sortable:false, resizeable:true, width:100}
+				];
+			}
 
 			this.options.dataSource = new YAHOO.util.DataSource(this.options.uploadQueue);
 			this.options.dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
@@ -452,20 +480,25 @@ if (typeof ITD == "undefined" || !ITD)
 		onCancelUploadClick: function Uploader_onCancelUploadClick(event, id)
 		{
 			var rowNum = this.options.fileIdHash[id];
+			var uploader_id = this.options.uploadQueue[rowNum].id.replace(/-.*$/, "");
 
 			// Server-side actions
 
 			// Ongoing upload - cancel it
 			if( ( this.options.uploadQueue[rowNum].status == "not_started" ) 
 					|| ( this.options.uploadQueue[rowNum].status == "in_progress" ) ) {
-				this.options.uploader.cancel( this.options.uploadQueue[rowNum].id );
+				this.options.uploader.cancel( uploader_id );
 			}
 			// Delete uploaded file from Alfresco
 			else if ( this.options.uploadQueue[rowNum].status == "complete" ) {
-				var delete_url = this.makeCleanURL( "api/node/" + this.options.uploadQueue[rowNum].node_ref );
-				var xmlhttp = new XMLHttpRequest();
-				xmlhttp.open('DELETE', delete_url, true);
-				xmlhttp.send(null); 
+				// Remove local attaches only, do not delete repo links - ticket #108
+				if( this.options.uploadQueue[rowNum].type == "local_attach" ) {
+					var delete_url = Alfresco.constants.PROXY_URI + 'api/node/' 
+						+ Alfresco.util.NodeRef( this.options.uploadQueue[rowNum].node_ref ).uri;
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.open('DELETE', delete_url, true);
+					xmlhttp.send(null); 
+				}
 			}
 			// Failed upload - nothing to do on server side
 			else if ( this.options.uploadQueue[rowNum].status == "error" ) {
@@ -483,16 +516,15 @@ if (typeof ITD == "undefined" || !ITD)
 				// Check initial state with ref to remove and add ref to *-removed if matches
 				var old_field = document.getElementById( this.id + "-cntrl-initial" );
 				var old_refs = old_field.value.split(',');
-				var removed_field = document.getElementById( this.id + "-cntrl-removed" );
-				for( var i = 0; i < old_refs.length; i++ ) {
+				for( var i = 0; i < old_refs.length; i++ )
 					if( this.options.uploadQueue[rowNum].node_ref == old_refs[i] ) 
-						removed_field.value += this.options.uploadQueue[rowNum].node_ref + ',';
-				}
+						this.addRefToControl( this.id + "-cntrl-removed", 
+										this.options.uploadQueue[rowNum].node_ref );
 			}
 
 			// Client-side - remove from queue and UI
 			if( this.options.uploader != null )
-				this.options.uploader.removeFile( this.options.uploadQueue[rowNum].id );
+				this.options.uploader.removeFile( uploader_id );
 			this.options.uploadQueue.splice( rowNum, 1 );
 			this.options.dataTable.deleteRow( rowNum );
 			this.recalculateFileIdHash();
@@ -506,10 +538,18 @@ if (typeof ITD == "undefined" || !ITD)
 			var field = document.getElementById(control_id);
 			var refs = field.value.split(',');
 			field.value = '';
-			for( var i = 0; i < refs.length; i++ ) {
+			for( var i = 0; i < refs.length; i++ )
 				if( (refs[i] != '') && (node_ref != refs[i]) )
-					field.value += refs[i] + ',';
-			}
+					this.addRefToControl(control_id, refs[i]);
+		},
+
+		addRefToControl: function Uploader_addRefToControl(control_id, node_ref)
+		{
+			var field = document.getElementById(control_id);
+			if( field.value != '' )
+				field.value += ',' + node_ref;
+			else
+				field.value = node_ref;
 		},
 
 		// Rebuilds hash for filename-rownum mapping.
@@ -528,7 +568,8 @@ if (typeof ITD == "undefined" || !ITD)
 		// Update status bar on upload progress event.
 		onUploadProgress: function Uploader_onUploadProgress(event)
 		{
-			var rowNum = this.options.fileIdHash[ event["id"] ];
+			var id = this.options.eventIdHash[ event["id"] ];
+			var rowNum = this.options.fileIdHash[ id ];
 			if(rowNum == undefined) { return; }
 			var prog = Math.round(100*(event["bytesLoaded"]/event["bytesTotal"]));
 			if(isNaN(prog)) { return; }
@@ -538,7 +579,8 @@ if (typeof ITD == "undefined" || !ITD)
 		// Update status bar on upload complete event.
 		onUploadComplete: function Uploader_onUploadComplete(event)
 		{
-			var rowNum = this.options.fileIdHash[ event["id"] ];
+			var id = this.options.eventIdHash[ event["id"] ];
+			var rowNum = this.options.fileIdHash[ id ];
 			if(rowNum == undefined) { return; }
 			this.updateProgressBar( rowNum, 100 );
 		},
@@ -546,7 +588,8 @@ if (typeof ITD == "undefined" || !ITD)
 		// Update status if upload throws an error
 		onUploadError: function Uploader_onUploadError(event)
 		{
-			var rowNum = this.options.fileIdHash[ event["id"] ];
+			var id = this.options.eventIdHash[ event["id"] ];
+			var rowNum = this.options.fileIdHash[ id ];
 			if(rowNum == undefined) { return; }
 			this.options.uploadQueue[ rowNum ].status = "error";
 			this.updateRowView( rowNum, 'fail', this.msg("itd.uploader.failed") );
@@ -561,7 +604,8 @@ if (typeof ITD == "undefined" || !ITD)
 		// Update status and save node_ref when data is received back from the server
 		onUploadResponse: function Uploader_onUploadResponse(event)
 		{
-			var rowNum = this.options.fileIdHash[ event["id"] ];
+			var id = this.options.eventIdHash[ event["id"] ];
+			var rowNum = this.options.fileIdHash[ id ];
 			if(rowNum == undefined) { return; }
 			var resp = JSON.parse(event.data);
 			if (resp.status.code == 200)
@@ -570,11 +614,11 @@ if (typeof ITD == "undefined" || !ITD)
 				this.options.uploadQueue[ rowNum ].node_ref = resp.nodeRef;
 				this.updateRowView( rowNum, 'ok', this.msg("itd.uploader.complete") );
 				// Simply add to *-added because the file was just uploaded and can not be in *-removed
-				document.getElementById(this.id + "-cntrl-added").value += resp.nodeRef + ',';
+				this.addRefToControl( this.id + "-cntrl-added", resp.nodeRef );
 				// Update these fields to ensure current value will be correct any case 
 				//	(think about intersection with default picker that clears fieldHtmlId)
-				document.getElementById(this.id + "-cntrl-current").value += resp.nodeRef + ',';
-				document.getElementById(this.id).value += resp.nodeRef + ',';
+				this.addRefToControl( this.id + "-cntrl-current", resp.nodeRef );
+				this.addRefToControl( this.id, resp.nodeRef );
 			} else {
 				this.options.uploadQueue[ rowNum ].status = "error";
 				this.updateRowView( rowNum, 'fail', this.msg("itd.uploader.failed") );
@@ -588,33 +632,37 @@ if (typeof ITD == "undefined" || !ITD)
 			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "name",
 				this.formatFileName( this.options.uploadQueue[rowNum].name, this.options.uploadQueue[rowNum].node_ref ) );
 
-			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "actions",
-						this.getActionsHTML( this.options.uploadQueue[rowNum].node_ref,
+			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "status",
+						this.getStatusHTML( this.options.uploadQueue[rowNum].node_ref,
 								 this.options.uploadQueue[rowNum].name, status, status_msg ) );
+
+			this.updateActions( this.options.uploadQueue[rowNum].id, true, 
+						this.options.uploadQueue[rowNum].node_ref,
+					 	this.options.uploadQueue[rowNum].name );
 		},
 
 		// Updates only progress bar cell in row in datatable
 		updateProgressBar: function Uploader_updateProgressBar(rowNum, prog)
 		{
-			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "actions", 
+			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "status", 
 								this.getProgressBarHTML(prog) );
 		},
 
 		// Returns progress bar HTML
 		getProgressBarHTML: function Uploader_getProgressBarHTML(percent)
 		{
-			var html = this.getActionsStartHTML();
+			var html = this.getStatusStartHTML();
 
 			html += '<td style="border-style:none; padding:5px; width:100%;">';
 			html += "<div style='height:5px;width:100%;background-color:#CCC;'>"
 					+ "<div style='height:5px;background-color:#6CA5CE;width:" + percent + "%;'></div></div>";
 			html += '</td>';
-			html += this.getActionsEndHTML();
+			html += this.getStatusEndHTML();
 			return html;
 		},
 
 		// Returns upload status HTML
-		getActionsStatusHTML: function Uploader_getActionsStatusHTML(status, status_msg)
+		getLongStatusHTML: function Uploader_getLongStatusHTML(status, status_msg)
 		{
 			var html = '<td style="padding:5px; width:40%;">'
 					 + '<div style="text-align:left;  vertical-align: middle;">';
@@ -631,22 +679,41 @@ if (typeof ITD == "undefined" || !ITD)
 			return html;
 		},
 
+		// Returns upload status HTML
+		getShortStatusHTML: function Uploader_getStortStatusHTML(status, status_msg)
+		{
+			var html = '<div style="text-align:left; vertical-align: middle;">';
+
+			if(status == 'ok')
+				html += '<img align="top" src="' 
+					+ Alfresco.constants.URL_RESCONTEXT + 'components/itd/uploader/complete-16.png' + '"/> ';
+			else if(status == 'fail')
+				html += '<img align="top" src="' 
+					+ Alfresco.constants.URL_RESCONTEXT + 'components/itd/uploader/fail-16.png' + '"/> ';
+
+			html += status_msg + '</div>';
+
+			return html;
+		},
+
 		// Returns HTML for download and view buttons
-		getActionsViewHTML: function Uploader_getActionsViewHTML(ref, filename)
+		getStatusViewHTML: function Uploader_getStatusViewHTML(ref, filename)
 		{
 			var html = '<td style="border-style:none; padding:5px; width:60%;">';
 
 			if(ref != null) {
-
 				html += '<div style="vertical-align: middle; padding-bottom: 5px;">'
-					+ '<a href="' + this.makeCleanURL('api/node/content/'+ref+'/'+filename) + '" target="_blank">' 
+					+ '<a href="' + Alfresco.constants.PROXY_URI + 'api/node/content/' 
+					+ Alfresco.util.NodeRef(ref).uri + '/' + filename + '" target="_blank" ' 
+					+ 'title="' + this.msg("itd.uploader.download") + '">' 
 					+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
 					+ 'components/itd/uploader/document-download-16.png' + '"/> ' 
 					+ this.msg("itd.uploader.download") + '</a></div>';
 
 				html += '<div style="vertical-align: middle; padding-top: 5px;">'
 					+ '<a href="' +  Alfresco.constants.URL_PAGECONTEXT 
-					+ 'document-details?nodeRef=' + ref + '" target="_blank">' 
+					+ 'document-details?nodeRef=' + ref + '" target="_blank" ' 
+					+ 'title="' + this.msg("itd.uploader.view") + '">' 
 					+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
 					+ 'components/itd/uploader/document-edit-properties-16.png' + '"/> ' 
 					+ this.msg("itd.uploader.view") + '</a></div>';
@@ -657,44 +724,107 @@ if (typeof ITD == "undefined" || !ITD)
 			return html;
 		},
 
-		// Returns HTML for remove button
-		getRemoveHTML: function Uploader_getActionsRemoveHTML(id, allow_delete)
+		getActionsMiniViewHTML: function f(ref, filename)
 		{
-			var html = this.getActionsStartHTML();
+			var html = '';
 
-			html += '<td style="border-style:none; padding:5px; width:100%;">'
-				+ '<div style="text-align:right; vertical-align: middle;">';
+			html += '<a href="' + Alfresco.constants.PROXY_URI + 'api/node/content/' 
+				+ Alfresco.util.NodeRef(ref).uri + '/' + filename + '" target="_blank" ' 
+				+ 'title="' + this.msg("itd.uploader.download") + '">' 
+				+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
+				+ 'components/itd/uploader/document-download-16.png' + '"/>' 
+				+ '</a> '; //this.msg("itd.uploader.download")
 
-			if(allow_delete) {
-				html += '<a href="#" id="' + this.id + '-remove-link-' + id + '">'
-					+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
-					+ 'components/itd/uploader/document-delete-16.png' + '"/> ' 
-					+ this.msg("itd.uploader.remove") + '</a>';
-			}
-
-			html += '</div></td>';
-			html += this.getActionsEndHTML();
+			html += '<a href="' +  Alfresco.constants.URL_PAGECONTEXT 
+				+ 'document-details?nodeRef=' + ref + '" target="_blank" ' 
+				+ 'title="' + this.msg("itd.uploader.view") + '">' 
+				+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
+				+ 'components/itd/uploader/document-edit-properties-16.png' + '"/>' 
+				+ '</a> '; //this.msg("itd.uploader.view")
 
 			return html;
 		},
 
-		getActionsStartHTML: function Uploader_getActionsStartHTML()
+		updateActions: function f(id, allow_delete, ref, filename)
+		{
+			if( (this.options.viewType === "mini") || (this.options.viewType === "micro") ) {
+				if( ref != null ) {
+					var el = document.getElementById(this.id + '-actions-later-' + id);
+					while( el.firstChild )
+						el.removeChild( el.firstChild );
+					el.innerHTML = this.getActionsMiniViewHTML(ref, filename);
+				}
+			}
+		},
+
+		// Returns HTML for remove button
+		getActionsHTML: function Uploader_getActionsRemoveHTML(id, allow_delete, ref, filename)
+		{
+			var html = '';
+
+			if( (this.options.viewType === "mini") || (this.options.viewType === "micro") ) {
+				html += '<div style="text-align:right; vertical-align: middle;">'
+					+ '<span id="' + this.id + '-actions-later-' + id + '">';
+
+				if(ref != null)
+					html += this.getActionsMiniViewHTML(ref, filename);
+
+				if(allow_delete && !this.options.disabled) {
+					html += '</span><a href="#" id="' + this.id + '-remove-link-' + id + '" ' 
+						+ 'title="' + this.msg("itd.uploader.remove") + '">' 
+						+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
+						+ 'components/itd/uploader/document-delete-16.png' + '"/>' 
+						+ '</a>'; //this.msg("itd.uploader.remove")
+				}
+				html += '</div>';
+			} else {
+				html += this.getStatusStartHTML();
+				html += '<td style="border-style:none; padding:5px; width:100%;">'
+					+ '<div style="text-align:right; vertical-align: middle;">';
+				if(allow_delete && !this.options.disabled) {
+					html += '<a href="#" id="' + this.id + '-remove-link-' + id + '" ' 
+						+ 'title="' + this.msg("itd.uploader.remove") + '">' 
+						+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
+						+ 'components/itd/uploader/document-delete-16.png' + '"/> ' 
+						+ this.msg("itd.uploader.remove") + '</a>';
+				}
+				html += '</div></td>';
+				html += this.getStatusEndHTML();
+			}
+
+			if( allow_delete )
+				YAHOO.util.Event.onAvailable(this.id + '-remove-link-' + id, this.attachRemoveClickListener, id , this);
+
+			return html;
+		},
+
+		attachRemoveClickListener: function Uploader_attachRemoveClickListener(id)
+		{
+			YAHOO.util.Event.on(this.id + '-remove-link-' + id, 'click', this.onCancelUploadClick, id, this);
+		},
+
+		getStatusStartHTML: function Uploader_getStatusStartHTML()
 		{
 			return '<table width="100%" style="border-style:none; padding:5px;"><tr>';
 		},
 
-		getActionsEndHTML: function Uploader_getActionsEndHTML()
+		getStatusEndHTML: function Uploader_getStatusEndHTML()
 		{
 			return '</tr></table>';
 		},
 
 		// Returns HTML for actions block
-		getActionsHTML: function Uploader_getActionsHTML( ref, filename, status, status_msg )
+		getStatusHTML: function Uploader_getStatusHTML( ref, filename, status, status_msg )
 		{
-			var html = this.getActionsStartHTML();
-			html += this.getActionsStatusHTML(status, status_msg);
-			html += this.getActionsViewHTML(ref, filename);
-			html += this.getActionsEndHTML();
+			var html = '';
+			if( (this.options.viewType === "mini") || (this.options.viewType === "micro") ) {
+				html = this.getShortStatusHTML(status, status_msg);
+			} else {
+				html += this.getStatusStartHTML();
+				html += this.getLongStatusHTML(status, status_msg);
+				html += this.getStatusViewHTML(ref, filename);
+				html += this.getStatusEndHTML();
+			}
 
 			return html;
 		},
@@ -702,85 +832,12 @@ if (typeof ITD == "undefined" || !ITD)
 		formatFileName: function Uploader_formatFileName(filename, ref)
 		{
 			if(ref != null)
-				return '<a href="' + this.makeCleanURL( 'api/node/content/' + ref + '/' + filename ) 
-					+ '" target="_blank">' + filename + '</a>';
+				return '<a href="' + Alfresco.constants.PROXY_URI + 'api/node/content/' 
+					+ Alfresco.util.NodeRef(ref).uri + '/' + filename 
+					+ '" target="_blank" ' + 'title="' + this.msg("itd.uploader.download") + '">' 
+					+ filename + '</a>';
 			else
 				return filename;
-		},
-
-		makeCleanURL: function Uploader_makeCleanURL(url)
-		{
-			var clean_url = url;
-			clean_url = clean_url.replace(/;/g, "");
-			clean_url = clean_url.replace(/:/g, "");
-			clean_url = clean_url.replace(/\/\/+/g, "/");
-			clean_url = clean_url.replace(/\/$/, "");
-			clean_url = clean_url.replace(/^\//, "");
-			clean_url =  Alfresco.constants.PROXY_URI + clean_url + ";jsessionid=" + YAHOO.util.Cookie.get("JSESSIONID");
-			return clean_url;
-		},
-
-		// Base64 decoder
-		decodeBase64: function Uploader_decodeBase64(input)
-		{
-			var _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-	
-			var output = "";
-			var chr1, chr2, chr3;
-			var enc1, enc2, enc3, enc4;
-			var i = 0;
-
-			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-			while (i < input.length) {
-
-				enc1 = _keyStr.indexOf(input.charAt(i++));
-				enc2 = _keyStr.indexOf(input.charAt(i++));
-				enc3 = _keyStr.indexOf(input.charAt(i++));
-				enc4 = _keyStr.indexOf(input.charAt(i++));
-
-				chr1 = (enc1 << 2) | (enc2 >> 4);
-				chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-				chr3 = ((enc3 & 3) << 6) | enc4;
-
-				output = output + String.fromCharCode(chr1);
-
-				if (enc3 != 64) {
-					output = output + String.fromCharCode(chr2);
-				}
-				if (enc4 != 64) {
-					output = output + String.fromCharCode(chr3);
-				}
-			}
-			return this.utf8_decode(output);
-		},
-
-		// Private helper to decode Base64 Unicode string
-		utf8_decode: function Uploader_utf8_decode(utftext)
-		{
-			var string = "";
-			var i = 0;
-			var c = 0, c1 = 0, c2 = 0;
-
-			while ( i < utftext.length ) {
-
-				c = utftext.charCodeAt(i);
-
-				if (c < 128) {
-					string += String.fromCharCode(c);
-					i++;
-				} else if((c > 191) && (c < 224)) {
-					c1 = utftext.charCodeAt(i+1);
-					string += String.fromCharCode(((c & 31) << 6) | (c1 & 63));
-					i += 2;
-				} else {
-					c1 = utftext.charCodeAt(i+1);
-					c2 = utftext.charCodeAt(i+2);
-					string += String.fromCharCode(((c & 15) << 12) | ((c1 & 63) << 6) | (c2 & 63));
-					i += 3;
-				}
-			}
-			return string;
 		}
 
 	});

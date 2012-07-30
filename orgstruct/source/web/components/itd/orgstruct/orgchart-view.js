@@ -448,14 +448,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 		// TODO - do we need this function? If yes - may be rewrite it on Y.B.f?
 		activateFormButtons: function OrgchartViewerDialog_activateFormButtons()
 		{
-			var refs = document.getElementById(this.id);
-			var ev = document.createEvent('KeyboardEvent');
-			// Hack to make it cross-browser
-			if(ev.initKeyboardEvent)
-				ev.initKeyboardEvent("keyup", true, true, window, false, false, false, false, 0, 32);
-			else
-				ev.initKeyEvent("keyup", true, true, window, false, false, false, false, 0, 32);
-			refs.dispatchEvent(ev);
+			YAHOO.Bubbling.fire("mandatoryControlValueUpdated", this);
 		},
 
 		createDetailsDialog: function OrgchartViewerDialog_createDetailsDialog(node)

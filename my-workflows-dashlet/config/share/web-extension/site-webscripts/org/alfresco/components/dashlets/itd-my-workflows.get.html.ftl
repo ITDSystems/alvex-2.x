@@ -7,6 +7,7 @@
 	new ITD.MyWorkflows("${jsid}").setOptions(
 	{
 		hiddenWorkflowsNames: [<#list hiddenWorkflowsNames as workflow>"${workflow}"<#if workflow_has_next>, </#if></#list>],
+		hiddenTasksTypes: [<#list hiddenTasksTypes as type>"${type}"<#if type_has_next>, </#if></#list>],
 		maxItems: ${maxItems!"50"},
 		filters:
 			{<#list filters as filter>

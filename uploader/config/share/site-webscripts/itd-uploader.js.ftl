@@ -33,6 +33,7 @@ new ITD.Uploader( "${fieldHtmlId}" ).setOptions({
 	allowedExtensions: '${(field.control.params.allowedExtensions!"*.*")?string}',
 	destination: '${(field.control.params.destination!"alfresco://user/home")?string}',
 	createUploadDirectory: '${(field.control.params.createUploadDirectory!false)?string}',
+	viewType: '${(field.control.params.viewType!"normal")?string}',
 	contentType: '${(field.control.params.contentType!"cm:content")?string}'
 }).setMessages( ${messages} );
 

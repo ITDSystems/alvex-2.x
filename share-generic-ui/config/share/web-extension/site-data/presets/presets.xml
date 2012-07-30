@@ -57,4 +57,123 @@
 			</page>
 		</pages>
 	</preset>
+
+	<!-- TODO - it should be part of committees docflow module -->
+	<!-- Not so well known preset used to generate Committee site -->
+	<preset id="committee-dashboard">
+		<components>         
+			<!-- title -->
+			<component>
+				<scope>page</scope>
+				<region-id>title</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/title/collaboration-title</url>
+			</component>
+			<!-- navigation -->
+			<component>
+				<scope>page</scope>
+				<region-id>navigation</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/navigation/collaboration-navigation</url>
+			</component>
+			<!-- dashboard components -->
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/colleagues</url>
+				<properties>
+					<height>504</height>
+				</properties>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/meetings-list</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-2</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/calendar</url>
+			</component>
+		</components>
+		<pages>
+			<page id="site/${siteid}/dashboard">
+				<title>Committee Site Dashboard</title>
+				<title-id>page.siteDashboard.title</title-id>
+				<description>Committee site's dashboard page</description>
+				<description-id>page.siteDashboard.description</description-id>
+				<template-instance>dashboard-2-columns-wide-right</template-instance>
+				<authentication>user</authentication>
+				<properties>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"meetings"}]</sitePages>
+				</properties>
+			</page>
+		</pages>
+	</preset>
+
+	<!-- TODO - it should be part of document registry module -->
+	<!-- Not so well known preset used to generate Document Registry site -->
+	<preset id="document-registry-dashboard">
+		<components>         
+			<!-- title -->
+			<component>
+				<scope>page</scope>
+				<region-id>title</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/title/collaboration-title</url>
+			</component>
+			<!-- navigation -->
+			<component>
+				<scope>page</scope>
+				<region-id>navigation</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/navigation/collaboration-navigation</url>
+			</component>
+			<!-- dashboard components -->
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/workflow-shortcuts</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-2</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/colleagues</url>
+				<properties>
+					<height>504</height>
+				</properties>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/site-datalists-view</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-2</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/calendar</url>
+			</component>
+		</components>
+		<pages>
+			<page id="site/${siteid}/dashboard">
+				<title>Document Registry Site Dashboard</title>
+				<title-id>page.siteDashboard.title</title-id>
+				<description>Document Registry site's dashboard page</description>
+				<description-id>page.siteDashboard.description</description-id>
+				<template-instance>dashboard-2-columns-wide-right</template-instance>
+				<authentication>user</authentication>
+				<properties>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"documentregistry"}]</sitePages>
+				</properties>
+			</page>
+		</pages>
+	</preset>
+
 </presets>

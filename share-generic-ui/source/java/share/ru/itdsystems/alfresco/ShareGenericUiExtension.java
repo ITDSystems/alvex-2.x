@@ -30,7 +30,7 @@ public class ShareGenericUiExtension extends Extension {
 	// constructor
 	public ShareGenericUiExtension() throws Exception {
 		id = "share-generic-ui";
-		version = "1.2.1";
+		version = "1.2.2";
 		fileListPath = "alfresco/itd-share-generic-ui-file-list.txt";
 	}
 }

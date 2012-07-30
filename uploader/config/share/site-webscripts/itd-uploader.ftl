@@ -1,11 +1,24 @@
 <#include "org/alfresco/components/component.head.inc">
 <#include "org/alfresco/components/form/controls/common/picker.inc.ftl">
 <#assign controlId = fieldHtmlId + "-cntrl">
-<#assign packageActionGroup = form.data['prop_bpm_packageActionGroup']>
-<#assign packageItemActionGroup = form.data['prop_bpm_packageItemActionGroup']>
+
+<#if form.data['prop_bpm_packageActionGroup']??>
+	<#assign packageActionGroup = form.data['prop_bpm_packageActionGroup']>
+<#else>
+	<#assign packageActionGroup = "add_package_item_actions">
+</#if>
+
+<#if form.data['prop_bpm_packageItemActionGroup']??>
+	<#assign packageItemActionGroup = form.data['prop_bpm_packageItemActionGroup']>
+<#else>
+	<#assign packageItemActionGroup = "edit_and_remove_package_item_actions">
+</#if>
 
 
 <div class="form-field">
+	<label for="${controlId}">${field.label?html}:
+		<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
+	</label>
 	<div id="${controlId}">
 		<input type="hidden" id="${fieldHtmlId}" name="-" value="${field.value}" />
 		<input type="hidden" id="${controlId}-added" name="${field.name}_added" value="" />

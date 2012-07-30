@@ -30,7 +30,7 @@ public class UploaderExtension extends Extension {
 	// constructor
 	public UploaderExtension() throws Exception {
 		id = "uploader";
-		version = "1.2.1";
+		version = "1.2.2";
 		fileListPath = "alfresco/itd-uploader-file-list.txt";
 	}
 }

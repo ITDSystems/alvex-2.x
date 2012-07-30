@@ -30,7 +30,7 @@ public class OrgstructExtension extends Extension {
 	// constructor
 	public OrgstructExtension() throws Exception {
 		id = "orgstruct";
-		version = "1.2.1";
+		version = "1.2.2";
 		fileListPath = "alfresco/itd-orgstruct-file-list.txt";
 	}
 }

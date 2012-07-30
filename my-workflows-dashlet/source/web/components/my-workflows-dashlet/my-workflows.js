@@ -308,13 +308,21 @@ if (typeof ITD == "undefined" || !ITD)
 			for(var t in workflow.tasks)
 				if(workflow.tasks[t].state === "IN_PROGRESS")
 				{
-					assignee = workflow.tasks[t].owner.firstName ? workflow.tasks[t].owner.firstName + ' ' : '';
-					assignee += workflow.tasks[t].owner.lastName;
+					var task_visible = true;
+					for(var ht in this.options.hiddenTasksTypes)
+						if( workflow.tasks[t].name.match(this.options.hiddenTasksTypes[ht]) )
+							task_visible = false;
 
-					task = workflow.tasks[t].title ? workflow.tasks[t].title : this.msg("workflow.no_message");
+					if( task_visible )
+					{
+						assignee = workflow.tasks[t].owner.firstName ? workflow.tasks[t].owner.firstName + ' ' : '';
+						assignee += workflow.tasks[t].owner.lastName;
 
-					taskStarted = workflow.tasks[t].properties.cm_created ? 
-							Alfresco.util.fromISO8601(workflow.tasks[t].properties.cm_created) : null;
+						task = workflow.tasks[t].title ? workflow.tasks[t].title : this.msg("workflow.no_message");
+
+						taskStarted = workflow.tasks[t].properties.cm_created ? 
+								Alfresco.util.fromISO8601(workflow.tasks[t].properties.cm_created) : null;
+					}
 				}
 
 			var messageDesc = '<h3><a href="' + $siteURL('workflow-details?workflowId=' + workflow.id 
