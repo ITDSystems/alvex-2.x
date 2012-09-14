@@ -9,7 +9,7 @@
 					<prop key="engineId">activiti</prop>
 					<prop key="location">alfresco/extension/workflows/itd-basic-workflow.bpmn20.xml</prop>
 					<prop key="mimetype">text/xml</prop>
-					<prop key="redeploy">false</prop>
+					<prop key="redeploy">true</prop>
 				</props>
 			</list>
 		</property>

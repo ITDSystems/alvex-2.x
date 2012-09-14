@@ -9,7 +9,7 @@ function default_task_callback(ev)
 			for each(document in bpm_package.children)
 			{
 				document.setPermission(
-					'Consumer',
+					'Coordinator',
 					assignee
 				);
 				document.save();

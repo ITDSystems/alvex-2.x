@@ -17,8 +17,10 @@
 							}
 						kinds.add('main');
 						execution.setVariable('itdwf_assistants', names);
+						execution.setVariable('itdwf_assistants', names);
 						execution.setVariable('itdwf_subprocessKinds', kinds);
 						execution.setVariable('itdwf_mainTaskDone', false);
+						execution.setVariable('itdwf_initiator', initiator);
 						]]>
 					</activiti:string>
 				</activiti:field>
@@ -50,6 +52,17 @@
 								<![CDATA[
 								<import	resource="classpath:alfresco/extension/templates/custom-workflows.lib.js">
 								task_callback_wrapper("assignment");
+
+								var user = people.getPerson(task.assignee);
+								var initiator = task.getVariable('itdwf_initiator');
+								if( user.properties.email )
+								{
+									var mail = actions.create("mail");
+									mail.parameters.to = user.properties.email;
+									mail.parameters.subject = "Вам назначена новая задача";
+									mail.parameters.text = "Добрый день.\n\nВам назначена новая задача: " + task.getVariable('bpm_workflowDescription') + "\n\nЗадачу поставил: " + initiator.properties.userName + "\n\nОписание задачи:\n" + task.getVariable('itdwf_taskDescription') + "\n\nЭто письмо отправлено системой автоматических уведомлений.\nПожалуйста, не надо отвечать на него.";
+									mail.execute(bpm_package);
+								}
 								]]>
 							</activiti:string>
 						</activiti:field>
@@ -61,6 +74,16 @@
 								<![CDATA[
 								<import	resource="classpath:alfresco/extension/templates/custom-workflows.lib.js">
 								task_callback_wrapper("complete");
+								var user = people.getPerson(task.assignee);
+								var initiator = task.getVariable('itdwf_initiator');
+								if( user.properties.email )
+								{
+									var mail = actions.create("mail");
+									mail.parameters.to = initiator.properties.email;
+									mail.parameters.subject = "Поставленная Вами задача выполнена";
+									mail.parameters.text = "Добрый день.\n\nПоставленная Вами задача выполнена: " + task.getVariable('bpm_workflowDescription') + "\n\nЗадачу выполнил: " + user.properties.userName + "\n\nОписание задачи:\n" + task.getVariable('itdwf_taskDescription') + "\n\nЭто письмо отправлено системой автоматических уведомлений.\nПожалуйста, не надо отвечать на него.";
+									mail.execute(bpm_package);
+								}
 								]]>
 							</activiti:string>
 						</activiti:field>

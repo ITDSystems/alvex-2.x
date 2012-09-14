@@ -9,6 +9,7 @@
 					<show id="itdwf:assignees" />
 					<show id="bpm:workflowDescription" />
 					<show id="bpm:workflowDueDate" />
+					<show id="itdwf:taskDescription" />
 					<show id="itdwf:confirmationRequired" />
 					<!-- show id="bpm:comment" /-->
 					<show id="packageItems" />
@@ -16,13 +17,19 @@
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
-					<set id="task-info" appearance="title" label-id="" />
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
 					<set id="assignees" appearance="title" label-id="itd.workflow.assignees" />
 					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
 					<!--Fields -->
 					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" mandatory="true"/>
 					<field id="bpm:workflowDueDate" label-id="itd.workflow.task-due-date" set="task-info" />
-					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-info" />
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details">
+						<control template="/mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-details" />
 					<!--field id="bpm:comment" set="info" /-->
 					<!--field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees" /-->
 					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees">
@@ -48,6 +55,7 @@
 					<show id="itdwf:assignees" />
 					<show id="bpm:workflowDescription" />
 					<show id="bpm:workflowDueDate" />
+					<show id="itdwf:taskDescription" />
 					<show id="itdwf:confirmationRequired" />
 					<!--show id="bpm:comment" /-->
 					<show id="packageItems" />
@@ -56,14 +64,20 @@
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
-					<set id="task-info" appearance="title" label-id="" />
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
 					<set id="assignees" appearance="title" label-id="itd.workflow.assignees" />
 					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
 					<set id="response" appearance="title" label="" />
 					<!--Fields -->
 					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" />
 					<field id="bpm:workflowDueDate" label-id="itd.workflow.task-due-date" set="task-info" />
-					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-info" />
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details">
+						<control template="/mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-details" />
 					<!--field id="bpm:comment" set="info" /-->
 					<!--field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees" /-->
 					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees">
@@ -96,19 +110,26 @@
 					<show id="bpm:workflowDescription" />
 					<!--show id="bpm:comment" /-->
 					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
 					<show id="packageItems" />
 					<show id="itdwf:confirmationRequired" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
-					<set id="task-info" appearance="title" label-id="" />
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
 					<set id="assignees" appearance="title" label-id="itd.workflow.assignees" />
 					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
 					<!--Fields -->
 					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" />
 					<field id="bpm:workflowDueDate" label-id="itd.workflow.task-due-date" set="task-info" />
-					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-info" />
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details">
+						<control template="/mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-details" />
 					<!--field id="bpm:comment" set="info" /-->
 					<!--field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees" /-->
 					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees">
@@ -138,6 +159,8 @@
 					<show id="bpm:workflowDescription" />
 					<!--show id="bpm:comment" /-->
 					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="itdwf:initiator" />
 					<show id="itdrwf:relatedWorkflows" />
 					<show id="packageItems" />
 					<show id="transitions" />
@@ -145,13 +168,20 @@
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
-					<set id="task-info" appearance="title" label-id="" />
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
 					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
 					<set id="related_workflows" appearance="title" label-id="itd.workflow.related_workflows" />
 					<set id="response" appearance="title" label-id="" />
 					<!--Fields -->
 					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" read-only="true"/>
 					<field id="bpm:dueDate" label-id="itd.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="itdwf:initiator" label-id="itd.workflow.initiator" set="task-info" read-only="true"/>
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details" read-only="true">
+						<control template="/mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
 					<!-- field id="bpm:comment" set="info" /-->
 					<field id="packageItems" set="documents">
 						<control template="/itd-uploader.ftl">
@@ -180,18 +210,27 @@
 					<show id="bpm:workflowDescription" />
 					<!--show id="bpm:comment" /-->
 					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="itdwf:initiator" />
 					<show id="itdrwf:relatedWorkflows" />
 					<show id="packageItems" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
-					<set id="task-info" appearance="title" label-id="" />
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
 					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
 					<set id="related_workflows" appearance="title" label-id="itd.workflow.related_workflows" />
 					<!--Fields -->
 					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" read-only="true"/>
 					<field id="bpm:dueDate" label-id="itd.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="itdwf:initiator" label-id="itd.workflow.initiator" set="task-info" read-only="true"/>
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details" read-only="true">
+						<control template="/mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
 					<!-- field id="bpm:comment" set="info" /-->
 					<field id="packageItems" set="documents">
 						<control template="/itd-uploader.ftl">
@@ -216,18 +255,27 @@
 					<show id="bpm:workflowDescription" />
 					<!--show id="bpm:comment" /-->
 					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="bpm:assignee" />
 					<show id="packageItems" />
 					<show id="itdwf:controlOutcome" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
-					<set id="task-info" appearance="title" label-id="" />
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
 					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
 					<set id="response" appearance="title" label-id="" />
 					<!--Fields -->
 					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" read-only="true"/>
 					<field id="bpm:dueDate" label-id="itd.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="task-info" read-only="true"/>
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details" read-only="true">
+						<control template="/mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
 					<!-- field id="bpm:comment" set="info" /-->
 					<field id="packageItems" set="documents">
 						<control template="/itd-uploader.ftl">
