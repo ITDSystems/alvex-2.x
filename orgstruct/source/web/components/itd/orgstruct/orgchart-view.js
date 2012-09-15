@@ -74,6 +74,9 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 		onReady: function OrgchartViewer_onReady()
 		{
+
+			YAHOO.Bubbling.on('searchClicked', this.onSearchClick, this);
+
 			// Get orgchart data from server - groups only, without users to reduce load time
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", Alfresco.constants.PROXY_URI
@@ -513,8 +516,53 @@ var labelType, useGradients, nativeTextSupport, animate;
 			this.widgets.dialog.show();
 		},
 
+		onSearchClick: function()
+		{
+			this.options.selectedGroup = 'search';
+			var val = document.getElementById( this.id + '-popup-dialog-search' ).value;
+
+			// retrieve list of members
+			var xmlHttp_users = new XMLHttpRequest();
+			xmlHttp_users.open("GET", Alfresco.constants.PROXY_URI
+					+ "api/forms/picker/authority/children?selectableType=cm:person&searchTerm=" 
+					+ encodeURIComponent(val) + "&size=1000",
+					false);
+			xmlHttp_users.send(null);
+
+			if (xmlHttp_users.status != 200)
+				return;
+
+			var users = eval('('+xmlHttp_users.responseText+')');
+
+			// clear data for display
+			this.options.usersDataStore.length = 0;
+
+			// sort alphabetically
+			this.sortPeople(users.data.items);
+
+			// push all users to datasource to display placing them into default role
+			for (x in users.data.items) {	
+				users.data.items[x].shortName = users.data.items[x].name.replace(/.*\(/, '').replace(/\).*/,'');
+				users.data.items[x].name = users.data.items[x].name.replace(/\(.*/,'');
+				this.options.usersDataStore.push(
+					{
+						icon: this.getUserIcon(),
+						name: this.formatName(users.data.items[x]),
+						action: this.getActionButtonsHTML(users.data.items[x]),
+						role: this.msg("itd.orgchart.default_group")
+					}
+				);
+			}
+
+			this.options.usersDataTable.getDataSource().sendRequest('', 
+				{ success: this.options.usersDataTable.onDataReturnInitializeTable, scope: this.options.usersDataTable }
+			);
+		},
+
 		fillPickerDialog: function OrgchartViewerDialog_fillPickerDialog()
 		{
+			var sb = new YAHOO.widget.Button( this.id + '-popup-dialog-search-button', { onclick: { fn: this.onSearchClick, obj: null, scope: this } } );
+
 			YAHOO.util.Event.on(this.id + "-popup-dialog-view-people", 'click', this.togglePeopleView, null, this);
 			YAHOO.util.Event.on(this.id + "-popup-dialog-view-roles", 'click', this.toggleRolesView, null, this);
 
@@ -600,7 +648,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 				renderLoopSize: 100
 			} );
 
-			if(this.options.selectedGroup != null)
+			if( (this.options.selectedGroup != null) && (this.options.selectedGroup != 'search') )
 				this.fillRolesTable(this.options.selectedGroup.id);
 		},
 
@@ -897,14 +945,14 @@ var labelType, useGradients, nativeTextSupport, animate;
 		togglePeopleView: function OrgchartViewerDialog_togglePeopleView(event)
 		{
 			this.options.pickerView = 'people';
-			if(this.options.selectedGroup != null)
+			if( (this.options.selectedGroup != null) && (this.options.selectedGroup != 'search') )
 				this.fillPeopleTable(this.options.selectedGroup.id);
 		},
 
 		toggleRolesView: function OrgchartViewerDialog_toggleRolesView(event)
 		{
 			this.options.pickerView = 'roles';
-			if(this.options.selectedGroup != null)
+			if( (this.options.selectedGroup != null) && (this.options.selectedGroup != 'search') )
 				this.fillRolesTable(this.options.selectedGroup.id);
 		},
 
@@ -1055,10 +1103,13 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 			// Update datatable. We need it to enable/disable 'add' button in single select mode.
 			if(this.options.selectedGroup != null)
-				if(this.options.pickerView == 'people')
-					this.fillPeopleTable(this.options.selectedGroup.id);
+				if(this.options.selectedGroup != 'search')
+					if(this.options.pickerView == 'people')
+						this.fillPeopleTable(this.options.selectedGroup.id);
+					else
+						this.fillRolesTable(this.options.selectedGroup.id);
 				else
-					this.fillRolesTable(this.options.selectedGroup.id);
+					this.onSearchClick();
 		},
 
 		// Add person to assignees
