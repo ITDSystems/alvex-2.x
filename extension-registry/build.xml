@@ -1,4 +1,7 @@
 <project basedir="." default="dist-jars" name="Ultimate hardcore build script">
+	<tstamp>
+		<format property="TODAY" pattern="ddMMyyyy" locale="en,US"/>
+	</tstamp>
 
 	<!-- Load external properties -->
 	<property file="${user.home}/build.properties" />
@@ -149,6 +152,13 @@
 				</copy>
 				<!-- Process .properties files -->
 				<native2ascii encoding="UTF-8" src="${config.repo.dir}" dest="${build.jar.repo.dir}" includes="**/*.properties" ext=".properties"/>
+				<!-- Update version and edition -->
+				<replace dir="${build.jar.repo.dir}" token="%VERSION" value="${extension.version}">
+					<include name="**/*.properties"/>
+				</replace>
+				<replace dir="${build.jar.repo.dir}" token="%EDITION" value="${extension.edition}">
+					<include name="**/*.properties"/>
+				</replace>
 			</then>
 		</if>
 		<!-- Build Java code -->
@@ -182,6 +192,13 @@
 				</copy>
 				<!-- Process .properties files -->
 				<native2ascii encoding="UTF-8" src="${config.share.dir}" dest="${build.jar.share.dir}" includes="**/*.properties" ext=".properties"/>
+				<!-- Update version and edition -->
+				<replace dir="${build.jar.share.dir}" token="%VERSION" value="${extension.version}">
+					<include name="**/*.properties"/>
+				</replace>
+				<replace dir="${build.jar.share.dir}" token="%EDITION" value="${extension.edition}">
+					<include name="**/*.properties"/>
+				</replace>
 			</then>
 		</if>
 		<if>
@@ -284,8 +301,8 @@
 			<isset property="dir.repo.exists" />
 			<then>
 				<!-- Copy to shared/classes -->
-				<copy todir="${tomcat.repo.home}/shared/classes/alfresco" includeEmptyDirs="false">
-					<fileset dir="${build.jar.repo.dir}" includes="**/*.*" />
+				<copy todir="${tomcat.repo.home}/shared/classes" includeEmptyDirs="false">
+					<fileset dir="${build.jar.repo.dir}" includes="**/*.*" excludes="**/*.class"/>
 				</copy>
 			</then>
 		</if>
@@ -306,8 +323,8 @@
 			<isset property="dir.share.exists" />
 			<then>
 				<!-- Copy to shared/classes -->
-				<copy todir="${tomcat.share.home}/shared/classes/alfresco" includeEmptyDirs="false">
-					<fileset dir="${build.jar.share.dir}" includes="**/*.*" />
+				<copy todir="${tomcat.share.home}/shared/classes" includeEmptyDirs="false">
+					<fileset dir="${build.jar.share.dir}" includes="**/*.*" excludes="**/*.class,META-INF/**/*.*"/>
 				</copy>
 			</then>
 		</if>

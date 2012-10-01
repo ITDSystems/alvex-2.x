@@ -1,5 +1,0 @@
-<webscript>
-  <shortname>start-workflow-directly</shortname>
-  <description>Displays a form to start a workflow directly</description>
-  <url>/components/itd/workflow/start</url>
-</webscript>

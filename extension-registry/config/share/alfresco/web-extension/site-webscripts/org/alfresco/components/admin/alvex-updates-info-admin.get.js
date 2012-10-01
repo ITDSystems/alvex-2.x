@@ -2,7 +2,7 @@
 	try{
 		// get repo extensions
 		var connector = remote.connect("alfresco");
-		var repoExts = eval('('+connector.get('/api/itd/extension/list')+')').data;
+		var repoExts = eval('('+connector.get('/api/alvex/extension/list')+')').data;
 		repoId = repoExts.systemId;
 		// build list of all extensions
 		var exts = [];
@@ -26,7 +26,7 @@
 		for each (ext in exts)
 		{
 			// collect necessary info
-			var extInfo = eval('('+connector.get('/api/itd/extension/'+ext+'/info')+')');
+			var extInfo = eval('('+connector.get('/api/alvex/extension/'+ext+'/info')+')');
 			var repoVersion = "";
 			var repoHashes = [];
 			if (extInfo.code == 200)

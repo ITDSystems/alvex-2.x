@@ -1,0 +1,21 @@
+<alfresco-config>
+     <config evaluator="string-compare" condition="Remote">
+           <remote>
+                <connector>
+                      <id>http</id>
+                      <name>Simple Http Connector</name>
+                      <description>Simple HTTP Connector</description>
+                      <class>org.springframework.extensions.webscripts.connector.HttpConnector</class>
+                </connector>
+                <endpoint>
+                      <id>http</id>
+                      <name>HTTP access</name>
+                      <description>Generic HTTP connector</description>
+                      <connector-id>http</connector-id>
+                      <endpoint-url></endpoint-url>
+                      <identity>none</identity>
+                      <unsecure>true</unsecure>
+                </endpoint>
+           </remote>
+     </config>
+</alfresco-config>

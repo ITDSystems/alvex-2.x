@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>Export DataList to Xlsx</shortname>
+	<url>/api/alvex/datalists/export/xlsx</url>
+	<authentication>user</authentication>
+	<format default="json"/>
+	<transaction>required</transaction>
+	<lifecycle>public_api</lifecycle>
+</webscript>

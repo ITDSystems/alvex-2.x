@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-custom-workflows-wd" parent="workflowDeployer">
+		<!-- Register workflows -->
+		<property name="workflowDefinitions">
+			<list>
+				<props>
+					<prop key="engineId">activiti</prop>
+					<prop key="location">alfresco/extension/workflows/alvex-basic-workflow.bpmn20.xml</prop>
+					<prop key="mimetype">text/xml</prop>
+					<prop key="redeploy">false</prop>
+				</props>
+			</list>
+		</property>
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.alvex-custom-workflows</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-custom-workflows-task-model.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-custom-workflows" parent="alvex-extension"
+		class="com.alvexcore.repo.CustomWorkflowsExtension"
+		depends-on="alvex-custom-workflows-pre-parse-listener, alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader,alvex-related-workflows,alvex-workflows-discussions" />
+	<bean id="alvex-custom-workflows-pre-parse-listener"
+		class="com.alvexcore.repo.workflow.activiti.AlvexPreParseListener">
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="activitiConfiguration" ref="activitiProcessEngineConfiguration" />
+	</bean>
+	<bean id="alvex-custom-workflows-assign-task-listener"
+		class="com.alvexcore.repo.workflow.activiti.AlvexAssignTaskListener">
+		<property name="alvexPreParseListener" ref="alvex-custom-workflows-pre-parse-listener" />
+	</bean>
+	<bean id="alvex-custom-workflows-permission-manager"
+		class="com.alvexcore.repo.workflow.activiti.WorkflowPermissionManager">
+		<property name="assignTaskListener" ref="alvex-custom-workflows-assign-task-listener" />
+		<property name="alvexPreParseListener" ref="alvex-custom-workflows-pre-parse-listener" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+</beans>

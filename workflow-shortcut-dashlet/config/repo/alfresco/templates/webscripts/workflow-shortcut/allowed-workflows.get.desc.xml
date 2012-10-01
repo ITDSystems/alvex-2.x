@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>Workflows User Can Start</shortname>
+	<url>/api/alvex/workflow-shortcut/allowed-workflows</url>
+	<authentication>user</authentication>
+	<format default="json"/>
+	<transaction>required</transaction>
+	<lifecycle>public_api</lifecycle>
+</webscript>

@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<presets>
+	<preset id="user-dashboard">
+		<components>
+			<!-- title -->
+			<component>
+				<scope>page</scope>
+				<region-id>title</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/title/user-dashboard-title</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-1</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/dashlets/workflow-shortcuts</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-2</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/dashlets/my-activities</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-3</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/dashlets/my-documents</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-1</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/dashlets/my-tasks</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-2</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/dashlets/my-workflows</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-3</region-id>
+				<source-id>user/${userid}/dashboard</source-id>
+				<url>/components/dashlets/manager-dashboard-tasks</url>
+			</component>
+		</components>
+		<pages>
+			<page id="user/${userid}/dashboard">
+				<title>User Dashboard</title>
+				<title-id>page.userDashboard.title</title-id>
+				<description>Users dashboard page</description>
+				<description-id>page.userDashboard.description</description-id>
+				<template-instance>dashboard-2-columns-wide-right</template-instance>
+				<authentication>user</authentication>
+			</page>
+		</pages>
+	</preset>
+
+	<!-- TODO - it should be part of committees docflow module -->
+	<!-- Not so well known preset used to generate Committee site -->
+	<preset id="committee-dashboard">
+		<components>         
+			<!-- title -->
+			<component>
+				<scope>page</scope>
+				<region-id>title</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/title/collaboration-title</url>
+			</component>
+			<!-- navigation -->
+			<component>
+				<scope>page</scope>
+				<region-id>navigation</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/navigation/collaboration-navigation</url>
+			</component>
+			<!-- dashboard components -->
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/colleagues</url>
+				<properties>
+					<height>504</height>
+				</properties>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/meetings-list</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-2</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/calendar</url>
+			</component>
+		</components>
+		<pages>
+			<page id="site/${siteid}/dashboard">
+				<title>Committee Site Dashboard</title>
+				<title-id>page.siteDashboard.title</title-id>
+				<description>Committee site's dashboard page</description>
+				<description-id>page.siteDashboard.description</description-id>
+				<template-instance>dashboard-2-columns-wide-right</template-instance>
+				<authentication>user</authentication>
+				<properties>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"meetings"}]</sitePages>
+				</properties>
+			</page>
+		</pages>
+	</preset>
+
+	<!-- TODO - it should be part of document registry module -->
+	<!-- Not so well known preset used to generate Document Registry site -->
+	<preset id="documents-register-dashboard">
+		<components>         
+			<!-- title -->
+			<component>
+				<scope>page</scope>
+				<region-id>title</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/title/collaboration-title</url>
+			</component>
+			<!-- navigation -->
+			<component>
+				<scope>page</scope>
+				<region-id>navigation</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/navigation/collaboration-navigation</url>
+			</component>
+			<!-- dashboard components -->
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/colleagues</url>
+				<properties>
+					<height>504</height>
+				</properties>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-1</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/alvex/dashlets/site-datalists</url>
+			</component>
+		</components>
+		<pages>
+			<page id="site/${siteid}/dashboard">
+				<title>Documents Registers Site Dashboard</title>
+				<title-id>page.siteDashboard.title</title-id>
+				<description>Documents Registers site's dashboard page</description>
+				<description-id>page.siteDashboard.description</description-id>
+				<template-instance>dashboard-2-columns-wide-right</template-instance>
+				<authentication>user</authentication>
+				<properties>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"documentsregister"}]</sitePages>
+				</properties>
+			</page>
+		</pages>
+	</preset>
+
+</presets>

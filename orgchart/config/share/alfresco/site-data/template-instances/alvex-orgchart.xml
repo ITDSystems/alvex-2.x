@@ -1,0 +1,18 @@
+<template-instance>
+	<template-type>alvex/orgchart/orgchart-view</template-type>
+
+	<components>
+		<component>
+			<region-id>title</region-id>
+			<url>/components/title/simple-title</url>
+			<properties>
+				<title>alvex.orgchart.pageTitle.orgstart</title>
+			</properties>
+		</component>
+		<component>
+			<region-id>orgchart-tree</region-id>
+			<url>/components/alvex/orgchart/tree-view</url>
+		</component>
+	</components>
+
+</template-instance>

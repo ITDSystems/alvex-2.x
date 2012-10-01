@@ -18,9 +18,9 @@
  */
 
 // Ensure root object exists
-if (typeof ITD == "undefined" || !ITD)
+if (typeof Alvex == "undefined" || !Alvex)
 {
-	var ITD = {};
+	var Alvex = {};
 }
 
 (function()
@@ -32,10 +32,10 @@ if (typeof ITD == "undefined" || !ITD)
 	var $html = Alfresco.util.encodeHTML,
 		$hasEventInterest = Alfresco.util.hasEventInterest; 
 
-	ITD.AlvexUpdatesInfo = function(htmlId)
+	Alvex.AlvexUpdatesInfo = function(htmlId)
 	{
-		this.name = "ITD.AlvexUpdatesInfo";
-		ITD.AlvexUpdatesInfo.superclass.constructor.call(this, htmlId);
+		this.name = "Alvex.AlvexUpdatesInfo";
+		Alvex.AlvexUpdatesInfo.superclass.constructor.call(this, htmlId);
 
 		Alfresco.util.ComponentManager.register(this);
 
@@ -155,7 +155,7 @@ if (typeof ITD == "undefined" || !ITD)
 		return this;
 	};
 
-	YAHOO.extend(ITD.AlvexUpdatesInfo, Alfresco.ConsoleTool,
+	YAHOO.extend(Alvex.AlvexUpdatesInfo, Alfresco.ConsoleTool,
 	{
 		options:
 		{
@@ -164,7 +164,7 @@ if (typeof ITD == "undefined" || !ITD)
 
 		onReady: function WSA_onReady()
 		{
-			ITD.AlvexUpdatesInfo.superclass.onReady.call(this);
+			Alvex.AlvexUpdatesInfo.superclass.onReady.call(this);
 		}
 
 	});

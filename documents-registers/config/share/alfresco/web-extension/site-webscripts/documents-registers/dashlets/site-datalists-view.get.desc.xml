@@ -1,0 +1,6 @@
+<webscript>
+   <shortname>Alvex: Data Lists of Site</shortname>
+   <description>Component used to show Data Lists of the site</description>
+   <family>site-dashlet</family>
+   <url>/components/alvex/dashlets/site-datalists</url>
+</webscript>

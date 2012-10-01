@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>orgchart-people-finder</shortname>
+  <description>Orgchart People Finder component</description>
+  <url>/components/alvex/orgchart/people-finder</url>
+</webscript>

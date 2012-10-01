@@ -1,0 +1,15 @@
+alfresco/web-extension/alvex-uploader-context.xml
+alfresco/web-extension/messages/alvex-uploader_en.properties
+alfresco/web-extension/messages/alvex-uploader.properties
+alfresco/web-extension/messages/alvex-uploader_ru.properties
+alfresco/web-extension/alvex-uploader-config.xml
+alfresco/site-webscripts/alvex-uploader.ftl
+com/alvexcore/share/UploaderExtension.class
+alvex-uploader-file-list.txt
+alvex-uploader.properties
+META-INF/components/alvex/uploader/complete-16.png
+META-INF/components/alvex/uploader/document-download-16.png
+META-INF/components/alvex/uploader/fail-16.png
+META-INF/components/alvex/uploader/alvex-uploader.js
+META-INF/components/alvex/uploader/document-delete-16.png
+META-INF/components/alvex/uploader/document-edit-properties-16.png

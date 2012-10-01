@@ -5,7 +5,7 @@
 		Returns information about specified extension
 		]]>
 	</description>
-	<url>/api/itd/extension/{id}/info</url>
+	<url>/api/alvex/extension/{id}/info</url>
 	<transaction>required</transaction>
 	<format default="json">extension</format>
 </webscript>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="alvex:content_model">
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0"
+			prefix="d" />
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+	</imports>
+	<namespaces>
+		<namespace prefix="alvex" uri="http://alvexcore.com/prefix/alvex" />
+	</namespaces>
+	<types>
+		<type name="alvex:extensionConfig">
+			<parent>cm:cmobject</parent>
+			<properties>
+				<property name="alvex:version">
+					<type>d:text</type>
+				</property>
+				<property name="alvex:edition">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</type>
+	</types>
+</model>

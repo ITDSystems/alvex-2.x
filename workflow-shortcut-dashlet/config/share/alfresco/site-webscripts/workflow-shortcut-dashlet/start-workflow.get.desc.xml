@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Start Workflow Directly</shortname>
+  <description>Displays a form to start a workflow directly</description>
+  <url>/components/alvex/workflow/start</url>
+</webscript>

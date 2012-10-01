@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Orgchart Configuration</shortname>
+	<description>Configure orgchart</description>
+	<url>/components/admin/orgchart</url>
+	<family>admin-console</family>
+</webscript>

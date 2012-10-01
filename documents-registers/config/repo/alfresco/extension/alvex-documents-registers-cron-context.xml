@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<!-- Bootstrap scripts -->
+	<bean id="alvex-documents-registers-cron-bootstrap" 
+				class="org.alfresco.repo.module.ImporterModuleComponent" parent="module.baseComponent">
+		<!-- Module properties -->
+		<property name="moduleId" value="documents-registers" />
+		<property name="name" value="Alvex documents registers scripts" />
+		<property name="description" value="Alvex documents registers scripts - intended for scheduled actions" />
+		<property name="sinceVersion" value="1.3" />
+		<property name="appliesFromVersion" value="1.3" />
+		<!-- Data properties -->
+		<property name="importer" ref="spacesBootstrap"/>
+		<property name="bootstrapViews">
+			<list>
+				<props>
+					<prop key="path">/${spaces.company_home.childname}/${spaces.dictionary.childname}/${spaces.scripts.childname}</prop>
+					<prop key="location">alfresco/bootstrap/alvex-documents-registers.xml</prop>
+				</props>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Define the model factory used to generate object models suitable for use with freemarker templates. -->
+	<bean id="templateActionModelFactory" 
+				class="org.alfresco.repo.action.scheduled.FreeMarkerWithLuceneExtensionsModelFactory">
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry"/>
+		</property>
+	</bean>
+
+	<bean id="alvex-documents-registers-cron-script" 
+				class="org.alfresco.repo.action.scheduled.SimpleTemplateActionDefinition">
+		<property name="actionName">
+			<value>script</value>
+		</property>
+		<property name="parameterTemplates">
+			<map>
+				<entry>
+					<key>
+						<value>script-ref</value>
+					</key>
+					<value>\$\{selectSingleNode('workspace://SpacesStore', 'lucene', 'PATH:"/app:company_home/app:dictionary/app:scripts/cm:alvex_docreg_drop_counters.js"' )\}</value>
+				</entry>
+			</map>
+		</property>
+		<property name="templateActionModelFactory">
+			<ref bean="templateActionModelFactory"/>
+		</property>
+		<property name="dictionaryService">
+			<ref bean="DictionaryService"/>
+		</property>
+		<property name="actionService">
+			<ref bean="ActionService"/>
+		</property>
+		<property name="templateService">
+			<ref bean="TemplateService"/>
+		</property>
+	</bean>
+
+	<bean id="alvex-documents-registers-cron-config" class="org.alfresco.repo.action.scheduled.CronScheduledQueryBasedTemplateActionDefinition">
+		<property name="transactionMode">
+			<value>UNTIL_FIRST_FAILURE</value>
+		</property>
+		<property name="compensatingActionMode">
+			<value>IGNORE</value>
+		</property>
+		<property name="searchService">
+			<ref bean="SearchService"/>
+		</property>
+		<property name="templateService">
+			<ref bean="TemplateService"/>
+		</property>
+		<property name="queryLanguage">
+			<value>lucene</value>
+		</property>
+		<property name="stores">
+			<list>
+				<value>workspace://SpacesStore</value>
+			</list>
+		</property>
+		<property name="queryTemplate">
+			<value>TYPE:"alvexdr:documentRegister"</value>
+		</property>
+		<property name="cronExpression">
+			<value>1 0 0 * * ?</value>
+		</property>
+		<property name="jobName">
+			<value>documents-registers-drop-counters-job</value>
+		</property>
+		<property name="jobGroup">
+			<value>documents-registers-job-group</value>
+		</property>
+		<property name="triggerName">
+			<value>documents-registers-drop-counters-trigger</value>
+		</property>
+		<property name="triggerGroup">
+			<value>documents-registers-trigger-group</value>
+		</property>
+		<property name="scheduler">
+			<ref bean="schedulerFactory"/>
+		</property>
+		<property name="actionService">
+			<ref bean="ActionService"/>
+		</property>
+		<property name="templateActionModelFactory">
+			<ref bean="templateActionModelFactory"/>
+		</property>
+		<property name="templateActionDefinition">
+			<ref bean="alvex-documents-registers-cron-script"/>
+		</property>
+		<property name="transactionService">
+			<ref bean="TransactionService"/>
+		</property>
+		<property name="runAsUser">
+			<value>System</value>
+		</property>
+	</bean>
+</beans>

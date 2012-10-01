@@ -1,0 +1,9 @@
+<webscript>
+	<shortname>get_container</shortname>
+	<description>Webscript that returns noderef of the root workflow discussions storage</description>
+	<url>/api/alvex/wfdiscussions/storage</url>
+	<format default="json" />
+	<authentication>user</authentication>
+	<transaction>required</transaction>
+	<lifecycle>public_api</lifecycle>
+</webscript>

@@ -1,8 +1,0 @@
-<webscript>
-	<shortname>Groups Used by Workflow Shortcut</shortname>
-	<url>/api/itd/workflow-shortcut/groups</url>
-	<authentication>user</authentication>
-	<format default="json"/>
-	<transaction>required</transaction>
-	<lifecycle>public_api</lifecycle>
-</webscript>

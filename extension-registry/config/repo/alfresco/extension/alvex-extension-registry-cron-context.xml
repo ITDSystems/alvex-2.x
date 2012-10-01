@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+	<!-- Bootstrap scripts -->
+	<bean id="alvex-extension-registry-cron-bootstrap" 
+				class="org.alfresco.repo.module.ImporterModuleComponent" parent="module.baseComponent">
+		<!-- Module properties -->
+		<property name="moduleId" value="extension-registry" />
+		<property name="name" value="Alvex extension-registry scripts" />
+		<property name="description" value="Alvex extension-registry scripts - intended for scheduled actions" />
+		<property name="sinceVersion" value="1.3" />
+		<property name="appliesFromVersion" value="1.3" />
+		<!-- Data properties -->
+		<property name="importer" ref="spacesBootstrap"/>
+		<property name="bootstrapViews">
+			<list>
+				<props>
+					<prop key="path">/${spaces.company_home.childname}/${spaces.dictionary.childname}/${spaces.scripts.childname}</prop>
+					<prop key="location">alfresco/bootstrap/alvex-extension-registry.xml</prop>
+				</props>
+			</list>
+		</property>
+	</bean>
+
+	<!-- removeService to provide js object similar to 'remote' on Share-tier -->
+	<bean id="remoteService" parent="baseJavaScriptExtension" 
+				class="com.alvexcore.repo.jscript.RemoteService">
+		<property name="extensionName">
+			<value>remoteService</value>
+		</property>
+		<property name="ScriptRemote" ref="webscripts.script.remote"/>
+	</bean>
+
+	<!-- Define the model factory used to generate object models suitable for use with freemarker templates. -->
+	<bean id="templateActionModelFactory" 
+				class="org.alfresco.repo.action.scheduled.FreeMarkerWithLuceneExtensionsModelFactory">
+		<property name="serviceRegistry">
+			<ref bean="ServiceRegistry"/>
+		</property>
+	</bean>
+
+	<bean id="alvex-extension-registry-cron-script" 
+				class="org.alfresco.repo.action.scheduled.SimpleTemplateActionDefinition">
+		<property name="actionName">
+			<value>script</value>
+		</property>
+		<property name="parameterTemplates">
+			<map>
+				<entry>
+					<key>
+						<value>script-ref</value>
+					</key>
+					<value>\$\{selectSingleNode('workspace://SpacesStore', 'lucene', 'PATH:"/app:company_home/app:dictionary/app:scripts/cm:alvex_check_major_updates.js"' )\}</value>
+				</entry>
+			</map>
+		</property>
+		<property name="templateActionModelFactory">
+			<ref bean="templateActionModelFactory"/>
+		</property>
+		<property name="dictionaryService">
+			<ref bean="DictionaryService"/>
+		</property>
+		<property name="actionService">
+			<ref bean="ActionService"/>
+		</property>
+		<property name="templateService">
+			<ref bean="TemplateService"/>
+		</property>
+	</bean>
+
+	<bean id="alvex-extension-registry-cron-config" class="org.alfresco.repo.action.scheduled.CronScheduledQueryBasedTemplateActionDefinition">
+		<property name="transactionMode">
+			<value>UNTIL_FIRST_FAILURE</value>
+		</property>
+		<property name="compensatingActionMode">
+			<value>IGNORE</value>
+		</property>
+		<property name="searchService">
+			<ref bean="SearchService"/>
+		</property>
+		<property name="templateService">
+			<ref bean="TemplateService"/>
+		</property>
+		<property name="queryLanguage">
+			<value>lucene</value>
+		</property>
+		<property name="stores">
+			<list>
+				<value>workspace://SpacesStore</value>
+			</list>
+		</property>
+		<property name="queryTemplate">
+			<value>PATH:"/app:company_home"</value>
+		</property>
+		<property name="cronExpression">
+			<value>0 45 8 * * ?</value>
+		</property>
+		<property name="jobName">
+			<value>extension-registry-check-updates-job</value>
+		</property>
+		<property name="jobGroup">
+			<value>extension-registry-job-group</value>
+		</property>
+		<property name="triggerName">
+			<value>extension-registry-check-updates-trigger</value>
+		</property>
+		<property name="triggerGroup">
+			<value>extension-registry-trigger-group</value>
+		</property>
+		<property name="scheduler">
+			<ref bean="schedulerFactory"/>
+		</property>
+		<property name="actionService">
+			<ref bean="ActionService"/>
+		</property>
+		<property name="templateActionModelFactory">
+			<ref bean="templateActionModelFactory"/>
+		</property>
+		<property name="templateActionDefinition">
+			<ref bean="alvex-extension-registry-cron-script"/>
+		</property>
+		<property name="transactionService">
+			<ref bean="TransactionService"/>
+		</property>
+		<property name="runAsUser">
+			<value>System</value>
+		</property>
+	</bean>
+</beans>

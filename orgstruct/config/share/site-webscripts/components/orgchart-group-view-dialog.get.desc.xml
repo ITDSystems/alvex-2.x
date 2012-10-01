@@ -1,5 +1,0 @@
-<webscript>
-	<shortname>orgchart-group-view-dialog</shortname>
-	<description>Renders popup dialog with orgchart group details</description>
-	<url>/components/workflow/itd/orgchart-group-view-dialog</url>
-</webscript>

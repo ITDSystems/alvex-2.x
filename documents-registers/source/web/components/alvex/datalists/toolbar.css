@@ -1,0 +1,150 @@
+.datalist-toolbar
+{
+   margin: 0 -10px;
+   visibility: hidden;
+}
+
+.datalist-toolbar .header-bar
+{
+   min-height: 2em;
+   padding: 4px 1em;
+}
+
+.datalist-toolbar .left,
+.datalist-toolbar .left div
+{
+   float: left;
+}
+
+.datalist-toolbar .right
+{
+   float: right;
+}
+
+/* Selected Items Menu */
+
+.toolbar .selected-items li
+{
+   width: auto;
+}
+
+.toolbar .selected-items li.yuimenuitem-disabled
+{
+   display: none;
+}
+
+.toolbar .selected-items .yuimenuitemlabel span
+{
+   background-position: 2px 50%;
+   background-repeat: no-repeat;
+   cursor: pointer;
+   display: block;
+   margin-left: -4px;
+   min-height: 16px;
+   padding: 2px 0px 1px 24px;
+}
+
+.toolbar .selected-items hr
+{
+   padding: 0px;
+}
+
+.toolbar .onActionDuplicate
+{
+   background-image: url(/share/res/components/images/duplicate-row-16.png);
+}
+
+.toolbar .onActionDelete
+{
+   background-image: url(/share/res/components/images/delete-row-16.png);
+}
+
+.toolbar .onActionDeselectAll
+{
+   background-image: url(/share/res/components/images/select-rows-none-16.png);
+}
+
+.datalist-toolbar .new-row span.first-child
+{
+   background: url(/share/res/components/images/add-row-16.png) no-repeat 12px 4px;
+   padding-left: 24px;
+}
+
+.datalist-toolbar .excel-export span.first-child
+{
+   background: url(/share/res/components/images/filetypes/xls-file-16.png) no-repeat 12px 4px;
+   padding-left: 24px;
+}
+
+.datalist-toolbar .print span.first-child
+{
+   background: url(/share/res/components/images/printer-16.png) no-repeat 12px 4px;
+   padding-left: 24px;
+}
+
+.datalist-toolbar .rss-feed span.first-child
+{
+   background: url(/share/res/components/images/feed-icon-16.png) no-repeat 12px 4px;
+   padding-left: 24px;
+}
+
+.form-field input[type="text"]
+{
+   width: 12em;
+}
+
+.form-container .form-field	select
+{
+	width: 12em;
+}
+
+.alfresco-share .yui-panel .bd .yui-u.first
+{
+   padding: 0.3em 0 0.3em 2px;
+   text-align: left;
+}
+
+.yui-gb .yui-u,
+.yui-g .yui-gb .yui-u,
+.yui-gb .yui-g,
+.yui-gb .yui-gb,
+.yui-gb .yui-gc,
+.yui-gb .yui-gd,
+.yui-gb .yui-ge,
+.yui-gb .yui-gf,
+.yui-gc .yui-u, 
+.yui-gc .yui-g,
+.yui-gd .yui-u {
+	width: 31%;
+	margin-left: 1.99%;
+}
+
+.set-bordered-panel-heading
+{
+	font-weight: bold;
+}
+
+span.datagrid-search-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/images/search-16.png); 
+}
+
+span.delete-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/images/delete-16.png); 
+}
+
+.small-btn .yui-button button
+{
+	padding: 3px;
+}

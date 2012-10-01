@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Documents Registers - Suggest Auto Number</shortname>
+  <description>Documents Registers - Suggest Auto Number</description>
+  <url>/api/alvex/documents-registers/number/suggest?register={register}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

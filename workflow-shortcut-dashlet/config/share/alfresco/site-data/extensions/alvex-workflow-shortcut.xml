@@ -1,0 +1,14 @@
+<extension>
+	<modules>
+		<module>
+			<id>Alvex Workflow Shortcuts (page for direct workflow start)</id>
+			<auto-deploy>true</auto-deploy>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>alvex.workflow-shortcut-dashlet</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+	</modules>
+</extension>

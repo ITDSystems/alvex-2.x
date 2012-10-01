@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>managees-tasks-view</shortname>
+	<description>Renders page component with managees tasks view</description>
+	<url>/components/alvex/manager-dashboard-tasks/managees-view</url>
+</webscript>

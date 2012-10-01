@@ -1,0 +1,13 @@
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0"
+		xmlns:cm="http://www.alfresco.org/model/content/1.0"
+		xmlns:app="http://www.alfresco.org/model/application/1.0" >
+
+	<cm:content>
+		<app:uifacets />
+		<cm:name>alvex_check_major_updates.js</cm:name>
+		<cm:title>Script to check Alvex major updates and inform admin about them</cm:title>
+		<cm:description></cm:description>
+		<cm:content>contentUrl=classpath:alfresco/bootstrap/alvex_check_major_updates.js|mimetype=application/x-javascript|size=|encoding=UTF-8</cm:content>
+	</cm:content>
+
+</view:view>

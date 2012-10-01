@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>Manage Workflow Shortcut Properties</shortname>
+	<url>/api/alvex/workflow-shortcut/admin/allowed-workflows?group={group}</url>
+	<authentication>admin</authentication>
+	<format default="json"/>
+	<transaction>required</transaction>
+	<lifecycle>public_api</lifecycle>
+</webscript>

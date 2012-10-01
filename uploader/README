@@ -21,7 +21,7 @@ directory.
 
     ant clean dist-jar
 
-The command should build a JAR file named itd-uploader.jar
+The command should build a JAR file named alvex-uploader.jar
 in the 'build/dist' directory within your project.
 
 To deploy the control files into a local Tomcat instance for testing, you can 
@@ -36,12 +36,12 @@ resources in the JAR file are picked up.
 Using the control
 -----------------
 
-Copy the itd-uploader.jar to tomcat lib directory.
+Copy the alvex-uploader.jar to tomcat lib directory.
 
 Update your share form configuration files so that whenever bpm:package is used
 <appearance>
    <field id="bpm:package">
-      <control template="/itd-uploader.ftl" />
+      <control template="/alvex-uploader.ftl" />
    </field>
 </appearance>
 
@@ -68,7 +68,7 @@ At the moment the following control params are supported:
     Comma-separated list of allowed extensions for all files ot be uploaded.
     Defaults to "*.*".
 
-  * <control-param name="contentType">itd:bill</control-param>
+  * <control-param name="contentType">alvex:bill</control-param>
     Content type for all files to be uploaded.
     Defaults to "cm:content".
 
@@ -84,6 +84,6 @@ At the moment the following control params are supported:
     Should we use compact mode for default picker.
     Defaults to false.
 
- * <control-param name="pickerContentType">itd:bill</control-param>
+ * <control-param name="pickerContentType">alvex:bill</control-param>
     Content type that should be displayed in default picker.
     Defaults to "cm:content".

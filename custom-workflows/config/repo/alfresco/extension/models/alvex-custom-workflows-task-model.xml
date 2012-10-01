@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="alvexwf:workflow_model">
+	<!--Import necessary namespaces -->
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
+		<import uri="http://alvexcore.com/prefix/alvexrwf" prefix="alvexrwf" />
+		<import uri="http://alvexcore.com/prefix/alvexwfd" prefix="alvexwfd" />
+	</imports>
+	<namespaces>
+		<namespace prefix="alvexwf"
+			uri="http://alvexcore.com/prefix/alvexwf" />
+	</namespaces>
+	<!--List of types -->
+	<types>
+		<!--Type for alvexwf:startTask task -->
+		<type name="alvexwf:startTask">
+			<parent>bpm:startTask</parent>
+			<properties>
+				<property name="alvexwf:confirmationRequired">
+					<type>d:boolean</type>
+					<default>false</default>
+				</property>
+			</properties>
+			<!--Task mandatory aspects -->
+			<mandatory-aspects>
+				<aspect>bpm:assignee</aspect>
+				<aspect>alvexwf:assignees</aspect>
+				<aspect>alvexwfd:discussable</aspect>
+			</mandatory-aspects>
+		</type>
+		<!--Type for alvexwf:executeTask task -->
+		<type name="alvexwf:executeTask">
+			<parent>bpm:workflowTask</parent>
+			<!--overrides default properties values -->
+			<overrides>
+				<property name="bpm:packageActionGroup">
+					<default>add_package_item_actions</default>
+				</property>
+			</overrides>
+			<!--Task mandatory aspects -->
+			<mandatory-aspects>
+				<aspect>alvexrwf:relatedWorkflows</aspect>
+				<aspect>alvexwfd:discussable</aspect>
+			</mandatory-aspects>
+		</type>
+		<!--Type for alvexwf:assistTask task -->
+		<type name="alvexwf:assistTask">
+			<parent>bpm:workflowTask</parent>
+			<!--Task mandatory aspects -->
+			<mandatory-aspects>
+				<aspect>alvexrwf:relatedWorkflows</aspect>
+				<aspect>alvexwfd:discussable</aspect>
+			</mandatory-aspects>
+		</type>		
+		<!--Type for alvexwf:controlTask task -->
+		<type name="alvexwf:controlTask">
+			<parent>bpm:activitiOutcomeTask</parent>
+			<!--Add outcome property for activiti tasks-->
+			<properties>
+				<property name="alvexwf:controlOutcome">
+					<type>d:text</type>
+					<default>rejected</default>
+					<constraints>
+						<constraint type="LIST" name="alvexwf:controlOutcomeConstraint">
+							<parameter name="allowedValues">
+								<list>
+									<value>accepted</value>
+									<value>rejected</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+			<overrides>
+				<property name="bpm:outcomePropertyName">
+					<default>{http://alvexcore.com/prefix/alvexwf}controlOutcome</default>
+				</property>
+			</overrides>
+			<mandatory-aspects>
+				<aspect>alvexwfd:discussable</aspect>
+			</mandatory-aspects>
+		</type>
+	</types>
+	<aspects>
+		<aspect name="alvexwf:assignees">
+			<associations>
+				<association name="alvexwf:assignees">
+					<source>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+	</aspects>
+</model>

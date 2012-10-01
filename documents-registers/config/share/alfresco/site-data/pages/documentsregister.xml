@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+	<id>documentsregister</id>
+	<page-type>documentsregister</page-type>
+	<title>Documents Register</title>
+	<title-id>page.documentsregister.title</title-id>
+	<description>Documents Register</description>
+	<description-id>page.documentsregister.description</description-id>
+	<template-instance>documentsregister</template-instance>
+	<authentication>user</authentication>
+</page>

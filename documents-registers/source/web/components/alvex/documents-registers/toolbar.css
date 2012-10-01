@@ -1,0 +1,5 @@
+.datalist-toolbar .counters-config span.first-child
+{
+   background: url(/share/res/components/images/edit-metadata-16.png) no-repeat 12px 4px;
+   padding-left: 24px;
+}

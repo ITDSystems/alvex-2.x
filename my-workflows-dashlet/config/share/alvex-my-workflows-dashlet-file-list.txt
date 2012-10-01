@@ -1,0 +1,15 @@
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get_ru.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get_en.properties
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get.js
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get.desc.xml
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get.config.xml
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get.html.ftl
+alfresco/web-extension/site-webscripts/org/alfresco/components/dashlets/alvex-my-workflows.get.head.ftl
+alfresco/web-extension/alvex-my-workflows-dashlet-context.xml
+alfresco/web-extension/alvex-my-workflows-dashlet-config.xml
+com/alvexcore/share/MyWorkflowsDashletExtension.class
+alvex-my-workflows-dashlet.properties
+alvex-my-workflows-dashlet-file-list.txt
+META-INF/components/my-workflows-dashlet/my-workflows.js
+META-INF/components/my-workflows-dashlet/my-workflows.css

@@ -1,9 +1,0 @@
-alfresco/web-extension/messages/itd-surf-evaluators_en.properties
-alfresco/web-extension/messages/itd-surf-evaluators_ru.properties
-alfresco/web-extension/messages/itd-surf-evaluators.properties
-alfresco/web-extension/itd-surf-evaluators-config.xml
-alfresco/web-extension/itd-surf-evaluators-context.xml
-alfresco/itd-surf-evaluators-file-list.txt
-org/springframework/extensions/surf/itd-surf-evaluators-context.xml
-ru/itdsystems/alfresco/module/evaluators/SharePageEvaluator.class
-ru/itdsystems/alfresco/SurfEvaluatorsExtension.class

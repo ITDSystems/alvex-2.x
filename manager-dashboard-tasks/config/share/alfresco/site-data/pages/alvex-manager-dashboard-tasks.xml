@@ -1,0 +1,4 @@
+<page>
+	<template-instance>alvex-manager-dashboard-tasks</template-instance>
+	<authentication>user</authentication>
+</page>

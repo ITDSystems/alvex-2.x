@@ -1,9 +1,0 @@
-<component>
-	<region-id>itd-all-workflows-filter</region-id>
-	<source-id>global</source-id>
-	<scope>global</scope>
-	<uri>/itd/filter/all-workflows</uri>
-	<properties>
-		<mode>workflows</mode>
-	</properties>
-</component>

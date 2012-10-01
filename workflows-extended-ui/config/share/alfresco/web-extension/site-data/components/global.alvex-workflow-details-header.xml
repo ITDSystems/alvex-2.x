@@ -1,0 +1,6 @@
+<component>
+	<region-id>alvex-workflow-details-header</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/alvex/workflow-details-header</uri>
+</component>

@@ -1,5 +1,0 @@
-<webscript>
-	<shortname>organization-tree-view</shortname>
-	<description>Renders page component with orgchart tree view</description>
-	<url>/components/itd/orgstruct/tree-view</url>
-</webscript>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-share-extension-registry-rd"
+		class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent"
+		depends-on="">
+		<property name="resourceBundles">
+			<list>
+				<value>alfresco.web-extension.messages.alvex-extension-registry</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-share-extension-registry" class="com.alvexcore.share.ShareExtensionRegistry"
+		depends-on="alvex-share-extension-registry-rd" />
+	<bean id="alvex-share-extension-registry-js" class="com.alvexcore.share.jscript.JSShareExtensionRegistry"
+		depends-on="" parent="baseScriptExtension">
+		<property name="extensionName">
+			<value>extensionRegistry</value>
+		</property>
+		<property name="shareExtensionRegistry" ref="alvex-share-extension-registry" />
+	</bean>
+	<bean id="alvex-extension" abstract="true">
+		<property name="extensionRegistry" ref="alvex-share-extension-registry" />
+	</bean>
+</beans>

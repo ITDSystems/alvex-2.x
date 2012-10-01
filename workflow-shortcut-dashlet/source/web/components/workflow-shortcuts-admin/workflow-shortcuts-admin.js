@@ -18,9 +18,9 @@
  */
 
 // Ensure root object exists
-if (typeof ITD == "undefined" || !ITD)
+if (typeof Alvex == "undefined" || !Alvex)
 {
-	var ITD = {};
+	var Alvex = {};	
 }
 
 (function()
@@ -32,14 +32,15 @@ if (typeof ITD == "undefined" || !ITD)
 	var $html = Alfresco.util.encodeHTML,
 		$hasEventInterest = Alfresco.util.hasEventInterest; 
 
-	ITD.WorkflowShortcutsAdmin = function(htmlId)
+	Alvex.WorkflowShortcutsAdmin = function(htmlId)
 	{
-		this.name = "ITD.WorkflowShortcutsAdmi";
-		ITD.WorkflowShortcutsAdmin.superclass.constructor.call(this, htmlId);
+		this.name = "Alvex.WorkflowShortcutsAdmi";
+		Alvex.WorkflowShortcutsAdmin.superclass.constructor.call(this, htmlId);
 
 		Alfresco.util.ComponentManager.register(this);
 
-		Alfresco.util.YUILoaderHelper.require(["button", "container", "datasource", "datatable", "json", "history"], this.onComponentsLoaded, this);
+		Alfresco.util.YUILoaderHelper.require(["button", "container", "datasource", 
+			"datatable", "json", "history"], this.onComponentsLoaded, this);
 
 		var parent = this;
 
@@ -64,7 +65,8 @@ if (typeof ITD == "undefined" || !ITD)
 					});
 				parent.widgets.addButton.set("label", parent.msg("wsa.button.add_workflow"));
 				parent.widgets.addButton.set("title", parent.msg("wsa.button.add_workflow"));
-				parent.widgets.addButton.getMenu().subscribe("click", parent.onWorkflowAdd, null, parent);
+				parent.widgets.addButton.getMenu().subscribe( "click", 
+					parent.onWorkflowAdd, null, parent);
 
 				// Select group button
 				parent.widgets.selectGroupButton = new YAHOO.widget.Button(parent.id
@@ -75,12 +77,14 @@ if (typeof ITD == "undefined" || !ITD)
 					});
 				parent.widgets.selectGroupButton.set("label", parent.options.groups[0].displayName);
 				parent.widgets.selectGroupButton.set("title", parent.options.groups[0].displayName);
-				parent.widgets.selectGroupButton.getMenu().subscribe("click", parent.onSelectGroup, null, parent);
+				parent.widgets.selectGroupButton.getMenu().subscribe( "click", 
+					parent.onSelectGroup, null, parent);
 
 				parent.cur_group = parent.options.groups[0].shortName;
 
 				// DataSource setup
-				parent.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + "api/itd/workflow-shortcut/admin/workflows?",
+				parent.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI 
+					+ "api/alvex/workflow-shortcut/admin/allowed-workflows?",
 				{
 					responseType: YAHOO.util.DataSource.TYPE_JSON,
 					responseSchema:
@@ -89,7 +93,7 @@ if (typeof ITD == "undefined" || !ITD)
 					}
 				});
 
-				parent.widgets.dataSource.doBeforeParseData = function WSA_doBeforeParseData(oRequest, oFullResponse)
+				parent.widgets.dataSource.doBeforeParseData = function f(oRequest, oFullResponse)
 				{
 					var workflowDefinitions = parent.options.workflowDefinitions;
 					var updatedResponse = oFullResponse;
@@ -106,7 +110,10 @@ if (typeof ITD == "undefined" || !ITD)
 				{
 					var removeLink = document.createElement("a");
 					removeLink.href = '#';
-					removeLink.innerHTML = '<div style="text-align:right;"><img align="top" src="' + Alfresco.constants.URL_RESCONTEXT + 'components/workflow-shortcuts-admin/document-delete-16.png' + '"/> ' + parent.msg("wsa.button.remove") + '</div>';
+					removeLink.innerHTML = '<div style="text-align:right;">' 
+						+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
+						+ 'components/workflow-shortcuts-admin/document-delete-16.png' + '"/> ' 
+						+ parent.msg("wsa.button.remove") + '</div>';
 
 					YAHOO.util.Event.addListener(removeLink, "click", function(e)
 					{
@@ -120,12 +127,15 @@ if (typeof ITD == "undefined" || !ITD)
 
 				var columnDefinitions =
 				[
-					{ key: "title", label: parent.msg("wsa.label.workflow"), sortable: true, width: 500 },
-					{ key: "actions", label: '', sortable: false, width: 125, formatter: renderActions }
+					{ key: "title", label: parent.msg("wsa.label.workflow"), 
+								sortable: true, width: 500 },
+					{ key: "actions", label: '', 
+								sortable: false, width: 125, formatter: renderActions }
 				];
 
 				// DataTable definition
-				parent.widgets.dataTable = new YAHOO.widget.DataTable(parent.id + "-datatable", columnDefinitions, parent.widgets.dataSource,
+				parent.widgets.dataTable = new YAHOO.widget.DataTable(parent.id + "-datatable", 
+					columnDefinitions, parent.widgets.dataSource,
 				{
 					initialLoad: true,
 					initialRequest: 'group=' + parent.cur_group,
@@ -135,7 +145,9 @@ if (typeof ITD == "undefined" || !ITD)
 						key: "title",
 						dir: "asc"
 					},
-					MSG_EMPTY: parent.msg("wsa.label.no_workflows")
+					MSG_EMPTY: parent.msg("wsa.label.no_workflows"),
+					MSG_LOADING: parent.msg("wsa.label.loading_workflows"),
+					MSG_ERROR: parent.msg("wsa.label.data_error")
 				});
 			}
 		});
@@ -144,7 +156,7 @@ if (typeof ITD == "undefined" || !ITD)
 		return this;
 	};
 
-	YAHOO.extend(ITD.WorkflowShortcutsAdmin, Alfresco.ConsoleTool,
+	YAHOO.extend(Alvex.WorkflowShortcutsAdmin, Alfresco.ConsoleTool,
 	{
 		options:
 		{
@@ -154,13 +166,15 @@ if (typeof ITD == "undefined" || !ITD)
 
 		onReady: function WSA_onReady()
 		{
-			ITD.WorkflowShortcutsAdmin.superclass.onReady.call(this);
+			Alvex.WorkflowShortcutsAdmin.superclass.onReady.call(this);
 		},
 
 		onRemoveWorkflowClick: function WSA_onRemoveWorkflowClick(e, args)
 		{
 			var workflow = args[1].name;
-			var url = Alfresco.constants.PROXY_URI + "api/itd/workflow-shortcut/admin/workflows?group=" + this.cur_group + "&workflow=" + workflow;
+			var url = Alfresco.constants.PROXY_URI 
+				+ "api/alvex/workflow-shortcut/admin/allowed-workflows?group=" 
+				+ this.cur_group + "&workflow=" + workflow;
 			Alfresco.util.Ajax.request({
 				url: url,
 				method: Alfresco.util.Ajax.DELETE,
@@ -193,7 +207,7 @@ if (typeof ITD == "undefined" || !ITD)
 			var workflow = this.options.workflowDefinitions[index].name;
 			var req = { group: this.cur_group, workflow: workflow };
 			Alfresco.util.Ajax.request({
-				url: Alfresco.constants.PROXY_URI + "api/itd/workflow-shortcut/admin/workflows",
+				url: Alfresco.constants.PROXY_URI + "api/alvex/workflow-shortcut/admin/allowed-workflows",
 				method: Alfresco.util.Ajax.PUT,
 				dataObj: req,
 				requestContentType: Alfresco.util.Ajax.JSON,

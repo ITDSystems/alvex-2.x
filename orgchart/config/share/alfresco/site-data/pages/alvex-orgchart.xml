@@ -1,0 +1,8 @@
+<page>
+	<title>Org Chart</title>
+	<title-id>page.orgchart.title</title-id>
+	<description>Company Org Chart</description>
+	<description-id>page.orgchart.description</description-id>
+	<template-instance>alvex-orgchart</template-instance>
+	<authentication>user</authentication>
+</page>

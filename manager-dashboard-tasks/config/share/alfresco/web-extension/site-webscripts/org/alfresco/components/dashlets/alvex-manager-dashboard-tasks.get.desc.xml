@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Alvex Manager's Dashboard - Tasks</shortname>
+	<description>Shows current tasks of managees</description>
+	<family>user-dashlet</family>
+	<url>/components/dashlets/manager-dashboard-tasks</url>
+</webscript>

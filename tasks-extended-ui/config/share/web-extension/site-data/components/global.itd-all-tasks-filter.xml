@@ -1,9 +1,0 @@
-<component>
-	<region-id>itd-all-tasks-filter</region-id>
-	<source-id>global</source-id>
-	<scope>global</scope>
-	<uri>/itd/filter/all-tasks</uri>
-	<properties>
-		<mode>tasks</mode>
-	</properties>
-</component>

@@ -1,4 +1,0 @@
-<page>
-	<template-instance>itd-manager-dashboard-tasks</template-instance>
-	<authentication>user</authentication>
-</page>

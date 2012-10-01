@@ -1,0 +1,330 @@
+<alfresco-config>
+	
+	<!-- Generic document type -->
+	
+	<config evaluator="model-type" condition="alvexdr:document">
+		<forms>
+			<!-- Create item form -->
+			<form>
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="summary" appearance="" label="" />
+					<set id="files" appearance="" label=""/>
+					<set id="relations" appearance="" label=""/>
+					<field set="info" id="alvexdr:id">
+						<control template="/alvex-auto-numberer.ftl"/>
+					</field>
+					<field set="info" id="alvexdr:regDate" />
+					<field set="summary" id="alvexdr:summary">
+						<control template="/alvex-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="files" id="alvexdr:files">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+					<field set="relations" id="alvexdr:relations" />
+				</appearance>
+			</form>
+
+			<!-- Data Grid view -->
+			<form id="datagrid">
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexdr:document">
+		<forms>
+			<!-- Data List pop-up view / edit form -->
+			<form>
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="summary" appearance="" label="" />
+					<set id="files" appearance="" label=""/>
+					<set id="work" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<field set="info" id="alvexdr:id">
+						<control template="/alvex-auto-numberer.ftl"/>
+					</field>
+					<field set="info" id="alvexdr:regDate" />
+					<field set="summary" id="alvexdr:summary">
+						<control template="/alvex-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="files" id="alvexdr:files">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+					<field set="relations" id="alvexdr:relations" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+
+	<!-- Incoming document type -->
+
+	<config evaluator="model-type" condition="alvexdr:incomingDocument">
+		<forms>
+			<!-- Create item form -->
+			<form>
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:status" />
+					<show id="alvexdr:counterPartner" />
+					<show id="alvexdr:counterPartnerId" />
+					<show id="alvexdr:counterPartnerRegDate" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:assignee" />
+					<show id="alvexdr:targetDate" />
+					<show id="alvexdr:doneDate" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+					<set id="summary" appearance="" label="" />
+					<set id="work" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+					<set id="files" appearance="" label=""/>
+					<set id="relations" appearance="" label=""/>
+					<field set="info" id="alvexdr:id" />
+					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:status" />
+					<field set="info" id="alvexdr:counterPartner" />
+					<field set="info" id="alvexdr:counterPartnerId" />
+					<field set="info" id="alvexdr:counterPartnerRegDate" />
+					<field set="summary" id="alvexdr:summary">
+						<control template="/alvex-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="work" id="alvexdr:assignee">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field set="work" id="alvexdr:targetDate" />
+					<field set="work" id="alvexdr:doneDate" />
+					<field set="files" id="alvexdr:files">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+					<field set="relations" id="alvexdr:relations">
+						<!--control template="/org/alfresco/components/form/controls/association.ftl">
+							<control-param name="startLocation">/app:company_home/st:sites/cm:doc-reg-test/cm:dataLists</control-param>
+						</control-->
+					</field>
+				</appearance>
+			</form>
+
+			<!-- Data Grid view -->
+			<form id="datagrid">
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:counterPartnerId" />
+					<show id="alvexdr:counterPartnerRegDate" />
+					<show id="alvexdr:counterPartner" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:status" />
+					<show id="alvexdr:targetDate" />
+					<show id="alvexdr:assignee" />
+				</field-visibility>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexdr:incomingDocument">
+		<forms>
+			<!-- Data List pop-up view / edit form -->
+			<form>
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:status" />
+					<show id="alvexdr:counterPartner" />
+					<show id="alvexdr:counterPartnerId" />
+					<show id="alvexdr:counterPartnerRegDate" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:assignee" />
+					<show id="alvexdr:targetDate" />
+					<show id="alvexdr:doneDate" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+					<set id="summary" appearance="" label="" />
+					<set id="work" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+					<set id="files" appearance="" label=""/>
+					<set id="relations" appearance="" label=""/>
+					<field set="info" id="alvexdr:id" />
+					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:status" />
+					<field set="info" id="alvexdr:counterPartner" />
+					<field set="info" id="alvexdr:counterPartnerId" />
+					<field set="info" id="alvexdr:counterPartnerRegDate" />
+					<field set="summary" id="alvexdr:summary">
+						<control template="/alvex-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="work" id="alvexdr:assignee">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field set="work" id="alvexdr:targetDate" />
+					<field set="work" id="alvexdr:doneDate" />
+					<field set="files" id="alvexdr:files">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+					<field set="relations" id="alvexdr:relations">
+						<!--control template="/org/alfresco/components/form/controls/association.ftl">
+							<control-param name="startLocation">/app:company_home/st:sites/cm:doc-reg-test/cm:dataLists</control-param>
+						</control-->
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+
+	<!-- Outgoing document type -->
+
+	<config evaluator="model-type" condition="alvexdr:outgoingDocument">
+		<forms>
+			<!-- Create item form -->
+			<form>
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:counterPartner" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+					<set id="summary" appearance="" label=""/>
+					<set id="files" appearance="" label=""/>
+					<set id="relations" appearance="" label=""/>
+					<field set="info" id="alvexdr:id" />
+					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:counterPartner" />
+					<field set="summary" id="alvexdr:summary">
+						<control template="/alvex-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="files" id="alvexdr:files">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+					<field set="relations" id="alvexdr:relations">
+						<!--control template="/org/alfresco/components/form/controls/association.ftl">
+							<control-param name="startLocation">/app:company_home/st:sites/cm:doc-reg-test/cm:dataLists</control-param>
+						</control-->
+					</field>
+				</appearance>
+			</form>
+
+			<!-- Data Grid view -->
+			<form id="datagrid">
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:counterPartner" />
+					<show id="alvexdr:summary" />
+				</field-visibility>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexdr:outgoingDocument">
+		<forms>
+			<!-- Data List pop-up view / edit form -->
+			<form>
+				<field-visibility>
+					<show id="alvexdr:id" />
+					<show id="alvexdr:regDate" />
+					<show id="alvexdr:counterPartner" />
+					<show id="alvexdr:summary" />
+					<show id="alvexdr:files" />
+					<show id="alvexdr:relations" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+					<set id="summary" appearance="" label=""/>
+					<set id="files" appearance="" label=""/>
+					<set id="relations" appearance="" label=""/>
+					<field set="info" id="alvexdr:id" />
+					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:counterPartner" />
+					<field set="summary" id="alvexdr:summary">
+						<control template="/alvex-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="files" id="alvexdr:files">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+					<field set="relations" id="alvexdr:relations">
+						<!--control template="/org/alfresco/components/form/controls/association.ftl">
+							<control-param name="startLocation">/app:company_home/st:sites/cm:doc-reg-test/cm:dataLists</control-param>
+						</control-->
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+</alfresco-config>

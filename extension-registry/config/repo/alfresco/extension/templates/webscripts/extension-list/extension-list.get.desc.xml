@@ -5,7 +5,7 @@
 		Lists all installed extensions
 		]]>
 	</description>
-	<url>/api/itd/extension/list</url>
+	<url>/api/alvex/extension/list</url>
 	<format default="json">extension</format>
 	<transaction>required</transaction>
 </webscript>

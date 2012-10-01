@@ -1,0 +1,13 @@
+<webscript>
+	<shortname>Manage Workflow Shortcut Properties</shortname>
+	<description><![CDATA[Adds new workflows for the group
+		Parameters:
+		group — group name (mandatory)
+		workflow — workflow name (mandatory)
+	]]></description>
+	<url>/api/alvex/workflow-shortcut/admin/allowed-workflows</url>
+	<authentication>admin</authentication>
+	<format default="json"/>
+	<transaction>required</transaction>
+	<lifecycle>public_api</lifecycle>
+</webscript>

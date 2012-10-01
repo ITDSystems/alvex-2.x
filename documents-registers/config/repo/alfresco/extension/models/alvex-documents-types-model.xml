@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+	Content model to represent Alvex default types of documents
+	@since 1.3
+	@author Alexey Vasyukov
+ -->
+ <model
+	xmlns="http://www.alfresco.org/model/dictionary/1.0"
+	name="alvexdr:documents_types_model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.alfresco.org/model/dictionary/1.0 modelSchema.xsd">
+
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+		<import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+		<import uri="http://www.alfresco.org/model/datalist/1.0" prefix="dl"/>
+	</imports>
+
+	<namespaces>
+		<namespace prefix="alvexdr" uri="http://alvexcore.com/prefix/alvexdr" />
+	</namespaces>
+
+	<!--constraints>
+		<constraint name="alvexdr:docStatus" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+					<value>notStarted</value>
+					<value>inProgress</value>
+					<value>complete</value>
+				</list>
+			</parameter>
+		</constraint>
+	</constraints-->
+
+	<types>
+		<type name="alvexdr:documentRegister">
+			<title>Document Register</title>
+			<parent>dl:dataList</parent>
+			<properties>
+				<property name="alvexdr:idFormat">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+					<default>%{inc}</default>
+				</property>
+				<property name="alvexdr:inc">
+					<type>d:int</type>
+					<mandatory enforced='true'>true</mandatory>
+					<default>1</default>
+				</property>
+			</properties>
+		</type>
+
+		<!--type name="alvexdr:document">
+			<title>Generic Document</title>
+			<parent>dl:dataListItem</parent>
+			<properties>
+				<property name="alvexdr:id">
+					<type>d:text</type>
+				</property>
+				<property name="alvexdr:summary">
+					<type>d:text</type>
+				</property>
+				<property name="alvexdr:type">
+					<type>d:text</type>
+				</property>
+				<property name="alvexdr:securityLevel">
+					<type>d:text</type>
+				</property>
+				<property name="alvexdr:regDate">
+					<type>d:date</type>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexdr:files">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:content</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+				<association name="alvexdr:registrar">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+				<association name="alvexdr:relations">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdr:relation</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</type>
+
+		<type name="alvexdr:relation">
+			<title>Documents Relation Link</title>
+			<parent>sys:base</parent>
+			<properties>
+				<property name="alvexdr:relationType">
+					<type>d:text</type>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexdr:relatedDocuments">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdr:document</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</type>
+
+		<type name="alvexdr:incomingDocument">
+			<title>Incoming Document</title>
+			<parent>alvexdr:document</parent>
+			<mandatory-aspects>
+				<aspect>alvexdr:externalDocument</aspect>
+				<aspect>alvexdr:counterPartnerDocDetails</aspect>
+				<aspect>alvexdr:controlExecution</aspect>
+			</mandatory-aspects>
+		</type>
+
+		<type name="alvexdr:outgoingDocument">
+			<title>Outgoing Document</title>
+			<parent>alvexdr:document</parent>
+			<mandatory-aspects>
+				<aspect>alvexdr:externalDocument</aspect>
+			</mandatory-aspects>
+		</type-->
+
+	</types>
+
+	<!--aspects>
+		<aspect name="alvexdr:externalDocument">
+			<properties>
+				<property name="alvexdr:counterPartner">
+					<type>d:text</type>
+				</property>
+			</properties>
+		</aspect>
+		<aspect name="alvexdr:counterPartnerDocDetails">
+			<properties>
+				<property name="alvexdr:counterPartnerId">
+					<type>d:text</type>
+				</property>
+				<property name="alvexdr:counterPartnerRegDate">
+					<type>d:date</type>
+				</property>
+			</properties>
+		</aspect>
+		<aspect name="alvexdr:controlExecution">
+			<properties>
+				<property name="alvexdr:status">
+					<type>d:text</type>
+					<default>notStarted</default>
+					<constraints>
+						<constraint ref="alvexdr:docStatus" />
+					</constraints>
+				</property>
+				<property name="alvexdr:targetDate">
+					<type>d:date</type>
+				</property>
+				<property name="alvexdr:doneDate">
+					<type>d:date</type>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexdr:assignee">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+	</aspects-->
+</model>

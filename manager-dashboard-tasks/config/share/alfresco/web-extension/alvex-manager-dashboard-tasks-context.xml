@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-manager-dashboard-tasks-rd"
+		class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent"
+		depends-on="">
+		<property name="resourceBundles">
+			<list>
+				<value>alfresco.web-extension.messages.alvex-manager-dashboard-tasks</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-manager-dashboard-tasks-cd" class="org.springframework.extensions.config.ConfigBootstrap"
+		init-method="register" depends-on="">
+		<property name="configService" ref="web.config" />
+		<property name="configs">
+			<list>
+				<value>classpath:alfresco/web-extension/alvex-manager-dashboard-tasks-config.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-manager-dashboard-tasks" parent="alvex-extension"
+		class="com.alvexcore.share.ManagerDashboardTasksExtension"
+		depends-on="alvex-manager-dashboard-tasks-rd,alvex-manager-dashboard-tasks-cd" />
+</beans>

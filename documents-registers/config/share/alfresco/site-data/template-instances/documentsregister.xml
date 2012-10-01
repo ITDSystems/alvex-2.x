@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<template-instance>
+   <template-type>alvex/documentsregister</template-type>
+   <properties>
+      <pageFamily>documentsregister</pageFamily>
+      <container>dataLists</container>
+   </properties>
+   <components>
+
+      <!-- Title -->
+      <component>
+         <region-id>title</region-id>
+         <url>/components/title/collaboration-title</url>
+      </component>
+
+      <!-- Navigation -->
+      <component>
+         <region-id>navigation</region-id>
+         <url>/components/navigation/collaboration-navigation</url>
+      </component>
+
+      <!-- Toolbar -->
+      <component>
+         <region-id>toolbar</region-id>
+         <url>/alvex/datalists/toolbar</url>
+      </component>
+
+      <!-- Datagrid -->
+      <component>
+         <region-id>datagrid</region-id>
+         <url>/alvex/datalists/datagrid</url>
+         <properties>
+            <pagination>true</pagination>
+         </properties>
+      </component>
+
+      <!-- Datalist -->
+      <component>
+         <region-id>register-list</region-id>
+         <url>/alvex/datalists/selector</url>
+      </component>
+
+      <!-- Actions Common -->
+      <component>
+         <region-id>actions-common</region-id>
+         <url>/components/data-lists/actions-common</url>
+      </component>
+
+   </components>
+</template-instance>
+

@@ -1,0 +1,14 @@
+<extension>
+	<modules>
+		<module>
+			<id>Alvex Share Generic UI (footer message)</id>
+			<auto-deploy>true</auto-deploy>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco.components.footer</targetPackageRoot>
+					<sourcePackageRoot>alvex.share-generic-ui</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+	</modules>
+</extension>

@@ -1,0 +1,44 @@
+<extension>
+	<modules>
+		<module>
+			<id>Alvex Tasks Extended UI (show completed tasks)</id>
+			<auto-deploy>true</auto-deploy>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>alvex.tasks-extended-ui</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+		<module>
+			<id>Alvex Tasks Extended UI (custom task-edit page header)</id>
+			<auto-deploy>true</auto-deploy>
+			<evaluator type="alvex.evaluators.sharePage">
+				<params>
+					<page>task-edit</page>
+				</params>
+			</evaluator>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>alvex.task-edit-page</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+		<module>
+			<id>Alvex Tasks Extended UI (custom task-details page header)</id>
+			<auto-deploy>true</auto-deploy>
+			<evaluator type="alvex.evaluators.sharePage">
+				<params>
+					<page>task-details</page>
+				</params>
+			</evaluator>
+			<customizations>
+				<customization>
+					<targetPackageRoot>org.alfresco</targetPackageRoot>
+					<sourcePackageRoot>alvex.task-details-page</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+	</modules>
+</extension>

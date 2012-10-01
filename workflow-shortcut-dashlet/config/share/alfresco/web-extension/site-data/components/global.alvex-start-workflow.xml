@@ -1,0 +1,7 @@
+<component>
+	<region-id>alvex-start-workflow</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/components/alvex/workflow/start</uri>
+</component>
+

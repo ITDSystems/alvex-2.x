@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean
+		id="webscript.alvex.workflow-instances-detailed.workflow-instances-detailed.get"
+		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"
+		parent="abstractWorkflowWebScript" />
+	<bean id="alvex-my-workflows-dashlet" parent="alvex-extension"
+		class="com.alvexcore.repo.MyWorkflowsDashletExtension"
+		depends-on="webscript.alvex.workflow-instances-detailed.workflow-instances-detailed.get" />
+</beans>

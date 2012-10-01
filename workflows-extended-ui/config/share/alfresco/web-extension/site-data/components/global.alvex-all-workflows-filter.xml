@@ -1,0 +1,9 @@
+<component>
+	<region-id>alvex-all-workflows-filter</region-id>
+	<source-id>global</source-id>
+	<scope>global</scope>
+	<uri>/alvex/filter/all-workflows</uri>
+	<properties>
+		<mode>workflows</mode>
+	</properties>
+</component>

@@ -18,16 +18,16 @@
  */
 
 // Ensure root object exists
-if (typeof ITD == "undefined" || !ITD)
+if (typeof Alvex == "undefined" || !Alvex)
 {
-	var ITD = {};
+	var Alvex = {};
 }
 
 /**
  * Dashboard MyWorkflows component.
  *
- * @namespace ITD
- * @class ITD.MyWorkflows
+ * @namespace Alvex
+ * @class Alvex.MyWorkflows
  */
 (function()
 {
@@ -53,12 +53,12 @@ if (typeof ITD == "undefined" || !ITD)
 	* Dashboard MyWorkflows constructor.
 	*
 	* @param {String} htmlId The HTML id of the parent element
-	* @return {ITD.MyWorkflows} The new component instance
+	* @return {Alvex.MyWorkflows} The new component instance
 	* @constructor
 	*/
-	ITD.MyWorkflows = function MyWorkflows_constructor(htmlId)
+	Alvex.MyWorkflows = function MyWorkflows_constructor(htmlId)
 	{
-		ITD.MyWorkflows.superclass.constructor.call(this, "ITD.MyWorkflows", htmlId, 
+		Alvex.MyWorkflows.superclass.constructor.call(this, "Alvex.MyWorkflows", htmlId, 
 			["button", "container", "datasource", "datatable", "paginator", "history", "animation"]);
 
 		// Services
@@ -70,17 +70,17 @@ if (typeof ITD == "undefined" || !ITD)
 	/**
 	* Extend from Alfresco.component.Base
 	*/
-	YAHOO.extend(ITD.MyWorkflows, Alfresco.component.Base);
+	YAHOO.extend(Alvex.MyWorkflows, Alfresco.component.Base);
 
 	/**
 	* Augment prototype with Common Workflow actions to reuse createFilterURLParameters
 	*/
-	YAHOO.lang.augmentProto(ITD.MyWorkflows, Alfresco.action.WorkflowActions);
+	YAHOO.lang.augmentProto(Alvex.MyWorkflows, Alfresco.action.WorkflowActions);
 
 	/**
 	* Augment prototype with main class implementation, ensuring overwrite is enabled
 	*/
-	YAHOO.lang.augmentObject(ITD.MyWorkflows.prototype,
+	YAHOO.lang.augmentObject(Alvex.MyWorkflows.prototype,
 	{
 		/**
 		* Object container for initialization options
@@ -161,7 +161,7 @@ if (typeof ITD == "undefined" || !ITD)
 			Dom.removeClass(Selector.query(".toolbar div", this.id, true), "hidden");
 
 			// Prepare webscript url to task instances
-			var webscript = YAHOO.lang.substitute("api/itd/workflow-instances?initiator={initiator}&exclude={exclude}",
+			var webscript = YAHOO.lang.substitute("api/alvex/workflow-instances?initiator={initiator}&exclude={exclude}",
 			{
 				initiator: encodeURIComponent(Alfresco.constants.USERNAME),
 				exclude: this.options.hiddenWorkflowsNames.join(",")

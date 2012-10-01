@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-tasks-extended-ui-cd" class="org.springframework.extensions.config.ConfigBootstrap"
+		init-method="register" depends-on="">
+		<property name="configService" ref="web.config" />
+		<property name="configs">
+			<list>
+				<value>classpath:alfresco/web-extension/alvex-tasks-extended-ui-config.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-tasks-extended-ui" parent="alvex-extension"
+		class="com.alvexcore.share.TasksExtendedUIExtension" depends-on="alvex-tasks-extended-ui-cd" />
+</beans>

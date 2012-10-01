@@ -5,7 +5,7 @@
 
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
-	new ITD.AlvexUpdatesInfo("${el}").setOptions({
+	new Alvex.AlvexUpdatesInfo("${el}").setOptions({
 		updatesInfo:
 		[
 		<#list updates as update>

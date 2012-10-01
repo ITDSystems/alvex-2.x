@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>organization-tree-view</shortname>
+	<description>Renders page component with orgchart tree view</description>
+	<url>/components/alvex/orgchart/tree-view</url>
+</webscript>

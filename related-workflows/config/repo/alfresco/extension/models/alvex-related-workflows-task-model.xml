@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="alvexrwf:related_workflows_model">
+	<!--Import necessary namespaces -->
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0"
+			prefix="d" />
+		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
+	</imports>
+	<namespaces>
+		<namespace prefix="alvexrwf"
+			uri="http://alvexcore.com/prefix/alvexrwf" />
+	</namespaces>
+	<!-- Custom aspect definition -->
+	<aspects>
+		<aspect name="alvexrwf:relatedWorkflows">
+			<title>Aspect to provide a way of related workflows management.</title>
+			<properties>
+				<property name="alvexrwf:relatedWorkflows">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+			</properties>
+		</aspect>
+	</aspects>
+</model>
