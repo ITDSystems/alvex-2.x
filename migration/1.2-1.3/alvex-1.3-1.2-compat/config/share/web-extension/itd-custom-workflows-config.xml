@@ -1,0 +1,293 @@
+<alfresco-config>
+	<!--Form config for itdwf:startTask rendering -->
+	<config evaluator="string-compare" condition="activiti$activitiBasicWorkflow">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:assignee" />
+					<show id="itdwf:assignees" />
+					<show id="bpm:workflowDescription" />
+					<show id="bpm:workflowDueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="itdwf:confirmationRequired" />
+					<!-- show id="bpm:comment" /-->
+					<show id="packageItems" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
+					<set id="assignees" appearance="title" label-id="itd.workflow.assignees" />
+					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" mandatory="true"/>
+					<field id="bpm:workflowDueDate" label-id="itd.workflow.task-due-date" set="task-info" />
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details">
+						<control template="/itd-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-details" />
+					<!--field id="bpm:comment" set="info" /-->
+					<!--field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees" /-->
+					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<!--field id="itdwf:assignees" label-id="itd.workflow.bpm_assignees" set="assignees" /-->
+					<field id="itdwf:assignees" label-id="itd.workflow.bpm_assignees" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+			<form id="popupDialogForm">
+				<create-form template="/itd/workflow_popup_form.ftl" />			
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:assignee" />
+					<show id="itdwf:assignees" />
+					<show id="bpm:workflowDescription" />
+					<show id="bpm:workflowDueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="itdwf:confirmationRequired" />
+					<!--show id="bpm:comment" /-->
+					<show id="packageItems" />
+					<show id="transitions" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
+					<set id="assignees" appearance="title" label-id="itd.workflow.assignees" />
+					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
+					<set id="response" appearance="title" label="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" />
+					<field id="bpm:workflowDueDate" label-id="itd.workflow.task-due-date" set="task-info" />
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details">
+						<control template="/itd-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-details" />
+					<!--field id="bpm:comment" set="info" /-->
+					<!--field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees" /-->
+					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<!--field id="itdwf:assignees" label-id="itd.workflow.bpm_assignees" set="assignees" /-->
+					<field id="itdwf:assignees" label-id="itd.workflow.bpm_assignees" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="transitions" set="response" />
+				</appearance>
+			</form>			
+		</forms>
+	</config>
+
+	<!--Form config to display workflow info -->
+	<config evaluator="task-type" condition="itdwf:startTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:assignee" />
+					<show id="itdwf:assignees" />
+					<show id="bpm:workflowDescription" />
+					<!--show id="bpm:comment" /-->
+					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="packageItems" />
+					<show id="itdwf:confirmationRequired" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
+					<set id="assignees" appearance="title" label-id="itd.workflow.assignees" />
+					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" />
+					<field id="bpm:workflowDueDate" label-id="itd.workflow.task-due-date" set="task-info" />
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details">
+						<control template="/itd-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field id="itdwf:confirmationRequired" label-id="itd.workflow.itdwf_confirmationRequired" set="task-details" />
+					<!--field id="bpm:comment" set="info" /-->
+					<!--field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees" /-->
+					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<!--field id="itdwf:assignees" label-id="itd.workflow.bpm_assignees" set="assignees" /-->
+					<field id="itdwf:assignees" label-id="itd.workflow.bpm_assignees" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!--Form config for itdwf:executeTask rendering -->
+	<config evaluator="task-type" condition="itdwf:executeTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:workflowDescription" />
+					<!--show id="bpm:comment" /-->
+					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="itdwf:initiator" />
+					<show id="itdrwf:relatedWorkflows" />
+					<show id="packageItems" />
+					<show id="transitions" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
+					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
+					<set id="related_workflows" appearance="title" label-id="itd.workflow.related_workflows" />
+					<set id="response" appearance="title" label-id="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" read-only="true"/>
+					<field id="bpm:dueDate" label-id="itd.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="itdwf:initiator" label-id="itd.workflow.initiator" set="task-info" read-only="true"/>
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details" read-only="true">
+						<control template="/itd-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<!-- field id="bpm:comment" set="info" /-->
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="itdrwf:relatedWorkflows" set="related_workflows">
+						<control template="/itd/related_workflows_control.ftl">
+							<control-param
+							name="definitionsFilter">(activiti$)</control-param>
+						</control>
+					</field>
+					<field id="transitions" set="response" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!--Form config for itdwf:executeTask rendering -->
+	<config evaluator="task-type" condition="itdwf:assistTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:workflowDescription" />
+					<!--show id="bpm:comment" /-->
+					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="itdwf:initiator" />
+					<show id="itdrwf:relatedWorkflows" />
+					<show id="packageItems" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
+					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
+					<set id="related_workflows" appearance="title" label-id="itd.workflow.related_workflows" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" read-only="true"/>
+					<field id="bpm:dueDate" label-id="itd.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="itdwf:initiator" label-id="itd.workflow.initiator" set="task-info" read-only="true"/>
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details" read-only="true">
+						<control template="/itd-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<!-- field id="bpm:comment" set="info" /-->
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="itdrwf:relatedWorkflows" set="related_workflows">
+						<control template="/itd/related_workflows_control.ftl"/>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>	
+	
+	<!--Form config for itdwf:controlTask rendering -->
+	<config evaluator="task-type" condition="itdwf:controlTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:workflowDescription" />
+					<!--show id="bpm:comment" /-->
+					<show id="bpm:dueDate" />
+					<show id="itdwf:taskDescription" />
+					<show id="bpm:assignee" />
+					<show id="packageItems" />
+					<show id="itdwf:controlOutcome" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+					<set id="task-details" appearance="title" label-id="" />
+					<set id="documents" appearance="title" label-id="itd.workflow.related-documents" />
+					<set id="response" appearance="title" label-id="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="itd.workflow.task-summary" set="task-info" read-only="true"/>
+					<field id="bpm:dueDate" label-id="itd.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="bpm:assignee" label-id="itd.workflow.bpm_assignee" set="task-info" read-only="true"/>
+					<field id="itdwf:taskDescription" label-id="itd.workflow.taskDescription" set="task-details" read-only="true">
+						<control template="/itd-mltext.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<!-- field id="bpm:comment" set="info" /-->
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="itdwf:controlOutcome" set="response">
+						<control template="/org/alfresco/components/form/controls/workflow/activiti-transitions.ftl" />
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+</alfresco-config>

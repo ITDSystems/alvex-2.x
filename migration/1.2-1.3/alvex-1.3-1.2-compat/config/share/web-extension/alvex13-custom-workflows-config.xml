@@ -1,0 +1,264 @@
+<alfresco-config>
+	<!--Form config for alvex13wf:startTask rendering -->
+	<config evaluator="string-compare" condition="activiti$alvex13BasicWorkflow">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:assignee" />
+					<show id="alvex13wf:assignees" />
+					<show id="bpm:workflowDescription" />
+					<show id="bpm:workflowDueDate" />
+					<show id="alvex13wf:confirmationRequired" />
+					<show id="alvexwfd:discussion" />
+					<show id="packageItems" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" />
+					<set id="assignees" appearance="title" label-id="alvex.workflow.assignees" />
+					<set id="documents" appearance="title" label-id="alvex.workflow.related-documents" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="alvex.workflow.task-summary" set="task-info" mandatory="true"/>
+					<field id="bpm:workflowDueDate" label-id="alvex.workflow.task-due-date" set="task-info" />
+					<field id="alvex13wf:confirmationRequired" label-id="alvex.workflow.alvex13wf_confirmationRequired" set="task-info" />
+					<field id="alvexwfd:discussion" set="task-info" label-id="alvex.discussions.workflow">
+						<control template="/alvex-workflows-discussions.ftl">
+							<control-param name="createOnReady">true</control-param>
+						</control>
+					</field>
+					<!--field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="assignees" /-->
+					<field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<!--field id="alvex13wf:assignees" label-id="alvex.workflow.bpm_assignees" set="assignees" /-->
+					<field id="alvex13wf:assignees" label-id="alvex.workflow.bpm_assignees" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+			<form id="popupDialogForm">
+				<create-form template="/alvex/workflow_popup_form.ftl" />			
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:assignee" />
+					<show id="alvex13wf:assignees" />
+					<show id="bpm:workflowDescription" />
+					<show id="bpm:workflowDueDate" />
+					<show id="alvex13wf:confirmationRequired" />
+					<show id="alvexwfd:discussion" />
+					<show id="packageItems" />
+					<show id="transitions" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" />
+					<set id="assignees" appearance="title" label-id="alvex.workflow.assignees" />
+					<set id="documents" appearance="title" label-id="alvex.workflow.related-documents" />
+					<set id="response" appearance="title" label="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="alvex.workflow.task-summary" set="task-info" />
+					<field id="bpm:workflowDueDate" label-id="alvex.workflow.task-due-date" set="task-info" />
+					<field id="alvex13wf:confirmationRequired" label-id="alvex.workflow.alvex13wf_confirmationRequired" set="task-info" />
+					<field id="alvexwfd:discussion" set="task-info" label-id="alvex.discussions.workflow">
+						<control template="/alvex-workflows-discussions.ftl">
+							<control-param name="createOnReady">true</control-param>
+						</control>
+					</field>
+					<!--field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="assignees" /-->
+					<field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<!--field id="alvex13wf:assignees" label-id="alvex.workflow.bpm_assignees" set="assignees" /-->
+					<field id="alvex13wf:assignees" label-id="alvex.workflow.bpm_assignees" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="transitions" set="response" />
+				</appearance>
+			</form>			
+		</forms>
+	</config>
+
+	<!--Form config to display workflow info -->
+	<config evaluator="task-type" condition="alvex13wf:startTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:assignee" />
+					<show id="alvex13wf:assignees" />
+					<show id="bpm:workflowDescription" />
+					<show id="alvexwfd:discussion" />
+					<show id="bpm:dueDate" />
+					<show id="packageItems" />
+					<show id="alvex13wf:confirmationRequired" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" />
+					<set id="assignees" appearance="title" label-id="alvex.workflow.assignees" />
+					<set id="documents" appearance="title" label-id="alvex.workflow.related-documents" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="alvex.workflow.task-summary" set="task-info" />
+					<field id="bpm:workflowDueDate" label-id="alvex.workflow.task-due-date" set="task-info" />
+					<field id="alvex13wf:confirmationRequired" label-id="alvex.workflow.alvex13wf_confirmationRequired" set="task-info" />
+					<field id="alvexwfd:discussion" set="task-info" label-id="alvex.discussions.workflow">
+						<control template="/alvex-workflows-discussions.ftl" />
+					</field>
+					<!--field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="assignees" /-->
+					<field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<!--field id="alvex13wf:assignees" label-id="alvex.workflow.bpm_assignees" set="assignees" /-->
+					<field id="alvex13wf:assignees" label-id="alvex.workflow.bpm_assignees" set="assignees">
+						<control template="/orgchart-picker.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!--Form config for alvex13wf:executeTask rendering -->
+	<config evaluator="task-type" condition="alvex13wf:executeTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:workflowDescription" />
+					<show id="alvexwfd:discussion" />
+					<show id="bpm:dueDate" />
+					<show id="alvexrwf:relatedWorkflows" />
+					<show id="packageItems" />
+					<show id="transitions" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" />
+					<set id="documents" appearance="title" label-id="alvex.workflow.related-documents" />
+					<set id="related_workflows" appearance="title" label-id="alvex.workflow.related_workflows" />
+					<set id="other" appearance="" label-id="" />
+					<set id="response" appearance="title" label-id="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="alvex.workflow.task-summary" set="task-info" read-only="true"/>
+					<field id="bpm:dueDate" label-id="alvex.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="alvexwfd:discussion" set="other" label-id="alvex.discussions.workflow">
+						<control template="/alvex-workflows-discussions.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="alvexrwf:relatedWorkflows" set="related_workflows">
+						<control template="/alvex/related_workflows_control.ftl">
+							<control-param
+								name="definitionsFilter">(activiti$)
+							</control-param>
+						</control>
+					</field>
+					<field id="transitions" set="response" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+	
+	<!--Form config for alvex13wf:executeTask rendering -->
+	<config evaluator="task-type" condition="alvex13wf:assistTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:workflowDescription" />
+					<show id="alvexwfd:discussion" />
+					<show id="bpm:dueDate" />
+					<show id="alvexrwf:relatedWorkflows" />
+					<show id="packageItems" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" />
+					<set id="documents" appearance="title" label-id="alvex.workflow.related-documents" />
+					<set id="related_workflows" appearance="title" label-id="alvex.workflow.related_workflows" />
+					<set id="other" appearance="" label-id="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="alvex.workflow.task-summary" set="task-info" read-only="true"/>
+					<field id="bpm:dueDate" label-id="alvex.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="alvexwfd:discussion" set="other" label-id="alvex.discussions.workflow">
+						<control template="/alvex-workflows-discussions.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="alvexrwf:relatedWorkflows" set="related_workflows">
+						<control template="/alvex/related_workflows_control.ftl"/>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>	
+	
+	<!--Form config for alvex13wf:controlTask rendering -->
+	<config evaluator="task-type" condition="alvex13wf:controlTask">
+		<forms>
+			<form>
+				<!--List of fields to render -->
+				<field-visibility>
+					<show id="bpm:workflowDescription" />
+					<show id="alvexwfd:discussion" />
+					<show id="bpm:dueDate" />
+					<show id="packageItems" />
+					<show id="alvex13wf:controlOutcome" />
+				</field-visibility>
+				<!--Fields appearance configuration -->
+				<appearance>
+					<!--Sets definition -->
+					<set id="task-info" appearance="title" label-id="" />
+					<set id="documents" appearance="title" label-id="alvex.workflow.related-documents" />
+					<set id="response" appearance="title" label-id="" />
+					<!--Fields -->
+					<field id="bpm:workflowDescription" label-id="alvex.workflow.task-summary" set="task-info" read-only="true"/>
+					<field id="bpm:dueDate" label-id="alvex.workflow.task-due-date" set="task-info" read-only="true"/>
+					<field id="alvexwfd:discussion" set="task-info" label-id="alvex.discussions.workflow">
+						<control template="/alvex-workflows-discussions.ftl" />
+					</field>
+					<field id="packageItems" set="documents">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+						</control>
+					</field>
+					<field id="alvex13wf:controlOutcome" set="response">
+						<control template="/org/alfresco/components/form/controls/workflow/activiti-transitions.ftl" />
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+</alfresco-config>

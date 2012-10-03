@@ -1,0 +1,16 @@
+<alfresco-config>
+	<config>
+		<forms>	     
+			<dependencies>
+				<css src="/yui/fonts/fonts.css" />
+				<css src="/yui/datatable/assets/skins/sam/datatable.css" />			
+				<js src="/modules/simple-dialog.js" />
+				<js  src="/yui/yahoo-dom-event/yahoo-dom-event.js" />
+				<js  src="/yui/element/element.js" />				
+				<js src="/yui/cookie/cookie.js" />				
+				<js  src="/yui/datasource/datasource.js" />
+				<js  src="/yui/datatable/datatable.js" />				
+			</dependencies>
+		</forms>
+	</config>
+</alfresco-config>
