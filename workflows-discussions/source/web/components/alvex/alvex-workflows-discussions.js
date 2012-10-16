@@ -515,8 +515,10 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		 */
 		onSpoilerClicked: function(ev, obj)
 		{
+			// get src element - cross-browser approach
+			var srcElement = (ev.target) ? ev.target : ev.srcElement;
 			// check if this event is triggered by «top» element
-			if (ev.srcElement != obj && ev.srcElement.parentNode != obj)
+			if (srcElement != obj && srcElement.parentNode != obj)
 				// ignore event
 				return;
 			if (this.collapsed)

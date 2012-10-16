@@ -206,6 +206,10 @@ public class WorkflowPermissionManager implements AbstractAlvexTaskListener,
 
 		String groupId = getGroupForId(delegateTask.getProcessInstanceId());
 
+		AuthorityService as = serviceRegistry.getAuthorityService();
+		if( !as.authorityExists( as.getName(AuthorityType.GROUP, groupId) ) )
+			return;
+
 		if (delegateTask.getEventName() == EVENTNAME_ASSIGNMENT) {
 			grantPermissions(delegateTask.getAssignee(), groupId);
 		} else {

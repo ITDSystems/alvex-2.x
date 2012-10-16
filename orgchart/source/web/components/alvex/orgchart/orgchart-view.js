@@ -31,6 +31,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 	var Dom = YAHOO.util.Dom,
 		Event = YAHOO.util.Event,
 		KeyListener = YAHOO.util.KeyListener;
+	var $html = Alfresco.util.encodeHTML;
 
 	Alvex.OrgchartViewer = function(htmlId)
 	{
@@ -706,7 +707,6 @@ var labelType, useGradients, nativeTextSupport, animate;
 			this.initUsersTable();
 
 			Dom.addClass(this.options.pickerId, "object-finder");
-			Dom.removeClass(this.options.pickerId, "hidden");
 		},
 
 		showViewDialog: function OrgchartViewerDialog_createDetailsDialog(node)
@@ -742,6 +742,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 			// Show the dialog
 			this.widgets.dialog.show();
+			Dom.removeClass(this.options.pickerId, "hidden");
 		},
 
 		// Fill tree view group selector with orgchart data
@@ -889,13 +890,11 @@ var labelType, useGradients, nativeTextSupport, animate;
 			
 			if( this.orgchart.canAddAssignee() )
 			{
-				html += '<div class="' + 'addPerson' + '"><a rel="add" href="" ' 
+				html += '<div class="' + 'addPersonTitle' + '"><a rel="add" href="" ' 
 						+ 'class="orgchart-action-link ' + id + '-action-link"'
-						+ 'title="' + this.orgchart.msg("alvex.orgchart.button.add") +'"><span>' 
-						+ '<div class="icon32"><img' 
+						+ 'title="' + this.orgchart.msg("alvex.orgchart.button.add") +'"><img' 
 						+ ' src="/share/res/components/images/filetypes/generic-user-32.png"' 
-						+ ' width="32"/></div>' 
-						+ '</span></a></div>';
+						+ ' width="32"/></a></div>';
 			} else {
 				html = '<div class="icon32"><img' 
 						+ ' src="/share/res/components/images/filetypes/generic-user-32.png"' 
@@ -1043,16 +1042,16 @@ var labelType, useGradients, nativeTextSupport, animate;
 						// fill html fields
 						Dom.get(this.options.pickerId + '-person-img').src 
 									= Alfresco.constants.PROXY_URI + 'slingshot/profile/avatar/' + profile.userName;
-						Dom.get(this.options.pickerId + '-person-name').innerHTML = profile.firstName + " " + profile.lastName;
-						Dom.get(this.options.pickerId + '-person-title').innerHTML = profile.jobtitle;
-						Dom.get(this.options.pickerId + '-person-company').innerHTML = profile.organization;
-						Dom.get(this.options.pickerId + '-person-phone').innerHTML = profile.companytelephone;
-						Dom.get(this.options.pickerId + '-person-cell').innerHTML = profile.mobile;
-						Dom.get(this.options.pickerId + '-person-email').innerHTML = profile.companyemail;
-						Dom.get(this.options.pickerId + '-person-skype').innerHTML = profile.skype;
-						Dom.get(this.options.pickerId + '-person-im').innerHTML = profile.instantmsg;
-						Dom.get(this.options.pickerId + '-person-loc').innerHTML = profile.location;
-						Dom.get(this.options.pickerId + '-person-bio').innerHTML = profile.persondescription;
+						Dom.get(this.options.pickerId + '-person-name').innerHTML = $html(profile.firstName + " " + profile.lastName);
+						Dom.get(this.options.pickerId + '-person-title').innerHTML = $html(profile.jobtitle);
+						Dom.get(this.options.pickerId + '-person-company').innerHTML = $html(profile.organization);
+						Dom.get(this.options.pickerId + '-person-phone').innerHTML = $html(profile.companytelephone);
+						Dom.get(this.options.pickerId + '-person-cell').innerHTML = $html(profile.mobile);
+						Dom.get(this.options.pickerId + '-person-email').innerHTML = $html(profile.companyemail);
+						Dom.get(this.options.pickerId + '-person-skype').innerHTML = $html(profile.skype);
+						Dom.get(this.options.pickerId + '-person-im').innerHTML = $html(profile.instantmsg);
+						Dom.get(this.options.pickerId + '-person-loc').innerHTML = $html(profile.location);
+						Dom.get(this.options.pickerId + '-person-bio').innerHTML = $html(profile.persondescription);
 						Dom.get(this.options.pickerId + '-person-links').innerHTML 
 									= '<a target="_blank" href="/share/page/user/' + profile.userName + '/profile">' 
 										+ this.msg("alvex.orgchart.view_profile") + '</a>';

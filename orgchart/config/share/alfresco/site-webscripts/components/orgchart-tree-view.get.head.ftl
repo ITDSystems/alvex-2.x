@@ -1,5 +1,4 @@
-<#include "/org/alfresco/components/component.head.inc">
-<#include "/org/alfresco/components/form/form.get.head.ftl">
+<#include "/form.get.head.ftl">
 
 <script type="text/javascript" src="${page.url.context}/res/components/alvex/orgchart/orgchart-view.js"></script>
 <script type="text/javascript" src="${page.url.context}/res/jit/jit-yc.js"></script>

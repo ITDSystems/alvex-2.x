@@ -59,30 +59,30 @@ public abstract class ExtensionRegistry implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String fileName = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-		if (!fileName.endsWith(".jar"))
-			return;
-		String folderName = fileName.substring(0, fileName.lastIndexOf(File.separator));
-		File folder = new File(folderName);
-		Map<String, String> exts = new HashMap<String, String>();
-		for (File file : folder.listFiles())
-		{
-			fileName = file.getName();
-			if (fileName.contains("alvex-") && fileName.endsWith(".jar")) {
-				int slashIdx = fileName.lastIndexOf('/');
-				int hyphenIdx = fileName.lastIndexOf('-');
-				String extId = fileName.substring(slashIdx + 1, hyphenIdx);
-				if (exts.containsKey(extId))
-					throw new Exception(
-							"It seems files "
-									+ fileName
-									+ " and "
-									+ exts.get(extId)
-									+ " deploy the same Alvex extension. Only one instance of extension can be deployed. Please, check your Alvex installation.");
-				else
-					exts.put(extId, fileName);
-			}
-		}
-
+//		String fileName = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+//		if (!fileName.endsWith(".jar"))
+//			return;
+//		String folderName = fileName.substring(0, fileName.lastIndexOf(File.separator));
+//		File folder = new File(folderName);
+//		Map<String, String> exts = new HashMap<String, String>();
+//		for (File file : folder.listFiles())
+//		{
+//			fileName = file.getName();
+//			if (fileName.contains("alvex-") && fileName.endsWith(".jar")) {
+//				int slashIdx = fileName.lastIndexOf('/');
+//				int hyphenIdx = fileName.lastIndexOf('-');
+//				String extId = fileName.substring(slashIdx + 1, hyphenIdx);
+//				if (exts.containsKey(extId))
+//					throw new Exception(
+//							"It seems files "
+//									+ fileName
+//									+ " and "
+//									+ exts.get(extId)
+//									+ " deploy the same Alvex extension. Only one instance of extension can be deployed. Please, check your Alvex installation.");
+//				else
+//					exts.put(extId, fileName);
+//			}
+//		}
+//
 	}
 }

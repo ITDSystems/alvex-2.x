@@ -44,13 +44,7 @@
                <field set="id" id="alvexdt:registerDate"/>
                <field set="id" id="alvexdt:agreementType"/>
                <field set="company" id="alvexdt:company"/>
-               <field set="company" id="alvexdt:contractor">
-                  <control template="/alvex-classifier-select.ftl">
-                     <control-param name="url">http://alfresco:8080/alfresco/service/api/alvex/datalists/items/site/classifiers/dataLists/Locations</control-param>
-                     <control-param name="label">title</control-param>
-                     <control-param name="value">title</control-param>
-                  </control>
-               </field>
+               <field set="company" id="alvexdt:contractor"/>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -118,13 +112,7 @@
                <field set="id" id="alvexdt:registerDate"/>
                <field set="id" id="alvexdt:agreementType"/>
                <field set="company" id="alvexdt:company"/>
-               <field set="company" id="alvexdt:contractor">
-                  <control template="/alvex-classifier-select.ftl">
-                     <control-param name="url">http://alfresco:8080/alfresco/service/api/alvex/datalists/items/site/classifiers/dataLists/Контакты</control-param>
-                     <control-param name="label">contactFirstName</control-param>
-                     <control-param name="value">contactFirstName</control-param>
-                  </control>
-               </field>
+               <field set="company" id="alvexdt:contractor"/>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -333,13 +321,7 @@
                <field set="id" id="alvexdt:registerDate"/>
                <field set="id" id="alvexdt:sentType"/>
                <field set="company" id="alvexdt:correspondent"/>
-               <field set="company" id="alvexdt:contactName">
-                  <control template="/alvex-classifier-select.ftl">
-                     <control-param name="url">http://alfresco:8080/alfresco/service/api/alvex/datalists/items/site/classifiers/dataLists/Контакты</control-param>
-                     <control-param name="label">contactFirstName</control-param>
-                     <control-param name="value">contactFirstName</control-param>
-                  </control>
-               </field>
+               <field set="company" id="alvexdt:contactName"/>
                <field set="company" id="alvexdt:deliveryType"/>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
@@ -398,13 +380,7 @@
                <field set="id" id="alvexdt:registerDate"/>
                <field set="id" id="alvexdt:sentType"/>
                <field set="company" id="alvexdt:correspondent"/>
-               <field set="company" id="alvexdt:contactName">
-                  <control template="/alvex-classifier-select.ftl">
-                     <control-param name="url">http://alfresco:8080/alfresco/service/api/alvex/datalists/items/site/classifiers/dataLists/Контакты</control-param>
-                     <control-param name="label">contactFirstName</control-param>
-                     <control-param name="value">contactFirstName</control-param>
-                  </control>
-               </field>
+               <field set="company" id="alvexdt:contactName"/>
                <field set="company" id="alvexdt:deliveryType"/>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">

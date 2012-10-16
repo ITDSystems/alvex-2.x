@@ -25,6 +25,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 (function()
 {
+	var Dom = YAHOO.util.Dom,
+		Event = YAHOO.util.Event,
+		KeyListener = YAHOO.util.KeyListener;
+	var $html = Alfresco.util.encodeHTML;
+
 	Alvex.Uploader = function(htmlId)
 	{
 		Alvex.Uploader.superclass.constructor.call(this, "Alvex.Uploader", htmlId);
@@ -177,7 +182,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 				this.options.uploader = new YAHOO.widget.Uploader( this.id + "-cntrl-uploaderOverlay" );
 
 				if( !Alfresco.util.hasRequiredFlashPlayer(9, 0, 45) ) {
-					document.getElementById(this.id + "-cntrl").innerHTML = this.msg("alvex.uploader.flash_not_found");
+					addFilesButton.set("disabled", true);
+					var warnEl = Dom.get(this.id + "-cntrl-warnMessage");
+					warnEl.innerHTML = $html( this.msg("alvex.uploader.flash_not_found") );
 					return;
 				}
 

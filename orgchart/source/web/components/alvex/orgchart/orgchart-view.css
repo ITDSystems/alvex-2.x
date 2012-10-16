@@ -1,3 +1,46 @@
+/* Picker dialog layout */
+
+div.picker-part {
+	height: 300px;
+	overflow: scroll;
+	overflow-x: hidden;
+	border-right: 1px solid #CBCBCB;
+}
+
+.yui-gb .yui-u {
+	margin-left: 1%;
+}
+
+div.group-selector td { text-align: left; }
+div.people-table thead { display: none; }
+div.people-table table { border: none; width: 100% }
+.yui-skin-sam .people-table .yui-dt td { border-right: none; }
+
+div.picker-selection {
+	padding-left: 6px;
+	border-top: 1px solid #CBCBCB;
+}
+
+.alfresco-share .yui-panel .bd .yui-u.first.picker-search {
+	padding-left: 6px;
+	text-align: left;
+}
+
+.yui-panel-container .yui-u.first.picker-search input[type="text"] {
+	padding: 0.3em 1em 0.4em 0.5em;
+	float: left;
+}
+
+.alfresco-share .yui-panel .bd div.yui-u.picker-view-selector {
+	padding-top: 0.7em;
+}
+
+.alfresco-share .yui-panel .bd div.yui-u.picker-view-selector a {
+	padding-left: 1em;
+}
+
+/* End of picker dialog layout */
+
 .action div{
 	float: left;
 	line-height: 1em;
@@ -21,6 +64,15 @@ div.addPerson a.orgchart-action-link {
 
 div.addPersonTitle a.orgchart-action-link {
 	padding: 0 0 0 0px;
+}
+
+/* We need these two rules to remove ugly black border on Windows */
+div.addPersonTitle img {
+	border: 0px;
+}
+
+a.remove-item img {
+	border: 0px;
 }
 
 div.showUserInfo a.orgchart-action-link {
@@ -63,7 +115,6 @@ div.roles-list {
 .profile hr { color: #E4E4E4; background-color: #E4E4E4; }
 .person-hidden { display: none; }
 .orgchart-picker-menu { border-bottom: 1px solid #CBCBCB; }
-.search-input { float: left; }
 
 /* Admin page */
 .form-fields { padding: 1em; }

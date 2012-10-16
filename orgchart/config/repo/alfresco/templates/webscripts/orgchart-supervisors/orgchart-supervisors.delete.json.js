@@ -1,10 +1,21 @@
 (function() {
 	var unitId = url.templateArgs['id'];
 	try {
-		var personRefs = json.get('data').get('nodeRefs').split(',');
-		for each (ref in personRefs) {
-			var person = search.findNode(ref);
-			orgchart.getUnit(unitId).deleteSupervisor(person);
+		if( json.get('data').has('nodeRefs') )
+		{
+			var personRefs = json.get('data').get('nodeRefs').split(',');
+			for each (ref in personRefs) {
+				var person = search.findNode(ref);
+				orgchart.getUnit(unitId).deleteSupervisor(person);
+			}
+		}
+		else if ( json.get('data').has('logins') )
+		{
+			var logins = json.get('data').get('logins').split(',');
+			for each (login in logins) {
+				var person = people.getPerson(login);
+				orgchart.getUnit(unitId).deleteSupervisor(person);
+			}
 		}
 		status.code = 200;
 	} catch (e) {

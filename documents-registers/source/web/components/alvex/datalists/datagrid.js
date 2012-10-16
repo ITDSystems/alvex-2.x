@@ -1214,9 +1214,9 @@ if (typeof Alvex == "undefined" || !Alvex)
          };
       },
 
-      onGridResize: function f()
-      {
-      },
+      // onGridResize: function f()
+      // {
+      // },
 
       /**
        * DataTable set-up and event registration
@@ -1226,8 +1226,10 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       _setupDataTable: function DataGrid__setupDataTable(columns)
       {
-         var divEl = document.getElementById(this.id + '-grid');
-         divEl.onresize = this.onGridResize();
+         // Commenting this out because #184
+         // This code looks dead anyway. If nothing breaks, just remove it on next refactoring
+         // var divEl = document.getElementById(this.id + '-grid');
+         // divEl.onresize = this.onGridResize();
 
          // YUI DataTable column definitions
          var columnDefinitions =

@@ -46,6 +46,7 @@
 				</#if>
 			</td>
 		</tr></table></div>
+		<div id="${controlId}-warnMessage"></div>
 		<div id="${controlId}-dataTableContainer"></div>
 		<div id="${controlId}-default-picker" class="object-finder">
 		<#if "${packageActionGroup}" == "add_package_item_actions">

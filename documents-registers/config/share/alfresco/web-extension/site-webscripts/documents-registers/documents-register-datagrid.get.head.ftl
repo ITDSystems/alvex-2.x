@@ -1,5 +1,4 @@
-<#include "/org/alfresco/components/component.head.inc">
-<#include "/org/alfresco/components/form/form.get.head.ftl">
+<#include "/form.get.head.ftl">
 <!-- Data Grid -->
 <@link rel="stylesheet" type="text/css" href="${page.url.context}/res/components/alvex/datalists/datagrid.css" />
 <script type="text/javascript" src="${page.url.context}/res/components/alvex/datalists/datagrid.js"></script>

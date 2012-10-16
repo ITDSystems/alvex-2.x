@@ -10,7 +10,7 @@
             <#assign split=server.version?index_of(" ")>
             <div class="header">Spring Surf and ${server.edition?html} v${server.version?substring(0, split)?html}</div>
             <div>${server.version?substring(split+1)?html}</div>
-            <div class="header">Alvex Community v1.3</div>
+            <div class="header">Alvex Community v1.3.0.1</div>
             <div class="contributions-bg" style="height: 55px;"></div>
             <div class="contributions-wrapper" style="height: 55px;">
                <div id="${el}-contributions" class="contributions" style="margin-top: 55px; padding-bottom: 55px;">

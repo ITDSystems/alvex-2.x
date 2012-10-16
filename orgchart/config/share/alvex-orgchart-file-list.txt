@@ -20,6 +20,8 @@ alfresco/site-webscripts/components/orgchart-tree-view.get.desc.xml
 alfresco/site-webscripts/components/orgchart-admin.get.js
 alfresco/site-webscripts/components/orgchart-tree-view.get.html.ftl
 alfresco/site-webscripts/orgchart-picker-dialog.inc.ftl
+alfresco/site-webscripts/component.head.inc
+alfresco/site-webscripts/form.get.head.ftl
 alfresco/site-data/pages/alvex-orgchart.xml
 alfresco/site-data/template-instances/alvex-orgchart.xml
 com/alvexcore/share/OrgchartExtension.class

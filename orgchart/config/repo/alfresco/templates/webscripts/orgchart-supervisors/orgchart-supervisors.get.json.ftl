@@ -11,7 +11,7 @@
 			"userName": "${person.userName}",
 			"firstName": "${person.firstName}",
 			"lastName": "${person.lastName}",
-			"nodeRef": "${person.node?string}", 	
+			"nodeRef": "${person.node?string}"
  		}<#if person_has_next>,</#if>
  		</#list>
 		</#if>
