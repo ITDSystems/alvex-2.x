@@ -96,12 +96,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 				parent.widgets.dataSource.doBeforeParseData = function f(oRequest, oFullResponse)
 				{
 					var workflowDefinitions = parent.options.workflowDefinitions;
-					var updatedResponse = oFullResponse;
-					for (var i = 0; i < updatedResponse.workflows.length; i++) {
-						updatedResponse.workflows[i].actions = '';
+					var updatedResponse = {};
+					updatedResponse['workflows'] = [];
+					for (var i = 0; i < oFullResponse.workflows.length; i++) {
+						oFullResponse.workflows[i].actions = '';
 						for (var j = 0; j < workflowDefinitions.length; j++)
-							if(workflowDefinitions[j].name == updatedResponse.workflows[i].name)
-								updatedResponse.workflows[i].title = workflowDefinitions[j].title;
+							if(workflowDefinitions[j].name == oFullResponse.workflows[i].name) {
+								oFullResponse.workflows[i].title = workflowDefinitions[j].title;
+								updatedResponse.workflows.push(oFullResponse.workflows[i]);
+							}
 					}
 					return updatedResponse;
 				};
