@@ -1,5 +1,20 @@
 <#macro renderFormsRuntime formId>
    <script type="text/javascript">//<![CDATA[
+
+      YAHOO.Bubbling.on( "afterFormRuntimeInit", 
+            function( layer, args, obj ) 
+            {
+               args[1].runtime.doBeforeFormSubmit = {
+                  fn: function(form, runtime)
+                  {
+                     for( var i in runtime.submitElements )
+                        runtime.submitElements[i].set("disabled", true);
+                  },
+                  obj: args[1].runtime
+               };
+            }, {}
+      );
+
       var formUI = new Alfresco.FormUI("${formId}", "${args.htmlid?js_string}").setOptions(
       {
          mode: "${form.mode}",
@@ -38,19 +53,7 @@
       }).setMessages(
          ${messages}
       );
-debugger;
 
-	YAHOO.lang.later( 2000, this, function(a, b) {
-debugger;
-	      formUI.formsRuntime.doBeforeFormSubmit = {
-	         fn: function(form, runtime)
-	         {
-	            for( var i in runtime.submitElements )
-	               runtime.submitElements[i].set("disabled", true);
-	         },
-	         obj: formUI.formsRuntime
-	      };
-	}, { el: formUI, } );
    //]]></script>
 </#macro> 
 
