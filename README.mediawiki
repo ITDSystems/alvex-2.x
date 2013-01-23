@@ -4,3 +4,4 @@ Alvex is an Alfresco based solution. Alvex is designed to manage complex workflo
 === Links ===
 * [http://www.alvexcore.com/ Alvex website]
 * [http://www.alfresco.com/partners/solutions/alvex Alvex in Alfresco Solution Showcase]
+* [http://issues.itdhq.com/ Alvex bug tracker] - please report bugs there. We try to keep an eye on GiHub issues as well, but reporting at bug tracker ensures that we will answer promptly.
