@@ -66,7 +66,7 @@ public class OrgchartExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() {
+	public void init() throws Exception {
 		super.init();
 		// set up orgchart
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
