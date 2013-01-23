@@ -52,6 +52,8 @@ import org.springframework.util.PropertyPlaceholderHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import com.alvexcore.license.LicenseInfo;
+
 /*
  * Repository extension registry implementation
  * 
@@ -160,6 +162,10 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		//						.getNodeService()
 		//						.getProperty(repository.getCompanyHome(),
 		//								ContentModel.PROP_CREATED).toString();
+	}
+
+	public LicenseInfo getLicenseInfo() {
+		return new LicenseInfo("CE", new String(), new String(), 0, 0, new Date(), new Date(), true, false);
 	}
 
 	private boolean initialiazed = false;

@@ -21,6 +21,7 @@ package com.alvexcore.repo.jscript;
 import org.alfresco.repo.processor.BaseProcessorExtension;
 import org.springframework.beans.factory.annotation.Required;
 
+import com.alvexcore.license.LicenseInfo;
 import com.alvexcore.repo.RepositoryExtensionRegistry;
 
 /**
@@ -45,5 +46,9 @@ public class JSRepositoryExtensionRegistry extends BaseProcessorExtension {
 
 	public String getSystemId() {
 		return registry.getSystemId();
+	}
+
+	public LicenseInfo getLicense() {
+		return registry.getLicenseInfo();
 	}
 }
