@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-role-definitions</shortname>
+  <description><![CDATA[
+  Removes role fefinition
+  ]]></description>
+  <url>/api/alvex/orgchart/role-definitions/{role}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

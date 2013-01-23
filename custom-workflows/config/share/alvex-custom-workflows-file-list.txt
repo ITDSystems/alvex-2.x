@@ -1,8 +1,0 @@
-alfresco/web-extension/alvex-custom-workflows-config.xml
-alfresco/web-extension/messages/alvex-custom-workflows_ru.properties
-alfresco/web-extension/messages/alvex-custom-workflows_en.properties
-alfresco/web-extension/messages/alvex-custom-workflows.properties
-alfresco/web-extension/alvex-custom-workflows-context.xml
-com/alvexcore/share/CustomWorkflowsExtension.class
-alvex-custom-workflows.properties
-alvex-custom-workflows-file-list.txt

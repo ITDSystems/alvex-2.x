@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-user-roles</shortname>
+  <description><![CDATA[
+  Returns role instances for given users
+  ]]></description>
+  <url>/api/alvex/orgchart/user/{userName}/roles</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

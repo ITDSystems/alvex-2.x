@@ -1,7 +1,0 @@
-alfresco/web-extension/alvex-surf-evaluators-config.xml
-alfresco/web-extension/alvex-surf-evaluators-context.xml
-com/alvexcore/share/module/evaluators/SharePageEvaluator.class
-com/alvexcore/share/SurfEvaluatorsExtension.class
-alvex-surf-evaluators-file-list.txt
-alvex-surf-evaluators.properties
-org/springframework/extensions/surf/alvex-surf-evaluators-context.xml

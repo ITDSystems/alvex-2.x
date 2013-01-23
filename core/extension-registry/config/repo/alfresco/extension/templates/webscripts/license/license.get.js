@@ -1,0 +1,1 @@
+model.license = extensionRegistry.license

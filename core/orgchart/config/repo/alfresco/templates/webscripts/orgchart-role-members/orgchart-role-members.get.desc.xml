@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-roles</shortname>
+  <description><![CDATA[
+  Removes role from unit
+  ]]></description>
+  <url>/api/alvex/orgchart/units/{id}/roles/{role}/members</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

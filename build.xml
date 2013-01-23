@@ -1,0 +1,108 @@
+<project basedir="." default="dist-jars" name="Alfresco extensions build script">
+	<tstamp>
+		<format property="TODAY" pattern="ddMMyyyy" locale="en,US"/>
+	</tstamp>
+
+	<!-- Load external properties -->
+	<property file="${user.home}/build.properties" />
+	<property file="${user.home}/.build.properties" />
+	<property file="build.properties" />
+	<property name="dist.dir" value="dist" />
+	<property name="amps.dir" value="amps" />
+	<property name="amps.build.dir" value="build" />
+	<property name="amps.build.repo.dir" value="${amps.build.dir}/repo" />
+	<property name="amps.build.share.dir" value="${amps.build.dir}/share" />
+
+	<target name="clean" description="Clean out all build directories">
+		<delete dir="${dist.dir}" />
+		<delete dir="${amps.build.dir}" />
+		<subant target="clean">
+			<fileset dir="core/custom-workflows" includes="build.xml" />
+			<fileset dir="core/documents-registers" includes="build.xml" />
+			<fileset dir="core/extension-registry" includes="build.xml" />
+			<fileset dir="core/manager-dashboard-tasks" includes="build.xml" />
+			<fileset dir="core/my-workflows-dashlet" includes="build.xml" />
+			<fileset dir="core/orgchart" includes="build.xml" />
+			<fileset dir="core/related-workflows" includes="build.xml" />
+			<fileset dir="core/share-generic-ui" includes="build.xml" />
+			<fileset dir="core/surf-evaluators" includes="build.xml" />
+			<fileset dir="core/tasks-extended-ui" includes="build.xml" />
+			<fileset dir="core/uploader" includes="build.xml" />
+			<fileset dir="core/workflows-extended-ui" includes="build.xml" />
+			<fileset dir="core/workflow-shortcut-dashlet" includes="build.xml" />
+			<fileset dir="core/workflows-discussions" includes="build.xml" />
+		</subant>
+	</target>
+	<target name="build-all" description="Build all extensions">
+		<subant target="build-all">
+			<fileset dir="core/custom-workflows" includes="build.xml" />
+			<fileset dir="core/documents-registers" includes="build.xml" />
+			<fileset dir="core/extension-registry" includes="build.xml" />
+			<fileset dir="core/manager-dashboard-tasks" includes="build.xml" />
+			<fileset dir="core/my-workflows-dashlet" includes="build.xml" />
+			<fileset dir="core/orgchart" includes="build.xml" />
+			<fileset dir="core/related-workflows" includes="build.xml" />
+			<fileset dir="core/share-generic-ui" includes="build.xml" />
+			<fileset dir="core/surf-evaluators" includes="build.xml" />
+			<fileset dir="core/tasks-extended-ui" includes="build.xml" />
+			<fileset dir="core/uploader" includes="build.xml" />
+			<fileset dir="core/workflows-extended-ui" includes="build.xml" />
+			<fileset dir="core/workflow-shortcut-dashlet" includes="build.xml" />
+			<fileset dir="core/workflows-discussions" includes="build.xml" />
+		</subant>
+	</target>
+	<target name="hot-copy" description="Hot copy all extensions">
+		<subant target="hot-copy">
+			<fileset dir="core/custom-workflows" includes="build.xml" />
+			<fileset dir="core/documents-registers" includes="build.xml" />
+			<fileset dir="core/extension-registry" includes="build.xml" />
+			<fileset dir="core/manager-dashboard-tasks" includes="build.xml" />
+			<fileset dir="core/my-workflows-dashlet" includes="build.xml" />
+			<fileset dir="core/orgchart" includes="build.xml" />
+			<fileset dir="core/related-workflows" includes="build.xml" />
+			<fileset dir="core/share-generic-ui" includes="build.xml" />
+			<fileset dir="core/surf-evaluators" includes="build.xml" />
+			<fileset dir="core/tasks-extended-ui" includes="build.xml" />
+			<fileset dir="core/uploader" includes="build.xml" />
+			<fileset dir="core/workflows-extended-ui" includes="build.xml" />
+			<fileset dir="core/workflow-shortcut-dashlet" includes="build.xml" />
+			<fileset dir="core/workflows-discussions" includes="build.xml" />
+		</subant>
+	</target>
+	<target name="dist-jars" description="Create dist jars for all extensions">
+		<subant target="dist-jars">
+			<fileset dir="core/custom-workflows" includes="build.xml" />
+			<fileset dir="core/documents-registers" includes="build.xml" />
+			<fileset dir="core/extension-registry" includes="build.xml" />
+			<fileset dir="core/manager-dashboard-tasks" includes="build.xml" />
+			<fileset dir="core/my-workflows-dashlet" includes="build.xml" />
+			<fileset dir="core/orgchart" includes="build.xml" />
+			<fileset dir="core/related-workflows" includes="build.xml" />
+			<fileset dir="core/share-generic-ui" includes="build.xml" />
+			<fileset dir="core/surf-evaluators" includes="build.xml" />
+			<fileset dir="core/tasks-extended-ui" includes="build.xml" />
+			<fileset dir="core/uploader" includes="build.xml" />
+			<fileset dir="core/workflows-extended-ui" includes="build.xml" />
+			<fileset dir="core/workflow-shortcut-dashlet" includes="build.xml" />
+			<fileset dir="core/workflows-discussions" includes="build.xml" />
+		</subant>
+	</target>
+	<target name="deploy-jars" description="Deploy all extensions">
+		<subant target="deploy-jars">
+			<fileset dir="core/custom-workflows" includes="build.xml" />
+			<fileset dir="core/documents-registers" includes="build.xml" />
+			<fileset dir="core/extension-registry" includes="build.xml" />
+			<fileset dir="core/manager-dashboard-tasks" includes="build.xml" />
+			<fileset dir="core/my-workflows-dashlet" includes="build.xml" />
+			<fileset dir="core/orgchart" includes="build.xml" />
+			<fileset dir="core/related-workflows" includes="build.xml" />
+			<fileset dir="core/share-generic-ui" includes="build.xml" />
+			<fileset dir="core/surf-evaluators" includes="build.xml" />
+			<fileset dir="core/tasks-extended-ui" includes="build.xml" />
+			<fileset dir="core/uploader" includes="build.xml" />
+			<fileset dir="core/workflows-extended-ui" includes="build.xml" />
+			<fileset dir="core/workflow-shortcut-dashlet" includes="build.xml" />
+			<fileset dir="core/workflows-discussions" includes="build.xml" />
+		</subant>
+	</target>
+</project>

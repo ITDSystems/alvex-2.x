@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+
+	<!-- Bootstrap configs -->
+	<bean id="alvex-workflow-shortcut-dashlet-templates-bootstrap" 
+				class="org.alfresco.repo.module.ImporterModuleComponent" parent="module.baseComponent">
+		<!-- Module properties -->
+		<property name="moduleId" value="workflow-shortcut-dashlet" />
+		<property name="name" value="Alvex workflow shortcut dashlet templates" />
+		<property name="description" value="Alvex workflow shortcut dashlet templates - used for setting default available workflows" />
+		<property name="sinceVersion" value="1.3" />
+		<property name="appliesFromVersion" value="1.3" />
+		<!-- Data properties -->
+		<property name="importer" ref="spacesBootstrap"/>
+		<property name="bootstrapViews">
+			<list>
+				<props>
+					<prop key="path">/${spaces.company_home.childname}/${spaces.dictionary.childname}</prop>
+					<prop key="location">alfresco/bootstrap/alvex-workflow-shortcut-dashlet.xml</prop>
+				</props>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="alvex-workflow-shortcut-dashlet" parent="alvex-extension"
+		class="com.alvexcore.repo.WorkflowShortcutDashletExtension"
+		depends-on="" />
+</beans>

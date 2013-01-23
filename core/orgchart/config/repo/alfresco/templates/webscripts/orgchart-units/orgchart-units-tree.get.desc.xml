@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-units-tree</shortname>
+  <description><![CDATA[
+  Returns orgchart tree
+  ]]></description>
+  <url>/api/alvex/orgchart/tree/{branch}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

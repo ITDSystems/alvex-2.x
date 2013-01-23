@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-members</shortname>
+  <description><![CDATA[
+  Returns list of managees for user
+  ]]></description>
+  <url>/api/alvex/orgchart/user/{userName}/managees</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

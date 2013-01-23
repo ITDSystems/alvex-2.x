@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<!-- removeService to provide js object similar to 'remote' on Share-tier -->
+	<bean id="remoteService" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.jscript.RemoteService">
+		<property name="extensionName">
+			<value>remoteService</value>
+		</property>
+		<property name="ScriptRemote" ref="webscripts.script.remote" />
+	</bean>
+
+	<bean id="alvex-extension-registry-md" parent="dictionaryModelBootstrap"
+		depends-on="dictionaryBootstrap">
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-extension-registry-content-model.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-repo-extension-registry" class="com.alvexcore.repo.RepositoryExtensionRegistry"
+		depends-on="alvex-extension-registry-md">
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="alvex-repo-extension-registry-js"
+		class="com.alvexcore.repo.jscript.JSRepositoryExtensionRegistry"
+		depends-on="alvex-repo-extension-registry" parent="baseJavaScriptExtension">
+		<property name="extensionName">
+			<value>extensionRegistry</value>
+		</property>
+		<property name="repositoryExtensionRegistry" ref="alvex-repo-extension-registry" />
+	</bean>
+	<bean id="alvex-extension" abstract="true">
+		<property name="extensionRegistry" ref="alvex-repo-extension-registry" />
+	</bean>
+
+</beans>

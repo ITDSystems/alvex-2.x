@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-orgchart-md" parent="dictionaryModelBootstrap"
+		depends-on="dictionaryBootstrap">
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.alvex-orgchart</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-orgchart-content-model.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-orgchart-service-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexOrgchartService" class="com.alvexcore.repo.orgchart.OrgchartServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexOrgchartService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexOrgchartService" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.orgchart.OrgchartService</value>
+			</list>
+		</property>
+
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-orgchart-service-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexOrgchartService" alias="alvex-orgchart-service" />
+	<bean id="alvex-orgchart-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.orgchart.jscript.JscriptOrgchart">
+		<property name="extensionName">
+			<value>orgchart</value>
+		</property>
+		<property name="orgchartService" ref="alvex-orgchart-service" />
+	</bean>
+	<bean id="alvex-orgchart" parent="alvex-extension"
+		class="com.alvexcore.repo.OrgchartExtension" depends-on="alvex-orgchart-md,alvex-orgchart-js">
+		<property name="orgchartService" ref="alvex-orgchart-service" />
+	</bean>
+</beans>

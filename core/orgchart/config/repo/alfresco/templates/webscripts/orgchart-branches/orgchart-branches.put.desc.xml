@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-branches</shortname>
+  <description><![CDATA[
+  Adds new branch
+  ]]></description>
+  <url>/api/alvex/orgchart/branches/{branch}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

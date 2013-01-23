@@ -1,0 +1,29 @@
+<view:view xmlns:view="http://www.alfresco.org/view/repository/1.0"
+		xmlns:cm="http://www.alfresco.org/model/content/1.0"
+		xmlns:app="http://www.alfresco.org/model/application/1.0" >
+
+	<cm:folder view:childName="app:alvex">
+		<app:uifacets />
+		<cm:name>alvex</cm:name>
+		<cm:title></cm:title>
+		<cm:description></cm:description>
+		<cm:contains>
+			<cm:folder view:childName="app:workflow-shortcut">
+				<app:uifacets />
+				<cm:name>workflow-shortcut</cm:name>
+				<cm:title></cm:title>
+				<cm:description></cm:description>
+				<cm:contains>
+					<cm:content>
+						<app:uifacets />
+						<cm:name>default.config</cm:name>
+						<cm:title>Default available workflows</cm:title>
+						<cm:description></cm:description>
+						<cm:content>contentUrl=classpath:alfresco/bootstrap/default.config|mimetype=text/plain|size=|encoding=UTF-8</cm:content>
+					</cm:content>
+				</cm:contains>
+			</cm:folder>
+		</cm:contains>
+	</cm:folder>
+
+</view:view>

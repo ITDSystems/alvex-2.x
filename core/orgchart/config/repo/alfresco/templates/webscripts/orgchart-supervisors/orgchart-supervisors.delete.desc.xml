@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-supervisors</shortname>
+  <description><![CDATA[
+  Deletes unit supervisor
+  ]]></description>
+  <url>/api/alvex/orgchart/units/{id}/supervisors</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

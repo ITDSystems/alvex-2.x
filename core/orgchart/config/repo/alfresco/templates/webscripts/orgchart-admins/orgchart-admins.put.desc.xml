@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-admins</shortname>
+  <description><![CDATA[
+  Adds new unit admin
+  ]]></description>
+  <url>/api/alvex/orgchart/units/{id}/admins</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

@@ -1,7 +1,0 @@
-alfresco/templates/webscripts/alvex-upload/alvex-upload.post.desc.xml
-alfresco/templates/webscripts/alvex-upload/alvex-upload.post.js
-alfresco/templates/webscripts/alvex-upload/alvex-upload.post.json.ftl
-alfresco/extension/alvex-uploader-context.xml
-com/alvexcore/repo/UploaderExtension.class
-alvex-uploader-file-list.txt
-alvex-uploader.properties

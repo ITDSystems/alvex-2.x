@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-units</shortname>
+  <description><![CDATA[
+  Creates child orgchart unit
+  ]]></description>
+  <url>/api/alvex/orgchart/units/{id}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

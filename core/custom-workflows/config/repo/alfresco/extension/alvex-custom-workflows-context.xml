@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-custom-workflows-wd" parent="workflowDeployer">
+		<!-- Register workflows -->
+		<property name="workflowDefinitions">
+			<list>
+				<props>
+					<prop key="engineId">activiti</prop>
+					<prop key="location">alfresco/extension/workflows/alvex-basic-workflow.bpmn20.xml</prop>
+					<prop key="mimetype">text/xml</prop>
+					<prop key="redeploy">false</prop>
+				</props>
+			</list>
+		</property>
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.alvex-custom-workflows</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-custom-workflows-task-model.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-custom-workflows-pre-parse-listener"
+		class="com.alvexcore.repo.workflow.activiti.AlvexPreParseListener">
+		<property name="activitiConfiguration" ref="activitiProcessEngineConfiguration" />
+	</bean>
+	<bean id="alvex-custom-workflows-activiti-listener" abstract="true">
+		<property name="alvexPreParseListener" ref="alvex-custom-workflows-pre-parse-listener" />
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="alvex-custom-workflows-permission-manager" abstract="true"
+		parent="alvex-custom-workflows-activiti-listener"
+		class="com.alvexcore.repo.workflow.activiti.WorkflowPermissionManager">
+	</bean>
+	<bean id="alvex-custom-workflows-permission-manager1" parent="alvex-custom-workflows-permission-manager">
+		<property name="matches">
+			<list>
+				<value>task-assign-after-change:.*@activitiBasicWorkflow</value>
+				<value>task-done:.*@activitiBasicWorkflow</value>
+				<value>process-start@activitiBasicWorkflow</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-custom-workflows" parent="alvex-extension"
+		class="com.alvexcore.repo.CustomWorkflowsExtension"
+		depends-on="alvex-custom-workflows-pre-parse-listener,alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader,alvex-related-workflows,alvex-workflows-discussions" />
+</beans>

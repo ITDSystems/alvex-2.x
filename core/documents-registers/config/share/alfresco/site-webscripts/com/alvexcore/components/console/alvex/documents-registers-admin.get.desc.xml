@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Alvex: Admin Component for Document Registers</shortname>
+	<description>Alvex: Admin Component for Document Registers</description>
+	<url>/components/admin/alvex/documents-registers</url>
+	<family>admin-console</family>
+</webscript>

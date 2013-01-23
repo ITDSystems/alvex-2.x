@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>license</shortname>
+	<description>Returns license information</description>
+	<url>/api/alvex/license</url>
+	<transaction>none</transaction>
+	<authentication>admin</authentication>
+	<format default="json">any</format>
+</webscript>

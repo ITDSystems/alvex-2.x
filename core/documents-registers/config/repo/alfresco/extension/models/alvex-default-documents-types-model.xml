@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model 
+	name="alvexdt:company_documents_model"
+	xmlns="http://www.alfresco.org/model/dictionary/1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.alfresco.org/model/dictionary/1.0 modelSchema.xsd">
+
+	<description>Alvex Default Company Documents Model</description>
+	<author>ITD Systems</author>
+	<published>2012-09-27</published>
+	<version>1.1</version>
+
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+		<import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+		<import uri="http://www.alfresco.org/model/datalist/1.0" prefix="dl"/>
+	</imports>
+	
+	<namespaces>
+		<namespace uri="http://alvexcore.com/prefix/alvexdt" prefix="alvexdt"/>
+	</namespaces>
+
+	<constraints>
+		<constraint name="alvexdt:docStatus" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+					<value>notStarted</value>
+					<value>inProgress</value>
+					<value>completed</value>
+				</list>
+			</parameter>
+		</constraint>
+	</constraints>
+
+
+	<types>
+	
+		<type name="alvexdt:object">
+			<parent>dl:dataListItem</parent>
+			<properties>
+				<property name="alvexdt:parentRegisterName">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexdt:files">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:content</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+				<association name="alvexdt:autoRelatedDocuments">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdt:object</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</type>	
+
+		<type name="alvexdt:content">
+			<parent>cm:content</parent>
+			<associations>
+				<association name="alvexdt:registries">
+					<source>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</source>
+					<target>
+						<class>alvexdt:object</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</type>	
+
+		<type name="alvexdt:agreement">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:agreementType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+				<property name="alvexdt:agreementSummary">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:companyable</aspect>
+				<aspect>alvexdt:contractorable</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:withManager</aspect>
+				<aspect>alvexdt:signed</aspect>
+				<aspect>alvexdt:expiring</aspect>
+				<aspect>alvexdt:renewable</aspect>
+				<aspect>alvexdt:withLocation</aspect>
+			</mandatory-aspects>
+		</type>
+		
+		<type name="alvexdt:received">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:receivedType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:correspondentable</aspect>
+				<aspect>alvexdt:withRelatedSent</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:executable</aspect>
+				<aspect>alvexdt:addressable</aspect>
+				<aspect>alvexdt:withContactName</aspect>
+				<aspect>alvexdt:withDeliveryType</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:sent">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:sentType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:correspondentable</aspect>
+				<aspect>alvexdt:signed</aspect>
+				<aspect>alvexdt:withRelatedReceived</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:withContactName</aspect>
+				<aspect>alvexdt:withDeliveryType</aspect>
+				<aspect>alvexdt:withAddresser</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:appendix">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:appendixType">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:withPrimaryDocument</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:invoice">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:invoiceType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+                                <property name="alvexdt:invoiceDate">
+                                        <type>d:date</type>
+					<mandatory>true</mandatory>
+                                        <index enabled="true">
+                                                <atomic>true</atomic>
+                                                <stored>true</stored>
+                                                <tokenised>false</tokenised>
+                                        </index>
+                                </property>
+                                <property name="alvexdt:paymentDate">
+                                        <type>d:date</type>
+                                        <index enabled="true">
+                                                <atomic>true</atomic>
+                                                <stored>true</stored>
+                                                <tokenised>false</tokenised>
+                                        </index>
+                                </property>
+                                <property name="alvexdt:amount">
+                                        <type>d:float</type>
+                                        <index enabled="true">
+                                                <atomic>true</atomic>
+                                                <stored>true</stored>
+                                                <tokenised>false</tokenised>
+                                        </index>
+                                </property>
+                                <property name="alvexdt:currency">
+                                        <type>d:text</type>
+                                        <index enabled="true">
+                                                <atomic>true</atomic>
+                                                <stored>true</stored>
+                                                <tokenised>false</tokenised>
+                                        </index>
+                                </property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:companyable</aspect>
+				<aspect>alvexdt:contractorable</aspect>
+				<aspect>alvexdt:withPrimaryDocument</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:withManager</aspect>
+				<aspect>alvexdt:expiring</aspect>
+				<aspect>alvexdt:withLocation</aspect>
+				<aspect>alvexdt:audited</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:administrative">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:administrativeType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:companyable</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:signed</aspect>
+				<aspect>alvexdt:executable</aspect>
+				<aspect>alvexdt:audited</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:background">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:backgroundType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:companyable</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:signed</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:attorney">
+			<parent>alvexdt:object</parent>
+			<properties>
+				<property name="alvexdt:recipient">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+				<property name="alvexdt:recipientPosition">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+				<property name="alvexdt:mark">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:contractorable</aspect>
+				<aspect>alvexdt:expiring</aspect>
+			</mandatory-aspects>
+		</type>	
+	</types>
+
+	<aspects>
+	
+		<aspect name="alvexdt:identified">
+			<properties>
+				<property name="alvexdt:id">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+				<property name="alvexdt:registerDate">
+					<type>d:date</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:companyable">
+			<properties>
+				<property name="alvexdt:company">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:contractorable">
+			<properties>
+				<property name="alvexdt:contractor">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:correspondentable">
+			<properties>
+				<property name="alvexdt:correspondent">
+					<type>d:text</type>
+					<mandatory>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:withPrimaryDocument">
+			<associations>
+				<association name="alvexdt:primaryDocument">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdt:agreement</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withRelatedDocuments">
+			<associations>
+				<child-association name="alvexdt:relatedDocuments">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdt:object</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</child-association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withRelatedSent">
+			<associations>
+				<child-association name="alvexdt:relatedSent">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdt:sent</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</child-association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withRelatedReceived">
+			<associations>
+				<child-association name="alvexdt:relatedReceived">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdt:received</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</child-association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withManager">
+			<associations>
+				<association name="alvexdt:documentManager">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:summarizable">
+			<properties>
+				<property name="alvexdt:summary">
+					<type>d:mltext</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:signed">
+			<properties>
+				<property name="alvexdt:signingDate">
+					<type>d:date</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexdt:signatory">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:expiring">
+			<properties>
+				<property name="alvexdt:expiryDate">
+					<type>d:date</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:renewable">
+			<properties>
+				<property name="alvexdt:renew">
+					<type>d:boolean</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:withLocation">
+			<properties>
+				<property name="alvexdt:location">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:executable">
+			<properties>
+				<property name="alvexdt:status">
+					<type>d:text</type>
+					<default>notStarted</default>
+					<constraints>
+						<constraint ref="alvexdt:docStatus" />
+					</constraints>
+				</property>
+				<property name="alvexdt:dueDate">
+					<type>d:date</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+				<property name="alvexdt:completeDate">
+					<type>d:date</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexdt:assignee">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:audited">
+			<associations>
+				<association name="alvexdt:auditor">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:addressable">
+			<associations>
+				<association name="alvexdt:addressee">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withContactName">
+			<properties>
+				<property name="alvexdt:contactName">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:withDeliveryType">
+			<properties>
+				<property name="alvexdt:deliveryType">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</aspect>
+
+		<aspect name="alvexdt:withAddresser">
+			<associations>
+				<association name="alvexdt:addresser">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+	</aspects>
+
+</model>

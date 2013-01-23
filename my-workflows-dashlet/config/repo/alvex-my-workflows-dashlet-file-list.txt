@@ -1,9 +1,0 @@
-alfresco/templates/webscripts/alvex/workflow-instances-detailed/workflow-instances-detailed.get.json.ftl
-alfresco/templates/webscripts/alvex/workflow-instances-detailed/workflow-instances-detailed.get.desc.xml
-alfresco/extension/alvex-my-workflows-dashlet-context.xml
-com/alvexcore/repo/MyWorkflowsDashletExtension.class
-com/alvexcore/repo/web/scripts/workflow/WorkflowInstancesDetailedGet.class
-com/alvexcore/repo/web/scripts/workflow/WorkflowInstancesDetailedGet$WorkflowState.class
-com/alvexcore/repo/web/scripts/workflow/WorkflowInstancesDetailedGet$WorkflowInstanceDueAscComparator.class
-alvex-my-workflows-dashlet.properties
-alvex-my-workflows-dashlet-file-list.txt
