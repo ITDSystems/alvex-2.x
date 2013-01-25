@@ -277,7 +277,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             },
             doBeforeAjaxRequest:
             {
-               fn: function()
+               fn: function(config, obj)
                {
                   // If there is no auto numberer - just submit
                   if(this.options.autoNumbererField == '')
@@ -314,9 +314,13 @@ if (typeof Alvex == "undefined" || !Alvex)
 
                   YAHOO.lang.later( 2500, createRow, createRow.show );
 
+                  if( obj.form._toggleSubmitElements )
+                     obj.form._toggleSubmitElements(true);
+
                   return false;
                },
-               scope: this
+               scope: this,
+               obj: createRow
             },
             onSuccess:
             {
