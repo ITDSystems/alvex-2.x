@@ -685,9 +685,13 @@ var labelType, useGradients, nativeTextSupport, animate;
 							}
 						});
 						
+						if( obj )
+							obj.hide();
+
 						return false;
 					},
-					scope: this
+					scope: this,
+					obj: addRoleDialog
 				}
 			}).show();
 		},
@@ -1914,8 +1918,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 			var doBeforeDialogShow = function(p_form, p_dialog)
 			{
 				Alfresco.util.populateHTML(
-					[ p_dialog.id + "-dialogTitle", this.msg("alvex.orgchart.edit_role") ],
-					[ p_dialog.id + "-dialogHeader", this.msg("alvex.orgchart.edit_role") ]
+					[ p_dialog.id + "-dialogTitle", this.msg("alvex.orgchart.editRoleDef") ],
+					[ p_dialog.id + "-dialogHeader", this.msg("alvex.orgchart.editRoleDef") ]
 				);
 			};
 
@@ -1995,9 +1999,13 @@ var labelType, useGradients, nativeTextSupport, animate;
 							}
 						});
 
+						if( obj )
+							obj.hide();
+
 						return false;
 					},
-					scope: this
+					scope: this,
+					obj: editRoleDialog
 				}
 			}).show();
 			
@@ -2718,9 +2726,13 @@ var labelType, useGradients, nativeTextSupport, animate;
 							queue: queue
 						});
 						
+						if( obj )
+							obj.hide();
+
 						return false;
 					},
-					scope: oa
+					scope: oa,
+					obj: editUnitDialog
 				}
 			}).show();
 			Event.stopEvent(e);
@@ -2846,9 +2858,13 @@ var labelType, useGradients, nativeTextSupport, animate;
 							queue: queue
 						});
 						
+						if( obj )
+							obj.hide();
+
 						return false;
 					},
-					scope: oa
+					scope: oa,
+					obj: addUnitDialog
 				}
 			}).show();
 			Event.stopEvent(e);
