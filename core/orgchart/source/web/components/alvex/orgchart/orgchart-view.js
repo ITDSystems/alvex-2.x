@@ -153,27 +153,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 				Dom.get(this.id + '-infovis').style.height = this.options.jitHeight + 'px';
 			}
 
-			this.loading = true;
-			YAHOO.lang.later(1000, this, function() 
-				{
-					if (this.loading)
-					{
-						if (!this.widgets.waitMessage)
-						{
-							this.widgets.waitMessage = Alfresco.util.PopupManager.displayMessage(
-							{
-								text: this.msg("alvex.orgchart.waitingForLoad"),
-								spanClass: "wait",
-								displayTime: 0
-							});
-						}
-						else if (!this.widgets.waitMessage.cfg.getProperty("visible"))
-						{
-							this.widgets.waitMessage.show();
-						}
-					}
-				}, [] );
-
+			this.activateWaitMessage();
 			// Get orgchart data from server - groups only, without users to reduce load time
 				
 			// Get orgchart branches
@@ -253,7 +233,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 				{
 					fn: function (resp)
 					{
-						this.hideWaitMessage;
+						this.hideWaitMessage();
 						if (resp.serverResponse.statusText)
 							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
 					},
@@ -281,6 +261,30 @@ var labelType, useGradients, nativeTextSupport, animate;
 			this.createUserRolesDialog();
 			this.createUnitRolesDialog();
 			this.createRolesTable();
+		},
+
+		activateWaitMessage: function()
+		{
+			this.loading = true;
+			YAHOO.lang.later(1000, this, function() 
+				{
+					if (this.loading)
+					{
+						if (!this.widgets.waitMessage)
+						{
+							this.widgets.waitMessage = Alfresco.util.PopupManager.displayMessage(
+							{
+								text: this.msg("alvex.orgchart.waitingForLoad"),
+								spanClass: "wait",
+								displayTime: 0
+							});
+						}
+						else if (!this.widgets.waitMessage.cfg.getProperty("visible"))
+						{
+							this.widgets.waitMessage.show();
+						}
+					}
+				}, [] );
 		},
 
 		hideWaitMessage: function()
@@ -337,6 +341,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 							{ onclick: { fn: this.showTreePicker, obj: null, scope: this } }
 					);
 
+				this.activateWaitMessage();
+
 				// Get orgchart data from server - groups only, without users to reduce load time
 				var me = this;
 				// Get orgchart branches
@@ -350,6 +356,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 						{
 							if(resp.json.branches.length == 0)
 							{
+								me.hideWaitMessage();
 								me.createPickerDialog();
 								me.updateUI();
 								return;
@@ -364,10 +371,22 @@ var labelType, useGradients, nativeTextSupport, animate;
 								{
 									fn: function (resp)
 									{
+										me.hideWaitMessage();
 										me.options.orgchart = resp.json.data[0];
 										me.createPickerDialog();
 										me.updateUI();
 									}
+								},
+								failureCallback:
+								{
+									fn: function (resp)
+									{
+										me.hideWaitMessage();
+										if (resp.serverResponse.statusText) {
+											Alfresco.util.PopupManager.displayMessage({ 
+													text: resp.serverResponse.statusText });
+										}
+									},
 								},
 								scope:me
 							});
@@ -378,6 +397,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 					{
 						fn: function (resp)
 						{
+							me.hideWaitMessage();
 							if (resp.serverResponse.statusText)
 								Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
 						},
@@ -403,6 +423,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 			// May be just create static event listeners?
 			// Or create additional insituEditors?
 
+			this.activateWaitMessage();
+
 			// Get orgchart branches
 			Alfresco.util.Ajax.jsonRequest({
 				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/branches",
@@ -416,6 +438,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 						// Create default branch
 						if(this.options.branches.length == 0) {
+							this.hideWaitMessage();
 							this.initDefaultBranch();
 						} else {
 							this.loadOrgchartBranch(this.options.curBranch);
@@ -427,6 +450,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 				{
 					fn: function (resp)
 					{
+						this.hideWaitMessage();
 						if (resp.serverResponse.statusText)
 							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
 					},
@@ -508,6 +532,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 				{
 					fn: function (resp)
 					{
+						this.hideWaitMessage();
+
 						this.options.orgchart = resp.json.data[0];
 						
 						this.createViewDialog();
@@ -520,6 +546,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 				{
 					fn: function (resp)
 					{
+						this.hideWaitMessage();
 						if (resp.serverResponse.statusText)
 							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
 					},
