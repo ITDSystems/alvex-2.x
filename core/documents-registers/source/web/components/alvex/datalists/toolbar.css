@@ -150,3 +150,13 @@ span.delete-button
 {
 	padding: 3px;
 }
+
+/* Fix for ALV-278
+ * After Light Theme was introduced, other themes look bad.
+ * The issue is that all sizes are set in 'em' and are affected by font-size change.
+ * So, revert this change and set font-size to 100%.
+ */
+.yui-dialog .yui-overlay
+{
+	font-size: 100%;
+}
