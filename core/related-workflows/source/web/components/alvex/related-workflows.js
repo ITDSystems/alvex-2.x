@@ -60,6 +60,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 			if(!this.options.disabled)
 			{
 				this.createComboBox();
+			} else {
+				Dom.removeClass(this.id + '-container', 'hidden');
 			}
 			if (this.options.urlAuto && this.options.mode != 'view')
 			{
@@ -129,6 +131,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 										menu: menuItems
 									}
 									)).getMenu().subscribe("click", this.startWorkflow, null, this)
+								Dom.removeClass(this.id + '-container', 'hidden');
 							},
 							scope: this
 						}						

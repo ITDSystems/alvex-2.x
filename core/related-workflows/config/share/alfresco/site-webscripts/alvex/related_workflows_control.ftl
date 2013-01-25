@@ -3,10 +3,12 @@
 <input type="hidden" id="${fieldHtmlId}" name="${field.name}" value="${field.value}" />
 
 <div class="form-field">
-	<div <#if form.mode == "view" || field.disabled >style="display:none;"</#if>>
-		<input id="${controlId}-workflow-start" type="button" value='${msg("alvex.related_workflows.select_process_to_start")}' name="-" />
+	<div class="hidden" id="${fieldHtmlId}-container">
+		<div <#if form.mode == "view" || field.disabled >style="display:none;"</#if>>
+			<input id="${controlId}-workflow-start" type="button" value='${msg("alvex.related_workflows.select_process_to_start")}' name="-" />
+		</div>
+		<div id="${controlId}-dataTableContainer"></div>
 	</div>
-	<div id="${controlId}-dataTableContainer"></div>
 </div>
 
 <script type="text/javascript">
