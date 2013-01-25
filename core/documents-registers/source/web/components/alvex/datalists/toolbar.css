@@ -88,7 +88,9 @@
    padding-left: 24px;
 }
 
-.form-field input[type="text"]
+.form-field input[type="text"],
+.form-fields .form-field input[type="text"],
+.form-container .form-fields .form-field input[type="text"]
 {
    width: 12em;
 }
