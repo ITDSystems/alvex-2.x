@@ -81,6 +81,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				{
 					fn: function (resp)
 					{
+						var me = this;
 						var curValue = Dom.get( this.id ).value;
 						var curLabel = "";
 						for(var r in resp.json) {
@@ -101,6 +102,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 								);
 							}
 							selectEl.value = curValue;
+							selectEl.onchange = function()
+								{
+									Dom.get( me.id ).value = this.value;
+									YAHOO.Bubbling.fire("mandatoryControlValueUpdated", me);
+								};
 						}
 					},
 					scope:this
