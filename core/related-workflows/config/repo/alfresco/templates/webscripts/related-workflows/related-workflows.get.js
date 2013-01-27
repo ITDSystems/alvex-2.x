@@ -61,9 +61,10 @@ try {
 			var due_date = null;
 			for each (var path in inst.paths)
 				for each (var taskInst in path.tasks)
-					due_date = new Date( taskInst.properties['bpm:dueDate'].getTime() );
+					if( taskInst.properties['bpm:dueDate'] != null )
+						due_date = new Date( taskInst.properties['bpm:dueDate'].getTime() );
 
-			var due_date_string = null;
+			var due_date_string = '';
 			if(due_date != null) {
 				var s_year    = due_date.getUTCFullYear();
 				var s_month   = due_date.getUTCMonth();

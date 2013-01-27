@@ -404,7 +404,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			elLiner.innerHTML = {
 				'in-progress': this.relatedWorkflows.msg("alvex.related_workflows.in_progress")
-				+ ( oRecord._oData.due_date ? "<br/>" + this.relatedWorkflows.msg("alvex.related_workflows.due_date") + " " 
+				+ ( oRecord._oData.due_date && oRecord._oData.due_date != '' ? 
+					"<br/>" + this.relatedWorkflows.msg("alvex.related_workflows.due_date") + " " 
 				+ Alvex.util.niceDateTimeString(oRecord._oData.due_date) : "" ),
 				'complete': this.relatedWorkflows.msg("alvex.related_workflows.complete")
 				+ " (" + Alvex.util.niceDateTimeString(oRecord._oData.end_date) + ")"
