@@ -182,6 +182,32 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Display actions and create yui buttons
          Selector.query("h1 span", this.id, true).innerHTML = $html(task.workflowInstance.message);
          Selector.query("h3 span", this.id, true).innerHTML = $html(task.title);
+
+         // ALF-13115 fix, inform user that this task has been completed
+         if (!task.isEditable)
+         {
+            Alfresco.util.PopupManager.displayMessage(
+            {
+               text: this.msg("message.task.completed"),
+               displayTime: 2
+            });
+
+            YAHOO.lang.later(2000, this, function()
+            {
+            	var referrerValue = Alfresco.util.getQueryStringParameter('referrer');
+            	
+            	// Check referrer and fall back to user dashboard if unavailable.
+            	if(referrerValue) {
+            		if(referrerValue == 'tasks') {
+            			document.location.href = $siteURL("my-tasks");
+            		} else if(referrerValue='workflows') {
+            			document.location.href = $siteURL("my-workflows");
+            		}
+            	} else {
+            		document.location.href = this.getSiteDefaultUrl() || Alfresco.constants.URL_CONTEXT;
+            	}
+            }, []);
+         }
          
          if (task.isReassignable)
          {
