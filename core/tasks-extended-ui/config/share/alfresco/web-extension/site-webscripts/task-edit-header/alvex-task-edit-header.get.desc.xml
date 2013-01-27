@@ -1,5 +1,5 @@
 <webscript>
 	<shortname>Alvex Task Edit Header</shortname>
-	<url>/alvex/task-edit-header</url>
+	<url>/components/workflow/task-edit-header</url>
 	<family>Alvex Tasks Extended UI</family>
 </webscript>

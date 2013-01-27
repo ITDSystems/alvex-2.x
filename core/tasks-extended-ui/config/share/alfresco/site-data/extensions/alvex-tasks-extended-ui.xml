@@ -10,7 +10,7 @@
 				</customization>
 			</customizations>
 		</module>
-		<module>
+		<!--module>
 			<id>Alvex Tasks Extended UI (custom task-edit page header)</id>
 			<auto-deploy>true</auto-deploy>
 			<evaluator type="alvex.evaluators.sharePage">
@@ -39,6 +39,6 @@
 					<sourcePackageRoot>alvex.task-details-page</sourcePackageRoot>
 				</customization>
 			</customizations>
-		</module>
+		</module-->
 	</modules>
 </extension>

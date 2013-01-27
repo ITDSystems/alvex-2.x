@@ -1,6 +1,7 @@
 <#include "/org/alfresco/include/alfresco-macros.lib.ftl" />
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
+debugger;
 new Alvex.TaskEditHeader("${el}").setOptions(
 {
    submitButtonMessageKey: "button.saveandclose",
@@ -9,6 +10,7 @@ new Alvex.TaskEditHeader("${el}").setOptions(
    ${messages}
 );
 //]]></script>
+
 <div id="${el}-body" class="form-manager task-edit-header">
    <div class="actions">
       <span class="claim hidden">

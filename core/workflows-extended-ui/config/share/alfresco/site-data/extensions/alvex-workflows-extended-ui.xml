@@ -10,7 +10,7 @@
 				</customization>
 			</customizations>
 		</module>
-		<module>
+		<!--module>
 			<id>Alvex Workflows Extended UI (custom workflow-details page header)</id>
 			<auto-deploy>true</auto-deploy>
 			<evaluator type="alvex.evaluators.sharePage">
@@ -39,6 +39,6 @@
 					<sourcePackageRoot>alvex.workflow-details-form</sourcePackageRoot>
 				</customization>
 			</customizations>
-		</module>
+		</module-->
 	</modules>
 </extension>
