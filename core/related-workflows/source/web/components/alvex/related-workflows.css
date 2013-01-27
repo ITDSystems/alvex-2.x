@@ -39,3 +39,8 @@ div.cancelWorkflowDisabled a.related-workflows-action-link {
 div.retrieveDocumentsDisabled a.related-workflows-action-link {
 	background-image: url(/share/res/components/alvex/images/retrieve-documents-disabled-16.png);
 }
+
+.alfresco-share .yui-panel .bd .yui-u.first
+{
+	text-align: left;
+}
