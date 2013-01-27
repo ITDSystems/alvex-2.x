@@ -26,7 +26,7 @@
         <completionCondition>${alvexwf_mainTaskDone}</completionCondition>
       </multiInstanceLoopCharacteristics>
       <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-      <userTask id="alfrescoUsertask1" name="Execute" activiti:assignee="${executeTaskAssignee}" activiti:formKey="alvexwf:executeTask">
+      <userTask id="alfrescoUsertask1" name="Perform a task" activiti:assignee="${executeTaskAssignee}" activiti:formKey="alvexwf:executeTask">
         <extensionElements>
           <activiti:taskListener event="create" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
             <activiti:field name="script">
