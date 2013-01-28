@@ -1,3 +1,5 @@
+<#include "/alvex-meta.lib.ftl" />
+
 <!--[if IE]>
 <iframe id="yui-history-iframe" src="${url.context}/res/yui/history/assets/blank.html"></iframe>
 <![endif]-->
@@ -42,6 +44,10 @@
 
 <div id="${el}-body" class="users">
 	<div id="${el}-main" class="hidden">
+		<div class="title"><label>${msg("aui.systemInfo")}</label></div>
+		<div class="header">Alfresco: ${serverEdition?html} v${serverVersion?html} schema ${serverSchema?html}</div>
+		<div class="header">Alvex: ${alvexEdition?html} v${alvexVersion?html} (${alvexCodename})</div>
+		<br/>
 		<div class="title"><label>${msg("aui.title")}</label></div>
 		<div id="${el}-datatable"></div>
 		<div id="${el}-help"></div>

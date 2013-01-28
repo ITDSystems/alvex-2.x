@@ -2,6 +2,23 @@
 	try{
 		// establish connection
 		var connector = remote.connect("alfresco");
+
+		// Call the repo to collect server meta-data
+		var repo_json = eval('(' + connector.get("/api/server") + ')');
+
+		// Create model and defaults
+		model.serverEdition = "Unknown";
+		model.serverVersion = "Unknown (Unknown)";
+		model.serverSchema = "Unknown";
+
+		// Check if we got a positive result
+		if (repo_json.data)
+		{
+			model.serverEdition = repo_json.data.edition;
+			model.serverVersion = repo_json.data.version;
+			model.serverSchema = repo_json.data.schema;
+		}
+
 		// get license id
 		var licenseId = eval('('+connector.get('/api/alvex/license')+')').data.id;
 		// get repo extensions
