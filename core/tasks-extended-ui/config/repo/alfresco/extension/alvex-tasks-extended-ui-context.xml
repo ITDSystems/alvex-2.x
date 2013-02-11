@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean
+		id="webscript.alvex.tasks-instances.task-instances.get"
+		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
+		parent="abstractWorkflowWebScript" />
+	<!--bean id="alvex-tasks-extended-ui" parent="alvex-extension"
+		class="com.alvexcore.repo.TasksExtendedUIExtension"
+		depends-on="webscript.alvex.tasks-instances.task-instances.get" /-->
+</beans>

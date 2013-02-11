@@ -1,6 +1,0 @@
-<component>
-	<region-id>alvex-tasks-list</region-id>
-	<source-id>global</source-id>
-	<scope>global</scope>
-	<uri>/alvex/tasks-list-ui</uri>
-</component>
