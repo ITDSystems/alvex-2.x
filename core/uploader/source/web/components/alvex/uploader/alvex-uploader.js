@@ -74,7 +74,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			createUploadDirectory: '',
 			createUploadDirectoryHierarchy: '',
 			contentType: '',
-			viewType: "mini",
+			viewType: "normal",
 			init: false,
 			oldItemsProcessed: false,
 			isInRelatedWorkflowForm: false,
@@ -459,8 +459,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				
 						this.options.fileIdHash[this.options.uploadQueue[pos].id] = pos;
 						this.options.dataTable.addRow({ 
-								name: this.formatFileName( this.options.uploadQueue[pos].name, 
-											this.options.uploadQueue[pos].node_ref ),
+								name: this.formatFileName( this.options.uploadQueue[pos] ),
 								status: this.getStatusHTML( this.options.uploadQueue[pos].node_ref,
 											this.options.uploadQueue[pos].name,
 											'none', this.msg("alvex.uploader.waiting") ),
@@ -508,8 +507,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 				var item = {};
 				item.name = "Not known yet";
 				for (f in files_names.data.items)
-					if (files_names.data.items[f].nodeRef == old_files_refs[i])
+					if (files_names.data.items[f].nodeRef == old_files_refs[i]) {
 						item.name = files_names.data.items[f].name;
+						item.modifier = files_names.data.items[f].modifier;
+						item.modified = files_names.data.items[f].modified;
+					}
 				item.id = old_files_refs[i].replace(/;/g, "").replace(/:/g, "").replace(/\//g, "")  + '-' + item.name;
 				item.size = 0;
 				item.node_ref = old_files_refs[i];
@@ -519,7 +521,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				this.options.uploadQueue.push(item);
 				this.options.fileIdHash[item.id] = this.options.uploadQueue.length-1;
 				this.options.dataTable.addRow({
-							name: this.formatFileName( item["name"], item["node_ref"] ),
+							name: this.formatFileName( item ),
 							status: this.getStatusHTML( item.node_ref, item.name,
 								 'ok', this.msg("alvex.uploader.complete") ), 
 							actions: this.getActionsHTML( item.id, allow_delete, item.node_ref, item.name )
@@ -564,7 +566,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.options.dataSource = new YAHOO.util.DataSource(this.options.uploadQueue);
 			this.options.dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 			this.options.dataSource.responseSchema = {
-				fields: ["id","name","created","modified","type", "size"]
+				fields: ["id","name","created","modified","type", "size", "modifier", "modified"]
 			};
 
 			this.options.dataTable = new YAHOO.widget.DataTable(this.id + "-cntrl-dataTableContainer",
@@ -729,7 +731,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		updateRowView: function Uploader_updateRowView(rowNum, status, status_msg)
 		{
 			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "name",
-				this.formatFileName( this.options.uploadQueue[rowNum].name, this.options.uploadQueue[rowNum].node_ref ) );
+				this.formatFileName( this.options.uploadQueue[rowNum] ) );
 
 			this.options.dataTable.updateCell( this.options.dataTable.getRecord(rowNum), "status",
 						this.getStatusHTML( this.options.uploadQueue[rowNum].node_ref,
@@ -928,15 +930,34 @@ if (typeof Alvex == "undefined" || !Alvex)
 			return html;
 		},
 
-		formatFileName: function Uploader_formatFileName(filename, ref)
+		formatFileName: function Uploader_formatFileName(item)
 		{
-			if(ref != null)
-				return '<a href="' + Alfresco.constants.PROXY_URI + 'api/node/content/' 
+			var filename = item.name;
+			var ref = item.node_ref;
+			var link = '';
+			var modified = null;
+			if(ref != null) {
+				link = '<a href="' + Alfresco.constants.PROXY_URI + 'api/node/content/' 
 					+ Alfresco.util.NodeRef(ref).uri + '/' + filename 
 					+ '" target="_blank" ' + 'title="' + this.msg("alvex.uploader.download") + '">' 
 					+ filename + '</a>';
+			} else {
+				link = filename;
+			}
+
+			if( item.modifier != undefined )
+				link += '<br/>' + this.msg("alvex.uploader.modifier") + ': ' + item.modifier;
 			else
-				return filename;
+				link += '<br/>' + this.msg("alvex.uploader.modifier") + ': ' + Alfresco.constants.USERNAME;
+
+			if( item.modified != undefined ) {
+				modified = Alfresco.util.fromISO8601(item.modified);
+			} else {
+				modified = new Date();
+			}
+
+			link += '<br/>' + this.msg("alvex.uploader.modified") + ': ' + modified.getDate() + '.' + (modified.getMonth()+1) + '.' + modified.getFullYear();
+			return link;
 		}
 
 	});
