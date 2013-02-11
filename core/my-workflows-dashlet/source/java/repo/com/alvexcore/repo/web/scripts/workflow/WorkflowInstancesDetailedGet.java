@@ -355,6 +355,19 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
             
             long result = time1 - time2;
             
+            return (result > 0) ? 1 : (result < 0 ? -1 : startDateCompare(o1, o2));
+        }
+        
+        private int startDateCompare(WorkflowInstance o1, WorkflowInstance o2)
+        {
+            Date date1 = o1.getStartDate();
+            Date date2 = o2.getStartDate();
+            
+            long time1 = date1 == null ? Long.MAX_VALUE : date1.getTime();
+            long time2 = date2 == null ? Long.MAX_VALUE : date2.getTime();
+            
+            long result = time1 - time2;
+            
             return (result > 0) ? 1 : (result < 0 ? -1 : 0);
         }
         

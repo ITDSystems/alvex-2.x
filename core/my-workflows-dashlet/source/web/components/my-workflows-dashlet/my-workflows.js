@@ -177,13 +177,6 @@ if (typeof Alvex == "undefined" || !Alvex)
 			// Display the toolbar now that we have selected the filter
 			Dom.removeClass(Selector.query(".toolbar div", this.id, true), "hidden");
 
-			// Prepare webscript url to task instances
-			var webscript = YAHOO.lang.substitute("api/alvex/workflow-instances?initiator={initiator}&exclude={exclude}",
-			{
-				initiator: encodeURIComponent(Alfresco.constants.USERNAME),
-				exclude: this.options.hiddenWorkflowsNames.join(",")
-			});
-
 			/**
 			* Create datatable with a simple pagination that only displays number of results.
 			* The pagination is handled in the "base" data source url and can't be changed in the dashlet
@@ -192,9 +185,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			{
 				dataSource:
 				{
-					url: Alfresco.constants.PROXY_URI + webscript,
+					url: this.getDataSourceURL(),
 					doBeforeParseData: this.sortWorkflows,
-					initialParameters: this.getReqParameters()
+					initialParameters: ''
 				},
 				dataTable:
 				{
@@ -213,12 +206,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 				paginator:
 				{
 					history: false,
-					hide: false,
+					// hide: false,
 					config:
 					{
 						containers: [this.id + "-paginator"],
-						template: this.msg("pagination.template"),
-						pageReportTemplate: this.msg("pagination.template.page-report"),
+						// template: this.msg("pagination.template"),
+						// pageReportTemplate: this.msg("pagination.template.page-report"),
 						rowsPerPage: this.options.maxItems
 					}               
 				}
@@ -269,8 +262,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 				this.widgets.filterMenuButton.set("label", menuItem.cfg.getProperty("text"));
 				this.widgets.filterMenuButton.value = menuItem.value;
 
-				var parameters = this.substituteParameters(this.options.filters[menuItem.value], {});
-				this.widgets.alfrescoDataTable.loadDataTable(this.getReqParameters());
+				this.widgets.alfrescoDataTable.widgets.dataSource.liveData = this.getDataSourceURL();
+				this.widgets.alfrescoDataTable.loadDataTable();
 
 				// Save preferences
 				this.services.preferences.set(PREFERENCES_WORKFLOWS_DASHLET_FILTER, menuItem.value);
@@ -291,8 +284,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			{
 				this.widgets.sorterMenuButton.set("label", menuItem.cfg.getProperty("text"));
 				this.widgets.sorterMenuButton.value = menuItem.value;
-				
-				this.widgets.alfrescoDataTable.loadDataTable(this.getReqParameters());
+			
+				this.widgets.alfrescoDataTable.widgets.dataSource.liveData = this.getDataSourceURL();
+				this.widgets.alfrescoDataTable.loadDataTable();
 				
 				// Save preferences
 				this.services.preferences.set(PREFERENCES_WORKFLOWS_DASHLET_SORTER, menuItem.value);
@@ -306,7 +300,18 @@ if (typeof Alvex == "undefined" || !Alvex)
 			parameters += this.options.sorters[this.widgets.sorterMenuButton.value];
 			return parameters;
 		},
-
+		
+		getDataSourceURL: function()
+		{
+			// Prepare webscript url to task instances
+			var webscript = YAHOO.lang.substitute("api/alvex/workflow-instances?initiator={initiator}&exclude={exclude}",
+			{
+				initiator: encodeURIComponent(Alfresco.constants.USERNAME),
+				exclude: this.options.hiddenWorkflowsNames.join(",")
+			});
+			return Alfresco.constants.PROXY_URI + webscript + '&' + this.getReqParameters();
+		},
+		
 		/**
 		* Priority & pooled icons custom datacell formatter
 		*/

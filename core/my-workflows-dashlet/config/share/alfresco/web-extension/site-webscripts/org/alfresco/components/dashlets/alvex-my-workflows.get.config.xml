@@ -1,5 +1,5 @@
 <config>
-	<max-items>50</max-items>
+	<max-items>10</max-items>
 	<filter-menu>
 		<!--
 			The value of the "parameters" attribute will be added to the end of the task-instances webscript url
