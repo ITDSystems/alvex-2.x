@@ -1,4 +1,5 @@
 core/*/build/
+core/*/bin/
 tools/*/build/
-build.log
+tools/*/bin/
 try*
