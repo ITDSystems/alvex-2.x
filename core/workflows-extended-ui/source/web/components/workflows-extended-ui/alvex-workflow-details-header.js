@@ -42,7 +42,8 @@ if (typeof Alvex == "undefined" || !Alvex)
    /**
     * Alfresco Slingshot aliases
     */
-   var $html = Alfresco.util.encodeHTML;
+   var $html = Alfresco.util.encodeHTML,
+       $combine = Alfresco.util.combinePaths;
 
    /**
     * WorkflowDetailsHeader constructor.
@@ -95,6 +96,28 @@ if (typeof Alvex == "undefined" || !Alvex)
             taskId = this.options.taskId || workflow.startTaskInstanceId;
 
          Selector.query("h1 span", this.id, true).innerHTML = $html(workflow.message);
+
+         Alfresco.util.Ajax.jsonGet(
+         {
+            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflow.id, "/parent-task"),
+            successCallback:
+            {
+               fn: function(resp)
+               {
+                  if( resp.json.data.parentTask == '' )
+                     return;
+                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
+                  if (this.options.referrer)
+                  {
+                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+                  }
+                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
+                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
+               },
+               scope: this
+            }
+         });
+
       }
 
    });
