@@ -347,7 +347,42 @@ if (typeof Alvex == "undefined" || !Alvex)
             info += '<div class=ended"><label>' + this.msg("label.ended") + ':</label><span>' + (endedDate ? Alfresco.util.formatDate(endedDate, "longDate") : this.msg("label.none")) + '</span></div>';
          }
          info += '<div class="type"><label>' + this.msg("label.type") + ':</label><span>' + $html(workflow.title) + '</span></div>';
-         info += '<div class="description"><label>' + this.msg("label.description") + ':</label><span>' + $html(workflow.description) + '</span></div>';
+         // info += '<div class="description"><label>' + this.msg("label.description") + ':</label><span>' + $html(workflow.description) + '</span></div>';
+
+         for(var t in workflow.tasks)
+            if(workflow.tasks[t].state === "IN_PROGRESS")
+            {
+               var task_visible = true;
+               for(var ht in this.options.hiddenTasksTypes)
+                  if( workflow.tasks[t].name.match(this.options.hiddenTasksTypes[ht]) )
+                     task_visible = false;
+
+               if( task_visible )
+               {
+                  if( workflow.tasks[t].owner != null )
+                  {
+                     assignee = workflow.tasks[t].owner.firstName ? workflow.tasks[t].owner.firstName + ' ' : '';
+                     assignee += workflow.tasks[t].owner.lastName;
+                  } else {
+                     assignee = this.msg("task.not_assigned.pooled");
+                  }
+
+                  task = workflow.tasks[t].title ? workflow.tasks[t].title : this.msg("workflow.no_message");
+
+                  taskStarted = workflow.tasks[t].properties.cm_created ? 
+                                    Alfresco.util.fromISO8601(workflow.tasks[t].properties.cm_created) : null;
+
+                  var statusDesc = task ? '<div class="cur-task"><strong>' + this.msg("label.currentTask") + '</strong> ' + task + '</div>' : "";
+
+                  statusDesc += '<div>' + assignee ? '<strong>' + this.msg("label.assignee") + '</strong> ' + assignee + ' ' : "" ;
+
+                  statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 
+                                    + Alfresco.util.formatDate(taskStarted, "longDate") + '</div>';
+
+                  info += statusDesc;
+               }
+            }
+
          elCell.innerHTML = info;
       },
 

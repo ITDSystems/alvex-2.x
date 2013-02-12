@@ -177,6 +177,7 @@
 .workflow-list .workflows .yui-dt-col-title .yui-dt-liner div.type
 {
    clear: both;
+   margin-bottom: 0.5em;
 }
 
 .workflow-list .workflows .yui-dt-col-title .yui-dt-liner div.description
@@ -189,6 +190,12 @@
 {
    clear: both;
    margin-bottom: 0.5em;
+}
+
+.workflow-list .workflows .yui-dt-col-title .yui-dt-liner div.cur-task
+{
+   clear: both;
+   float: none;
 }
 
 .workflow-list .workflow-cancel-link,
