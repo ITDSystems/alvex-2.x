@@ -4,12 +4,31 @@
 	<imports>
 		<import uri="http://www.alfresco.org/model/dictionary/1.0"
 			prefix="d" />
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
 		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
 	</imports>
 	<namespaces>
 		<namespace prefix="alvexrwf"
 			uri="http://alvexcore.com/prefix/alvexrwf" />
 	</namespaces>
+	<!-- Workflow metadata -->
+	<types>
+		<type name="alvexrwf:workflowDetails">
+			<parent>cm:cmobject</parent>
+			<properties>
+				<property name="alvexrwf:parent">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property>
+				<!--property name="alvexrwf:peers">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+					<multiple>false</multiple>
+				</property-->
+			</properties>
+		</type>
+	</types>
 	<!-- Custom aspect definition -->
 	<aspects>
 		<aspect name="alvexrwf:relatedWorkflows">

@@ -355,20 +355,47 @@ if (typeof Alvex == "undefined" || !Alvex)
 			else
 				curRelatedWorkflows.value += ',' + id;
 
-			var dataObj = {};
-			dataObj[this.options.propName] = curRelatedWorkflows.value;
-			Alfresco.util.Ajax.jsonRequest({
-				url: this.options.actionUrl,
-				method: Alfresco.util.Ajax.POST,
-				dataObj: dataObj,
-				successCallback:
+			// Save new related workflow for the current task
+			var relwfDataObj = {};
+			relwfDataObj[this.options.propName] = curRelatedWorkflows.value;
+
+			// Save information about parent task for the created workflow
+			var parentDataObj = {};
+			parentDataObj.data = {};
+			parentDataObj.data['taskId'] = this.options.curTaskId;
+			var parentUrl = YAHOO.lang.substitute(
+				"{proxy}api/alvex/related-workflows/{workflowId}/parent-task",
 				{
-					fn: function ()
-					{
-						this.update();
-					},
-					scope:this
+					proxy: Alfresco.constants.PROXY_URI,
+					workflowId: encodeURIComponent( id )
 				}
+			);
+
+			Alvex.util.processAjaxQueue({
+				queue: [
+					// Save new related workflow for the current task
+					{
+						url: this.options.actionUrl,
+						method: Alfresco.util.Ajax.POST,
+						dataObj: relwfDataObj,
+						requestContentType: Alfresco.util.Ajax.JSON
+					},
+					// Save information about parent task for the created workflow
+					{
+						url: parentUrl,
+						method: Alfresco.util.Ajax.PUT,
+						dataObj: parentDataObj,
+						requestContentType: Alfresco.util.Ajax.JSON,
+						successCallback:
+						{
+							fn: function ()
+							{
+								this.update();
+							},
+							scope:this
+						}
+					}
+				]
 			});
 		},
 
@@ -538,7 +565,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				queue: [
 					{
 						url: Alfresco.constants.PROXY_URI+'api/workflow-instances/'+obj.id,
-				        responseContentType: Alfresco.util.Ajax.JSON,
+						responseContentType: Alfresco.util.Ajax.JSON,
 						successCallback: {
 							fn: function (response)
 							{
