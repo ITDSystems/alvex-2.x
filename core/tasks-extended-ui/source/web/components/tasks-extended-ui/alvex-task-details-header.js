@@ -95,6 +95,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onTaskDetailsData: function TDH_onTaskDetailsData(layer, args)
       {
+         // Hide buttons on the bottom of the form
+         Dom.addClass(Selector.query(".task-details-actions", this.id.replace('header','actions'), true), "hidden");
+
          // Set workflow details url and display link
          var task = args[1],
             taskId = task.id,
@@ -138,8 +141,11 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
 
          // Edit button
-         this.widgets.editButton = Alfresco.util.createYUIButton(this, "edit", null, {"type": "link", "href": Alfresco.util.siteURL(taskEditUrl) });
-         Dom.removeClass(Selector.query(".actions .edit", this.id), "hidden");
+         if( task.owner && task.owner.userName == Alfresco.constants.USERNAME )
+         {
+            this.widgets.editButton = Alfresco.util.createYUIButton(this, "edit", null, {"type": "link", "href": Alfresco.util.siteURL(taskEditUrl) });
+            Dom.removeClass(Selector.query(".actions .edit", this.id), "hidden");
+         }
 
       }
    });
