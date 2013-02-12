@@ -43,7 +43,8 @@ if (typeof Alvex == "undefined" || !Alvex)
     * Alfresco Slingshot aliases
     */
     var $html = Alfresco.util.encodeHTML,
-       $hasEventInterest = Alfresco.util.hasEventInterest;
+       $hasEventInterest = Alfresco.util.hasEventInterest,
+       $combine = Alfresco.util.combinePaths;
 
    /**
     * TaskEditHeader constructor.
@@ -182,6 +183,40 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Display actions and create yui buttons
          Selector.query("h1 span", this.id, true).innerHTML = $html(task.workflowInstance.message);
          Selector.query("h3 span", this.id, true).innerHTML = $html(task.title);
+
+         var workflowId = task.workflowInstance.id,
+            workflowDetailsUrl = "workflow-details?workflowId=" + workflowId + "&taskId=" + this.taskId;
+         if (this.options.referrer)
+         {
+            workflowDetailsUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+         }
+         else if (this.options.nodeRef)
+         {
+            workflowDetailsUrl += "&nodeRef=" + encodeURIComponent(this.options.nodeRef);
+         }
+         Selector.query("a", this.id + '-workflow', true).setAttribute("href", Alfresco.util.siteURL(workflowDetailsUrl));
+         Dom.removeClass(Selector.query(".links", this.id, true), "hidden");
+
+         Alfresco.util.Ajax.jsonGet(
+         {
+            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflowId, "/parent-task"),
+            successCallback:
+            {
+               fn: function(resp)
+               {
+                  if( resp.json.data.parentTask == '' )
+                     return;
+                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
+                  if (this.options.referrer)
+                  {
+                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+                  }
+                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
+                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
+               },
+               scope: this
+            }
+         });
 
          // ALF-13115 fix, inform user that this task has been completed
          if (!task.isEditable)

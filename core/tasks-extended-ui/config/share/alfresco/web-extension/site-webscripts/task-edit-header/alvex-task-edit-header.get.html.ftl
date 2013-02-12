@@ -3,6 +3,7 @@
 <script type="text/javascript">//<![CDATA[
 new Alvex.TaskEditHeader("${el}").setOptions(
 {
+   referrer: <#if page.url.args.referrer??>"${page.url.args.referrer?js_string}"<#else>null</#if>,
    submitButtonMessageKey: "button.saveandclose",
    defaultUrl: "${siteURL("my-tasks")}"
 }).setMessages(
@@ -11,16 +12,21 @@ new Alvex.TaskEditHeader("${el}").setOptions(
 //]]></script>
 
 <div id="${el}-body" class="form-manager task-edit-header">
-   <div class="actions">
-      <span class="claim hidden">
-         <button id="${el}-claim">${msg("button.claim")}</button>
-      </span>
-      <span class="reassign hidden">
-         <button id="${el}-reassign">${msg("button.reassign")}</button>
-      </span>
-      <span class="release hidden">      
-         <button id="${el}-release">${msg("button.release")}</button>
-      </span>
+   <div class="links hidden">
+      <!--div id="${el}-task"><span class="theme-color-2">${msg("label.taskEdit")}</span></div-->
+      <div id="${el}-workflow"><a href="">${msg("label.workflowDetails")}</a></div>
+      <div id="${el}-parent" class="hidden"><a href="">${msg("label.parentTask")}</a></div>
+      <div class="actions">
+         <span class="claim hidden">
+            <button id="${el}-claim">${msg("button.claim")}</button>
+         </span>
+         <span class="reassign hidden">
+            <button id="${el}-reassign">${msg("button.reassign")}</button>   
+         </span>
+         <span class="release hidden">      
+            <button id="${el}-release">${msg("button.release")}</button>
+         </span>
+      </div>
    </div>
    <div><h1><span></span></h1></div>
    <div><h3><span></span></h3></div>

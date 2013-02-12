@@ -41,7 +41,8 @@ if (typeof Alvex == "undefined" || !Alvex)
    /**
     * Alfresco Slingshot aliases
     */
-    var $html = Alfresco.util.encodeHTML;
+    var $html = Alfresco.util.encodeHTML,
+      $combine = Alfresco.util.combinePaths;
 
    /**
     * TaskDetailsHeader constructor.
@@ -99,19 +100,47 @@ if (typeof Alvex == "undefined" || !Alvex)
             taskId = task.id,
             message = task.properties["bpm_description"],
             workflowId = task.workflowInstance.id,
-            workflowDetailsUrl = "workflow-details?workflowId=" + workflowId + "&taskId=" + taskId;
+            workflowDetailsUrl = "workflow-details?workflowId=" + workflowId + "&taskId=" + taskId,
+            taskEditUrl = "task-edit?taskId=" + taskId;
          if (this.options.referrer)
          {
             workflowDetailsUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+            taskEditUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
          }
          else if (this.options.nodeRef)
          {
             workflowDetailsUrl += "&nodeRef=" + encodeURIComponent(this.options.nodeRef);
          }
-         Selector.query(".links a", this.id, true).setAttribute("href", Alfresco.util.siteURL(workflowDetailsUrl));
+         Selector.query("a", this.id + '-workflow', true).setAttribute("href", Alfresco.util.siteURL(workflowDetailsUrl));
          Dom.removeClass(Selector.query(".links", this.id, true), "hidden");
          Selector.query("h1 span", this.id, true).innerHTML = $html(task.workflowInstance.message);
          Selector.query("h3 span", this.id, true).innerHTML = $html(task.title);
+
+         Alfresco.util.Ajax.jsonGet(
+         {
+            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflowId, "/parent-task"),
+            successCallback:
+            {
+               fn: function(resp)
+               {
+                  if( resp.json.data.parentTask == '' )
+                     return;
+                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
+                  if (this.options.referrer)
+                  {
+                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+                  }
+                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
+                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
+               },
+               scope: this
+            }
+         });
+
+         // Edit button
+         this.widgets.editButton = Alfresco.util.createYUIButton(this, "edit", null, {"type": "link", "href": Alfresco.util.siteURL(taskEditUrl) });
+         Dom.removeClass(Selector.query(".actions .edit", this.id), "hidden");
+
       }
    });
 })();

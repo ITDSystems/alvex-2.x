@@ -24,6 +24,15 @@
 .task-edit-header .actions
 {
    float: right;
+   padding-bottom: 0.5em;
+   padding-top: 0.5em;
+}
+
+.task-edit-header .links
+{
+   width: 30%;
+   float: right;
+   text-align: right;
 }
 
 .task-edit-header h1
