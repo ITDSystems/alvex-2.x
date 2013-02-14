@@ -245,6 +245,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             		document.location.href = this.getSiteDefaultUrl() || Alfresco.constants.URL_CONTEXT;
             	}
             }, []);
+            return;
          }
          
          if (task.isReassignable)
@@ -268,6 +269,24 @@ if (typeof Alvex == "undefined" || !Alvex)
             this.widgets.releaseButton = Alfresco.util.createYUIButton(this, "release", this.onReleaseButtonClick);
             Dom.removeClass(Selector.query(".actions .release", this.id), "hidden");
          }
+
+         // Mark task as started
+         var dataObj = {};
+         dataObj["prop_bpm_status"] = "In Progress";
+
+         var actionUrl = Alvex.util.getFormElement(this.id.replace('header','form') + '-form').action; 
+
+         Alvex.util.processAjaxQueue({
+            queue: [
+               {
+                  url: actionUrl,
+                  method: Alfresco.util.Ajax.POST,
+                  dataObj: dataObj,
+                  requestContentType: Alfresco.util.Ajax.JSON
+               }
+            ]
+         });
+
       },
 
       /**
