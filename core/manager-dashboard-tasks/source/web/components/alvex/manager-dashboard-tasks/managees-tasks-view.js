@@ -81,21 +81,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			for(var m in this.options.managees)
 			{
 				document.getElementById(this.id + "-body").innerHTML +=
-					'	<div id="' + this.id + '-user-' + m + '">\
-							<div class="yui-ge task-list-bar flat-button" style="width:99%">\
-								<div class="yui-u first">\
-									<h2 id="' + this.id + '-title-' + m + '" class="thin">\
-										' + this.options.managees[m].name + '\
-									</h2>\
-								</div>\
-								<div class="yui-u">\
-									<div id="' + this.id + '-paginator-' + m + '" class="paginator">\
-										&nbsp;\
-									</div>\
-								</div>\
-							</div>\
-							<div id="' + this.id + '-tasks-' + m + '" class="tasks" style="margin: 0"></div>\
-						</div>';
+					'	<div id="' + this.id + '-user-' + m + '"><div class="yui-ge task-list-bar flat-button" style="width:99%"><div class="yui-u first"><h2 id="' + this.id + '-title-' + m + '" class="thin"><a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + this.options.managees[m].userName + '/profile">' + this.options.managees[m].name + '</a></h2></div><div class="yui-u"><div id="' + this.id + '-paginator-' + m + '" class="paginator">&nbsp;</div></div></div><div id="' + this.id + '-tasks-' + m + '" class="tasks" style="margin: 0"></div></div>';
 
 				YAHOO.util.Event.onContentReady(this.id + '-user-' + m,
 							this.createTasksDataTable, m, this);
