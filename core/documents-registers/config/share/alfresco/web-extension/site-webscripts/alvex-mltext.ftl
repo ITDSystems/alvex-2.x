@@ -4,6 +4,8 @@
 <div class="form-field">
    <#if (form.mode == "view") || field.disabled>
       <div class="viewmode-field">
+         <label for="${fieldHtmlId}" class="hidden">${field.label?html}</label>
+         <input type="hidden" id="${fieldHtmlId}" name="${field.name}" value="${field.value?html}" />
          <#if field.mandatory && field.value == "">
             <span class="incomplete-warning"><img src="${url.context}/res/components/form/images/warning-16.png" title="${msg("form.field.incomplete")}" /><span>
          </#if>
