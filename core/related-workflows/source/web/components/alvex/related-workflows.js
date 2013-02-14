@@ -269,6 +269,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 						{
 							for( var i = 0; i < form.length; i++ )
 								if( !processed[field] && (task.properties[field] != '')
+									&& (field != "alvexrwf_relatedWorkflows") 
+									&& (field != "bpm_package") && (field != "alvexwfd_discussion")
 									&& (form[i].name.replace('prop_','') == field) 
 									&& !form[i].id.match(this.id + "-cntrl-popup-dialog")
 									&& form[i].id.match(parentId)
