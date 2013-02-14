@@ -154,6 +154,23 @@ if (typeof Alvex == "undefined" || !Alvex)
 				return;
 			}
 
+			Alfresco.util.Ajax.jsonGet(
+			{
+				url: Alfresco.util.combinePaths( Alfresco.constants.PROXY_URI, "api/task-instances/", this.options.curTaskId ),
+				successCallback:
+				{
+					fn: this.showStartRelatedWorkflowDialog,
+					obj: def,
+					scope: this
+				}
+			});
+
+		},
+
+		showStartRelatedWorkflowDialog: function ( resp, def )
+		{
+			var task = resp.json.data;
+
 			// Custom template URL for the dialog
 			var templateUrl = YAHOO.lang.substitute(
 				Alfresco.constants.URL_SERVICECONTEXT 
@@ -171,7 +188,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 			// It looks like 'destroyOnHide: true' works globally for all dialogs on the page - do not use it
 			// We still delete dialog manually because we are to clear the form and everything around it
 			if( this.widgets.dialog )
+			{
+				var form = Dom.get( this.widgets.dialog.form.formId );
+				form.parentNode.removeChild( form );
 				delete this.widgets.dialog;
+			}
 
 			this.widgets.dialog = new Alfresco.module.SimpleDialog(this.id + "-cntrl-popup-dialog");
 
@@ -187,6 +208,90 @@ if (typeof Alvex == "undefined" || !Alvex)
 				{
 					fn: function RelWf_customizeDialogProperties(p_form, p_dialog)
 					{
+						// Get all elements on the form
+						var form = [];
+						var inputs = document.getElementsByTagName('input');
+						var textareas = document.getElementsByTagName('textarea');
+						for( var i = 0; i < inputs.length; i++ )
+							form.push(inputs[i]);
+						for( var i = 0; i < textareas.length; i++ )
+							form.push(textareas[i]);
+
+						// Pass workflow description to child workflow form
+						var wflDescEl = null;
+						for( var i = 0; i < form.length; i++ )
+							if( (form[i].name == 'prop_bpm_workflowDescription') 
+								&& form[i].id.match(this.id + "-cntrl-popup-dialog") )
+							{
+								wflDescEl = form[i];
+							}
+						if( wflDescEl != null )
+							wflDescEl.value = task.workflowInstance.message;
+
+						// Pass due date to child workflow form
+						var dueDateEl = null;
+						for( var i = 0; i < form.length; i++ )
+							if( (form[i].name == 'prop_bpm_workflowDueDate')
+								&& form[i].id.match(this.id + "-cntrl-popup-dialog") )
+							{
+								dueDateEl = form[i];
+							}
+						if( dueDateEl != null )
+						{
+							dueDateEl.value = task.properties.bpm_dueDate;
+							var dueDate = Alfresco.util.fromISO8601(task.properties.bpm_dueDate);
+							var dueDateViewEl = Dom.get( dueDateEl.id + '-cntrl-date' );
+							dueDateViewEl.value = dueDate.getDate() + '/' + (dueDate.getMonth()+1) + '/' + dueDate.getFullYear();
+						}
+
+						// Pass all values that are the same to child workflow form
+						var processed = {};
+						processed["bpm_workflowDescription"] = true;
+						processed["bpm_workflowDueDate"] = true;
+						processed["bpm_dueDate"] = true;
+						for( var field in task.properties )
+						{
+							for( var i = 0; i < form.length; i++ )
+								if( (form[i].name.replace('prop_','') == field) 
+									&& form[i].id.match(this.id + "-cntrl-popup-dialog")
+									&& ( (form[i].type == 'text') || (form[i].type == 'textarea') ) 
+								)
+								{
+									Dom.get( form[i].id ).value = task.properties[field];
+									processed[field] = true;
+								}
+						}
+
+						// Get all values that were not passed to child workflow form
+						var text = '';
+						var parentId = this.id.replace(/_prop_.*_relatedWorkflows/,'');
+						for( var field in task.properties )
+						{
+							for( var i = 0; i < form.length; i++ )
+								if( !processed[field] && (task.properties[field] != '')
+									&& (form[i].name.replace('prop_','') == field) 
+									&& !form[i].id.match(this.id + "-cntrl-popup-dialog")
+									&& form[i].id.match(parentId)
+								)
+								{
+									var label = form[i].parentNode.getElementsByTagName('label')[0];
+									text += Alvex.util.getElementText(label) + ':\n';
+									text += task.properties[field] + '\n\n';
+								}
+						}
+
+						var targetEl = null;
+						for( var i = 0; i < form.length; i++ )
+							if( form[i].id.match(this.id + "-cntrl-popup-dialog") && ( form[i].type == 'textarea' ) )
+								if( form[i].id.match('omment') || targetEl == null )
+									targetEl = form[i];
+
+						if( targetEl.value == '' )
+							targetEl.value = text;
+						else
+							targetEl.value += '\n\n' + text;
+
+						// Final UI bits for child workflow form
 						Dom.addClass(p_dialog.id + "-form-cancel", "hidden");
 						var button = Dom.get(p_dialog.id + "-form-submit");
 						button.children[0].children[0].innerHTML = this.msg("alvex.related_workflows.start_workflow");
