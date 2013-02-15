@@ -219,7 +219,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             var webscript = YAHOO.lang.substitute("api/alvex/task-instances?authority={authority}&properties={prop}&exclude={exclude}",
             {
                   authority: encodeURIComponent(Alfresco.constants.USERNAME),
-                  prop: ["bpm_priority", "bpm_status", "bpm_dueDate", "bpm_startDate", "bpm_completionDate", "bpm_description", "alvexrwf_relatedWorkflows"].join(","),
+                  prop: ["bpm_priority", "bpm_status", "bpm_dueDate", "bpm_startDate", "bpm_completionDate", "bpm_description", "alvexrwf_relatedWorkflows", "itdrwf_relatedWorkflows"].join(","),
                   exclude: this.options.hiddenTaskTypes.join(",")
             });
             return Alfresco.constants.PROXY_URI + webscript + '&' + this.getReqParameters();
@@ -286,7 +286,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             desc += '<br/><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/pooled-task-16.png" title="' + this.msg("label.pooledTask") + '"/>';
          }
 
-         if( oRecord.getData("properties")["alvexrwf_relatedWorkflows"] )
+         if( oRecord.getData("properties")["alvexrwf_relatedWorkflows"] || oRecord.getData("properties")["itdrwf_relatedWorkflows"] )
          {
             desc += '<br/><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/with-related-tasks-16.png" title="' + this.msg("label.withRelatedTasks") + '"/>';
          }
