@@ -118,12 +118,12 @@
 								<div class="fieldlabel" id="${pickerId}-person-company"></div>
 							</div>
 							<div class="row">
-								<span class="labelcustom">${msg("alvex.orgchart.phone")}</span>
-								<span class="valuecustom" id="${pickerId}-person-phone"></span>
+								<span class="labelcustom">${msg("alvex.orgchart.telephone")}</span>
+								<span class="valuecustom" id="${pickerId}-person-telephone"></span>
 							</div>
 							<div class="row">
-								<span class="labelcustom">${msg("alvex.orgchart.cell")}</span>
-								<span class="valuecustom" id="${pickerId}-person-cell"></span>
+								<span class="labelcustom">${msg("alvex.orgchart.mobile")}</span>
+								<span class="valuecustom" id="${pickerId}-person-mobile"></span>
 							</div>
 							<div class="row">
 								<span class="labelcustom">${msg("alvex.orgchart.email")}</span>
