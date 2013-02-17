@@ -269,7 +269,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 						{
 							for( var i = 0; i < form.length; i++ )
 								if( !processed[field] && (task.properties[field] != '')
-									&& (field != "alvexrwf_relatedWorkflows") 
+									&& (field != "alvexrwf_relatedWorkflows")
+									&& (field != "itdrwf_relatedWorkflows")
 									&& (field != "bpm_package") && (field != "alvexwfd_discussion")
 									&& (form[i].name.replace('prop_','') == field) 
 									&& !form[i].id.match(this.id + "-cntrl-popup-dialog")
@@ -441,7 +442,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					MSG_EMPTY: this.msg('alvex.related_workflows.no_related_workflows')
 				});
 			this.options.dataTable.relatedWorkflows = this;
-		    this.options.dataTable.showTableMessage(
+			this.options.dataTable.showTableMessage(
 				this.msg('alvex.related_workflows.loading'),
 				YAHOO.widget.DataTable.CLASS_LOADING
 			);

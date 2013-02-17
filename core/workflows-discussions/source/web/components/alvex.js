@@ -113,6 +113,7 @@ Alvex.util.getElementsByTagNameNS = function Alvex_getElementsByTagNameNS(xml, n
 
 Alvex.util.getElementText = function Alvex_getElementText(node)
 {
+	if( !node ) { return ''; }
 	return node.textContent || node.innerText || node.text;
 };
 
