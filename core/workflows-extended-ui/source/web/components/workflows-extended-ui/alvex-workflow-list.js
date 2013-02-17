@@ -359,12 +359,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 
                if( task_visible )
                {
+                  var assignee, ownerUserName;
                   if( workflow.tasks[t].owner != null )
                   {
                      assignee = workflow.tasks[t].owner.firstName ? workflow.tasks[t].owner.firstName + ' ' : '';
                      assignee += workflow.tasks[t].owner.lastName;
+                     ownerUserName = workflow.tasks[t].owner.userName;
                   } else {
                      assignee = this.msg("task.not_assigned.pooled");
+                     ownerUserName = '';
                   }
 
                   task = workflow.tasks[t].title ? workflow.tasks[t].title : this.msg("workflow.no_message");
@@ -375,7 +378,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                   var statusDesc = task ? '<div class="cur-task"><strong>' + this.msg("label.currentTask") + '</strong> ' + task + '</div>' : "";
 
                   statusDesc += '<div>' + assignee ? '<strong>' + this.msg("label.assignee") + '</strong> '
-                             + '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + workflow.tasks[t].owner.userName + '/profile">' 
+                             + '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + ownerUserName + '/profile">' 
                              + $html(assignee) + '</a> ' : "" ;
 
                   statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 

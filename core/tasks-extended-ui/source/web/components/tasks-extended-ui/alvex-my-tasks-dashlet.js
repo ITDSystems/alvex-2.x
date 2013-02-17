@@ -376,7 +376,16 @@ if (typeof Alvex.dashlet == "undefined" || !Alvex.dashlet)
                assignee = data.owner,
                taskStartDate = data.properties["bpm_startDate"] ? Alfresco.util.fromISO8601(data.properties["bpm_startDate"]) : null,
                workflowStartDate = data.workflowInstance.startDate ? Alfresco.util.fromISO8601(data.workflowInstance.startDate) : null,
+               initiator = '', initiatorUserName = '';
+
+            if( data.workflowInstance.initiator )
+            {
                initiator = data.workflowInstance.initiator.firstName + ' ' + data.workflowInstance.initiator.lastName;
+               initiatorUserName = data.workflowInstance.initiator.userName;
+            } else {
+               initiator = this.msg("label.unknownUser");
+               initiatorUserName = '';
+            }
 
             // if there is a property label available for the status use that instead
             if (data.propertyLabels && Alfresco.util.isValueSet(data.propertyLabels["bpm_status"], false))
@@ -404,7 +413,7 @@ if (typeof Alvex.dashlet == "undefined" || !Alvex.dashlet)
                        + this.msg("label.taskSummary", type, status) + '</div>';
             var initiatorDesc = '<div title="' + this.msg("title.workflowInitiator", $html(initiator)) + '">' 
                        + this.msg("title.workflowInitiator", 
-                         '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + data.workflowInstance.initiator.userName + '/profile">' 
+                         '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + initiatorUserName + '/profile">' 
                          + $html(initiator) + '</a>') + '</div>';
             var unassignedDesc = '';
 

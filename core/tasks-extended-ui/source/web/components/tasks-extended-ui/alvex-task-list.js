@@ -319,7 +319,16 @@ if (typeof Alvex == "undefined" || !Alvex)
                status = $html(data.properties["bpm_status"]),
                assignee = data.owner,
                description = $html(data.description),
-               initiator = $html(workflowInstance.initiator.firstName + ' ' + workflowInstance.initiator.lastName);
+               initiator = '', initiatorUserName = '';
+
+         if( workflowInstance.initiator )
+         {
+            initiator = $html(workflowInstance.initiator.firstName + ' ' + workflowInstance.initiator.lastName);
+            initiatorUserName = workflowInstance.initiator.userName;
+         } else {
+            initiator = this.msg("label.unknownUser");
+            initiatorUserName = '';
+         }
                
          // if there is a property label available for the status use that instead
          if (data.propertyLabels && Alfresco.util.isValueSet(data.propertyLabels["bpm_status"], false))
@@ -362,7 +371,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          info += '<div class="type"><label>' + this.msg("label.type", type) + ':</label><span>' + type + '</span></div>';
          // info += '<div class="description"><label>' + this.msg("label.description") + ':</label><span>' + description + '</span></div>';
          info += '<div class="initiator"><label>' + this.msg("label.initiator") + ':</label><span>' 
-                 + '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + workflowInstance.initiator.userName + '/profile">' + initiator 
+                 + '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + initiatorUserName + '/profile">' + initiator 
                  + '</a></span></div>';
          if (!assignee || !assignee.userName)
          {
