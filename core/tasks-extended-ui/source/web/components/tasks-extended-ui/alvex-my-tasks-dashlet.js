@@ -375,7 +375,8 @@ if (typeof Alvex.dashlet == "undefined" || !Alvex.dashlet)
                status = data.properties["bpm_status"],
                assignee = data.owner,
                taskStartDate = data.properties["bpm_startDate"] ? Alfresco.util.fromISO8601(data.properties["bpm_startDate"]) : null,
-               workflowStartDate = data.workflowInstance.startDate ? Alfresco.util.fromISO8601(data.workflowInstance.startDate) : null;
+               workflowStartDate = data.workflowInstance.startDate ? Alfresco.util.fromISO8601(data.workflowInstance.startDate) : null,
+               initiator = data.workflowInstance.initiator.firstName + ' ' + data.workflowInstance.initiator.lastName;
 
             // if there is a property label available for the status use that instead
             if (data.propertyLabels && Alfresco.util.isValueSet(data.propertyLabels["bpm_status"], false))
@@ -401,13 +402,17 @@ if (typeof Alvex.dashlet == "undefined" || !Alvex.dashlet)
             startDateDesc += '</div>';
             var statusDesc = '<div title="' + this.msg("title.taskSummary", type, status) + '">' 
                        + this.msg("label.taskSummary", type, status) + '</div>';
+            var initiatorDesc = '<div title="' + this.msg("title.workflowInitiator", $html(initiator)) + '">' 
+                       + this.msg("title.workflowInitiator", 
+                         '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + data.workflowInstance.initiator.userName + '/profile">' 
+                         + $html(initiator) + '</a>') + '</div>';
             var unassignedDesc = '';
 
             if (!assignee || !assignee.userName)
             {
                unassignedDesc = '<span class="theme-bg-color-5 theme-color-5 unassigned-task">' + this.msg("label.unassignedTask") + '</span>';
             }
-            desc = messageDesc + statusDesc + dueDateDesc + startDateDesc + unassignedDesc;
+            desc = messageDesc + statusDesc + dueDateDesc + startDateDesc + initiatorDesc + unassignedDesc;
          }
          
          elCell.innerHTML = desc;

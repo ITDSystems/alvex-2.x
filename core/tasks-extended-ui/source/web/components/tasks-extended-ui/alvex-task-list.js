@@ -319,7 +319,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                status = $html(data.properties["bpm_status"]),
                assignee = data.owner,
                description = $html(data.description),
-               initiator = $html(workflowInstance.initiator.firstName);
+               initiator = $html(workflowInstance.initiator.firstName + ' ' + workflowInstance.initiator.lastName);
                
          // if there is a property label available for the status use that instead
          if (data.propertyLabels && Alfresco.util.isValueSet(data.propertyLabels["bpm_status"], false))
@@ -361,7 +361,9 @@ if (typeof Alvex == "undefined" || !Alvex)
          info += '<div class="started"><label>' + this.msg("label.workflowStartDate") + ':</label><span>' + (workflowStartDate ? Alfresco.util.formatDate(workflowStartDate, "longDate") : this.msg("label.none")) + '</span></div>';
          info += '<div class="type"><label>' + this.msg("label.type", type) + ':</label><span>' + type + '</span></div>';
          // info += '<div class="description"><label>' + this.msg("label.description") + ':</label><span>' + description + '</span></div>';
-         info += '<div class="initiator"><label>' + this.msg("label.initiator") + ':</label><span>' + initiator + '</span></div>';
+         info += '<div class="initiator"><label>' + this.msg("label.initiator") + ':</label><span>' 
+                 + '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + workflowInstance.initiator.userName + '/profile">' + initiator 
+                 + '</a></span></div>';
          if (!assignee || !assignee.userName)
          {
             info += '<div class="unassigned"><span class="theme-bg-color-5 theme-color-5 unassigned-task">' + this.msg("label.unassignedTask") + '</span></div>';

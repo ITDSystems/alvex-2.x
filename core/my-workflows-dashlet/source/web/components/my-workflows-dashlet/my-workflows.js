@@ -401,7 +401,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 						var statusDesc = task ? '<div><strong>' + this.msg("label.currentTask") + '</strong> ' + task + '</div>' : "";
 
-						statusDesc += '<div>' + assignee ? '<strong>' + this.msg("label.assignee") + '</strong> ' + assignee + ' ' : "" ;
+						statusDesc += '<div>' + assignee ? '<strong>' + this.msg("label.assignee") + '</strong> ' 
+							+ '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' 
+							+ workflow.tasks[t].owner.userName + '/profile">' + $html(assignee) + '</a> ' : "" ;
 						
 						statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 
 							+ Alfresco.util.formatDate(taskStarted, "longDate") + '</div>';
