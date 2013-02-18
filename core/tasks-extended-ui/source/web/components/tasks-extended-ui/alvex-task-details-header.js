@@ -141,7 +141,9 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
 
          // Edit button
-         if( task.owner && task.owner.userName == Alfresco.constants.USERNAME )
+         if( ( task.owner && task.owner.userName == Alfresco.constants.USERNAME ) 
+               || ( task.workflowInstance.initiator && task.workflowInstance.initiator.userName == Alfresco.constants.USERNAME )
+               || ( Alfresco.constants.USERNAME == 'admin' ) )
          {
             this.widgets.editButton = Alfresco.util.createYUIButton(this, "edit", null, {"type": "link", "href": Alfresco.util.siteURL(taskEditUrl) });
             Dom.removeClass(Selector.query(".actions .edit", this.id), "hidden");
