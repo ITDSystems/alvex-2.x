@@ -341,11 +341,11 @@ if (typeof Alvex.dashlet == "undefined" || !Alvex.dashlet)
             {
                desc += '<br/><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/pooled-task-16.png" title="' + this.msg("label.pooledTask") + '"/>';
             }
-         }
 
-         if( data.properties["alvexrwf_relatedWorkflows"] || data.properties["itdrwf_relatedWorkflows"] )
-         {
-            desc += '<br/><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/with-related-tasks-16.png" title="' + this.msg("label.withRelatedTasks") + '"/>';
+            if( data.properties["alvexrwf_relatedWorkflows"] || data.properties["itdrwf_relatedWorkflows"] )
+            {
+               desc += '<br/><img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/with-related-tasks-16.png" title="' + this.msg("label.withRelatedTasks") + '"/>';
+            }
          }
 
          elCell.innerHTML = desc;
