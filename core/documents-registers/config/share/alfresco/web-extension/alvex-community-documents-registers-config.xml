@@ -4,6 +4,7 @@
 		<forms>
 			<dependencies>
 				<js  src="/components/alvex/classifier-select.js" />
+				<js  src="/components/alvex/classifiers-config.js" />
 				<js  src="/components/alvex/auto-numberer.js" />
 				<js  src="/components/alvex/simple-dialog.js" />
 			</dependencies>
@@ -44,11 +45,13 @@
 				<field-visibility>
 					<show id="cm:title" force="true" />
 					<show id="cm:description" force="true" />
+					<show id="alvexdr:attachedClassifiers" />
 				</field-visibility>
 				<view-form template="/alvex-form.ftl" />
 				<edit-form template="/alvex-form.ftl" />
 				<appearance>
 					<set id="info" appearance="title" label-id="alvex.docreg.title" />
+					<set id="classifiers" appearance="spoiler-collapsed" label-id="alvex.docreg.classifiers" />
 					<field set="info" id="cm:title" mandatory="true">
 						<control template="/org/alfresco/components/form/controls/textfield.ftl">
 							<control-param name="style">width: 98%</control-param>
@@ -58,6 +61,9 @@
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 98%</control-param>
 						</control>
+					</field>
+					<field set="classifiers" id="alvexdr:attachedClassifiers">
+						<control template="/alvex-classifiers-config.ftl" />
 					</field>
 				</appearance>
 			</form>

@@ -3,14 +3,25 @@
 		var siteName = url.templateArgs['site'];
 		var contName = url.templateArgs['container'];
 		var dlTitle = url.templateArgs['listTitle'];
-		var site = siteService.getSite(siteName);
-		var cont = site.getContainer(contName);
-		
+		var dlRef = args['dlRef'];
+
 		var list;
 		model.data = [];
-		for each (dl in cont.children)
-			if(dl.properties.title == dlTitle)
-				list = dl;
+
+		if( siteName && contName && dlTitle )
+		{
+			var site = siteService.getSite(siteName);
+			var cont = site.getContainer(contName);
+		
+			for each (dl in cont.children)
+				if(dl.properties.title == dlTitle)
+					list = dl;
+		}
+		else if (dlRef)
+		{
+			list = search.findNode( dlRef );
+		}
+
 		for each (item in list.children)
 		{
 			var newItem = {};

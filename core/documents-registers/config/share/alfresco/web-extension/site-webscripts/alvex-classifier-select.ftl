@@ -20,6 +20,7 @@ new Alvex.ClassifierSelect( "${fieldHtmlId}" ).setOptions({
 	<#if form.mode == "view" || field.disabled >
 	disabled: true,
 	</#if>
+	field: '${field.name}',
 	url: '${(field.control.params.url!"")?string}',
 	label: '${(field.control.params.label!"")?string}',
 	value: '${(field.control.params.value!"")?string}'

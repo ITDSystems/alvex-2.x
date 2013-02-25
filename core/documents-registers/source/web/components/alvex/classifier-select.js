@@ -42,6 +42,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			initialized: false,
 			disabled: false,
 			url: '',
+			root: '',
 			label: '',
 			value: ''
 		},
@@ -70,8 +71,68 @@ if (typeof Alvex == "undefined" || !Alvex)
 			//this.options.label = "title";
 			//this.options.value = "title";
 
-			if( (this.options.url == '') || (this.options.label == '') || (this.options.value == '') )
+			if( (this.options.url == '') && (this.options.label == '') && (this.options.value == '') )
+				this.loadFromRepo();
+			else if( (this.options.url != '') && (this.options.label != '') && (this.options.value != '') )
+				this.loadFromURL();
+			else
 				return;
+
+		},
+
+		loadFromRepo: function()
+		{
+			var fieldName = this.options.field;
+			var dlRef = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta.nodeRef;
+			Alfresco.util.Ajax.jsonRequest({
+				url: Alfresco.constants.PROXY_URI + "api/alvex/classifier-config?dlRef=" + dlRef + "&fieldName=" + fieldName,
+				method: Alfresco.util.Ajax.GET,
+				dataObj: null,
+				successCallback:
+				{
+					fn: function (resp)
+					{
+						if( resp.json.classifiers && resp.json.classifiers.length > 0 )
+						{
+							if( resp.json.classifiers[0].type == "internal" )
+							{
+								this.options.url = Alfresco.constants.PROXY_URI 
+									+ "api/alvex/datalists/items?dlRef=" + resp.json.classifiers[0].clRef;
+								this.options.root = '';
+								this.options.label = resp.json.classifiers[0].clField.replace(/.*:/,'');
+								this.options.value = resp.json.classifiers[0].clField.replace(/.*:/,'');
+							}
+						}
+						this.loadFromURL();
+					},
+					scope:this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						if (resp.serverResponse.statusText)
+							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+					},
+					scope:this
+				}
+			});
+		},
+
+		loadFromURL: function()
+		{
+			if( !this.options.url || this.options.url == '' )
+			{
+				var selectEl = Dom.get( this.id + '-cntrl' );
+				var parent = selectEl.parentNode;
+				parent.removeChild( selectEl );
+				var input = document.createElement( 'input' );
+				input.type = 'text';
+				input.id = this.id + '-cntrl';
+				input.name = this.options.field;
+				parent.appendChild( input );
+				return;
+			}
 
 			Alfresco.util.Ajax.jsonRequest({
 				url: this.options.url,
@@ -122,5 +183,6 @@ if (typeof Alvex == "undefined" || !Alvex)
 				}
 			});
 		}
+
 	});
 })();

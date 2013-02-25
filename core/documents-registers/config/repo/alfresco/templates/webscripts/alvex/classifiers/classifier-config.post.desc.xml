@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Classifiers - store config</shortname>
+  <description>Classifiers - store config</description>
+  <url>/api/alvex/classifier-config</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

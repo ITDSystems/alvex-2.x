@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>List all available data lists</shortname>
+  <description>List all available data lists</description>
+  <url>/api/alvex/datalists/list-all</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

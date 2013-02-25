@@ -2,6 +2,7 @@
   <shortname>DataLists - Get Items</shortname>
   <description>Data Lists Component - get all items in json format</description>
   <url>/api/alvex/datalists/items/site/{site}/{container}/{listTitle}</url>
+  <url>/api/alvex/datalists/items?dlRef={dlRef}</url>
   <format default="json">argument</format>
   <authentication>user</authentication>
   <transaction allow="readwrite" buffersize="0">required</transaction>
