@@ -18,20 +18,9 @@
  */
 package com.alvexcore.repo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.security.Key;
-import java.security.PublicKey;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
@@ -46,11 +35,7 @@ import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.service.namespace.QName;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.extensions.surf.util.AbstractLifecycleBean;
-import org.springframework.util.PropertyPlaceholderHelper;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 
 import com.alvexcore.license.LicenseInfo;
 
@@ -61,11 +46,9 @@ import com.alvexcore.license.LicenseInfo;
 
 public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 
-	private final static int EDITION_ENTERPRISE = 1;
-
 	final static QName[] ALVEX_PATH = { AlvexContentModel.ASSOC_NAME_SYSTEM,
 			AlvexContentModel.ASSOC_NAME_ALVEX };
-
+	
 	private Repository repository = null;
 	private ServiceRegistry serviceRegistry = null;
 
@@ -91,36 +74,19 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	}
 
 	public void init() throws Exception {
-		// load license information
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			@Override
 			public Void doWork() throws Exception {
 				initContainer();
+				for (RepositoryExtension ext : extensions)
+					ext.init();
 				return null;
 			}
 		});
 	}
 
 	private void initContainer() throws Exception {
-		NodeRef node = createPath(ALVEX_PATH, null, null);
-		NodeService nodeService = serviceRegistry.getNodeService();
-		if (!nodeService.hasAspect(node, ContentModel.ASPECT_AUDITABLE)) {
-			Map<QName, Serializable> props = new HashMap<QName, Serializable>();
-			props.put(ContentModel.PROP_MODIFIED, Calendar.getInstance()
-					.getTime());
-			props.put(ContentModel.PROP_MODIFIER,
-					AuthenticationUtil.SYSTEM_USER_NAME);
-			props.put(ContentModel.PROP_CREATED, Calendar.getInstance()
-					.getTime());
-			props.put(ContentModel.PROP_CREATOR,
-					AuthenticationUtil.SYSTEM_USER_NAME);
-			nodeService.addAspect(node, ContentModel.ASPECT_AUDITABLE, props);
-		} else {
-			nodeService.setProperty(node, ContentModel.PROP_MODIFIED, Calendar
-					.getInstance().getTime());
-			nodeService.setProperty(node, ContentModel.PROP_MODIFIER,
-					AuthenticationUtil.SYSTEM_USER_NAME);
-		}
+		createPath(ALVEX_PATH, null, null);
 	}
 
 	// creates containers specified by assocs
@@ -155,20 +121,12 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	}
 
 	public String getSystemId() {
-		return "NOT-IMPLEMENTED-YET";
-		//		return repository.getCompanyHome().getId()
-		//				+ "-"
-		//				+ serviceRegistry
-		//						.getNodeService()
-		//						.getProperty(repository.getCompanyHome(),
-		//								ContentModel.PROP_CREATED).toString();
+		return repository.getCompanyHome().getId();
 	}
 
 	public LicenseInfo getLicenseInfo() {
-		return new LicenseInfo("CE", new String(), new String(), 0, 0, new Date(), new Date(), true, false);
+		return new LicenseInfo("CE", new String(), new String(), 0, 0, new Date(), new Date(), true, false);	
 	}
-
-	private boolean initialiazed = false;
 
 	// registers new extension
 	public void registerExtension(RepositoryExtension extension)
@@ -188,30 +146,15 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 
 	@Override
 	protected void onBootstrap(ApplicationEvent event) {
-		// TODO nothing to do here
-
-	}
-
-	@Override
-	protected void onShutdown(ApplicationEvent event) {
-		// TODO nothing to do here
-
-	}
-
-	@Override
-	public void onApplicationEvent(ApplicationEvent event) {
-		super.onApplicationEvent(event);
-		if (event instanceof ContextRefreshedEvent && !initialiazed) {
-			try {
-				init();
-				for (RepositoryExtension ext : extensions)
-					ext.init();
-				initialiazed = true;
-			} catch (Exception e) {
-				throw new AlfrescoRuntimeException(
-						"Alvex initialization failed", e);
-			}
+		try {
+			init();
+		} catch (Exception e) {
+			throw new AlfrescoRuntimeException(
+					"Alvex initialization failed", e);
 		}
 	}
 
+	@Override
+	protected void onShutdown(ApplicationEvent event) {	
+	}
 }

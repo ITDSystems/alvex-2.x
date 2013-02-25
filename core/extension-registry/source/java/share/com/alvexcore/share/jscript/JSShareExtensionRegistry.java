@@ -24,7 +24,7 @@ import com.alvexcore.share.ShareExtensionRegistry;
 import java.util.HashMap;
 import java.util.Map;
 import org.mozilla.javascript.Scriptable;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.extensions.webscripts.processor.BaseProcessorExtension;
 
 /**
@@ -32,17 +32,10 @@ import org.springframework.extensions.webscripts.processor.BaseProcessorExtensio
  * 
  * 
  */
-public class JSShareExtensionRegistry extends BaseProcessorExtension implements
-		InitializingBean {
+public class JSShareExtensionRegistry extends BaseProcessorExtension {
 	private ShareExtensionRegistry registry;
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (registry == null)
-			throw new Exception(
-					"ShareExtensionRegistry is not set, it's fatal.");
-	}
-
+	@Required
 	public void setShareExtensionRegistry(ShareExtensionRegistry registry) {
 		this.registry = registry;
 	}
@@ -56,7 +49,6 @@ public class JSShareExtensionRegistry extends BaseProcessorExtension implements
 		return registry.getSystemId();
 	}
 
-	// it's really bad method, but… :)
 	public Map<String, String> convertToMap(Scriptable obj) {
 		Object[] propIds = obj.getIds();
 		Map<String, String> result = new HashMap<String, String>(propIds.length);
@@ -72,12 +64,12 @@ public class JSShareExtensionRegistry extends BaseProcessorExtension implements
 	}
 
 	public ExtensionUpdateInfo checkForUpdates(String extensionId,
-			String shareId, Object shareHashes, String shareVersion,
-			String repoId, Object repoHashes, String repoVersion, String licenseId)
+			String shareId, Scriptable shareHashes, String shareVersion,
+			String repoId, Scriptable repoHashes, String repoVersion, String licenseId)
 			throws Exception {
 		return registry.checkForUpdates(extensionId, shareId,
-				convertToMap((Scriptable) shareHashes), shareVersion, repoId,
-				convertToMap((Scriptable) repoHashes), repoVersion, licenseId);
+				convertToMap(shareHashes), shareVersion, repoId,
+				convertToMap(repoHashes), repoVersion, licenseId);
 	}
 
 }

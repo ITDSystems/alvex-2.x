@@ -29,8 +29,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.alfresco.model.ContentModel;
-import org.alfresco.repo.security.authentication.AuthenticationUtil;
-import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -38,6 +36,7 @@ import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 
 public abstract class RepositoryExtension implements InitializingBean {
 
@@ -75,14 +74,7 @@ public abstract class RepositoryExtension implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// load extension info
-		InputStream is = this.getClass().getClassLoader()
-				.getResourceAsStream(extInfoPath);
-		Properties props = new Properties();
-		props.load(is);
-		version = (props.getProperty(PROP_VERSION) != null) ? props.getProperty(PROP_VERSION) : DEV_VERSION;
-		edition = (props.getProperty(PROP_EDITION) != null) ? props.getProperty(PROP_EDITION) : DEV_EDITION;
-		extensionRegistry.registerExtension(this);
-		serviceRegistry = extensionRegistry.getServiceRegistry();
+
 	}
 
 	// returns extension id
@@ -153,14 +145,16 @@ public abstract class RepositoryExtension implements InitializingBean {
 	abstract void upgradeConfiguration(String oldVersion, String oldEdition);
 
 	public void init() throws Exception {
+		InputStream is = this.getClass().getClassLoader()
+				.getResourceAsStream(extInfoPath);
+		Properties props = new Properties();
+		props.load(is);
+		version = (props.getProperty(PROP_VERSION) != null) ? props.getProperty(PROP_VERSION) : DEV_VERSION;
+		edition = (props.getProperty(PROP_EDITION) != null) ? props.getProperty(PROP_EDITION) : DEV_EDITION;
+		extensionRegistry.registerExtension(this);
+		serviceRegistry = extensionRegistry.getServiceRegistry();
 		// check if installation was upgraded
-		AuthenticationUtil.runAs(new RunAsWork<Void>() {
-
-			public Void doWork() throws Exception {
-				updateExtensionInfo();
-				return null;
-			}
-		}, AuthenticationUtil.getSystemUserName());
+		updateExtensionInfo();
 	}
 
 	// updates extension info in repository and runs upgradeConfiguration() if
@@ -195,6 +189,7 @@ public abstract class RepositoryExtension implements InitializingBean {
 				edition);
 	}
 
+	@Required
 	public void setExtensionRegistry(
 			RepositoryExtensionRegistry extensionRegistry) {
 		this.extensionRegistry = extensionRegistry;
