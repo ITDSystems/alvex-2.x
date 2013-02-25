@@ -42,9 +42,15 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:agreementType"/>
-               <field set="company" id="alvexdt:company"/>
-               <field set="company" id="alvexdt:contractor"/>
+               <field set="id" id="alvexdt:agreementType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:contractor">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -110,9 +116,15 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:agreementType"/>
-               <field set="company" id="alvexdt:company"/>
-               <field set="company" id="alvexdt:contractor"/>
+               <field set="id" id="alvexdt:agreementType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:contractor">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -187,12 +199,18 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:receivedType"/>
-               <field set="company" id="alvexdt:correspondent"/>
+               <field set="id" id="alvexdt:receivedType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:correspondent">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="company" id="alvexdt:addressee">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="company" id="alvexdt:deliveryType"/>
+               <field set="company" id="alvexdt:deliveryType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -249,12 +267,18 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:receivedType"/>
-               <field set="company" id="alvexdt:correspondent"/>
+               <field set="id" id="alvexdt:receivedType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:correspondent">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="company" id="alvexdt:addressee">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="company" id="alvexdt:deliveryType"/>
+               <field set="company" id="alvexdt:deliveryType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -319,10 +343,18 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:sentType"/>
-               <field set="company" id="alvexdt:correspondent"/>
-               <field set="company" id="alvexdt:contactName"/>
-               <field set="company" id="alvexdt:deliveryType"/>
+               <field set="id" id="alvexdt:sentType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:correspondent">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:contactName">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:deliveryType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -378,10 +410,18 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:sentType"/>
-               <field set="company" id="alvexdt:correspondent"/>
-               <field set="company" id="alvexdt:contactName"/>
-               <field set="company" id="alvexdt:deliveryType"/>
+               <field set="id" id="alvexdt:sentType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:correspondent">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:contactName">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:deliveryType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -437,7 +477,9 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:appendixType" />
+               <field set="id" id="alvexdt:appendixType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -478,7 +520,9 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:appendixType" />
+               <field set="id" id="alvexdt:appendixType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -533,9 +577,15 @@
                </field>
                <field set="id" id="alvexdt:registerDate"/>
                <field set="id" id="alvexdt:expiryDate" />
-               <field set="recipient" id="alvexdt:recipient"/>
-               <field set="recipient" id="alvexdt:recipientPosition"/>
-               <field set="recipient" id="alvexdt:contractor"/>
+               <field set="recipient" id="alvexdt:recipient">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="recipient" id="alvexdt:recipientPosition">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="recipient" id="alvexdt:contractor">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
@@ -581,9 +631,15 @@
                </field>
                <field set="id" id="alvexdt:registerDate"/>
                <field set="id" id="alvexdt:expiryDate" />
-               <field set="recipient" id="alvexdt:recipient"/>
-               <field set="recipient" id="alvexdt:recipientPosition"/>
-               <field set="recipient" id="alvexdt:contractor"/>
+               <field set="recipient" id="alvexdt:recipient">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="recipient" id="alvexdt:recipientPosition">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="recipient" id="alvexdt:contractor">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
@@ -647,9 +703,15 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:invoiceType" />
-               <field set="company" id="alvexdt:company"/>
-               <field set="company" id="alvexdt:contractor"/>
+               <field set="id" id="alvexdt:invoiceType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:contractor">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -657,12 +719,16 @@
                <field set="dates" id="alvexdt:expiryDate"/>
                <field set="dates" id="alvexdt:paymentDate"/>
                <field set="amount" id="alvexdt:amount"/>
-               <field set="amount" id="alvexdt:currency"/>
+               <field set="amount" id="alvexdt:currency">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="internal" id="alvexdt:primaryDocument"/>
                <field set="internal" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="internal" id="alvexdt:location"/>
+               <field set="internal" id="alvexdt:location">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
@@ -711,9 +777,15 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:invoiceType" />
-               <field set="company" id="alvexdt:company"/>
-               <field set="company" id="alvexdt:contractor"/>
+               <field set="id" id="alvexdt:invoiceType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="company" id="alvexdt:contractor">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -721,12 +793,16 @@
                <field set="dates" id="alvexdt:expiryDate"/>
                <field set="dates" id="alvexdt:paymentDate"/>
                <field set="amount" id="alvexdt:amount"/>
-               <field set="amount" id="alvexdt:currency"/>
+               <field set="amount" id="alvexdt:currency">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="internal" id="alvexdt:primaryDocument"/>
                <field set="internal" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="internal" id="alvexdt:location"/>
+               <field set="internal" id="alvexdt:location">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
@@ -783,8 +859,12 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:administrativeType" />
-               <field set="signatory" id="alvexdt:company"/>
+               <field set="id" id="alvexdt:administrativeType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="signatory" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="signatory" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -849,8 +929,12 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:administrativeType" />
-               <field set="signatory" id="alvexdt:company"/>
+               <field set="id" id="alvexdt:administrativeType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="signatory" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="signatory" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -917,8 +1001,12 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:backgroundType" />
-               <field set="signatory" id="alvexdt:company"/>
+               <field set="id" id="alvexdt:backgroundType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="signatory" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="signatory" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -966,8 +1054,12 @@
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate"/>
-               <field set="id" id="alvexdt:backgroundType" />
-               <field set="signatory" id="alvexdt:company"/>
+               <field set="id" id="alvexdt:backgroundType">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
+               <field set="signatory" id="alvexdt:company">
+                  <control template="/alvex-classifier-select.ftl"/>
+               </field>
                <field set="signatory" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
                </field>
