@@ -42,6 +42,8 @@ import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.alfresco.repo.web.scripts.workflow.AbstractWorkflowWebscript;
 import org.alfresco.repo.web.scripts.workflow.WorkflowModelBuilder;
 
+import org.alfresco.service.namespace.NamespaceService;
+
 /**
  * Webscript impelementation to return workflow task instances.
  * 
@@ -206,7 +208,18 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         String propertiesStr = req.getParameter(PARAM_PROPERTIES);
         if (propertiesStr != null)
         {
-            return Arrays.asList(propertiesStr.split(","));
+            String[] props = propertiesStr.split(",");
+            List<String> res = new ArrayList<String>();
+            for (int i = 0; i < props.length; i++)
+            {
+                int colonIndex = props[i].indexOf('_');
+                String prefix = (colonIndex == -1) ? NamespaceService.DEFAULT_PREFIX : props[i].substring(0, colonIndex);
+                if( this.namespaceService.getNamespaceURI(prefix) != null )
+                {
+                    res.add( props[i] );
+                }
+            }
+            return res;
         }
         return null;
     }
