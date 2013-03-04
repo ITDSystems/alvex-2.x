@@ -19,7 +19,5 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="alvex-documents-registers" class="com.alvexcore.share.DocumentsRegistersExtension" depends-on="alvex-share-extension-registry">
-		<property name="extensionRegistry" ref="alvex-share-extension-registry" />
-	</bean>
+	<bean id="alvex-documents-registers" class="com.alvexcore.share.DocumentsRegistersExtension" parent="alvex-extension"/>
 </beans>
