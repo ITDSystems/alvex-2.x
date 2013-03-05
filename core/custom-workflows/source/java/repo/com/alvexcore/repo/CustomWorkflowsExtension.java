@@ -34,30 +34,6 @@ import com.alvexcore.repo.workflow.activiti.WorkflowPermissionManager;
  * CustomWorkflows extension implementation
  */
 
-class CreateGroupWork implements RunAsWork<Void> {
-
-	private ServiceRegistry serviceRegistry;
-
-	public CreateGroupWork(ServiceRegistry serviceRegistry) {
-		this.serviceRegistry = serviceRegistry;
-	}
-
-	@Override
-	public Void doWork() throws Exception {
-		AuthorityService as = serviceRegistry.getAuthorityService();
-		if (!as.authorityExists(as.getName(AuthorityType.GROUP,
-				CustomWorkflowsExtension.ROOT_GROUP_NAME))) {
-			Set<String> zones = new HashSet<String>();
-			zones.add(WorkflowPermissionManager.ZONE_ALVEX);
-			as.createAuthority(AuthorityType.GROUP,
-					CustomWorkflowsExtension.ROOT_GROUP_NAME,
-					CustomWorkflowsExtension.ROOT_GROUP_NAME, zones);
-		}
-		return null;
-	}
-
-}
-
 public class CustomWorkflowsExtension extends RepositoryExtension {
 
 	public static final String ROOT_GROUP_NAME = "alvex_workflow_groups";
@@ -70,9 +46,17 @@ public class CustomWorkflowsExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() {
-		RunAsWork<Void> work = new CreateGroupWork(serviceRegistry);
-		AuthenticationUtil.runAsSystem(work);
+	public void init() throws Exception {
+		super.init();
+		AuthorityService as = serviceRegistry.getAuthorityService();
+		if (!as.authorityExists(as.getName(AuthorityType.GROUP,
+				CustomWorkflowsExtension.ROOT_GROUP_NAME))) {
+			Set<String> zones = new HashSet<String>();
+			zones.add(WorkflowPermissionManager.ZONE_ALVEX);
+			as.createAuthority(AuthorityType.GROUP,
+					CustomWorkflowsExtension.ROOT_GROUP_NAME,
+					CustomWorkflowsExtension.ROOT_GROUP_NAME, zones);
+		}
 	}
 
 	@Override

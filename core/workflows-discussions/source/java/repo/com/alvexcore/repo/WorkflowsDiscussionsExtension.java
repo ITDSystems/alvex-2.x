@@ -50,23 +50,11 @@ public class WorkflowsDiscussionsExtension extends RepositoryExtension {
 		extInfoPath = "alvex-workflows-discussions.properties";
 	}
 
-	// initialize extension
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		// call method of superclass
-		super.afterPropertiesSet();
-	}
-
-	@Override
-	public void init() {
+	public void init() throws Exception {
+		super.init();
 		// initialize workflow discussions storage
-		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
-
-			public Void doWork() throws Exception {
-				initializeStorage();
-				return null;
-			}
-		});
+		initializeStorage();
 	}
 
 	private void initializeStorage() throws Exception {

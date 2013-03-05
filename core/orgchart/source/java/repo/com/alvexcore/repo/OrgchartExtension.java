@@ -58,25 +58,12 @@ public class OrgchartExtension extends RepositoryExtension {
 		this.orgchartService = orgchartService;
 	}
 
-	// initialize extension
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		// call method of superclass
-		super.afterPropertiesSet();
-	}
-
 	@Override
 	public void init() throws Exception {
 		super.init();
 		// set up orgchart
-		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
-
-			public Void doWork() throws Exception {
-				initializeStorage();
-				orgchartService.setUp();
-				return null;
-			}
-		});
+		initializeStorage();
+		orgchartService.setUp();
 	}
 
 	private void initializeStorage() throws Exception {
@@ -91,6 +78,5 @@ public class OrgchartExtension extends RepositoryExtension {
 	@Override
 	void upgradeConfiguration(String oldVersion, String oldEdition) {
 		//
-
 	}
 }

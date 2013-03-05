@@ -53,15 +53,9 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() {
-		// initialize workflow discussions storage
-		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
-
-			public Void doWork() throws Exception {
-				initializeStorage();
-				return null;
-			}
-		});
+	public void init() throws Exception {
+		super.init();
+		initializeStorage();
 	}
 
 	private void initializeStorage() throws Exception {

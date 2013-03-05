@@ -52,23 +52,10 @@ public class RelatedWorkflowsExtension extends RepositoryExtension {
 		extInfoPath = "alvex-related-workflows.properties";
 	}
 
-	// initialize extension
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		// call method of superclass
-		super.afterPropertiesSet();
-	}
-
-	@Override
-	public void init() {
-		// initialize workflow discussions storage
-		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
-
-			public Void doWork() throws Exception {
-				initializeStorage();
-				return null;
-			}
-		});
+	public void init() throws Exception{
+		super.init();
+		initializeStorage();
 	}
 
 	private void initializeStorage() throws Exception {
@@ -83,7 +70,6 @@ public class RelatedWorkflowsExtension extends RepositoryExtension {
 
 	@Override
 	void upgradeConfiguration(String oldVersion, String oldEdition) {
-		//
-		
+		//		
 	}
 }
