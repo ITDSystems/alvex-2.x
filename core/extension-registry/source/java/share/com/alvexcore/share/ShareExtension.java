@@ -88,6 +88,8 @@ public class ShareExtension implements InitializingBean {
 
 	// returns md5 hash for a specified file
 	protected String getMD5Hash(String file) throws Exception {
+		if (file.isEmpty())
+			return "MISSED_FILE_NAME"; // FIXME debug only
 		InputStream is = null;
 		try {
 			is = this.getClass().getClassLoader().getResourceAsStream(file);
@@ -126,7 +128,7 @@ public class ShareExtension implements InitializingBean {
 			try {
 				md5hash = getMD5Hash(filePath);
 			} catch (Exception e) {
-				md5hash = "";
+				md5hash = "ERROR";
 			}
 			md5hashes.put(filePath, md5hash);
 

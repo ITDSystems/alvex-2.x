@@ -73,8 +73,8 @@ public abstract class RepositoryExtension implements InitializingBean {
 	// dependency injection
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// load extension info
-
+		serviceRegistry = extensionRegistry.getServiceRegistry();
+		extensionRegistry.registerExtension(this);
 	}
 
 	// returns extension id
@@ -94,13 +94,11 @@ public abstract class RepositoryExtension implements InitializingBean {
 
 	// returns md5 hash for a specified file
 	protected String getMD5Hash(String file) throws Exception {
-		InputStream is = null;
-		try {
-			is = this.getClass().getClassLoader().getResourceAsStream(file);
-
-		} catch (Exception e) {
-			throw new Exception("Error occured while opening a file.", e);
-		}
+		if (file.isEmpty())
+			return "MISSED_FILE_NAME"; // FIXME debug only
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(file);
+		if (is == null)
+			throw new Exception("Can't find specified resource.");
 		byte[] bytesOfMessage = IOUtils.toByteArray(is);
 		byte[] digest = md5.digest(bytesOfMessage);
 		String result = "";
@@ -132,7 +130,7 @@ public abstract class RepositoryExtension implements InitializingBean {
 			try {
 				md5hash = getMD5Hash(filePath);
 			} catch (Exception e) {
-				md5hash = "";
+				md5hash = "ERROR";
 			}
 			md5hashes.put(filePath, md5hash);
 
@@ -151,8 +149,6 @@ public abstract class RepositoryExtension implements InitializingBean {
 		props.load(is);
 		version = (props.getProperty(PROP_VERSION) != null) ? props.getProperty(PROP_VERSION) : DEV_VERSION;
 		edition = (props.getProperty(PROP_EDITION) != null) ? props.getProperty(PROP_EDITION) : DEV_EDITION;
-		extensionRegistry.registerExtension(this);
-		serviceRegistry = extensionRegistry.getServiceRegistry();
 		// check if installation was upgraded
 		updateExtensionInfo();
 	}
