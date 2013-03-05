@@ -45,10 +45,6 @@ public class JSShareExtensionRegistry extends BaseProcessorExtension {
 		return registry.getInstalledExtensions().toArray();
 	}
 
-	public String getSystemId() {
-		return registry.getSystemId();
-	}
-
 	public Map<String, String> convertToMap(Scriptable obj) {
 		Object[] propIds = obj.getIds();
 		Map<String, String> result = new HashMap<String, String>(propIds.length);

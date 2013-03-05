@@ -210,8 +210,4 @@ public class ShareExtensionRegistry implements InitializingBean {
 	public List<ShareExtension> getInstalledExtensions() {
 		return extensions;
 	}
-
-	public String getSystemId() {
-		return /* getIfaces() */"NOT-IMPLEMENTED-YET";
-	}
 }
