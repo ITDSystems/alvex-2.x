@@ -236,7 +236,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 							{
 								dueDateEl = form[i];
 							}
-						if( dueDateEl != null )
+						if( dueDateEl != null && task.properties.bpm_dueDate != null )
 						{
 							dueDateEl.value = task.properties.bpm_dueDate;
 							var dueDate = Alfresco.util.fromISO8601(task.properties.bpm_dueDate);

@@ -126,9 +126,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 				var selectEl = Dom.get( this.id + '-cntrl' );
 				var parent = selectEl.parentNode;
 				parent.removeChild( selectEl );
+				var hiddenEl = Dom.get( this.id );
+				parent = hiddenEl.parentNode;
+				parent.removeChild( hiddenEl );
 				var input = document.createElement( 'input' );
 				input.type = 'text';
-				input.id = this.id + '-cntrl';
+				input.id = this.id;
 				input.name = this.options.field;
 				parent.appendChild( input );
 				return;
