@@ -18,10 +18,16 @@
  */
 package com.alvexcore.repo.jscript;
 
-import org.alfresco.repo.processor.BaseProcessorExtension;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import org.alfresco.repo.jscript.BaseScopableProcessorExtension;
+import org.alfresco.repo.jscript.ValueConverter;
+import org.mozilla.javascript.Scriptable;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.alvexcore.license.LicenseInfo;
+import com.alvexcore.repo.RepositoryExtension;
 import com.alvexcore.repo.RepositoryExtensionRegistry;
 
 /**
@@ -30,8 +36,9 @@ import com.alvexcore.repo.RepositoryExtensionRegistry;
  * 
  */
 
-public class JSRepositoryExtensionRegistry extends BaseProcessorExtension {
+public class JSRepositoryExtensionRegistry extends BaseScopableProcessorExtension {
 	private RepositoryExtensionRegistry registry;
+	private ValueConverter converter = new ValueConverter();
 
 	@Required
 	public void setRepositoryExtensionRegistry(
@@ -40,8 +47,11 @@ public class JSRepositoryExtensionRegistry extends BaseProcessorExtension {
 	}
 
 	// wrap methods
-	public Object[] getInstalledExtensions() {
-		return registry.getInstalledExtensions().toArray();
+	public Scriptable getInstalledExtensions() {
+		ArrayList<Serializable> result = new ArrayList<Serializable>();
+		for (RepositoryExtension ext: registry.getInstalledExtensions())
+			result.add(new JSRepositoryExtension(registry.getServiceRegistry(), getScope(), ext));
+		return (Scriptable)converter.convertValueForScript(registry.getServiceRegistry(), getScope(), null, result);
 	}
 
 	public String getSystemId() {
