@@ -134,6 +134,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 				input.id = this.id;
 				input.name = this.options.field;
 				parent.appendChild( input );
+
+				var me = this;
+				Dom.get( me.id ).onchange = function()
+				{
+					YAHOO.Bubbling.fire("mandatoryControlValueUpdated", me);
+				};
 				return;
 			}
 
