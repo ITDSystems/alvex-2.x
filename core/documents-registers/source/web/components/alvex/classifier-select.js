@@ -119,21 +119,44 @@ if (typeof Alvex == "undefined" || !Alvex)
 			});
 		},
 
-		loadFromURL: function()
+		renderTextField: function()
 		{
-			if( !this.options.url || this.options.url == '' )
+			var selectEl = Dom.get( this.id + '-cntrl' );
+			var parent = selectEl.parentNode;
+			parent.removeChild( selectEl );
+
+			var hiddenEl = Dom.get( this.id );
+			var value = hiddenEl.value;
+			parent = hiddenEl.parentNode;
+			parent.removeChild( hiddenEl );
+
+			if( !this.options.disabled )
 			{
-				var selectEl = Dom.get( this.id + '-cntrl' );
-				var parent = selectEl.parentNode;
-				parent.removeChild( selectEl );
-				var hiddenEl = Dom.get( this.id );
-				parent = hiddenEl.parentNode;
-				parent.removeChild( hiddenEl );
 				var input = document.createElement( 'input' );
 				input.type = 'text';
 				input.id = this.id;
 				input.name = this.options.field;
+				input.value = value;
 				parent.appendChild( input );
+			} else {
+				var div = document.createElement( 'div' );
+				div.id = this.id;
+				parent.appendChild( div );
+				Dom.get( this.id ).innerHTML = $html(value);
+			}
+
+			var me = this;
+			Dom.get( me.id ).onchange = function()
+			{
+				YAHOO.Bubbling.fire("mandatoryControlValueUpdated", me);
+			};
+		},
+
+		loadFromURL: function()
+		{
+			if( !this.options.url || this.options.url == '' )
+			{
+				this.renderTextField();
 				return;
 			}
 
@@ -153,7 +176,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 								curLabel = resp.json[r][this.options.label];
 						}
 						if(this.options.disabled) {
-							Dom.get( this.id + '-cntrl' ).innerHTML = $html(curLabel);
+							Dom.get( this.id + '-cntrl' ).innerHTML = $html( (curLabel != '' ? curLabel : curValue) );
 						} else {
 							var selectEl = Dom.get( this.id + '-cntrl' );
 							selectEl.options.add( new Option( '', '' ) );
