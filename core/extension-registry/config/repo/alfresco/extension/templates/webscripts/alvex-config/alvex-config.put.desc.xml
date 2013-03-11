@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>alvex-config</shortname>
+	<description>Saves extension config</description>
+	<url>/api/alvex/config/{extension}/{config}</url>
+	<format default="json">argument</format>
+	<transaction>required</transaction>
+	<authentication>admin</authentication>
+</webscript>
