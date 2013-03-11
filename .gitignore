@@ -3,3 +3,4 @@ core/*/bin/
 tools/*/build/
 tools/*/bin/
 try*
+config.json
