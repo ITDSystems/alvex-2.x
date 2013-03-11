@@ -152,11 +152,11 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="bdft">
 					&nbsp;
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
@@ -235,8 +235,8 @@
 <script type="text/javascript">//<![CDATA[
 	new Alvex.OrgchartViewer("${htmlId}").setOptions({
 		mode: "admin",
-		defaultRoleName: "${config.defaultRoleName}",
-		uiConfigNodeRef: "${config.configNodeRef}"
+		defaultRoleName: "${config.props['alvexoc:defaultRoleName']}",
+		uiConfigNodeRef: "${config.nodeRef}"
 	}).setMessages(
 		${messages}
 	);

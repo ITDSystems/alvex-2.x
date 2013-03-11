@@ -93,11 +93,11 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="bdft">
 					&nbsp;
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
@@ -152,9 +152,10 @@
 <script type="text/javascript">//<![CDATA[
 	new Alvex.OrgchartViewer("${htmlId}").setOptions({
 		mode: "viewer",
-		style: "${config.viewType}",
-		defaultRoleName: "${config.defaultRoleName}",
-		showUnitsRecursively: "${config.showUnitsRecursively}" == "true",
+		style: "${config.props['alvexoc:viewType']}",
+		defaultRoleName: "${config.props['alvexoc:defaultRoleName']}",
+		// FIXME Should we use @renderVariable here?
+		showUnitsRecursively: <#if config.props['alvexoc:showUnitsRecursively']>true<#else>false</#if>,
 	}).setMessages(
 		${messages}
 	);
