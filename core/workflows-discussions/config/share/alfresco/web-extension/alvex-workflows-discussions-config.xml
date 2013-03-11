@@ -13,7 +13,6 @@
 				<js  src="/yui/datatable/datatable.js" />
 				<js  src="/yui/cookie/cookie.js" />
 				<js  src="/components/alvex/alvex-workflows-discussions.js" />
-				<js  src="/components/alvex.js" />
 			</dependencies>
 		</forms>
 	</config>

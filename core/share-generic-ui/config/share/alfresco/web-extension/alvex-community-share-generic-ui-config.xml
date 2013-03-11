@@ -1,4 +1,11 @@
 <alfresco-config>
+	<config>
+		<forms>      
+			<dependencies>
+				<js  src="/components/alvex.js" />
+			</dependencies>
+		</forms>
+	</config>
 	<config replace="true">
 		<header>
 			<app-items>
