@@ -4,7 +4,9 @@
 		var sites = siteService.listSites('','');
 		for each( site in sites )
 		{
-			if( ! site.hasContainer( 'dataLists' ) )
+			if( ! site.hasContainer( 'dataLists' ) 
+					|| ! site.getContainer( 'dataLists' ) 
+					|| ! site.getContainer( 'dataLists' ).children )
 				continue;
 			var dls = site.getContainer( 'dataLists' ).children;
 			for each(dl in dls)
