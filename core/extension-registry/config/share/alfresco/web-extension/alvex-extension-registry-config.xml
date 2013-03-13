@@ -1,0 +1,14 @@
+<alfresco-config>
+	<config evaluator="string-compare" condition="Remote">
+		<remote>
+			<endpoint>
+				<id>alvexupdate</id>
+				<name>Alvex Update </name>
+				<description>Alvex update site access that do not require authentication</description>
+				<connector-id>http</connector-id>
+				<endpoint-url>http://update.alvexcore.com:80/updates</endpoint-url>
+				<identity>none</identity>
+			</endpoint>
+		</remote>
+	</config>
+</alfresco-config>

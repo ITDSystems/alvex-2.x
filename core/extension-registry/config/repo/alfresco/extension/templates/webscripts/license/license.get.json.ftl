@@ -1,6 +1,9 @@
  <#escape x as jsonUtils.encodeJSONString(x)>
  {
-  	"data":
+ 	"version": "${version}",
+ 	"edition": "${edition}",
+ 	"codename": "${codename}",
+  	"license":
  	{
  		"id": "${license.id}",
  		"owner": "${license.owner}",
@@ -9,7 +12,7 @@
  		"product": "${license.product}",
  		"issued": "${license.issued?datetime?iso("UTC")}",
  		"validThru": "${license.validThru?datetime?iso("UTC")}",
- 		"valid": ${license.valid?string}, 
+ 		"valid": ${license.valid?string},
  		"trial": ${license.trial?string}
  	}
  }

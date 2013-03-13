@@ -30,7 +30,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		Element = YAHOO.util.Element;
 
 	var $html = Alfresco.util.encodeHTML,
-		$hasEventInterest = Alfresco.util.hasEventInterest; 
+		$hasEventInterest = Alfresco.util.hasEventInterest;
 
 	Alvex.AlvexUpdatesInfo = function(htmlId)
 	{
@@ -39,115 +39,19 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		Alfresco.util.ComponentManager.register(this);
 
-		Alfresco.util.YUILoaderHelper.require(["button", "container", "datasource", "datatable", "json", "history"], 
+		Alfresco.util.YUILoaderHelper.require(["button", "container", "datasource", "datatable", "json", "history"],
 												this.onComponentsLoaded, this);
-
-		var parent = this;
-
-		this.cur_group = '';
 
 		PanelHandler = function PanelHandler_constructor()
 		{
 			PanelHandler.superclass.constructor.call(this, "main");
 		};
+
 		YAHOO.extend(PanelHandler, Alfresco.ConsolePanelHandler,
 		{
 			onLoad: function onLoad()
 			{
-				// DataSource setup
-				var dataSource = new YAHOO.util.DataSource();
 
-				var columnDefinitions =
-				[
-					{ key: "component", label: parent.msg("aui.label.component"), sortable: true, width: 200 },
-					{ key: "curVer", label: parent.msg("aui.label.curVer"), sortable: true, width: 100 },
-					{ key: "latestVer", label: parent.msg("aui.label.latestVer"), sortable: true, width: 100 },
-					{ key: "isOk", label: parent.msg("aui.label.isOk"), sortable: true, width: 100 },
-					{ key: "comment", label: parent.msg("aui.label.comment"), sortable: true, width: 200 }
-				];
-
-				// DataTable definition
-				parent.widgets.dataTable = new YAHOO.widget.DataTable(
-							parent.id + "-datatable", columnDefinitions, dataSource,
-				{
-					sortedBy:
-					{
-						key: "component",
-						dir: "asc"
-					},
-					MSG_EMPTY: parent.msg("aui.message.no_updates_info")
-				});
-
-				var show_help = true;
-
-				// Fill with data
-				for(var u in parent.options.updatesInfo)
-				{
-					parent.options.updatesInfo[u].id 
-						= unescape(parent.options.updatesInfo[u].id).replace(/[\n\r\t\s]/gm,'');
-					parent.options.updatesInfo[u].repoVersion 
-						= unescape(parent.options.updatesInfo[u].repoVersion).replace(/[\n\r\t\s]/gm,'');
-					parent.options.updatesInfo[u].shareVersion 
-						= unescape(parent.options.updatesInfo[u].shareVersion).replace(/[\n\r\t\s]/gm,'');
-					parent.options.updatesInfo[u].repoLatestVersion 
-						= unescape(parent.options.updatesInfo[u].repoLatestVersion).replace(/[\n\r\t\s]/gm,'');
-					parent.options.updatesInfo[u].shareLatestVersion 
-						= unescape(parent.options.updatesInfo[u].shareLatestVersion).replace(/[\n\r\t\s]/gm,'');
-
-					var modified = false;
-
-					for(var r in parent.options.updatesInfo[u].repoFiles)
-						if(parent.options.updatesInfo[u].repoFiles[r].status == 'err')
-							modified = true;
-
-					for(var s in parent.options.updatesInfo[u].shareFiles)
-						if(parent.options.updatesInfo[u].shareFiles[s].status == 'err')
-							modified = true;
-
-					var curVer;
-					if ( (parent.options.updatesInfo[u].repoVersion === "")
-							&& (parent.options.updatesInfo[u].shareVersion === "") )
-						curVer = parent.msg("aui.message.cur_ver_missed");
-					else if (parent.options.updatesInfo[u].repoVersion === "")
-						curVer = parent.options.updatesInfo[u].shareVersion;
-					else if (parent.options.updatesInfo[u].shareVersion === "")
-						curVer = parent.options.updatesInfo[u].repoVersion;
-					else if (parent.options.updatesInfo[u].repoVersion === parent.options.updatesInfo[u].shareVersion)
-						curVer = parent.options.updatesInfo[u].repoVersion;
-					else
-						curVer = parent.msg("aui.message.cur_ver_inconsistent");
-
-					var latestVer;
-					if(parent.options.updatesInfo[u].repoLatestVersion 
-								=== parent.options.updatesInfo[u].shareLatestVersion) {
-						latestVer = parent.options.updatesInfo[u].repoLatestVersion;
-						if(latestVer == curVer)
-							latestVer = '';
-					} else {
-						latestVer = parent.msg("aui.message.latest_ver_inconsistent");
-					}
-
-					var isOk;
-					if(!modified) {
-						isOk = '';
-					} else {
-						show_help = true;
-						isOk = parent.msg("aui.message.component_modified");
-					}
-
-					parent.widgets.dataTable.addRow({
-						component: parent.options.updatesInfo[u].id,
-						curVer: curVer,
-						latestVer: latestVer,
-						isOk: isOk,
-						comment:  unescape(parent.options.updatesInfo[u].motd)
-					});
-				}
-
-				if(show_help)
-				{
-					document.getElementById(parent.id + "-help").innerHTML = parent.msg("aui.help.issues");
-				}
 			}
 		});
 		new PanelHandler;
@@ -159,14 +63,93 @@ if (typeof Alvex == "undefined" || !Alvex)
 	{
 		options:
 		{
-			updatesInfo: []
 		},
+
+		showErrorMessage: function(_, obj)
+		{
+			this.hidePopupDialog();
+			// show popup dialog with error message for 5 seconds
+			Alfresco.util.PopupManager.displayMessage({
+				text: obj,
+				displayTime: 5
+			});
+		},
+
 
 		onReady: function WSA_onReady()
 		{
 			Alvex.AlvexUpdatesInfo.superclass.onReady.call(this);
+			this.popupDialog = Alfresco.util.PopupManager.displayMessage({
+				text: this.msg('alvex.admin.loading_updates'),
+				displayTime: 0,
+				spanClass: 'wait'
+			});
+			Alfresco.util.Ajax.jsonRequest({
+					url: Alfresco.constants.URL_SERVICECONTEXT+'api/alvex/check-updates',
+					method: Alfresco.util.Ajax.GET,
+					failureCallback:
+					{
+						fn: this.showErrorMessage,
+						obj: this.msg('alvex.admin.updates_check_failed'),
+						scope:this
+					},
+					successCallback:
+					{
+						fn: this.displayUpdatesInfo,
+						scope:this
+					},
+					scope: this
+			});
+		},
+
+		hidePopupDialog: function() {
+			if (this.popupDialog) {
+				this.popupDialog.hide();
+				this.popupDialog = null;
+			}
+		},
+
+		displayUpdatesInfo: function(response) {
+			try {
+				this.data = YAHOO.util.Lang.JSON.parse(response.serverResponse.responseText);
+				alert(this.data.latestVersion);
+			} catch (e) {
+				this.showErrorMessage(null, this.msg('alvex.admin.updates_check_failed'));
+				return;
+			}
+			this.hidePopupDialog();
+			this.popupDialog = Alfresco.util.PopupManager.displayMessage({
+				text: this.msg('alvex.admin.loading_detailed_updates'),
+				displayTime: 0,
+				spanClass: 'wait'
+			});
+			Alfresco.util.Ajax.jsonRequest({
+					url: Alfresco.constants.URL_SERVICECONTEXT+'api/alvex/update-js',
+					method: Alfresco.util.Ajax.GET,
+					failureCallback:
+					{
+						fn: this.showErrorMessage,
+						obj: this.msg('alvex.admin.detailed_updates_check_failed'),
+						scope:this
+					},
+					successCallback:
+					{
+						fn: this.displayUpdatesInfoExtended,
+						scope:this
+					},
+					scope: this
+			});
+		},
+
+		displayUpdatesInfoExtended: function(response) {
+			this.hidePopupDialog();
+			try {
+				eval('('+response.serverResponse.responseText+')').call(this);
+			}
+			catch (e) {
+				this.showErrorMessage(null, this.msg('alvex.admin.detailed_updates_check_failed'));
+				return;
+			}
 		}
-
 	});
-
 })();

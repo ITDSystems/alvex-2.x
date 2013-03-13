@@ -18,9 +18,11 @@
  */
 package com.alvexcore.repo;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
@@ -51,6 +53,26 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	
 	private Repository repository = null;
 	private ServiceRegistry serviceRegistry = null;
+	
+	private String version;
+	private String edition;
+	private String codename;
+	
+	final private String PROP_VERSION = "alvex.version";
+	final private String PROP_EDITION = "alvex.edition";
+	final private String PROP_CODENAME = "alvex.codename";
+
+	final private String DEV_VERSION = "dev";
+	final private String DEV_EDITION = "dev";
+	final private String DEV_CODENAME = "dev";
+
+	public String getVersion() {
+		return version;
+	}
+
+	public String getEdition() {
+		return edition;
+	}
 
 	// list of extensions
 	protected List<RepositoryExtension> extensions = new ArrayList<RepositoryExtension>();
@@ -73,7 +95,19 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		this.serviceRegistry = serviceRegistry;
 	}
 
+	public String getCodename() {
+		return codename;
+	}
+
 	public void init() throws Exception {
+		InputStream is = this.getClass().getClassLoader()
+				.getResourceAsStream("alvex-release.properties");
+		Properties props = new Properties();
+		props.load(is);
+		version = (props.getProperty(PROP_VERSION) != null) ? props.getProperty(PROP_VERSION) : DEV_VERSION;
+		edition = (props.getProperty(PROP_EDITION) != null) ? props.getProperty(PROP_EDITION) : DEV_EDITION;
+		codename = (props.getProperty(PROP_CODENAME) != null) ? props.getProperty(PROP_CODENAME) : DEV_CODENAME;
+
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			@Override
 			public Void doWork() throws Exception {

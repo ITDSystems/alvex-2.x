@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Updates checker</shortname>
+	<description>Script to check Alvex updates</description>
+	<url>/api/alvex/check-updates</url>
+	<format default="json"/>
+</webscript>

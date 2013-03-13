@@ -1,0 +1,7 @@
+<webscript>
+	<shortname>update-js</shortname>
+	<description>Returns Javascript to show updates information</description>
+	<url>/api/alvex/update-js</url>
+	<format default="text"/>
+	<transaction>required</transaction>
+</webscript>
