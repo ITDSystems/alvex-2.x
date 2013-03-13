@@ -9,4 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Repository"/>
 	<classpathentry kind="src" path="/3rd Party"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extension-registry"/>
+	<classpathentry kind="src" path="/Remote API"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
