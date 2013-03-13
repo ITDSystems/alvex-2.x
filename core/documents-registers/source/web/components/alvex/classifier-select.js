@@ -142,7 +142,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				var div = document.createElement( 'div' );
 				div.id = this.id;
 				parent.appendChild( div );
-				Dom.get( this.id ).innerHTML = $html(value);
+				Dom.get( this.id ).innerHTML = value;
 			}
 
 			var me = this;
@@ -176,14 +176,14 @@ if (typeof Alvex == "undefined" || !Alvex)
 								curLabel = resp.json[r][this.options.label];
 						}
 						if(this.options.disabled) {
-							Dom.get( this.id + '-cntrl' ).innerHTML = $html( (curLabel != '' ? curLabel : curValue) );
+							Dom.get( this.id + '-cntrl' ).innerHTML = (curLabel != '' ? curLabel : curValue);
 						} else {
 							var selectEl = Dom.get( this.id + '-cntrl' );
 							selectEl.options.add( new Option( '', '' ) );
 							for(var r in resp.json) {
 								selectEl.options.add( 
 									new Option(
-										$html(resp.json[r][this.options.label]), 
+										resp.json[r][this.options.label], 
 										resp.json[r][this.options.value]
 									)
 								);
