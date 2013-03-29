@@ -278,6 +278,14 @@ public interface OrgchartService {
 			String displayName, int weight);
 
 	/**
+	 * Creates new orgchart unit based on existing group
+	 * @param parent Parent orgchart unit
+	 * @param groupName Name of the group to base unit on
+	 * @return New unit
+	 */
+	public abstract OrgchartUnit syncUnit(OrgchartUnit parent, String groupShortName);
+
+	/**
 	 * Drops orgchart unit
 	 * @param unit Orgcahrt unit to delete
 	 */
@@ -349,7 +357,7 @@ public interface OrgchartService {
 	 * @param unit Orgchart unit
 	 * @param person Orgchart person
 	 */
-	public abstract void addMemeber(OrgchartUnit unit, OrgchartPerson person);
+	public abstract void addMember(OrgchartUnit unit, OrgchartPerson person);
 
 	/**
 	 * Removes person from unit

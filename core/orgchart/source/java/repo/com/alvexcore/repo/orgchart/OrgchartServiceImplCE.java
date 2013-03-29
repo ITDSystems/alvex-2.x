@@ -260,6 +260,16 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	}
 
 	/**
+	 * Creates new orgchart unit based on existing group
+	 * @param parent Parent orgchart unit
+	 * @param groupName Name of the group to base unit on
+	 * @return New unit
+	 */
+	protected OrgchartUnit syncUnit(NodeRef parent, String groupShortName) {
+		throw new AlfrescoRuntimeException("Not implemented in CE");
+	}
+
+	/**
 	 * Returns orgchart unit by its node reference
 	 * @param node Reference to unit's node
 	 * @return Orgchart unit or null
@@ -369,7 +379,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	 * @param person Orgchart person to check
 	 * @return True if person has aspect and false otherwise
 	 */
-	protected boolean isOrgchartMemeber(OrgchartPerson person) {
+	protected boolean isOrgchartMember(OrgchartPerson person) {
 		return nodeService.hasAspect(person.getNode(),
 				AlvexContentModel.ASPECT_ORGCHART_MEMBER);
 	}
@@ -379,7 +389,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	 * @param person Orgchart person to add aspect to
 	 */
 	protected void makeOrgchartMember(OrgchartPerson person) {
-		if (!isOrgchartMemeber(person))
+		if (!isOrgchartMember(person))
 			AuthenticationUtil.runAsSystem(new MakeOrgchartMember(nodeService,
 					person));
 	}
@@ -785,6 +795,14 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	}
 
 	/* (non-Javadoc)
+	 * @see com.alvexcore.repo.orgchart.OrgchartServiceX#syncUnit(com.alvexcore.repo.orgchart.OrgchartUnit, java.lang.String)
+	 */
+	@Override
+	public OrgchartUnit syncUnit(OrgchartUnit parent, String groupShortName) {
+		return syncUnit(parent.getNode(), groupShortName);
+	}
+
+	/* (non-Javadoc)
 	 * @see com.alvexcore.repo.orgchart.OrgchartServiceX#dropUnit(com.alvexcore.repo.orgchart.OrgchartUnit)
 	 */
 	@Override
@@ -792,7 +810,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 		final String groupName = unit.getGroupName();
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			public Void doWork() throws Exception {
-				authorityService.deleteAuthority(groupName);
+				if( authorityService.authorityExists(groupName) )
+					authorityService.deleteAuthority(groupName);
 				return null;
 			}
 		});
@@ -894,17 +913,18 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	}
 
 	/* (non-Javadoc)
-	 * @see com.alvexcore.repo.orgchart.OrgchartServiceX#addMemeber(com.alvexcore.repo.orgchart.OrgchartUnit, com.alvexcore.repo.orgchart.OrgchartPerson)
+	 * @see com.alvexcore.repo.orgchart.OrgchartServiceX#addMember(com.alvexcore.repo.orgchart.OrgchartUnit, com.alvexcore.repo.orgchart.OrgchartPerson)
 	 */
 	@Override
-	public void addMemeber(OrgchartUnit unit, OrgchartPerson person) {
+	public void addMember(OrgchartUnit unit, OrgchartPerson person) {
 		nodeService.createAssociation(unit.getNode(), person.getNode(),
 				AlvexContentModel.ASSOC_MEMBER);
 		final String personName = person.getName();
 		final String groupName = unit.getGroupName();
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			public Void doWork() throws Exception {
-				authorityService.addAuthority(groupName, personName);
+				if( ! authorityService.getAuthoritiesForUser(personName).contains(groupName) )
+					authorityService.addAuthority(groupName, personName);
 				return null;
 			}
 		});

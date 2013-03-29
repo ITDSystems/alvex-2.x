@@ -135,6 +135,11 @@ public class JscriptOrgchartUnit implements Serializable {
 						weight));
 	}
 
+	public JscriptOrgchartUnit syncUnit(String groupShortName) {
+		return new JscriptOrgchartUnit(orgchartService, serviceRegistry, scope,
+				orgchartService.syncUnit(orgchartUnit, groupShortName));
+	}
+
 	public JscriptOrgchartUnit update(String displayName, int weight) {
 		return new JscriptOrgchartUnit(orgchartService, serviceRegistry, scope,
 				orgchartService.modifyUnit(orgchartUnit, displayName, weight));
@@ -143,7 +148,7 @@ public class JscriptOrgchartUnit implements Serializable {
 	public void addMember(ScriptNode person) {
 		// FIXME this depends on Alfresco content model, think
 		// about API to retrieve person by reference
-		orgchartService.addMemeber(
+		orgchartService.addMember(
 				orgchartUnit,
 				new OrgchartPerson(person.getNodeRef(),
 						(String) serviceRegistry.getNodeService()

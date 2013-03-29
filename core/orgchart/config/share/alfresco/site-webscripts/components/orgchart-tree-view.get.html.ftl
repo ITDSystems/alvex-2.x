@@ -37,9 +37,11 @@
 						<a href="#" id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</a>
 						<a href="#" id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</a>
 					</div>
+					<#if config.syncSource == 'none' >
 					<div class="yui-u yui-skin-sam">
 						<a href="#" id="${pickerId}-add-users">${msg("alvex.orgchart.add_users")}</a>
 					</div>
+					</#if>
 				</div>
 
 				<div class="yui-g">
@@ -93,11 +95,11 @@
 						</div>
 					</div>
 				</div>
-
+				
 				<div class="bdft">
 					&nbsp;
 				</div>
-
+				
 			</div>
 		</div>
 	</div>
@@ -152,10 +154,10 @@
 <script type="text/javascript">//<![CDATA[
 	new Alvex.OrgchartViewer("${htmlId}").setOptions({
 		mode: "viewer",
-		style: "${config.props['alvexoc:viewType']}",
-		defaultRoleName: "${config.props['alvexoc:defaultRoleName']}",
-		// FIXME Should we use @renderVariable here?
-		showUnitsRecursively: <#if config.props['alvexoc:showUnitsRecursively']>true<#else>false</#if>,
+		style: "${config.viewType}",
+		defaultRoleName: "${config.defaultRoleName}",
+		showUnitsRecursively: "${config.showUnitsRecursively}" == "true",
+		syncSource: "${config.syncSource}"
 	}).setMessages(
 		${messages}
 	);
