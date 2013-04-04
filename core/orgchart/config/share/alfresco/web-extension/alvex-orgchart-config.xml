@@ -67,6 +67,45 @@
 		</forms>
 	</config>
 
+	<!-- Orgchart sync config forms -->
+
+	<config evaluator="model-type" condition="alvexoc:syncConfig">
+		<forms>
+			<!-- Create Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexoc:syncSource" />
+					<show id="alvexoc:syncRootGroupName" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="config" appearance="" label="" />
+					<field set="config" id="alvexoc:syncSource" />
+					<field set="config" id="alvexoc:syncRootGroupName" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexoc:syncConfig">
+		<forms>
+			<!-- View / Edit Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexoc:syncSource" />
+					<show id="alvexoc:syncRootGroupName" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="config" appearance="" label="" />
+					<field set="config" id="alvexoc:syncSource" />
+					<field set="config" id="alvexoc:syncRootGroupName" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
 	<!-- Orgchart unit add / modify forms -->
 
 	<config evaluator="model-type" condition="alvexoc:unit">

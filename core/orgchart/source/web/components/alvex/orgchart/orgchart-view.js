@@ -88,6 +88,10 @@ var labelType, useGradients, nativeTextSupport, animate;
 			initialized: false,
 			// NodeRef of the node that stores UI config ('admin' mode only)
 			uiConfigNodeRef: '',
+			// NodeRef of the node that stores orgchart sync config ('admin' mode only)
+			syncConfigNodeRef: '',
+			// Org chart sync source
+			syncSource: 'none',
 			// Orgchart branch we are working with
 			curBranch: 'default',
 			// All orgchart branches
@@ -413,10 +417,20 @@ var labelType, useGradients, nativeTextSupport, animate;
 			this.createUnitRolesDialog();
 			this.createRolesTable();
 
-			this.widgets.uiConfig = new YAHOO.widget.Button(this.id + "-ui-config",
+			if( Dom.get( this.id + "-ui-config" ) )
+				this.widgets.uiConfig = new YAHOO.widget.Button(this.id + "-ui-config",
 							{ onclick: { fn: this.onUIConfig, obj: null, scope: this } });
 
-			this.widgets.addRole = new YAHOO.widget.Button(this.id + "-add-role",
+			if( Dom.get( this.id + "-sync-config" ) )
+				this.widgets.syncConfig = new YAHOO.widget.Button(this.id + "-sync-config",
+							{ onclick: { fn: this.onSyncConfig, obj: null, scope: this } });
+
+			if( Dom.get( this.id + "-sync-now" ) )
+				this.widgets.syncNow = new YAHOO.widget.Button(this.id + "-sync-now",
+							{ onclick: { fn: this.onSyncNow, obj: null, scope: this } });
+
+			if( Dom.get( this.id + "-add-role" ) )
+				this.widgets.addRole = new YAHOO.widget.Button(this.id + "-add-role",
 							{ onclick: { fn: this.onAddRole, obj: null, scope: this } });
 
 			// TODO - How can we handle links outside of the table?
@@ -425,6 +439,28 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 			this.activateWaitMessage();
 
+			this.adminLoadBranches();
+
+			// Load in the People Finder component from the server
+			Alfresco.util.Ajax.request(
+			{
+				url: Alfresco.constants.URL_SERVICECONTEXT + "components/alvex/orgchart/people-finder",
+				dataObj:
+				{
+					htmlid: this.id + "-search-peoplefinder"
+				},
+				successCallback:
+				{
+					fn: this.onPeopleFinderLoaded,
+					scope: this
+				},
+				failureMessage: "Could not load People Finder component",
+				execScripts: true
+			});	
+		},
+
+		adminLoadBranches: function()
+		{
 			// Get orgchart branches
 			Alfresco.util.Ajax.jsonRequest({
 				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/branches",
@@ -457,23 +493,6 @@ var labelType, useGradients, nativeTextSupport, animate;
 					scope:this
 				}
 			});
-
-			// Load in the People Finder component from the server
-			Alfresco.util.Ajax.request(
-			{
-				url: Alfresco.constants.URL_SERVICECONTEXT + "components/alvex/orgchart/people-finder",
-				dataObj:
-				{
-					htmlid: this.id + "-search-peoplefinder"
-				},
-				successCallback:
-				{
-					fn: this.onPeopleFinderLoaded,
-					scope: this
-				},
-				failureMessage: "Could not load People Finder component",
-				execScripts: true
-			});	
 		},
 
 		initDefaultBranch: function()
@@ -642,6 +661,105 @@ var labelType, useGradients, nativeTextSupport, animate;
 					scope: this
 				}
 			}).show();
+		},
+
+		onSyncConfig: function()
+		{
+			// Intercept before dialog show
+			var doBeforeDialogShow = function(p_form, p_dialog)
+			{
+				Alfresco.util.populateHTML(
+					[ p_dialog.id + "-dialogTitle", this.msg("alvex.orgchart.configureSync") ],
+					[ p_dialog.id + "-dialogHeader", this.msg("alvex.orgchart.configureSync") ]
+				);
+			};
+
+			var templateUrl = YAHOO.lang.substitute(
+					Alfresco.constants.URL_SERVICECONTEXT 
+						+ "components/form?itemKind={itemKind}&itemId={itemId}&mode={mode}" 
+						+ "&submitType={submitType}&showCancelButton=true",
+				{
+					itemKind: "node",
+					itemId: this.options.syncConfigNodeRef,
+					mode: "edit",
+					submitType: "json"
+				});
+
+			// Using Forms Service, so always create new instance
+			var syncConfigDialog = new Alfresco.module.SimpleDialog(this.id + "-syncConfigDialog");
+
+			syncConfigDialog.setOptions(
+			{
+				width: "33em",
+				templateUrl: templateUrl,
+				actionUrl: null,
+				destroyOnHide: true,
+
+				doBeforeDialogShow:
+				{
+					fn: doBeforeDialogShow,
+					scope: this
+				},
+				onSuccess:
+				{
+					fn: function syncConfigDialogSuccess(response)
+					{
+						Alfresco.util.PopupManager.displayMessage(
+						{
+							text: this.msg("alvex.orgchart.configureSync.success")
+						});
+					},
+					scope: this
+				},
+				onFailure:
+				{
+					fn: function syncConfigDialogFailure(response)
+					{
+						Alfresco.util.PopupManager.displayMessage(
+						{
+							text: this.msg("alvex.orgchart.configureSync.failure")
+						});
+					},
+					scope: this
+				}
+			}).show();
+		},
+
+		onSyncNow: function()
+		{
+			Alfresco.util.PopupManager.displayMessage(
+			{
+				text: this.msg("alvex.orgchart.syncStarted")
+			});
+
+			Alfresco.util.Ajax.jsonRequest({
+				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/sync-start",
+				method: Alfresco.util.Ajax.GET,
+				dataObj: null,
+				successCallback:
+				{
+					fn: function (resp)
+					{
+						Alfresco.util.PopupManager.displayMessage(
+						{
+							text: this.msg("alvex.orgchart." + resp.json.syncStatus)
+						});
+						this.adminLoadBranches();
+					},
+					scope:this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						Alfresco.util.PopupManager.displayMessage(
+						{
+							text: this.msg("alvex.orgchart.syncFailed")
+						});
+					},
+					scope:this
+				}
+			});
 		},
 
 		createUserRolesDialog: function()
@@ -1553,6 +1671,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 							hideDelay: 300,
 							type: "orgchartUnit",
 							mode: this.options.mode,
+							syncSource: this.options.syncSource,
 							unitID: newNode.id,
 							unitName: newNode.displayName,
 							curElem: curElem,
@@ -1699,7 +1818,10 @@ var labelType, useGradients, nativeTextSupport, animate;
 						+ 'class="orgchart-action-link ' + id + '-action-link"'
 						+ 'title="' + this.orgchart.msg("alvex.orgchart.button.edit-roles") +'">' 
 						+ '<span>' + this.orgchart.msg("alvex.orgchart.button.edit-roles") + '</span></a></div>';
+			}
 
+			if( this.orgchart.canDeleteUser(this.orgchart.options.selectedGroup) )
+			{
 				html += '<div class="' + 'deleteUser' + '"><a rel="delete" href="" ' 
 						+ 'class="orgchart-action-link ' + id + '-action-link"'
 						+ 'title="' + this.orgchart.msg("alvex.orgchart.button.delete") +'">' 
@@ -1772,6 +1894,13 @@ var labelType, useGradients, nativeTextSupport, animate;
 		{
 			return ( ( this.options.mode == 'admin' ) 
 						|| ( (unit != null) && ( unit.isAdmin == "true" ) ) );
+		},
+
+		canDeleteUser: function(unit)
+		{
+			return ( ( ( this.options.mode == 'admin' ) || ( (unit != null) && ( unit.isAdmin == "true" ) ) )
+					&& ( this.options.syncSource == 'none' )
+				);
 		},
 
 		canAdminUnit: function(node)
@@ -2598,8 +2727,11 @@ var labelType, useGradients, nativeTextSupport, animate;
 		{
 			this.rolesIcon = new Alfresco.widget.InsituEditorOrgchartRoles(this, p_params);
 			this.editIcon = new Alfresco.widget.InsituEditorOrgchartEdit(this, p_params);
-			this.addIcon = new Alfresco.widget.InsituEditorOrgchartAdd(this, p_params);
-			this.deleteIcon = new Alfresco.widget.InsituEditorOrgchartDelete(this, p_params);
+			if( this.params.syncSource == 'none' )
+			{
+				this.addIcon = new Alfresco.widget.InsituEditorOrgchartAdd(this, p_params);
+				this.deleteIcon = new Alfresco.widget.InsituEditorOrgchartDelete(this, p_params);
+			}
 		}
 		
 		return this;

@@ -3,6 +3,7 @@
 <![endif]-->
 <input id="yui-history-field" type="hidden" />
 
+<#include "/alvex-meta.lib.ftl" />
 <#assign htmlId=args.htmlid?js_string>
 
 <script type="text/javascript">
@@ -27,12 +28,12 @@
 <div id="${htmlId}-body" class="orgchart-admin">
 	<div class="title set-bordered-panel-heading">
 		<span><input id="${htmlId}-button-1" class="btn" type="button" onclick="showSpoiler(1);" value=" + " /></span>
-		<label>${msg("alvex.orgchart.configureUI.header")}</label>
+		<label>${msg("alvex.orgchart.majorParameters")}</label>
 	</div>
 	<div id="${htmlId}-panel-1" class="set-bordered-panel-body" style="display:none;">
 		<div style="padding-bottom: 1em;">
-			<div class="label" style="float: left; padding-right: 5em;">${msg("alvex.orgchart.majorParameters")}:</div>
-			<div>
+			<div class="label" style="float: left;">${msg("alvex.orgchart.configureUI.header")}:</div>
+			<div style="padding-left: 15em;">
 				<span>
 					<!-- UI Config Button -->
 					<div>
@@ -45,6 +46,33 @@
 				</span>
 			</div>
 		</div>
+		<#if alvexEditionID == 'enterprise' >
+		<div style="padding-bottom: 1em;">
+			<div class="label" style="float: left;">${msg("alvex.orgchart.syncParameters")}:</div>
+			<div style="padding-left: 15em;">
+				<span>
+					<!-- Sync Config Button -->
+					<div style="float:left;">
+						<span class="yui-button yui-push-button" id="${htmlId}-sync-config">
+							<span class="first-child">
+								<button>${msg("alvex.orgchart.configureSync")}</button>
+							</span>
+						</span>
+					</div>
+				</span>
+				<span>
+					<!-- Sync Now Button -->
+					<div>
+						<span class="yui-button yui-push-button" id="${htmlId}-sync-now">
+							<span class="first-child">
+								<button>${msg("alvex.orgchart.syncNow")}</button>
+							</span>
+						</span>
+					</div>
+				</span>
+			</div>
+		</div>
+		</#if>
 	</div>
 	<hr style="margin-top: 15px; margin-bottom: 15px;"/>
 	<div class="title set-bordered-panel-heading">
@@ -96,9 +124,11 @@
 						<a href="#" id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</a>
 						<a href="#" id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</a>
 					</div>
+					<#if config.syncSource == 'none' >
 					<div class="yui-u yui-skin-sam">
 						<a href="#" id="${pickerId}-add-users">${msg("alvex.orgchart.add_users")}</a>
 					</div>
+					</#if>
 				</div>
 
 				<div class="yui-g">
@@ -152,11 +182,11 @@
 						</div>
 					</div>
 				</div>
-
+				
 				<div class="bdft">
 					&nbsp;
 				</div>
-
+				
 			</div>
 		</div>
 	</div>
@@ -235,8 +265,10 @@
 <script type="text/javascript">//<![CDATA[
 	new Alvex.OrgchartViewer("${htmlId}").setOptions({
 		mode: "admin",
-		defaultRoleName: "${config.props['alvexoc:defaultRoleName']}",
-		uiConfigNodeRef: "${config.nodeRef}"
+		defaultRoleName: "${config.defaultRoleName}",
+		uiConfigNodeRef: "${config.uiConfigNodeRef}",
+		syncConfigNodeRef: "${config.syncConfigNodeRef}",
+		syncSource: "${config.syncSource}"
 	}).setMessages(
 		${messages}
 	);

@@ -18,7 +18,7 @@
 		<namespace prefix="alvexoc" uri="http://alvexcore.com/prefix/alvexoc" />
 	</namespaces>
 	<types>
-			<type name="alvexoc:UIConfig">
+		<type name="alvexoc:UIConfig">
 			<parent>cm:cmobject</parent>
 			<properties>
 				<property name="alvexoc:defaultRoleName">
@@ -40,6 +40,31 @@
 								<list>
 									<value>tree</value>
 									<value>graph</value>
+								</list>
+							</parameter>
+						</constraint>
+					</constraints>
+				</property>
+			</properties>
+		</type>
+		<type name="alvexoc:syncConfig">
+			<parent>cm:cmobject</parent>
+			<properties>
+				<property name="alvexoc:syncRootGroupName">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="alvexoc:syncSource">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+					<default>none</default>
+					<constraints>
+						<constraint name="alvexoc:allowedSyncSources" type="LIST">
+							<parameter name="allowedValues">
+								<list>
+									<value>none</value>
+									<value>AD</value>
+									<value>LDAP</value>
 								</list>
 							</parameter>
 						</constraint>
