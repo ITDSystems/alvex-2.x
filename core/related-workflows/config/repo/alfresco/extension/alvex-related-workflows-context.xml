@@ -10,6 +10,16 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="alvex-workflows-helper-service" class="com.alvexcore.repo.web.scripts.workflow.WorkflowHelperService">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="alvex-workflows-helper-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.web.scripts.workflow.JscriptWorkflowHelperService">
+		<property name="extensionName">
+			<value>workflowHelper</value>
+		</property>
+		<property name="workflowHelperService" ref="alvex-workflows-helper-service" />
+	</bean>
 	<bean id="alvex-related-workflows" parent="alvex-extension"
 		class="com.alvexcore.repo.RelatedWorkflowsExtension" depends-on="alvex-repo-extension-registry,alvex-related-workflows-md" />
 </beans>

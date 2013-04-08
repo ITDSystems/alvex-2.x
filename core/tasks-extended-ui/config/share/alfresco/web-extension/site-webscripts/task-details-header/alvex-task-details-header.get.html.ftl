@@ -1,4 +1,5 @@
 <#assign el=args.htmlid?js_string>
+<#include "/alvex-meta.lib.ftl" />
 <script type="text/javascript">//<![CDATA[
 new Alvex.TaskDetailsHeader("${el}").setOptions(
 {
@@ -17,9 +18,27 @@ new Alvex.TaskDetailsHeader("${el}").setOptions(
          <span class="edit hidden">
             <button id="${el}-edit">${msg("button.edit")}</button>
          </span>
+	<#if alvexEditionID == 'enterprise' >
+         <span class="tree-view hidden">
+            <button id="${el}-tree-view">${msg("button.relatedWorkflowsTree")}</button>
+         </span>
+	</#if>
       </div>
    </div>
    <h1><span></span></h1>
    <h3><span></span></h3>
    <div class="clear"></div>
+
+   <!-- Workflow Tree Dialog -->
+   <div style="display: none;">
+      <div id="${el}-treePanel" class="task-details-header tree-panel">
+         <div class="hd">${msg("button.relatedWorkflowsTree")}</div>
+         <div class="bd">
+            <div style="margin: auto 10px;">
+               <div id="${el}-treePanel-canvas" style="width: 800px; height: 400px;"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+
 </div>

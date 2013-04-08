@@ -1,4 +1,5 @@
 <#include "/org/alfresco/include/alfresco-macros.lib.ftl" />
+<#include "/alvex-meta.lib.ftl" />
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
 new Alvex.TaskEditHeader("${el}").setOptions(
@@ -26,6 +27,11 @@ new Alvex.TaskEditHeader("${el}").setOptions(
          <span class="release hidden">      
             <button id="${el}-release">${msg("button.release")}</button>
          </span>
+	<#if alvexEditionID == 'enterprise' >
+         <span class="tree-view hidden">
+            <button id="${el}-tree-view">${msg("button.relatedWorkflowsTree")}</button>
+         </span>
+	</#if>
       </div>
    </div>
    <div><h1><span></span></h1></div>
@@ -40,6 +46,18 @@ new Alvex.TaskEditHeader("${el}").setOptions(
          <div class="bd">
             <div style="margin: auto 10px;">
                <div id="${el}-peopleFinder"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- Workflow Tree Dialog -->
+   <div style="display: none;">
+      <div id="${el}-treePanel" class="task-edit-header tree-panel">
+         <div class="hd">${msg("button.relatedWorkflowsTree")}</div>
+         <div class="bd">
+            <div style="margin: auto 10px;">
+               <div id="${el}-treePanel-canvas" style="width: 800px; height: 400px;"></div>
             </div>
          </div>
       </div>
