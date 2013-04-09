@@ -1,7 +1,7 @@
 <webscript>
-  <shortname>Classifiers - store config</shortname>
-  <description>Classifiers - store config</description>
-  <url>/api/alvex/classifier-config</url>
+  <shortname>MasterData - store config</shortname>
+  <description>MasterData - store config</description>
+  <url>/api/alvex/masterData-config</url>
   <format default="json">argument</format>
   <authentication>user</authentication>
   <transaction>required</transaction>

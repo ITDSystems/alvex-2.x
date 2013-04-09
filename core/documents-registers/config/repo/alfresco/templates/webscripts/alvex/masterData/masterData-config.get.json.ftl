@@ -3,9 +3,9 @@
 	<#if message?has_content>
 	"message": "${message}"
 	</#if>
-	"classifiers":
+	"masterData":
 	[
-	<#list classifiers as item>
+	<#list masterData as item>
 		{
 			"type": "${item.type}",
 			"dlRef": "${item.dlRef}",

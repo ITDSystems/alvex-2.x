@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
 
-new Alvex.ClassifiersConfig( "${fieldHtmlId}" ).setOptions({
+new Alvex.MasterDataConfig( "${fieldHtmlId}" ).setOptions({
 	<#if form.mode == "view" || field.disabled >
 	disabled: true,
 	</#if>

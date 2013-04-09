@@ -28,14 +28,14 @@ if (typeof Alvex == "undefined" || !Alvex)
 	var Dom = YAHOO.util.Dom;
 	var $html = Alfresco.util.encodeHTML;
 	
-	Alvex.ClassifierSelect= function(htmlId)
+	Alvex.MasterDataSelect= function(htmlId)
 	{
-		Alvex.ClassifierSelect.superclass.constructor.call(this, "Alvex.ClassifierSelect", htmlId);
+		Alvex.MasterDataSelect.superclass.constructor.call(this, "Alvex.MasterDataSelect", htmlId);
 		YAHOO.Bubbling.on("formContentReady", this.onFormContentReady, this);
 		return this;
 	};
 
-	YAHOO.extend(Alvex.ClassifierSelect, Alfresco.component.Base,
+	YAHOO.extend(Alvex.MasterDataSelect, Alfresco.component.Base,
 	{
 		options:
 		{
@@ -85,22 +85,22 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var fieldName = this.options.field;
 			var dlRef = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta.nodeRef;
 			Alfresco.util.Ajax.jsonRequest({
-				url: Alfresco.constants.PROXY_URI + "api/alvex/classifier-config?dlRef=" + dlRef + "&fieldName=" + fieldName,
+				url: Alfresco.constants.PROXY_URI + "api/alvex/masterData-config?dlRef=" + dlRef + "&fieldName=" + fieldName,
 				method: Alfresco.util.Ajax.GET,
 				dataObj: null,
 				successCallback:
 				{
 					fn: function (resp)
 					{
-						if( resp.json.classifiers && resp.json.classifiers.length > 0 )
+						if( resp.json.masterData && resp.json.masterData.length > 0 )
 						{
-							if( resp.json.classifiers[0].type == "internal" )
+							if( resp.json.masterData[0].type == "internal" )
 							{
 								this.options.url = Alfresco.constants.PROXY_URI 
-									+ "api/alvex/datalists/items?dlRef=" + resp.json.classifiers[0].clRef;
+									+ "api/alvex/datalists/items?dlRef=" + resp.json.masterData[0].clRef;
 								this.options.root = '';
-								this.options.label = resp.json.classifiers[0].clField.replace(/.*:/,'');
-								this.options.value = resp.json.classifiers[0].clField.replace(/.*:/,'');
+								this.options.label = resp.json.masterData[0].clField.replace(/.*:/,'');
+								this.options.value = resp.json.masterData[0].clField.replace(/.*:/,'');
 							}
 						}
 						this.loadFromURL();

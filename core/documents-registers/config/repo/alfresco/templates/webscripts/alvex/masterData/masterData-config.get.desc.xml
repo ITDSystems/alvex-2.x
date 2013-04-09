@@ -1,0 +1,10 @@
+<webscript>
+  <shortname>MasterData - get stored config</shortname>
+  <description>MasterData - get stored config</description>
+  <url>/api/alvex/masterData-config?dlRef={dlRef}&amp;fieldName={fieldName}</url>
+  <url>/api/alvex/masterData-config?refs={refs}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

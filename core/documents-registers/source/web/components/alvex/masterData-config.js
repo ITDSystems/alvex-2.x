@@ -28,21 +28,21 @@ if (typeof Alvex == "undefined" || !Alvex)
 	var Dom = YAHOO.util.Dom;
 	var $html = Alfresco.util.encodeHTML;
 	
-	Alvex.ClassifiersConfig= function(htmlId)
+	Alvex.MasterDataConfig= function(htmlId)
 	{
-		Alvex.ClassifiersConfig.superclass.constructor.call(this, "Alvex.ClassifiersConfig", htmlId);
+		Alvex.MasterDataConfig.superclass.constructor.call(this, "Alvex.MasterDataConfig", htmlId);
 		YAHOO.Bubbling.on("formContentReady", this.onFormContentReady, this);
 		return this;
 	};
 
-	YAHOO.extend(Alvex.ClassifiersConfig, Alfresco.component.Base,
+	YAHOO.extend(Alvex.MasterDataConfig, Alfresco.component.Base,
 	{
 		options:
 		{
 			initialized: false,
 			disabled: false,
-			currentClassifiers: [],
-			availableInternalClassifiers: [],
+			currentMasterData: [],
+			availableInternalMasterData: [],
 			targetFields: [],
 			useInternal: false,
 			useExternal: false
@@ -68,7 +68,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		render: function()
 		{
-			// Determine what options we use for classifiers
+			// Determine what options we use for masterData
 			var options = Dom.get( this.id + '-options' ).value.split(',');
 			var i = options.length;
 			while (i--) {
@@ -78,14 +78,14 @@ if (typeof Alvex == "undefined" || !Alvex)
 					this.options.useExternal = true;
 			}
 
-			// Currently attached classifiers
-			var curClassifiersRefs = Dom.get( this.id ).value;
+			// Currently attached masterData
+			var curMasterDataRefs = Dom.get( this.id ).value;
 
 			var dlMeta = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta;
 
 			Alvex.util.processAjaxQueue({
 				queue: [
-				// Get fields where we can use classifiers
+				// Get fields where we can use masterData
 				{
 					url: Alfresco.constants.URL_SERVICECONTEXT + "components/alvex/form.json?" 
 						+ "itemKind=type&itemId=" + dlMeta.itemType + "&mode=create",
@@ -99,7 +99,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						{
 							this.options.targetFields = [];
 							for( var f in resp.json.fields )
-								if( resp.json.fields[f].control == "/alvex-classifier-select.ftl" )
+								if( resp.json.fields[f].control == "/alvex-masterData-select.ftl" )
 									this.options.targetFields.push(resp.json.fields[f]);
 						},
 						scope:this
@@ -114,9 +114,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 						scope:this
 					}
 				},
-				// Get currently configured classifiers
+				// Get currently configured masterData
 				{
-					url: Alfresco.constants.PROXY_URI + "api/alvex/classifier-config?refs=" + curClassifiersRefs,
+					url: Alfresco.constants.PROXY_URI + "api/alvex/masterData-config?refs=" + curMasterDataRefs,
 					method: Alfresco.util.Ajax.GET,
 					responseContentType: Alfresco.util.Ajax.JSON,
 					requestContentType: Alfresco.util.Ajax.JSON,
@@ -125,7 +125,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					{
 						fn: function (resp)
 						{
-							this.options.currentClassifiers = resp.json.classifiers;
+							this.options.currentMasterData = resp.json.masterData;
 						},
 						scope:this
 					},
@@ -150,7 +150,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					{
 						fn: function (resp)
 						{
-							this.options.availableInternalClassifiers = resp.json.dls;
+							this.options.availableInternalMasterData = resp.json.dls;
 						},
 						scope:this
 					},
@@ -180,11 +180,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var el = Dom.get( this.id + '-view' );
 			el.innerHTML += '<div style="padding:10px;height:1.5em;">' 
 				+ '<div style="float:left;width:14em;text-align:right;margin-right:1em;">' 
-					+ '<strong>' + this.msg("alvex.classifiers.config.field") + '</strong></div>'
+					+ '<strong>' + this.msg("alvex.masterData.config.field") + '</strong></div>'
 				+ '<div style="float:left;width:15em;">' 
-					+ '<strong>' + this.msg("alvex.classifiers.config.classifier") + '</strong></div>'
+					+ '<strong>' + this.msg("alvex.masterData.config.masterData") + '</strong></div>'
 				+ '<div style="float:left;width:15em;">' 
-					+ '<strong>' + this.msg("alvex.classifiers.config.column") + '</strong></div>'
+					+ '<strong>' + this.msg("alvex.masterData.config.column") + '</strong></div>'
 				+ '</div>';
 			for(var f in this.options.targetFields)
 			{
@@ -198,14 +198,14 @@ if (typeof Alvex == "undefined" || !Alvex)
 						+ '<select style="width:14em;" class="hidden" id="' + this.id + '-2-' + name + '" name="-"></select></div>'
 					+ '</div>';
 				var selectEl = Dom.get( this.id + '-1-' + name );
-				selectEl.options.add( new Option( this.msg("alvex.classifiers.config.noClassifier"), '__none' ) );
+				selectEl.options.add( new Option( this.msg("alvex.masterData.config.noMasterData"), '__none' ) );
 				if( this.options.useExternal )
 				{
-					selectEl.options.add( new Option( this.msg("alvex.classifiers.config.externalClassifier"), '__external' ) );
+					selectEl.options.add( new Option( this.msg("alvex.masterData.config.externalMasterData"), '__external' ) );
 				}
-				for(var a in this.options.availableInternalClassifiers)
+				for(var a in this.options.availableInternalMasterData)
 				{
-					var meta = this.options.availableInternalClassifiers[a];
+					var meta = this.options.availableInternalMasterData[a];
 					selectEl.options.add( new Option( meta.siteTitle + ' / ' + meta.listTitle , a ) );
 				}
 			}
@@ -215,15 +215,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 				var name = this.options.targetFields[fieldNum].name;
 				var val = '__none';
 				var column = '';
-				for( var c in this.options.currentClassifiers )
+				for( var c in this.options.currentMasterData )
 				{
-					if( this.options.currentClassifiers[c].dlField == name )
-						for( var a in this.options.availableInternalClassifiers )
-							if( this.options.availableInternalClassifiers[a].nodeRef 
-									== this.options.currentClassifiers[c].clRef )
+					if( this.options.currentMasterData[c].dlField == name )
+						for( var a in this.options.availableInternalMasterData )
+							if( this.options.availableInternalMasterData[a].nodeRef 
+									== this.options.currentMasterData[c].clRef )
 							{
 								val = a;
-								column = this.options.currentClassifiers[c].clField;
+								column = this.options.currentMasterData[c].clField;
 							}
 				}
 
@@ -239,35 +239,35 @@ if (typeof Alvex == "undefined" || !Alvex)
 			}
 		},
 
-		onSelect1Change: function( field, classifierId, column )
+		onSelect1Change: function( field, masterDataId, column )
 		{
-			if( classifierId == '__none' ) {
-				this.removeClassifier( field );
-			} else if ( classifierId == '__external' ) {
-				this.configureExternalClassifier( field );
+			if( masterDataId == '__none' ) {
+				this.removeMasterData( field );
+			} else if ( masterDataId == '__external' ) {
+				this.configureExternalMasterData( field );
 			} else {
-				this.configureInternalClassifier( field, classifierId, column );
+				this.configureInternalMasterData( field, masterDataId, column );
 			}
 		},
 
-		removeClassifier: function( field )
+		removeMasterData: function( field )
 		{
 			var dlMeta = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta;
 			var req = {};
 			req.data = { 'dlRef': dlMeta.nodeRef, 'dlField': field, 
-					'type': 'internal', 'classifierRef': '', 'classifierField': '' };
-			this.sendSaveClassifierReq( req );
+					'type': 'internal', 'masterDataRef': '', 'masterDataField': '' };
+			this.sendSaveMasterDataReq( req );
 
 			var selectEl = Dom.get( this.id + '-2-' + field );
 			Dom.addClass( selectEl, "hidden" );
 		},
 
-		configureInternalClassifier: function( field, classifierId, column )
+		configureInternalMasterData: function( field, masterDataId, column )
 		{
-			var classifier = this.options.availableInternalClassifiers[classifierId];
+			var masterData = this.options.availableInternalMasterData[masterDataId];
 			Alfresco.util.Ajax.jsonGet(
 			{
-				url: Alfresco.constants.URL_SERVICECONTEXT + "components/data-lists/config/columns?itemType=" + classifier.itemType,
+				url: Alfresco.constants.URL_SERVICECONTEXT + "components/data-lists/config/columns?itemType=" + masterData.itemType,
 				successCallback:
 				{
 					fn: function (resp, obj)
@@ -286,10 +286,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 						Dom.get( this.id + '-2-' + field ).onchange = function(ev)
 						{
 							var fieldName = this.id.replace(me.id + '-2-','');
-							me.onSelect2Change(fieldName, obj.classifier, this.value);
+							me.onSelect2Change(fieldName, obj.masterData, this.value);
 						};
 					},
-					obj: { "classifier" : classifier },
+					obj: { "masterData" : masterData },
 					scope: this
 				},
 				failureCallback:
@@ -304,13 +304,13 @@ if (typeof Alvex == "undefined" || !Alvex)
 			});
 		},
 
-		configureExternalClassifier: function( field )
+		configureExternalMasterData: function( field )
 		{
 			var selectEl = Dom.get( this.id + '-2-' + field );
 			Dom.addClass( selectEl, "hidden" );
 		},
 
-		onSelect2Change: function( field, classifier, columnName )
+		onSelect2Change: function( field, masterData, columnName )
 		{
 			if( columnName == "" )
 				return;
@@ -318,21 +318,21 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var dlMeta = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta;
 			var req = {};
 			req.data = { 'dlRef': dlMeta.nodeRef, 'dlField': field, 
-					'type': 'internal', 'classifierRef': classifier.nodeRef, 'classifierField': columnName };
-			this.sendSaveClassifierReq( req );
+					'type': 'internal', 'masterDataRef': masterData.nodeRef, 'masterDataField': columnName };
+			this.sendSaveMasterDataReq( req );
 		},
 
-		sendSaveClassifierReq: function(req)
+		sendSaveMasterDataReq: function(req)
 		{
 			Alfresco.util.Ajax.jsonPost(
 			{
-				url: Alfresco.constants.PROXY_URI + "api/alvex/classifier-config",
+				url: Alfresco.constants.PROXY_URI + "api/alvex/masterData-config",
 				dataObj: req,
 				successCallback:
 				{
 					fn: function(resp)
 					{
-						Alfresco.util.PopupManager.displayMessage({ text: this.msg("alvex.classifiers.config.updated") });
+						Alfresco.util.PopupManager.displayMessage({ text: this.msg("alvex.masterData.config.updated") });
 					},
 					scope: this
 				},

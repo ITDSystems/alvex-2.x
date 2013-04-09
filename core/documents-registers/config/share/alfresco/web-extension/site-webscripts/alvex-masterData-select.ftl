@@ -16,7 +16,7 @@
 
 <script type="text/javascript">
 
-new Alvex.ClassifierSelect( "${fieldHtmlId}" ).setOptions({
+new Alvex.MasterDataSelect( "${fieldHtmlId}" ).setOptions({
 	<#if form.mode == "view" || field.disabled >
 	disabled: true,
 	</#if>
