@@ -1,16 +1,13 @@
+<import resource="classpath:alfresco/extension/templates/webscripts/alvex-config/alvex-config.lib.js">
+
 (function (){
 	model.message = null;
 	try {
 		var ext = url.templateArgs['extension'];
 		var config = url.templateArgs['config'];
-		var nodes = search.xpathSearch('/sys:system/sys:alvex/alvex:data/alvex:'+ext+'/'+config);
-		if (nodes.length == 1) {
-			var node = nodes[0];
-		}
-		else {
-			var nodeType = json.get('type');
-			var node = search.xpathSearch('/sys:system/sys:alvex/alvex:data')[0].createNode(config, nodeType);
-		}
+		var node = Alvex.configs.getConfig(ext, config);
+		if (!node)
+			node = Alvex.configs.createConfig(ext, config);
 		var props = json.get('props');
 		var names = props.names();
 		for each (var i = 0; i < names.length(); i++) {

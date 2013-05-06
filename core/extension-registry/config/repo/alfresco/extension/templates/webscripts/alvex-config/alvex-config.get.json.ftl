@@ -14,16 +14,16 @@
 
 <#escape x as jsonUtils.encodeJSONString(x)>
 {
-	<#if nodeRef??>
-	nodeRef: "${nodeRef}",
-	props:
+	<#if error_message??>
+	"message": "${error_message}"
+	<#else>
+	"nodeRef": "${nodeRef}",
+	"props":
 	{
 		<#list props as prop>
 		"${prop.key}": <@renderVariable prop.value /><#if prop_has_next>,</#if>
 		</#list>
 	}
-	<#else>
-	nodeRef: null
 	</#if>
 }
 </#escape>

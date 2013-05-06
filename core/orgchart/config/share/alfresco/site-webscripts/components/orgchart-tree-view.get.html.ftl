@@ -156,7 +156,7 @@
 		mode: "viewer",
 		style: "${config.viewType}",
 		defaultRoleName: "${config.defaultRoleName}",
-		showUnitsRecursively: "${config.showUnitsRecursively}" == "true",
+		showUnitsRecursively: <#if config.showUnitsRecursively>true<#else>false</#if>,
 		syncSource: "${config.syncSource}"
 	}).setMessages(
 		${messages}

@@ -1,9 +1,11 @@
-connector = remote.connect('alfresco');
-var uiConfig = eval('('+connector.get('/api/alvex/orgchart/ui-config')+')');
-var syncConfig = eval('('+connector.get('/api/alvex/orgchart/sync-config')+')');
+<import resource="classpath:alfresco/web-extension/js/alvex-config.lib.js">
 
-model.config = {};
-model.config.defaultRoleName = uiConfig.config.defaultRoleName;
-model.config.uiConfigNodeRef = uiConfig.config.configNodeRef;
-model.config.syncConfigNodeRef = syncConfig.config.configNodeRef;
-model.config.syncSource = syncConfig.config.syncSource;
+var uiConfig = Alvex.configs.getConfig('orgchart', 'ui-config');
+var syncConfig = Alvex.configs.getConfig('orgchart', 'sync-config');
+
+model.config = {
+	defaultRoleName: uiConfig.props['alvexoc:defaultRoleName'],
+	uiConfigNodeRef: uiConfig.nodeRef,
+	syncConfigNodeRef: syncConfig.nodeRef,
+	syncSource: syncConfig.props['alvexoc:syncSource']
+}

@@ -1,9 +1,12 @@
-connector = remote.connect('alfresco');
-var uiConfig = eval('('+connector.get('/api/alvex/orgchart/ui-config')+')');
-var syncConfig = eval('('+connector.get('/api/alvex/orgchart/sync-config')+')');
+<import resource="classpath:alfresco/web-extension/js/alvex-config.lib.js">
 
-model.config = {};
-model.config.defaultRoleName = uiConfig.config.defaultRoleName;
-model.config.viewType = uiConfig.config.viewType;
-model.config.showUnitsRecursively = uiConfig.config.showUnitsRecursively;
-model.config.syncSource = syncConfig.config.syncSource;
+var uiConfig = Alvex.configs.getConfig('orgchart', 'ui-config');
+var syncConfig = Alvex.configs.getConfig('orgchart', 'sync-config');
+
+// should this be done automatically in some library call?
+model.config = {
+	defaultRoleName: uiConfig.props['alvexoc:defaultRoleName'],
+	viewType: uiConfig.props['alvexoc:viewType'],
+	showUnitsRecursively: uiConfig.props['alvexoc:showUnitsRecursively'],
+	syncSource: syncConfig.props['alvexoc:syncSource']
+};
