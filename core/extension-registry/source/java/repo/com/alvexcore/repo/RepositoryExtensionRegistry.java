@@ -50,14 +50,14 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 
 	final static QName[] ALVEX_PATH = { AlvexContentModel.ASSOC_NAME_SYSTEM,
 			AlvexContentModel.ASSOC_NAME_ALVEX };
-	
+
 	private Repository repository = null;
 	private ServiceRegistry serviceRegistry = null;
-	
+
 	private String version;
 	private String edition;
 	private String codename;
-	
+
 	final private String PROP_VERSION = "alvex.version";
 	final private String PROP_EDITION = "alvex.edition";
 	final private String PROP_CODENAME = "alvex.codename";
@@ -102,18 +102,27 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	public void init() throws Exception {
 		InputStream is = this.getClass().getClassLoader()
 				.getResourceAsStream("alvex-release.properties");
-		Properties props = new Properties();
-		props.load(is);
-		version = (props.getProperty(PROP_VERSION) != null) ? props.getProperty(PROP_VERSION) : DEV_VERSION;
-		edition = (props.getProperty(PROP_EDITION) != null) ? props.getProperty(PROP_EDITION) : DEV_EDITION;
-		codename = (props.getProperty(PROP_CODENAME) != null) ? props.getProperty(PROP_CODENAME) : DEV_CODENAME;
+		if (is != null) {
+			Properties props = new Properties();
+			props.load(is);
+			version = (props.getProperty(PROP_VERSION) != null) ? props
+					.getProperty(PROP_VERSION) : DEV_VERSION;
+			edition = (props.getProperty(PROP_EDITION) != null) ? props
+					.getProperty(PROP_EDITION) : DEV_EDITION;
+			codename = (props.getProperty(PROP_CODENAME) != null) ? props
+					.getProperty(PROP_CODENAME) : DEV_CODENAME;
+		} else {
+			version = DEV_VERSION;
+			edition = DEV_EDITION;
+			codename = DEV_CODENAME;
+		}
 
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			@Override
 			public Void doWork() throws Exception {
 				initContainer();
 				for (RepositoryExtension ext : extensions)
-					ext.init();
+					ext.init(false);
 				return null;
 			}
 		});
@@ -154,12 +163,37 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		return node;
 	}
 
+	// resolved container specified by assocs
+	public NodeRef resolvePath(QName[] path, QName[] assocs) {
+		if (path == null || path.length == 0)
+			throw new AlfrescoRuntimeException("Path cannot be null or empty");
+		if (assocs != null && path.length != assocs.length)
+			throw new AlfrescoRuntimeException("Size of path and assocs must be equal");
+		NodeService nodeService = serviceRegistry.getNodeService();
+		NodeRef node = nodeService
+				.getRootNode(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
+		for (int i = 0; i < path.length; i++) {
+			QName assocQName = path[i];
+			QName childAssoc = assocs == null ? ContentModel.ASSOC_CHILDREN
+					: assocs[i];
+			List<ChildAssociationRef> childAssocs = nodeService.getChildAssocs(
+					node, childAssoc, assocQName);
+			if (childAssocs.size() == 0) {
+				return null;
+			} else if (childAssocs.size() == 1)
+				// get ref of existent node
+				node = childAssocs.get(0).getChildRef();
+		}
+		return node;
+	}
+
 	public String getSystemId() {
 		return repository.getCompanyHome().getId();
 	}
 
 	public LicenseInfo getLicenseInfo() {
-		return new LicenseInfo("CE", new String(), new String(), 0, 0, new Date(), new Date(), true, false);	
+		return new LicenseInfo("CE", new String(), new String(), 0, 0,
+				new Date(), new Date(), true, false);
 	}
 
 	// registers new extension
@@ -183,12 +217,18 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		try {
 			init();
 		} catch (Exception e) {
-			throw new AlfrescoRuntimeException(
-					"Alvex initialization failed", e);
+			throw new AlfrescoRuntimeException("Alvex initialization failed", e);
 		}
 	}
 
 	@Override
-	protected void onShutdown(ApplicationEvent event) {	
+	protected void onShutdown(ApplicationEvent event) {
+	}
+	
+	public RepositoryExtension getExtension(String id) throws Exception{
+		for (RepositoryExtension ex: extensions)
+			if (ex.getId().equals(id))
+				return ex;
+		throw new Exception("Extension not found");
 	}
 }

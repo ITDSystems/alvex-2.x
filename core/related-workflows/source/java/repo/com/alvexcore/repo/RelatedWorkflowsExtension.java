@@ -53,8 +53,8 @@ public class RelatedWorkflowsExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() throws Exception{
-		super.init();
+	public void init(boolean failIfInitialized) throws Exception{
+		super.init(failIfInitialized);
 		initializeStorage();
 	}
 

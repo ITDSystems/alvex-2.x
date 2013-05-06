@@ -57,7 +57,7 @@
 		<property name="orgchartService" ref="alvex-orgchart-service" />
 	</bean>
 	<bean id="alvex-orgchart" parent="alvex-extension"
-		class="com.alvexcore.repo.OrgchartExtension" depends-on="alvex-orgchart-md,alvex-orgchart-js">
-		<property name="orgchartService" ref="alvex-orgchart-service" />
+		class="com.alvexcore.repo.OrgchartExtension" depends-on="alvex-orgchart-md">
+		<property name="orgchartService" ref="alvexOrgchartService" />
 	</bean>
 </beans>

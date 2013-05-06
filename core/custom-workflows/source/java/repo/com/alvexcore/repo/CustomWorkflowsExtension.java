@@ -46,8 +46,8 @@ public class CustomWorkflowsExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() throws Exception {
-		super.init();
+	public void init(boolean failIfInitialized) throws Exception {
+		super.init(failIfInitialized);
 		AuthorityService as = serviceRegistry.getAuthorityService();
 		if (!as.authorityExists(as.getName(AuthorityType.GROUP,
 				CustomWorkflowsExtension.ROOT_GROUP_NAME))) {

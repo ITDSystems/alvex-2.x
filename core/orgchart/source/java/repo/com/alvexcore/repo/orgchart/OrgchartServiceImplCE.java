@@ -44,7 +44,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.alvexcore.repo.AlvexContentModel;
+import com.alvexcore.repo.ExtensionAware;
 import com.alvexcore.repo.OrgchartExtension;
+import com.alvexcore.repo.RepositoryExtension;
 
 /**
  * Service to work with orgchart
@@ -70,7 +72,7 @@ class MakeOrgchartMember implements RunAsWork<Void> {
 
 }
 
-public class OrgchartServiceImplCE implements InitializingBean, OrgchartService {
+public class OrgchartServiceImplCE implements InitializingBean, OrgchartService, ExtensionAware {
 
 	protected static final QName NAME_ROLES = QName.createQName(
 			AlvexContentModel.ALVEXOC_MODEL_URI, "roles");
@@ -85,11 +87,9 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	protected NodeRef dataNode;
 	protected NodeRef rolesNode;
 	protected NodeRef branchesNode;
-
-	/*
-	 * Setters and getters 
-	 */
-
+	
+	protected RepositoryExtension extension;
+	
 	/* (non-Javadoc)
 	 * @see com.alvexcore.repo.orgchart.OrgchartServiceX#getServiceRegistry()
 	 */
@@ -147,16 +147,9 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	 */
 	@Override
 	public void setUp() throws Exception {
-		dataNode = nodeService
-				.getRootNode(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE);
-		for (int i = 0; i < OrgchartExtension.ORGCHART_STORAGE_PATH.length; i++) {
-			List<ChildAssociationRef> assocs = nodeService.getChildAssocs(
-					dataNode, ContentModel.ASSOC_CHILDREN,
-					OrgchartExtension.ORGCHART_STORAGE_PATH[i]);
-			if (assocs.size() != 1)
-				throw new Exception("Cannot retreive orgchart data node");
-			dataNode = assocs.get(0).getChildRef();
-		}
+		dataNode = extension.getDataPath();
+		if (dataNode == null)
+			throw new Exception("Cannot retreive orgchart data node");
 		rolesNode = getFirstChild(dataNode, ContentModel.ASSOC_CHILDREN,
 				NAME_ROLES);
 		branchesNode = getFirstChild(dataNode, ContentModel.ASSOC_CHILDREN,
@@ -1195,5 +1188,11 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService 
 	public OrgchartDelegation getDelegation(RoleInstance role,
 			OrgchartPerson source) {
 		throw new AlfrescoRuntimeException("Not implemented in CE");
+	}
+
+	@Override
+	@Required
+	public void setExtension(RepositoryExtension extension) {
+		this.extension = extension;		
 	}
 }

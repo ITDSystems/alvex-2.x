@@ -43,4 +43,20 @@ public class JSRepositoryExtension implements Serializable{
 			result.put(key, hashes.get(key));
 		return (Scriptable)converter.convertValueForScript(serviceRegistry, scope, null, result);
 	}
+	
+	public void init(boolean failIfInitialized) throws Exception {
+		extension.init(failIfInitialized);
+	}
+	
+	public void init() throws Exception {
+		extension.init(true);
+	}
+	
+	public void drop(boolean all) throws Exception {
+		extension.drop(all);
+	}
+	
+	public void drop() throws Exception {
+		extension.drop(false);
+	} 
 }

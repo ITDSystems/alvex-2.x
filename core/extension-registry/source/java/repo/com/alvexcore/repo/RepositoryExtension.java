@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
+import org.alfresco.service.cmr.repository.StoreRef;
 import org.alfresco.service.namespace.QName;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -40,9 +42,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 public abstract class RepositoryExtension implements InitializingBean {
 
-	final static QName[] CONFIG_PATH = { AlvexContentModel.ASSOC_NAME_SYSTEM,
-			AlvexContentModel.ASSOC_NAME_ALVEX,
-			AlvexContentModel.ASSOC_NAME_CONFIG };
+	protected QName[] CONFIG_PATH = new QName[4];
+	protected QName[] CONFIG_TYPES = new QName[4];
+	protected QName[] DATA_PATH = new QName[4];
+	protected QName[] DATA_TYPES = new QName[4];
 
 	protected ServiceRegistry serviceRegistry;
 	protected RepositoryExtensionRegistry extensionRegistry;
@@ -52,6 +55,7 @@ public abstract class RepositoryExtension implements InitializingBean {
 	protected MessageDigest md5;
 	protected String fileListPath = null;
 	protected String extInfoPath = null;
+	private NodeRef dataPath;
 
 	final private String PROP_VERSION = "extension.version";
 	final private String PROP_EDITION = "extension.edition";
@@ -68,6 +72,24 @@ public abstract class RepositoryExtension implements InitializingBean {
 					"There is no MD5 algorithm support, but we really need it.",
 					e);
 		}
+		
+		CONFIG_PATH[0] = AlvexContentModel.ASSOC_NAME_SYSTEM;
+		CONFIG_PATH[1] = AlvexContentModel.ASSOC_NAME_ALVEX;
+		CONFIG_PATH[2] = AlvexContentModel.ASSOC_NAME_CONFIG;
+		
+		DATA_PATH[0] = AlvexContentModel.ASSOC_NAME_SYSTEM;
+		DATA_PATH[1] = AlvexContentModel.ASSOC_NAME_ALVEX;
+		DATA_PATH[2] = AlvexContentModel.ASSOC_NAME_DATA;
+		
+		CONFIG_TYPES[0] = ContentModel.TYPE_CONTAINER;
+		CONFIG_TYPES[1] = ContentModel.TYPE_CONTAINER;
+		CONFIG_TYPES[2] = ContentModel.TYPE_CONTAINER;
+		CONFIG_TYPES[3] = AlvexContentModel.TYPE_EXTENSION_CONFIG;
+		
+		DATA_TYPES[0] = ContentModel.TYPE_CONTAINER;
+		DATA_TYPES[1] = ContentModel.TYPE_CONTAINER;
+		DATA_TYPES[2] = ContentModel.TYPE_CONTAINER;
+		DATA_TYPES[3] = ContentModel.TYPE_CONTAINER;
 	}
 
 	// dependency injection
@@ -96,7 +118,8 @@ public abstract class RepositoryExtension implements InitializingBean {
 	protected String getMD5Hash(String file) throws Exception {
 		if (file.isEmpty())
 			return "MISSED_FILE_NAME"; // FIXME debug only
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(file);
+		InputStream is = this.getClass().getClassLoader()
+				.getResourceAsStream(file);
 		if (is == null)
 			throw new Exception("Can't find specified resource.");
 		byte[] bytesOfMessage = IOUtils.toByteArray(is);
@@ -142,42 +165,60 @@ public abstract class RepositoryExtension implements InitializingBean {
 
 	abstract void upgradeConfiguration(String oldVersion, String oldEdition);
 
-	public void init() throws Exception {
+	public void init(boolean failIfInitialized) throws Exception {
+		DATA_PATH[3] = CONFIG_PATH[3] = QName.createQName(AlvexContentModel.ALVEX_MODEL_URI, id);
+		
+		if (isInitialized() && failIfInitialized)
+			throw new Exception("Extension has been initialized already");
+
 		InputStream is = this.getClass().getClassLoader()
 				.getResourceAsStream(extInfoPath);
-		Properties props = new Properties();
-		props.load(is);
-		version = (props.getProperty(PROP_VERSION) != null) ? props.getProperty(PROP_VERSION) : DEV_VERSION;
-		edition = (props.getProperty(PROP_EDITION) != null) ? props.getProperty(PROP_EDITION) : DEV_EDITION;
-		// check if installation was upgraded
+		if (is != null) {
+			Properties props = new Properties();
+			props.load(is);
+			version = (props.getProperty(PROP_VERSION) != null) ? props
+					.getProperty(PROP_VERSION) : DEV_VERSION;
+			edition = (props.getProperty(PROP_EDITION) != null) ? props
+					.getProperty(PROP_EDITION) : DEV_EDITION;
+			// check if installation was upgraded
+		} else {
+			version = DEV_VERSION;
+			edition = DEV_EDITION;
+		}
+		// create data folder if needed
+		dataPath = extensionRegistry.resolvePath(DATA_PATH, null);
+		if (dataPath == null)
+			dataPath = extensionRegistry.createPath(DATA_PATH, null, DATA_TYPES);
 		updateExtensionInfo();
+	}
+
+	public void drop(boolean all) throws Exception {
+		NodeRef ref = extensionRegistry.resolvePath(DATA_PATH, null);
+		if (ref != null)
+			serviceRegistry.getNodeService().deleteNode(ref);
+		if (all) {
+			ref = extensionRegistry.resolvePath(CONFIG_PATH, null);
+			if (ref != null)
+				serviceRegistry.getNodeService().deleteNode(ref);
+		}
+	}
+
+	public boolean isInitialized() {
+		return extensionRegistry.resolvePath(DATA_PATH, null) != null
+				&& extensionRegistry.resolvePath(CONFIG_PATH, null) != null;
 	}
 
 	// updates extension info in repository and runs upgradeConfiguration() if
 	// necessary
 	protected void updateExtensionInfo() throws Exception {
-		NodeRef node = extensionRegistry.createPath(CONFIG_PATH, null, null);
+		NodeRef node = extensionRegistry.createPath(CONFIG_PATH, null, CONFIG_TYPES);
 		NodeService nodeService = serviceRegistry.getNodeService();
-		QName assocQName = QName.createQName(AlvexContentModel.ALVEX_MODEL_URI,
-				id);
-		List<ChildAssociationRef> assocs = nodeService.getChildAssocs(node,
-				ContentModel.ASSOC_CHILDREN, assocQName);
-		if (assocs.size() == 0) {
-			// this is the first start, create node
-			node = nodeService.createNode(node, ContentModel.ASSOC_CHILDREN,
-					assocQName, AlvexContentModel.TYPE_EXTENSION_CONFIG)
-					.getChildRef();
-		} else {
-			node = assocs.get(0).getChildRef();
-			String edition = (String) nodeService.getProperty(node,
-					AlvexContentModel.PROP_EXTENSION_EDITION);
-			String version = (String) nodeService.getProperty(node,
-					AlvexContentModel.PROP_EXTENSION_VERSION);
-			if (edition == null || version == null)
-				throw new Exception(
-						"Edition or version found in repository is invalid.");
-			upgradeConfiguration(version, edition);
-		}
+
+		String edition = (String) nodeService.getProperty(node,
+				AlvexContentModel.PROP_EXTENSION_EDITION);
+		String version = (String) nodeService.getProperty(node,
+				AlvexContentModel.PROP_EXTENSION_VERSION);
+		upgradeConfiguration(version, edition);
 		// store current edition and version
 		nodeService.setProperty(node, AlvexContentModel.PROP_EXTENSION_VERSION,
 				version);
@@ -189,5 +230,9 @@ public abstract class RepositoryExtension implements InitializingBean {
 	public void setExtensionRegistry(
 			RepositoryExtensionRegistry extensionRegistry) {
 		this.extensionRegistry = extensionRegistry;
+	}
+	
+	public NodeRef getDataPath() {
+		return dataPath;
 	}
 }

@@ -28,22 +28,13 @@ import org.alfresco.service.namespace.QName;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.alvexcore.repo.orgchart.OrgchartService;
+import com.alvexcore.repo.orgchart.OrgchartServiceImplCE;
 
 /**
  * Orgchart extension implementation
  */
 
 public class OrgchartExtension extends RepositoryExtension {
-	public final static QName[] ORGCHART_STORAGE_PATH = {
-			AlvexContentModel.ASSOC_NAME_SYSTEM,
-			AlvexContentModel.ASSOC_NAME_ALVEX,
-			AlvexContentModel.ASSOC_NAME_DATA,
-			QName.createQName(AlvexContentModel.ALVEX_MODEL_URI, "orgchart") };
-
-	public final static QName[] ORGCHART_STORAGE_TYPES = {
-			ContentModel.TYPE_CONTAINER, ContentModel.TYPE_CONTAINER,
-			ContentModel.TYPE_CONTAINER, ContentModel.TYPE_CONTAINER };
-
 	// constructor
 	public OrgchartExtension() throws Exception {
 		id = "orgchart";
@@ -59,16 +50,15 @@ public class OrgchartExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() throws Exception {
-		super.init();
+	public void init(boolean failIfInitialized) throws Exception {
+		super.init(failIfInitialized);
 		// set up orgchart
 		initializeStorage();
+		((ExtensionAware)orgchartService).setExtension(this);
 		orgchartService.setUp();
 	}
 
 	private void initializeStorage() throws Exception {
-		extensionRegistry.createPath(ORGCHART_STORAGE_PATH, null,
-				ORGCHART_STORAGE_TYPES);
 		AuthorityService as = serviceRegistry.getAuthorityService();
 		String groupName = as.getName(AuthorityType.GROUP, OrgchartService.GROUP_ORGCHART);
 		if (!as.authorityExists(groupName))

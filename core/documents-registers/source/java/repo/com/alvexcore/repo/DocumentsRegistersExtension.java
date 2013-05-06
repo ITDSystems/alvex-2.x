@@ -34,17 +34,6 @@ import org.alfresco.service.namespace.QName;
 
 public class DocumentsRegistersExtension extends RepositoryExtension {
 
-	public final static QName[] DOCUMENTS_REGISTERS_STORAGE_PATH = {
-			AlvexContentModel.ASSOC_NAME_SYSTEM,
-			AlvexContentModel.ASSOC_NAME_ALVEX,
-			AlvexContentModel.ASSOC_NAME_DATA,
-			QName.createQName(AlvexContentModel.ALVEX_MODEL_URI,
-					"documents-registers") };
-
-	public final static QName[] DOCUMENTS_REGISTERS_STORAGE_TYPES = {
-			ContentModel.TYPE_CONTAINER, ContentModel.TYPE_CONTAINER,
-			ContentModel.TYPE_CONTAINER, ContentModel.TYPE_CONTAINER };
-
 	// constructor
 	public DocumentsRegistersExtension() throws Exception {
 		id = "documents-registers";
@@ -53,17 +42,15 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 	}
 
 	@Override
-	public void init() throws Exception {
-		super.init();
+	public void init(boolean failIfInitialized) throws Exception {
+		super.init(failIfInitialized);
 		initializeStorage();
 	}
 
 	private void initializeStorage() throws Exception {
-		NodeRef node = extensionRegistry.createPath(
-				DOCUMENTS_REGISTERS_STORAGE_PATH, null, DOCUMENTS_REGISTERS_STORAGE_TYPES);
 		PermissionService permissionService = extensionRegistry
 				.getServiceRegistry().getPermissionService();
-		permissionService.setPermission(node,
+		permissionService.setPermission(getDataPath(),
 				PermissionService.ALL_AUTHORITIES,
 				PermissionService.CONTRIBUTOR, true);
 	}
