@@ -73,7 +73,7 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 		allowRemoveAction: false,
 		allowRemoveAllAction: false,
 		allowSelectAction: true,
-		selectActionLabel: '${msg("alvex.uploader.associatefiles")}'
+		selectActionLabel: '${msg("alvex.uploader.associatefiles")?js_string}'
 	});
 	<#if form.mode == "view" || field.disabled >
 	YAHOO.Bubbling.unsubscribe("renderCurrentValue", picker.onRenderCurrentValue, picker);
