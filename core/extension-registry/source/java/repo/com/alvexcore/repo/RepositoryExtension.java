@@ -62,6 +62,8 @@ public abstract class RepositoryExtension implements InitializingBean {
 
 	final private String DEV_VERSION = "dev";
 	final private String DEV_EDITION = "dev";
+	
+	private Map<String, NodeRef> nodeCache = new HashMap<String, NodeRef>();
 
 	// constructor
 	public RepositoryExtension() throws Exception {
@@ -234,5 +236,17 @@ public abstract class RepositoryExtension implements InitializingBean {
 	
 	public NodeRef getDataPath() {
 		return dataPath;
+	}
+	
+	public void addNodeToCache(String id, NodeRef nodeRef) {
+		nodeCache.put(id, nodeRef);
+	}
+	
+	public NodeRef getNodeFromCache(String id) {
+		return nodeCache.get(id);
+	}
+
+	public void removeNodeFromCache(String id) {
+		nodeCache.remove(id);
 	}
 }
