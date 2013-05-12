@@ -78,15 +78,13 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 			AlvexContentModel.ALVEXOC_MODEL_URI, "roles");
 	protected static final QName NAME_BRANCHES = QName.createQName(
 			AlvexContentModel.ALVEXOC_MODEL_URI, "branches");
+	private static final String ID_BRANCHES_NODE = "branchesNode";
+	private static final String ID_ROLES_NODE = "rolesNode";
 
 	protected NodeService nodeService;
 	protected AuthorityService authorityService;
 	protected PermissionService permissionService;
 	protected ServiceRegistry serviceRegistry;
-
-	protected NodeRef dataNode;
-	protected NodeRef rolesNode;
-	protected NodeRef branchesNode;
 	
 	protected RepositoryExtension extension;
 	
@@ -147,13 +145,12 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void setUp() throws Exception {
-		dataNode = extension.getDataPath();
-		if (dataNode == null)
+		if (getDataNode() == null)
 			throw new Exception("Cannot retreive orgchart data node");
-		rolesNode = getFirstChild(dataNode, ContentModel.ASSOC_CHILDREN,
-				NAME_ROLES);
-		branchesNode = getFirstChild(dataNode, ContentModel.ASSOC_CHILDREN,
-				NAME_BRANCHES);
+		setRolesNode(getFirstChild(getDataNode(), ContentModel.ASSOC_CHILDREN,
+				NAME_ROLES));
+		setBranchesNode(getFirstChild(getDataNode(), ContentModel.ASSOC_CHILDREN,
+				NAME_BRANCHES));
 	}
 
 	/*
@@ -396,7 +393,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public boolean exists() {
-		return rolesNode != null && branchesNode != null;
+		return getRolesNode() != null && getBranchesNode() != null;
 	}
 
 	/* (non-Javadoc)
@@ -411,13 +408,13 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 
 		// create nodes
 		// create container for roles definitions
-		rolesNode = nodeService.createNode(dataNode,
+		setRolesNode(nodeService.createNode(getDataNode(),
 				ContentModel.ASSOC_CHILDREN, NAME_ROLES,
-				ContentModel.TYPE_CONTAINER).getChildRef();
+				ContentModel.TYPE_CONTAINER).getChildRef());
 		// create container for orgchart branches
-		branchesNode = nodeService.createNode(dataNode,
+		setBranchesNode(nodeService.createNode(getDataNode(),
 				ContentModel.ASSOC_CHILDREN, NAME_BRANCHES,
-				AlvexContentModel.TYPE_ORGCHART_UNIT).getChildRef();
+				AlvexContentModel.TYPE_ORGCHART_UNIT).getChildRef());
 	}
 
 	/* (non-Javadoc)
@@ -429,10 +426,10 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 			return;
 		for (OrgchartUnit branch : getBranches())
 			dropBranch(branch.getName());
-		nodeService.deleteNode(branchesNode);
-		nodeService.deleteNode(rolesNode);
-		rolesNode = null;
-		branchesNode = null;
+		nodeService.deleteNode(getBranchesNode());
+		nodeService.deleteNode(getRolesNode());
+		setRolesNode(null);
+		setBranchesNode(null);
 	}
 
 	/*
@@ -471,7 +468,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 		props.put(AlvexContentModel.PROP_ROLE_DISPLAY_NAME, displayName);
 		props.put(AlvexContentModel.PROP_ROLE_WEIGHT, weight);
 		props.put(AlvexContentModel.PROP_ROLE_GROUP_NAME, groupFullName);
-		return new RoleDefinition(nodeService.createNode(rolesNode,
+		return new RoleDefinition(nodeService.createNode(getRolesNode(),
 				ContentModel.ASSOC_CHILDREN, getRoleAssocQName(name),
 				AlvexContentModel.TYPE_ROLE_DEF, props).getChildRef(), weight,
 				name, displayName, groupFullName);
@@ -484,7 +481,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	@Override
 	public RoleDefinition modifyRole(String name, Integer weight,
 			String displayName) {
-		NodeRef role = getFirstChild(rolesNode, ContentModel.ASSOC_CHILDREN,
+		NodeRef role = getFirstChild(getRolesNode(), ContentModel.ASSOC_CHILDREN,
 				getRoleAssocQName(name));
 		if (displayName != null)
 			nodeService.setProperty(role,
@@ -526,7 +523,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public RoleDefinition getRole(String name) {
-		return getRoleDefinitionByRef(getFirstChild(rolesNode,
+		return getRoleDefinitionByRef(getFirstChild(getRolesNode(),
 				ContentModel.ASSOC_CHILDREN, getRoleAssocQName(name)));
 	}
 
@@ -545,7 +542,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	@Override
 	public List<RoleDefinition> getRoleDefinitions() {
 		List<RoleDefinition> result = new ArrayList<RoleDefinition>();
-		for (ChildAssociationRef assoc : nodeService.getChildAssocs(rolesNode,
+		for (ChildAssociationRef assoc : nodeService.getChildAssocs(getRolesNode(),
 				ContentModel.ASSOC_CHILDREN, RegexQNamePattern.MATCH_ALL))
 			result.add(getRoleDefinitionByRef(assoc.getChildRef()));
 		return result;
@@ -737,7 +734,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public OrgchartUnit getBranch(String name) {
-		return getSubunit(branchesNode, name);
+		return getSubunit(getBranchesNode(), name);
 	}
 
 	/* (non-Javadoc)
@@ -745,7 +742,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public boolean branchExists(String name) {
-		return subunitExists(branchesNode, name);
+		return subunitExists(getBranchesNode(), name);
 	}
 
 	/* (non-Javadoc)
@@ -755,7 +752,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public OrgchartUnit createBranch(String name, String displayName) {
 		if (branchExists(name))
 			throw new AlfrescoRuntimeException("Branch already exists");
-		return createUnit(branchesNode, name, displayName, 0);
+		return createUnit(getBranchesNode(), name, displayName, 0);
 	}
 
 	/* (non-Javadoc)
@@ -771,7 +768,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public List<OrgchartUnit> getBranches() {
-		return getSubunits(branchesNode);
+		return getSubunits(getBranchesNode());
 	}
 
 	/*
@@ -869,7 +866,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public OrgchartUnit getParentUnit(OrgchartUnit unit) {
 		NodeRef node = nodeService.getPrimaryParent(unit.getNode())
 				.getParentRef();
-		return node.equals(branchesNode) ? null : getUnitByRef(node);
+		return node.equals(getBranchesNode()) ? null : getUnitByRef(node);
 	}
 
 	/* (non-Javadoc)
@@ -1194,5 +1191,31 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	@Required
 	public void setExtension(RepositoryExtension extension) {
 		this.extension = extension;		
+	}
+
+	protected NodeRef getDataNode() {
+		return extension.getDataPath();
+	}
+
+	protected NodeRef getRolesNode() {
+		return extension.getNodeFromCache(ID_ROLES_NODE);
+	}
+
+	protected void setRolesNode(NodeRef rolesNode) {
+		if (rolesNode != null)
+			extension.addNodeToCache(ID_ROLES_NODE, rolesNode);
+		else
+			extension.removeNodeFromCache(ID_ROLES_NODE);
+	}
+
+	protected NodeRef getBranchesNode() {
+		return extension.getNodeFromCache(ID_BRANCHES_NODE);
+	}
+
+	protected void setBranchesNode(NodeRef branchesNode) {
+		if (branchesNode != null)
+			extension.addNodeToCache(ID_BRANCHES_NODE, branchesNode);
+		else
+			extension.removeNodeFromCache(ID_BRANCHES_NODE);
 	}
 }
