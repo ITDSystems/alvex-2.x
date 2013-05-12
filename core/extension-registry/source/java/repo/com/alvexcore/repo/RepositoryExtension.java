@@ -42,6 +42,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public abstract class RepositoryExtension implements InitializingBean {
 
+	private static final String ID_DATA_PATH = "dataPath";
 	protected QName[] CONFIG_PATH = new QName[4];
 	protected QName[] CONFIG_TYPES = new QName[4];
 	protected QName[] DATA_PATH = new QName[4];
@@ -55,7 +56,6 @@ public abstract class RepositoryExtension implements InitializingBean {
 	protected MessageDigest md5;
 	protected String fileListPath = null;
 	protected String extInfoPath = null;
-	private NodeRef dataPath;
 
 	final private String PROP_VERSION = "extension.version";
 	final private String PROP_EDITION = "extension.edition";
@@ -188,9 +188,10 @@ public abstract class RepositoryExtension implements InitializingBean {
 			edition = DEV_EDITION;
 		}
 		// create data folder if needed
-		dataPath = extensionRegistry.resolvePath(DATA_PATH, null);
+		NodeRef dataPath = extensionRegistry.resolvePath(DATA_PATH, null);
 		if (dataPath == null)
 			dataPath = extensionRegistry.createPath(DATA_PATH, null, DATA_TYPES);
+		addNodeToCache(ID_DATA_PATH, dataPath);
 		updateExtensionInfo();
 	}
 
@@ -203,6 +204,7 @@ public abstract class RepositoryExtension implements InitializingBean {
 			if (ref != null)
 				serviceRegistry.getNodeService().deleteNode(ref);
 		}
+		removeNodeFromCache(ID_DATA_PATH);
 	}
 
 	public boolean isInitialized() {
@@ -235,7 +237,7 @@ public abstract class RepositoryExtension implements InitializingBean {
 	}
 	
 	public NodeRef getDataPath() {
-		return dataPath;
+		return getNodeFromCache(ID_DATA_PATH);
 	}
 	
 	public void addNodeToCache(String id, NodeRef nodeRef) {
