@@ -99,7 +99,7 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		return codename;
 	}
 
-	public void init() throws Exception {
+	protected void initAlvex() throws Exception {
 		InputStream is = this.getClass().getClassLoader()
 				.getResourceAsStream("alvex-release.properties");
 		if (is != null) {
@@ -120,12 +120,16 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			@Override
 			public Void doWork() throws Exception {
-				initContainer();
-				for (RepositoryExtension ext : extensions)
-					ext.init(false);
+				initExtensions();
 				return null;
 			}
 		});
+	}
+	
+	public void initExtensions() throws Exception {
+		initContainer();
+		for (RepositoryExtension ext : extensions)
+			ext.init(false);
 	}
 
 	private void initContainer() throws Exception {
@@ -215,7 +219,7 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	@Override
 	protected void onBootstrap(ApplicationEvent event) {
 		try {
-			init();
+			initAlvex();
 		} catch (Exception e) {
 			throw new AlfrescoRuntimeException("Alvex initialization failed", e);
 		}
