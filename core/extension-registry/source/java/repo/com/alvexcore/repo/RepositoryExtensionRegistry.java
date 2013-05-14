@@ -117,19 +117,19 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 			codename = DEV_CODENAME;
 		}
 
-		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
-			@Override
-			public Void doWork() throws Exception {
-				initExtensions();
-				return null;
-			}
-		});
+		initExtensions();
 	}
 	
 	public void initExtensions() throws Exception {
-		initContainer();
-		for (RepositoryExtension ext : extensions)
-			ext.init(false);
+		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
+			@Override
+			public Void doWork() throws Exception {
+				initContainer();
+				for (RepositoryExtension ext : extensions)
+					ext.init(false);	
+				return null;
+			}
+		});
 	}
 
 	private void initContainer() throws Exception {
