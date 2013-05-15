@@ -10,7 +10,7 @@
  		"cores": ${license.cores},
  		"edition": ${license.edition},
  		"product": "${license.product}",
- 		"issued": "${license.issued?datetime?iso("UTC")}",
+ 		"issued": <#if license.issued??>"${license.issued?datetime?iso("UTC")}"<#else>null</#if>,
  		"validThru": "${license.validThru?datetime?iso("UTC")}",
  		"valid": ${license.valid?string},
  		"trial": ${license.trial?string}
