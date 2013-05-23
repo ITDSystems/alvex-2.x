@@ -1195,7 +1195,6 @@ if (typeof Alvex == "undefined" || !Alvex)
                }
             }
          });
-         this.widgets.dataSource.connMgr.setDefaultPostHeader(Alfresco.util.Ajax.JSON);
 
          // Intercept data returned from data webscript to extract custom metadata
          this.widgets.dataSource.doBeforeCallback = function DataGrid_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
@@ -2231,7 +2230,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          // TODO: No-cache? - add to URL retrieved from DataSource
          // "&noCache=" + new Date().getTime();
-         
+         if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+         {
+            this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getParameter(), Alfresco.util.CSRFPolicy.getToken(), false);
+         }
          this.widgets.dataSource.sendRequest(YAHOO.lang.JSON.stringify(requestParams),
          {
             success: successHandler,

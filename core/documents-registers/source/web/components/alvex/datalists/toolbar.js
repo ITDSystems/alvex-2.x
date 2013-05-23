@@ -198,6 +198,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          xmlHttp_req.open("PUT", Alfresco.constants.PROXY_URI
                                  + "api/alvex/datalists/export/xlsx",
                                  false);
+         if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+            xmlHttp_req.setRequestHeader( Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken() );
          xmlHttp_req.setRequestHeader("Content-Type", "application/json");
 
          xmlHttp_req.send( json );
@@ -296,6 +298,8 @@ if (typeof Alvex == "undefined" || !Alvex)
                   xmlHttp_req.open("POST", Alfresco.constants.PROXY_URI
                                  + "api/alvex/documents-registers/number/commit",
                                  false);
+                  if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+                     xmlHttp_req.setRequestHeader( Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken() );
                   xmlHttp_req.setRequestHeader("Content-Type", "application/json");
 
                   xmlHttp_req.send( json );
