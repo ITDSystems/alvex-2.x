@@ -1,5 +1,5 @@
       <#assign el=args.htmlid?html>
-       <div id="${el}-workflow-initial-task" style="padding-bottom: 2em; padding-top: 1em;">
+       <div id="${el}-workflow-initial-task" style="padding-bottom: 2em; padding-top: 1em; display: none;">
          <div class="title set-bordered-panel-heading">
             <span><input id="${el}-button-initial-task" class="btn" type="button" onclick="showSpoiler('initial-task');" value=" + " /></span>
             <label style="display: inline;">${msg("header.initialTask")}</label>
@@ -94,6 +94,26 @@
             </div>
       
          </div>
+
+         <div id="${el}-workflow-tasks" style="padding-bottom: 2em; padding-top: 1em;">
+            <div class="title set-bordered-panel-heading">
+               <span><input id="${el}-button-tasks" class="btn" type="button" onclick="showSpoiler('tasks');" value=" - " /></span>
+               <label style="display: inline;">${msg("header.tasks")}</label>
+            </div>
+            <div id="${el}-panel-tasks" class="set-bordered-panel-body">
+               <#-- Will be inserted below "Items" in the form after its been loaded through ajax -->
+               <div id="${el}-currentTasks-form-section" class="current-tasks">
+                  <a name="current-tasks"></a>
+                  <h3>${msg("header.currentTasks")}</h3>
+                  <div class="form-element-background-color"></div>
+               </div>   
+               <#-- Will be inserted in the bottom of the form after its been loaded through ajax -->
+               <div id="${el}-workflowHistory-form-section" class="workflow-history">
+                  <h3>${msg("header.history")}</h3>
+                  <div class="form-element-background-color"></div>
+               </div>
+            </div>
+         </div>
       
          <#-- Will be inserted above "More Info" in the form after its been loaded through ajax -->
          <div id="${el}-general-form-section">
@@ -170,26 +190,6 @@
                   </div>
                </div>
             </div-->
-         </div>
-
-         <div id="${el}-workflow-tasks" style="padding-bottom: 2em; padding-top: 1em;">
-            <div class="title set-bordered-panel-heading">
-               <span><input id="${el}-button-tasks" class="btn" type="button" onclick="showSpoiler('tasks');" value=" + " /></span>
-               <label style="display: inline;">${msg("header.tasks")}</label>
-            </div>
-            <div id="${el}-panel-tasks" class="set-bordered-panel-body" style="display:none;">
-               <#-- Will be inserted below "Items" in the form after its been loaded through ajax -->
-               <div id="${el}-currentTasks-form-section" class="current-tasks">
-                  <a name="current-tasks"></a>
-                  <h3>${msg("header.currentTasks")}</h3>
-                  <div class="form-element-background-color"></div>
-               </div>   
-               <#-- Will be inserted in the bottom of the form after its been loaded through ajax -->
-               <div id="${el}-workflowHistory-form-section" class="workflow-history">
-                  <h3>${msg("header.history")}</h3>
-                  <div class="form-element-background-color"></div>
-               </div>
-            </div>
          </div>
 
       </div>
