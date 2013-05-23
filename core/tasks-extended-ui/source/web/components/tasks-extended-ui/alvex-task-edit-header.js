@@ -47,6 +47,7 @@ if (typeof Alvex == "undefined" || !Alvex)
     */
     var $html = Alfresco.util.encodeHTML,
        $hasEventInterest = Alfresco.util.hasEventInterest,
+       $siteURL = Alfresco.util.siteURL,
        $combine = Alfresco.util.combinePaths;
 
    /**
@@ -233,7 +234,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                displayTime: 2
             });
 
-            YAHOO.lang.later(2000, this, function()
+            YAHOO.lang.later(100, this, function()
             {
             	var referrerValue = Alfresco.util.getQueryStringParameter('referrer');
             	
