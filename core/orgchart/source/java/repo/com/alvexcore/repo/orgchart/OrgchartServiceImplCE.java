@@ -230,10 +230,9 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 		final String groupName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
-						Set<String> zones = new HashSet<String>(2, 1.0f);
-						zones.add(AuthorityService.ZONE_APP_DEFAULT);
 						String name = authorityService.createAuthority(
-								AuthorityType.GROUP, groupShortName, groupDisplayName, zones );
+								AuthorityType.GROUP, groupShortName, groupDisplayName, 
+								authorityService.getDefaultZones() );
 						authorityService.addAuthority(authorityService.getName(
 								AuthorityType.GROUP,
 								OrgchartService.GROUP_ORGCHART), name);
@@ -461,10 +460,9 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 		final String groupFullName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
-						Set<String> zones = new HashSet<String>(2, 1.0f);
-						zones.add(AuthorityService.ZONE_APP_DEFAULT);
 						String name = authorityService.createAuthority(
-								AuthorityType.GROUP, groupShortName, groupDisplayName, zones );
+								AuthorityType.GROUP, groupShortName, groupDisplayName, 
+								authorityService.getDefaultZones() );
 						authorityService.addAuthority(authorityService.getName(
 								AuthorityType.GROUP,
 								OrgchartService.GROUP_ORGCHART), name);
@@ -814,7 +812,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 			}
 		});
 		for (RoleInstance role : getUnitRoles(unit))
-			removeRole(unit, getRoleDefinitionByRef(role.getNode()));
+			removeRole(unit, getDefinitionForRole(role));
 		nodeService.deleteNode(unit.getNode());
 	}
 
