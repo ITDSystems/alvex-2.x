@@ -157,5 +157,5 @@ Alvex.util.diffArrays = function Alvex_diffArrays(a1, a2)
 
 Alvex.util.createClearNodeName = function Alvex_createClearNodeName(name)
 {
-	return name.replace(/([\"\*\\\>\<\?\/\:\|]+)/g,'');
+	return name.replace(/([\"\*\\\>\<\?\/\:\|]+)/g, ' ');
 }
