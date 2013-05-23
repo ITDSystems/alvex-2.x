@@ -21,8 +21,10 @@ package com.alvexcore.repo.orgchart;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
@@ -223,12 +225,15 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	protected OrgchartUnit createUnit(NodeRef parent, String name,
 			String displayName, int weight) {
-		final String groupShortName = displayName;
+		final String groupShortName = name;
+		final String groupDisplayName = displayName;
 		final String groupName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
+						Set<String> zones = new HashSet<String>(2, 1.0f);
+						zones.add(AuthorityService.ZONE_APP_DEFAULT);
 						String name = authorityService.createAuthority(
-								AuthorityType.GROUP, groupShortName);
+								AuthorityType.GROUP, groupShortName, groupDisplayName, zones );
 						authorityService.addAuthority(authorityService.getName(
 								AuthorityType.GROUP,
 								OrgchartService.GROUP_ORGCHART), name);
@@ -451,12 +456,15 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public RoleDefinition createRole(String name, int weight, String displayName) {
 		if (roleExists(name))
 			throw new AlfrescoRuntimeException("Role already exists");
-		final String groupShortName = displayName;
+		final String groupShortName = name;
+		final String groupDisplayName = displayName;
 		final String groupFullName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
+						Set<String> zones = new HashSet<String>(2, 1.0f);
+						zones.add(AuthorityService.ZONE_APP_DEFAULT);
 						String name = authorityService.createAuthority(
-								AuthorityType.GROUP, groupShortName);
+								AuthorityType.GROUP, groupShortName, groupDisplayName, zones );
 						authorityService.addAuthority(authorityService.getName(
 								AuthorityType.GROUP,
 								OrgchartService.GROUP_ORGCHART), name);

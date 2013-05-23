@@ -510,7 +510,9 @@ var labelType, useGradients, nativeTextSupport, animate;
 						Alfresco.util.Ajax.jsonRequest({
 							url: Alfresco.constants.PROXY_URI 
 									+ "api/alvex/orgchart/branches/" 
-									+ encodeURIComponent(this.options.curBranch),
+									+ encodeURIComponent(
+										Alvex.util.createClearNodeName(this.options.curBranch)
+									),
 							method: Alfresco.util.Ajax.PUT,
 							dataObj: { data: { displayName: branchName } },
 							successCallback:
@@ -835,7 +837,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 						var role = {};
 						role.displayName = config.dataObj.prop_alvexoc_roleDisplayName;
 						role.weight = config.dataObj.prop_alvexoc_roleWeight;
-						var id = role.displayName;
+						var id = Alvex.util.createClearNodeName(role.displayName);
 						
 						var req = {};
 						req.data = role;
@@ -3018,7 +3020,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 							method: Alfresco.util.Ajax.PUT,
 							dataObj: {
 								data: {
-									name : config.dataObj.prop_alvexoc_unitDisplayName,
+									name : Alvex.util.createClearNodeName(
+											config.dataObj.prop_alvexoc_unitDisplayName),
 									displayName : config.dataObj.prop_alvexoc_unitDisplayName,
 									weight : config.dataObj.prop_alvexoc_unitWeight
 								}

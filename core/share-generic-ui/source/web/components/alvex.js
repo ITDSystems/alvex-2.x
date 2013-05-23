@@ -154,3 +154,8 @@ Alvex.util.diffArrays = function Alvex_diffArrays(a1, a2)
 	}
 	return res;
 };
+
+Alvex.util.createClearNodeName = function Alvex_createClearNodeName(name)
+{
+	return name.replace(/([\"\*\\\>\<\?\/\:\|]+)/g,'');
+}
