@@ -158,7 +158,7 @@
 				<template-instance>dashboard-2-columns-wide-right</template-instance>
 				<authentication>user</authentication>
 				<properties>
-					<sitePages>[{"pageId":"calendar"},{"pageId":"documentsregister"}]</sitePages>
+					<sitePages>[{"pageId":"documentsregister"}]</sitePages>
 				</properties>
 			</page>
 		</pages>
