@@ -1269,8 +1269,19 @@ if (typeof Alvex == "undefined" || !Alvex)
             dynamicData: false,
             "MSG_EMPTY": this.msg("message.empty"),
             "MSG_ERROR": this.msg("message.error"),
+            sortedBy: {
+               "key": "prop_alvexdt_id",
+               "dir": YAHOO.widget.DataTable.CLASS_ASC
+            },
             paginator: this.widgets.paginator
          });
+
+         if( this.widgets.dataTable.getColumn("prop_alvexdt_id") != null )
+            me.currentSort =
+            {
+               oColumn: this.widgets.dataTable.getColumn("prop_alvexdt_id"),
+               sSortDir: YAHOO.widget.DataTable.CLASS_ASC
+            };
 
          // Update totalRecords with value from server
          this.widgets.dataTable.handleDataReturnPayload = function DataGrid_handleDataReturnPayload(oRequest, oResponse, oPayload)
