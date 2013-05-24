@@ -1199,6 +1199,15 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Intercept data returned from data webscript to extract custom metadata
          this.widgets.dataSource.doBeforeCallback = function DataGrid_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
          {
+            for( var i in oParsedResponse.results )
+            {
+               if( oParsedResponse.results[i].itemData['prop_alvexdt_id'] )
+               {
+                  var value = oParsedResponse.results[i].itemData['prop_alvexdt_id'].value;
+                  if( value && value.match(/^[0-9]+$/g) )
+                     oParsedResponse.results[i].itemData['prop_alvexdt_id'].value = parseInt(value);
+               }
+            }
             // Container userAccess event
             var permissions = oFullResponse.metadata.parent.permissions;
             if (permissions && permissions.userAccess)
