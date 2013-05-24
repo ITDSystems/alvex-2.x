@@ -439,6 +439,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		// Adds new files into upload queue and triggers recheck upload status.
 		onFileSelect: function Uploader_onFileSelect(event)
 		{
+			var newFileFound = false;
 			this.options.eventIdHash = {};
 			if(event.fileList != null) {
 				for(var i in event.fileList) {
@@ -455,6 +456,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						}
 					}
 					if(new_file) {
+						newFileFound = true;
 						var pos = this.options.uploadQueue.length;
 						this.options.uploadQueue.push(event.fileList[i]);
 						this.options.uploadQueue[pos].id += '-' + this.options.uploadQueue[pos].name;
@@ -473,6 +475,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 							});
 					}
 				}
+			}
+			if( ! newFileFound )
+			{
+				Alfresco.util.PopupManager.displayMessage( { text: this.msg("alvex.uploader.noFileOrEmptyFile") } );
 			}
 			this.recheckUploads(this.options.uploadQueue);
 		},
