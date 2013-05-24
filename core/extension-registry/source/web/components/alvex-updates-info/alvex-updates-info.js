@@ -63,6 +63,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 	{
 		options:
 		{
+			extensions: []
 		},
 
 		showErrorMessage: function(_, obj)
@@ -110,15 +111,16 @@ if (typeof Alvex == "undefined" || !Alvex)
 		},
 
 		displayUpdatesInfo: function(response) {
-			try {
+			/*try {
 				this.data = YAHOO.util.Lang.JSON.parse(response.serverResponse.responseText);
 				alert(this.data.latestVersion);
 			} catch (e) {
 				this.showErrorMessage(null, this.msg('alvex.admin.updates_check_failed'));
 				return;
-			}
+			}*/
 			this.hidePopupDialog();
-			this.popupDialog = Alfresco.util.PopupManager.displayMessage({
+			this.displayBriefStatus( response.json.localData );
+			/*this.popupDialog = Alfresco.util.PopupManager.displayMessage({
 				text: this.msg('alvex.admin.loading_detailed_updates'),
 				displayTime: 0,
 				spanClass: 'wait'
@@ -138,7 +140,32 @@ if (typeof Alvex == "undefined" || !Alvex)
 						scope:this
 					},
 					scope: this
-			});
+			});*/
+		},
+
+		displayBriefStatus: function( localData ) {
+			this.options.extensions.length = 0;
+			for( var e in localData.extensions )
+				this.options.extensions.push( 
+					{ "component": e, "curVer": localData.extensions[e].shareVersion, "latestVer": '' } );
+
+			this.widgets.dataSource = new YAHOO.util.DataSource(this.options.extensions);
+			this.widgets.dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+			this.widgets.dataSource.responseSchema = { fields: ["component", "curVer", "latestVer"] };
+
+			var columnDefs =
+			[
+				{ key: "component", label: this.msg("aui.label.component"), sortable: true, width: 350 },
+				{ key: "curVer", label: this.msg("aui.label.curVer"), sortable: true, width: 150 },
+				{ key: "latestVer", label: this.msg("aui.label.latestVer"), sortable: true, width: 150 }
+			];
+
+			this.widgets.dataTable = new YAHOO.widget.DataTable(this.id + "-updates-table",
+					columnDefs, this.widgets.dataSource, {
+						selectionMode:"single",
+						renderLoopSize: 32,
+						MSG_EMPTY: this.msg('aui.message.no_updates_info')
+					});
 		},
 
 		displayUpdatesInfoExtended: function(response) {

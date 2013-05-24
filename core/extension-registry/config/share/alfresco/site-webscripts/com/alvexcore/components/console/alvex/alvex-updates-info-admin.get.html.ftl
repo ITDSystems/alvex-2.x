@@ -15,5 +15,6 @@
 		<div class="header">Alvex: ${alvexEdition?html} v${alvexVersion?html} (${alvexCodename})</div>
 		<br/>
 		<div class="title"><label>${msg("aui.title")}</label></div>
+		<div id="${el}-updates-table"></div>
 	</div>
 </div>

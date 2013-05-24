@@ -1,1 +1,3 @@
-<#if json??>${json}</#if>
+{
+	"localData": ${localData}
+}
