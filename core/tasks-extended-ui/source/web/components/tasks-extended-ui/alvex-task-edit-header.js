@@ -180,7 +180,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       onTaskDetailedData: function TEH_onTaskDetailedData(layer, args)
       {
          // Hide button on the bottom of the form
-         Dom.addClass(Selector.query(".form-buttons", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), "hidden");
+         // Dom.addClass(Selector.query(".form-buttons", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), "hidden");
 
          var task = args[1];
 
