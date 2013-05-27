@@ -41,11 +41,26 @@ div.picker-selection {
 	margin-left: 0.7em;
 }
 
+/* Highlight captions */
 .badge-highlight {
 	background-color: #aaa;
 	border-radius: 6px;
 	padding-right: 6px;
 	padding-left: 6px;
+}
+
+/* Highlight for tree view */
+.yui-panel .ygtv-highlight .ygtv-highlight1 {
+	background-color: #fff;
+	color: #333;
+}
+
+.yui-panel .ygtv-highlight .ygtv-highlight1 .ygtvlabel {
+	background-color: #aaa;
+	border-radius: 6px;
+	padding-right: 6px;
+	padding-left: 6px;
+	color: #000;
 }
 
 /* End of picker dialog layout */

@@ -26,7 +26,7 @@
 				<div class="yui-gb">
 					<div id="${pickerId}-treeSelector" class="yui-u first yui-skin-sam picker-part">
 						<div class="group-selector">
-							<div id="${pickerId}-groups"></div>
+							<div id="${pickerId}-groups" class="ygtv-highlight"></div>
 						</div>
 					</div>
 					<div id="${pickerId}-dataTable" class="yui-u yui-skin-sam picker-part">

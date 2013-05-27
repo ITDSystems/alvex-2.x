@@ -1645,6 +1645,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 				return;
 			
 			this.options.tree = new YAHOO.widget.TreeView(this.options.pickerId + "-groups");
+			this.options.tree.singleNodeHighlight = true;
+			this.options.tree.subscribe("clickEvent",this.options.tree.onEventToggleHighlight);
 			this.options.insituEditors = [];
 
 			var rootNode = this.insertTreeLabel(this.options.tree.getRoot(), this.options.orgchart);
