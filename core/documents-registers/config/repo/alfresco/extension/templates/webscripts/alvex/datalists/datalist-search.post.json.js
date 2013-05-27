@@ -49,12 +49,16 @@ var Filters =
             var filterMatch = true;
             var pattern = filter.searchFields.props[prop];
             prop = prop.replace("_",":");
-            if( pattern != "" )
+            if( pattern != "" && pattern[0] != '[' )
             {
                filterMatch = false;
                var value = node.properties[prop];
-               if( value.toLowerCase().match(pattern.toLowerCase()) )
-                  filterMatch = true;
+               if( value.toLowerCase != undefined )
+                  if( value.toLowerCase().match(pattern.toLowerCase()) )
+                     filterMatch = true;
+               else
+                  if( value == pattern )
+                     filterMatch = true;
             }
             totalMatch = (totalMatch && filterMatch);
          }
@@ -218,6 +222,16 @@ var Filters =
                filterData = filterData.slice(0, -1);
             }
             filterParams.query += "+PATH:\"/cm:taggable/cm:" + search.ISO9075Encode(filterData) + "/member\"";
+            break;
+
+         case "search":
+            for( var prop in filter.searchFields.props )
+               if( filter.searchFields.props[prop] != "" && filter.searchFields.props[prop][0] == '[' )
+               {
+                  filterParams.query += "+@" + prop.replace("_", "\\:") + ":";
+                  filterParams.query += filter.searchFields.props[prop];
+                  filterParams.query += " ";
+               }
             break;
 
          //case "search":

@@ -569,7 +569,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       getSelectSearch: function f(key, options, width)
       {
          var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-         var html = '<span><select name="' + key + '" style="width:95%;">';
+         var html = '<span><select name="' + key + '" id="' + key + '-search" style="width:95%;">';
          html += '<option></option>';
          for( var o in options ) {
             var option = options[o].split('|');
@@ -708,6 +708,8 @@ if (typeof Alvex == "undefined" || !Alvex)
                      row += scope.getTextSearch(key, outerWidth);
                      break;
 
+                  // TODO - handle numeric range search
+                  case "double":
                   default:
                      if (datalistColumn.type == "association")
                      {
@@ -715,7 +717,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                      }
                      else
                      {
-                        row += scope.getTextSearch(key, outerWidth);
+                        //row += scope.getTextSearch(key, outerWidth);
                      }
                      break;
                }
@@ -740,28 +742,21 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          scope.activateCalSelectors();
 
+         for( var col = 0; col < scope.datalistColumns.length; col++ )
+         {
+            var key = this.dataResponseFields[col];
+            var el = Dom.get( key + '-search' );
+            if( el != null )
+               el.onchange = function()
+                  {
+                     scope.doSearch( { "dataObj": scope.widgets.searchForm._buildAjaxForSubmit( Dom.get(scope.id + "-search-form") ) } );
+                  };
+         }
+
          scope.widgets.searchForm = new Alfresco.forms.Form(scope.id + "-search-form");
          scope.widgets.searchForm.doBeforeAjaxRequest = 
             {
-               fn: function f(config, object)
-               {
-                  config.url = Alfresco.constants.PROXY_URI
-                                  + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
-                  config.dataObj.fields = this.dataRequestFields;
-                  config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
-                  for(var i in config.dataObj) {
-                     if( i.match(/^prop_/) ) {
-                        this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
-                        config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
-                     } else if( i.match(/^assoc_/) ) {
-                        this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
-                        config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
-                     }
-                  }
-                  this._updateDataGrid(config.dataObj);
-                  // Prevent extra submission - everything should be handled by dataSource in _updateDataGrid call
-                  return false;
-               },
+               fn: scope.doSearch,
                scope: scope
             };
          scope.widgets.searchForm.setSubmitElements(scope.widgets.searchButton);
@@ -780,6 +775,26 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
          scope.widgets.searchForm.setSubmitAsJSON(true);
          scope.widgets.searchForm.init();
+      },
+
+      doSearch: function f(config, object)
+      {
+         config.url = Alfresco.constants.PROXY_URI
+                 + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
+         config.dataObj.fields = this.dataRequestFields;
+         config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
+         for(var i in config.dataObj) {
+            if( i.match(/^prop_/) ) {
+               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
+               config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
+            } else if( i.match(/^assoc_/) ) {
+               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
+               config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
+            }
+         }
+         this._updateDataGrid(config.dataObj);
+         // Prevent extra submission - everything should be handled by dataSource in _updateDataGrid call
+         return false;
       },
 
       /**
