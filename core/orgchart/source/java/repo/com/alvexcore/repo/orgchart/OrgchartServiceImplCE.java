@@ -822,9 +822,19 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	@Override
 	public OrgchartUnit modifyUnit(OrgchartUnit unit, String displayName,
 			Integer weight) {
-		if (displayName != null)
+		if (displayName != null) {
 			nodeService.setProperty(unit.getNode(),
 					AlvexContentModel.PROP_UNIT_DISPLAY_NAME, displayName);
+			final String groupName = unit.getGroupName();
+			final String groupDisplayName = displayName;
+			AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
+				public Void doWork() throws Exception {
+					if( authorityService.authorityExists(groupName) )
+						authorityService.setAuthorityDisplayName(groupName, groupDisplayName);
+					return null;
+				}
+			});
+		}
 		if (weight != null)
 			nodeService.setProperty(unit.getNode(),
 					AlvexContentModel.PROP_UNIT_WEIGHT, (int) weight);
