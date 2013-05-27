@@ -585,7 +585,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       getTextSearch: function f(key, width)
       {
          var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-         return '<span><input type="text" name="' + key + '" style="width:95%;" value="' + value + '"/></span>';
+         return '<span><input type="text" name="' + key + '" style="width:95%;" value="' + $html(value.replace('\\"','"')) + '"/></span>';
       },
 
       getDateSearch: function f(key, width)
@@ -750,10 +750,11 @@ if (typeof Alvex == "undefined" || !Alvex)
                   config.dataObj.fields = this.dataRequestFields;
                   config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
                   for(var i in config.dataObj) {
-                     this.savedSearch[i] = config.dataObj[i];
                      if( i.match(/^prop_/) ) {
+                        this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
                         config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
                      } else if( i.match(/^assoc_/) ) {
+                        this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
                         config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
                      }
                   }
