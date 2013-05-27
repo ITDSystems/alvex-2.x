@@ -38,7 +38,14 @@ div.picker-selection {
 }
 
 .alfresco-share .yui-panel .bd div.yui-u.picker-view-selector a {
-	padding-left: 0.7em;
+	margin-left: 0.7em;
+}
+
+.badge-highlight {
+	background-color: #aaa;
+	border-radius: 6px;
+	padding-right: 6px;
+	padding-left: 6px;
 }
 
 /* End of picker dialog layout */

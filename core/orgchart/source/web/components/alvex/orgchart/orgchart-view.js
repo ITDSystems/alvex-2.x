@@ -2418,11 +2418,15 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 		fillPeopleTable: function OrgchartViewerDialog_fillPeopleTable(node_id)
 		{
+			Dom.addClass( this.options.pickerId + "-view-people", "badge-highlight" );
+			Dom.removeClass( this.options.pickerId + "-view-roles", "badge-highlight" );
 			this.fillTable(node_id, false);
 		},
 
 		fillRolesTable: function OrgchartViewerDialog_fillRolesTable(node_id)
 		{
+			Dom.removeClass( this.options.pickerId + "-view-people", "badge-highlight" );
+			Dom.addClass( this.options.pickerId + "-view-roles", "badge-highlight" );
 			this.fillTable(node_id, true);
 		},
 		
