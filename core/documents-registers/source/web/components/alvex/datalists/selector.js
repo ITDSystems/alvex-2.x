@@ -626,9 +626,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                      text: this.msg("message.new-list.success", listTitle)
                   });
                   // Activity post
-                  Alfresco.Share.postActivity(this.options.siteId, "org.alfresco.datalists.list-created", listTitle + " (" + listTypeTitle + ")", "data-lists?list={cm:name}",
+                  Alfresco.Share.postActivity(this.options.siteId, "com.alvexcore.document-registers.register-created", listTitle + " (" + listTypeTitle + ")", "documentsregister?register={cm:name}",
                   {
-                     appTool: "datalists",
+                     appTool: "docReg",
                      nodeRef: nodeRef.toString()
                   });
                },
@@ -713,9 +713,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                      text: this.msg("message.edit-list.success", p_obj.title)
                   });
                   // Activity post
-                  Alfresco.Share.postActivity(this.options.siteId, "org.alfresco.datalists.list-updated", p_obj.title + " (" + listTypeTitle + ")", "data-lists?list={cm:name}",
+                  Alfresco.Share.postActivity(this.options.siteId, "com.alvexcore.document-registers.register-updated", p_obj.title + " (" + listTypeTitle + ")", "documentsregister?register={cm:name}",
                   {
-                     appTool: "datalists",
+                     appTool: "docReg",
                      nodeRef: nodeRef.toString()
                   });
                },
@@ -761,12 +761,11 @@ if (typeof Alvex == "undefined" || !Alvex)
                   fn: function DataLists_onDeleteList_confirm_success(response, p_obj)
                   {
                      // Activity post
-                     Alfresco.Share.postActivity(this.options.siteId, "org.alfresco.datalists.list-deleted", datalist.title + " (" + listTypeTitle + ")", "data-lists",
+                     Alfresco.Share.postActivity(this.options.siteId, "com.alvexcore.document-registers.register-deleted", datalist.title + " (" + listTypeTitle + ")", "documentsregister",
                      {
-                        appTool: "datalists",
+                        appTool: "docReg",
                         nodeRef: nodeRef.toString()
                      });
-
                      // If we deleted the current list, then redirect to "data-lists"
                      if (p_obj.name == this.options.listId)
                      {
