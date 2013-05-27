@@ -22,7 +22,9 @@
 					<field set="info" id="alvexdr:id">
 						<control template="/alvex-auto-numberer.ftl"/>
 					</field>
-					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:regDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
 					<field set="summary" id="alvexdr:summary">
 						<control template="/alvex-mltext.ftl">
 							<control-param name="style">width: 98%</control-param>
@@ -73,7 +75,9 @@
 					<field set="info" id="alvexdr:id">
 						<control template="/alvex-auto-numberer.ftl"/>
 					</field>
-					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:regDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
 					<field set="summary" id="alvexdr:summary">
 						<control template="/alvex-mltext.ftl">
 							<control-param name="style">width: 98%</control-param>
@@ -121,7 +125,9 @@
 					<set id="files" appearance="" label=""/>
 					<set id="relations" appearance="" label=""/>
 					<field set="info" id="alvexdr:id" />
-					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:regDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
 					<field set="info" id="alvexdr:status" />
 					<field set="info" id="alvexdr:counterPartner" />
 					<field set="info" id="alvexdr:counterPartnerId" />
@@ -195,7 +201,9 @@
 					<set id="files" appearance="" label=""/>
 					<set id="relations" appearance="" label=""/>
 					<field set="info" id="alvexdr:id" />
-					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:regDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
 					<field set="info" id="alvexdr:status" />
 					<field set="info" id="alvexdr:counterPartner" />
 					<field set="info" id="alvexdr:counterPartnerId" />
@@ -249,7 +257,9 @@
 					<set id="files" appearance="" label=""/>
 					<set id="relations" appearance="" label=""/>
 					<field set="info" id="alvexdr:id" />
-					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:regDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
 					<field set="info" id="alvexdr:counterPartner" />
 					<field set="summary" id="alvexdr:summary">
 						<control template="/alvex-mltext.ftl">
@@ -303,7 +313,9 @@
 					<set id="files" appearance="" label=""/>
 					<set id="relations" appearance="" label=""/>
 					<field set="info" id="alvexdr:id" />
-					<field set="info" id="alvexdr:regDate" />
+					<field set="info" id="alvexdr:regDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
 					<field set="info" id="alvexdr:counterPartner" />
 					<field set="summary" id="alvexdr:summary">
 						<control template="/alvex-mltext.ftl">

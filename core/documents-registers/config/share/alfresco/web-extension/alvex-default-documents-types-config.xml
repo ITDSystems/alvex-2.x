@@ -41,7 +41,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:agreementType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -115,7 +117,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:agreementType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -198,7 +202,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:receivedType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -266,7 +272,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:receivedType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -342,7 +350,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:sentType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -409,7 +419,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:sentType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -476,7 +488,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:appendixType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -519,7 +533,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:appendixType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -575,7 +591,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:expiryDate" />
                <field set="recipient" id="alvexdt:recipient">
                   <control template="/alvex-masterData-select.ftl"/>
@@ -629,7 +647,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:expiryDate" />
                <field set="recipient" id="alvexdt:recipient">
                   <control template="/alvex-masterData-select.ftl"/>
@@ -702,7 +722,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:invoiceType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -776,7 +798,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:invoiceType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -858,7 +882,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:administrativeType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -928,7 +954,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:administrativeType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -1000,7 +1028,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:backgroundType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
@@ -1053,7 +1083,9 @@
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
-               <field set="id" id="alvexdt:registerDate"/>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
                <field set="id" id="alvexdt:backgroundType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
