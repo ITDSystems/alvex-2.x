@@ -2533,7 +2533,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 						Dom.get(this.options.pickerId + '-person-email').innerHTML = $html(profile.email);
 						Dom.get(this.options.pickerId + '-person-skype').innerHTML = $html(profile.skype);
 						Dom.get(this.options.pickerId + '-person-im').innerHTML = $html(profile.instantmsg);
-						Dom.get(this.options.pickerId + '-person-loc').innerHTML = $html(profile.location);
+						// Dom.get(this.options.pickerId + '-person-loc').innerHTML = $html(profile.location);
 						Dom.get(this.options.pickerId + '-person-bio').innerHTML = $html(profile.persondescription);
 						Dom.get(this.options.pickerId + '-person-links').innerHTML 
 									= '<a target="_blank" href="/share/page/user/' + profile.userName + '/profile">' 

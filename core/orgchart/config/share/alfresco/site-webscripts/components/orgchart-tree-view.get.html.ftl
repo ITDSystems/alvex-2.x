@@ -80,11 +80,12 @@
 								<span class="labelcustom">${msg("alvex.orgchart.im")}</span>
 								<span class="valuecustom" id="${pickerId}-person-im"></span>
 							</div>
-							<div class="row">
+							<!--div class="row">
 								<span class="labelcustom">${msg("alvex.orgchart.location")}</span>
 								<span class="valuecustom" id="${pickerId}-person-loc"></span>
-							</div>
+							</div-->
 							<div>
+								<br/>
 								<div id="${pickerId}-person-links"></div>
 							</div>
 							<hr/>

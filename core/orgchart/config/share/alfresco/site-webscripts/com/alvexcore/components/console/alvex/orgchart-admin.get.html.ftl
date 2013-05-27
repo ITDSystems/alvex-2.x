@@ -125,7 +125,7 @@
 						<a href="#" id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</a>
 					</div>
 					<#if config.syncSource == 'none' >
-					<div class="yui-u yui-skin-sam">
+					<div class="yui-u yui-skin-sam" style="padding-top: 0.7em;">
 						<a href="#" id="${pickerId}-add-users">${msg("alvex.orgchart.add_users")}</a>
 					</div>
 					</#if>
@@ -167,11 +167,12 @@
 								<span class="labelcustom">${msg("alvex.orgchart.im")}</span>
 								<span class="valuecustom" id="${pickerId}-person-im"></span>
 							</div>
-							<div class="row">
+							<!--div class="row">
 								<span class="labelcustom">${msg("alvex.orgchart.location")}</span>
 								<span class="valuecustom" id="${pickerId}-person-loc"></span>
-							</div>
+							</div-->
 							<div>
+								<br/>
 								<div id="${pickerId}-person-links"></div>
 							</div>
 							<hr/>

@@ -33,10 +33,12 @@ div.picker-selection {
 
 .alfresco-share .yui-panel .bd div.yui-u.picker-view-selector {
 	padding-top: 0.7em;
+	padding-left: 0.7em;
+	padding-bottom: 0.4em;
 }
 
 .alfresco-share .yui-panel .bd div.yui-u.picker-view-selector a {
-	padding-left: 1em;
+	padding-left: 0.7em;
 }
 
 /* End of picker dialog layout */
