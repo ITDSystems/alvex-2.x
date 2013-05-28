@@ -202,8 +202,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 			if (message == type)
 				message = this.msg("workflow.no_message");
 
-			var info = '<h3 style="padding-top: 4px"><a href="' + $siteURL('task-details?taskId=' + taskId 
-					+ '&referrer=tasks') + '" class="theme-color-1" title="' 
+			var info = '<h3 style="padding-top: 4px"><a href="' + $siteURL('task-details?taskId=' + taskId ) 
+					+ '" class="theme-color-1" title="' 
 					+ this.msg("link.viewTask") + '">' + message + '</a></h3>';
 
 			if(this.options.compactMode)
