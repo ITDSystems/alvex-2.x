@@ -462,7 +462,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                }
                else
                {
-                  desc += '<div class="detail"><span>' + me.msg("label.title") + ":</span> " + $html(title) + '</div>';
+                  desc += '<div class="detail"><span>' + me.msg("label.jobtitle") + ":</span> " + $html(title) + '</div>';
                }
             }
             if (organization.length !== 0)

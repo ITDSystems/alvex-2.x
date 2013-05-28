@@ -33,10 +33,36 @@ div.picker-selection {
 
 .alfresco-share .yui-panel .bd div.yui-u.picker-view-selector {
 	padding-top: 0.7em;
+	padding-left: 0.7em;
+	padding-bottom: 0.4em;
 }
 
-.alfresco-share .yui-panel .bd div.yui-u.picker-view-selector a {
-	padding-left: 1em;
+.alfresco-share .yui-panel .bd div.yui-u.picker-view-selector span {
+	margin-left: 0.7em;
+	cursor: pointer;
+}
+
+/* Highlight captions */
+.badge-highlight {
+	background-color: #aaa;
+	border-radius: 6px;
+	padding-right: 6px;
+	padding-left: 6px;
+	color: #000;
+}
+
+/* Highlight for tree view */
+.alfresco-share .ygtv-highlight .ygtv-highlight1 {
+	background-color: #fff;
+	color: #333;
+}
+
+.alfresco-share .ygtv-highlight .ygtv-highlight1 .ygtvlabel {
+	background-color: #aaa;
+	border-radius: 6px;
+	padding-right: 6px;
+	padding-left: 6px;
+	color: #000;
 }
 
 /* End of picker dialog layout */
@@ -75,8 +101,9 @@ div.showUserInfoTitle img {
 	border: 0px;
 }
 
-a.remove-item img {
+span.remove-item img {
 	border: 0px;
+	cursor: pointer;
 }
 
 div.showUserInfo a.orgchart-action-link {

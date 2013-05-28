@@ -47,6 +47,7 @@ if (typeof Alvex == "undefined" || !Alvex)
     */
     var $html = Alfresco.util.encodeHTML,
        $hasEventInterest = Alfresco.util.hasEventInterest,
+       $siteURL = Alfresco.util.siteURL,
        $combine = Alfresco.util.combinePaths;
 
    /**
@@ -179,7 +180,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       onTaskDetailedData: function TEH_onTaskDetailedData(layer, args)
       {
          // Hide button on the bottom of the form
-         Dom.addClass(Selector.query(".form-buttons", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), "hidden");
+         // Dom.addClass(Selector.query(".form-buttons", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), "hidden");
 
          var task = args[1];
 
@@ -233,7 +234,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                displayTime: 2
             });
 
-            YAHOO.lang.later(2000, this, function()
+            YAHOO.lang.later(100, this, function()
             {
             	var referrerValue = Alfresco.util.getQueryStringParameter('referrer');
             	

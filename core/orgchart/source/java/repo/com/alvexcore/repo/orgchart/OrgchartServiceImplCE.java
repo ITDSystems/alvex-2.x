@@ -21,8 +21,10 @@ package com.alvexcore.repo.orgchart;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.model.ContentModel;
@@ -223,12 +225,14 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	protected OrgchartUnit createUnit(NodeRef parent, String name,
 			String displayName, int weight) {
-		final String groupShortName = displayName;
+		final String groupShortName = name;
+		final String groupDisplayName = displayName;
 		final String groupName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
 						String name = authorityService.createAuthority(
-								AuthorityType.GROUP, groupShortName);
+								AuthorityType.GROUP, groupShortName, groupDisplayName, 
+								authorityService.getDefaultZones() );
 						authorityService.addAuthority(authorityService.getName(
 								AuthorityType.GROUP,
 								OrgchartService.GROUP_ORGCHART), name);
@@ -451,12 +455,14 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public RoleDefinition createRole(String name, int weight, String displayName) {
 		if (roleExists(name))
 			throw new AlfrescoRuntimeException("Role already exists");
-		final String groupShortName = displayName;
+		final String groupShortName = name;
+		final String groupDisplayName = displayName;
 		final String groupFullName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
 						String name = authorityService.createAuthority(
-								AuthorityType.GROUP, groupShortName);
+								AuthorityType.GROUP, groupShortName, groupDisplayName, 
+								authorityService.getDefaultZones() );
 						authorityService.addAuthority(authorityService.getName(
 								AuthorityType.GROUP,
 								OrgchartService.GROUP_ORGCHART), name);
@@ -806,7 +812,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 			}
 		});
 		for (RoleInstance role : getUnitRoles(unit))
-			removeRole(unit, getRoleDefinitionByRef(role.getNode()));
+			removeRole(unit, getDefinitionForRole(role));
 		nodeService.deleteNode(unit.getNode());
 	}
 
@@ -816,9 +822,19 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	@Override
 	public OrgchartUnit modifyUnit(OrgchartUnit unit, String displayName,
 			Integer weight) {
-		if (displayName != null)
+		if (displayName != null) {
 			nodeService.setProperty(unit.getNode(),
 					AlvexContentModel.PROP_UNIT_DISPLAY_NAME, displayName);
+			final String groupName = unit.getGroupName();
+			final String groupDisplayName = displayName;
+			AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
+				public Void doWork() throws Exception {
+					if( authorityService.authorityExists(groupName) )
+						authorityService.setAuthorityDisplayName(groupName, groupDisplayName);
+					return null;
+				}
+			});
+		}
 		if (weight != null)
 			nodeService.setProperty(unit.getNode(),
 					AlvexContentModel.PROP_UNIT_WEIGHT, (int) weight);

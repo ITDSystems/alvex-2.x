@@ -121,12 +121,12 @@
 				<div class="yui-g orgchart-picker-menu">
 					<div id="${pickerId}-view-selector" class="yui-u first yui-skin-sam picker-view-selector">
 						<strong>${msg("alvex.orgchart.show_by")} </strong>
-						<a href="#" id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</a>
-						<a href="#" id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</a>
+						<span id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</span>
+						<span id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</span>
 					</div>
 					<#if config.syncSource == 'none' >
-					<div class="yui-u yui-skin-sam">
-						<a href="#" id="${pickerId}-add-users">${msg("alvex.orgchart.add_users")}</a>
+					<div class="yui-u yui-skin-sam" style="padding-top: 0.7em; cursor: pointer;">
+						<span id="${pickerId}-add-users">${msg("alvex.orgchart.add_users")}</span>
 					</div>
 					</#if>
 				</div>
@@ -167,11 +167,12 @@
 								<span class="labelcustom">${msg("alvex.orgchart.im")}</span>
 								<span class="valuecustom" id="${pickerId}-person-im"></span>
 							</div>
-							<div class="row">
+							<!--div class="row">
 								<span class="labelcustom">${msg("alvex.orgchart.location")}</span>
 								<span class="valuecustom" id="${pickerId}-person-loc"></span>
-							</div>
+							</div-->
 							<div>
+								<br/>
 								<div id="${pickerId}-person-links"></div>
 							</div>
 							<hr/>

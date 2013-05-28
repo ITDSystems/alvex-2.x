@@ -393,10 +393,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 						entry.status = "in_progress";
 						files_ready = false;
 						var uploader_id = entry.id.replace(/-.*$/,"");
-						// Do NOT delete jsessionid here - shitty flash requires it
-						this.options.uploader.upload( uploader_id,
-							Alfresco.constants.PROXY_URI + "api/alvex/upload;jsessionid=" 
-									+ YAHOO.util.Cookie.get("JSESSIONID"),
+
+						// Do NOT delete jsessionid and  here - shitty flash requires it
+						var upload_url = Alfresco.constants.PROXY_URI + "api/alvex/upload";
+						upload_url += ";jsessionid=" + YAHOO.util.Cookie.get("JSESSIONID");
+						if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+							upload_url += "?" + Alfresco.util.CSRFPolicy.getParameter() + "=" 
+									+ encodeURIComponent(Alfresco.util.CSRFPolicy.getToken());
+
+						this.options.uploader.upload( uploader_id, upload_url,
 							"POST", {
 								destination: this.options.destination,
 								uploaddirectory: this.getUploadDirectory(),
@@ -434,6 +439,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		// Adds new files into upload queue and triggers recheck upload status.
 		onFileSelect: function Uploader_onFileSelect(event)
 		{
+			var newFileFound = false;
 			this.options.eventIdHash = {};
 			if(event.fileList != null) {
 				for(var i in event.fileList) {
@@ -450,6 +456,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						}
 					}
 					if(new_file) {
+						newFileFound = true;
 						var pos = this.options.uploadQueue.length;
 						this.options.uploadQueue.push(event.fileList[i]);
 						this.options.uploadQueue[pos].id += '-' + this.options.uploadQueue[pos].name;
@@ -468,6 +475,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 							});
 					}
 				}
+			}
+			if( ! newFileFound )
+			{
+				Alfresco.util.PopupManager.displayMessage( { text: this.msg("alvex.uploader.noFileOrEmptyFile") } );
 			}
 			this.recheckUploads(this.options.uploadQueue);
 		},
@@ -491,6 +502,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 			xmlHttp_names.open("POST", Alfresco.constants.PROXY_URI
 				+ "api/forms/picker/items",
 				false);
+			if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+				xmlHttp_names.setRequestHeader( Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken() );
 			xmlHttp_names.setRequestHeader("Content-Type", "application/json");
 			xmlHttp_names.send( JSON.stringify(req) );
 
@@ -598,6 +611,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 						+ Alfresco.util.NodeRef( this.options.uploadQueue[rowNum].node_ref ).uri;
 					var xmlhttp = new XMLHttpRequest();
 					xmlhttp.open('DELETE', delete_url, true);
+					if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+						xmlHttp_names.setRequestHeader( Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken() );
 					xmlhttp.send(null); 
 				}
 			}

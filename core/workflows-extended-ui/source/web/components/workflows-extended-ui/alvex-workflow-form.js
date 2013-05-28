@@ -442,7 +442,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Selector.query(".form-fields", this.id, true).appendChild(currentTasksContainerEl);
          // Selector.query(".form-fields", this.id, true).appendChild(historyContainerEl);
          var workflowTasksContainerEl = Dom.get(this.id + "-workflow-tasks");
-         Selector.query(".form-fields", this.id, true).appendChild(workflowTasksContainerEl);
+         Selector.query(".form-fields", this.id, true).insertBefore(workflowTasksContainerEl, initialTaskSpoilerEl);
+         initialTaskSpoilerEl.style.display = "";
 
          // Fire event so other components knows the form finally has been loaded
          YAHOO.Bubbling.fire("workflowFormReady", this);         

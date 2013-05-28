@@ -225,7 +225,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       getDataSourceURL: function()
       {
             // Prepare webscript url to task instances
-            var webscript = YAHOO.lang.substitute("api/alvex/workflow-instances?initiator={initiator}&exclude={exclude}",
+            var webscript = YAHOO.lang.substitute("api/workflow-instances?initiator={initiator}&exclude={exclude}",
             {
                   initiator: encodeURIComponent(Alfresco.constants.USERNAME),
                   exclude: this.options.hiddenWorkflowNames.join(",")

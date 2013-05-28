@@ -89,9 +89,9 @@
 	</target>
 	<target name="deploy-jars" description="Deploy all extensions">
 		<subant target="deploy-jars">
+			<fileset dir="core/extension-registry" includes="build.xml" />
 			<fileset dir="core/custom-workflows" includes="build.xml" />
 			<fileset dir="core/documents-registers" includes="build.xml" />
-			<fileset dir="core/extension-registry" includes="build.xml" />
 			<fileset dir="core/manager-dashboard-tasks" includes="build.xml" />
 			<fileset dir="core/my-workflows-dashlet" includes="build.xml" />
 			<fileset dir="core/orgchart" includes="build.xml" />

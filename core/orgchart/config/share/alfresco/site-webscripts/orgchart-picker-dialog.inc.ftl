@@ -16,8 +16,8 @@
 					</div>
 					<div id="${pickerId}-view-selector" class="yui-u yui-skin-sam picker-view-selector">
 						<strong>${msg("alvex.orgchart.show_by")} </strong>
-						<a href="#" id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</a>
-						<a href="#" id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</a>
+						<span id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</span>
+						<span id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</span>
 					</div>
 					<div class="yui-u yui-skin-sam">
 					</div>
@@ -26,7 +26,7 @@
 				<div class="yui-gb">
 					<div id="${pickerId}-treeSelector" class="yui-u first yui-skin-sam picker-part">
 						<div class="group-selector">
-							<div id="${pickerId}-groups"></div>
+							<div id="${pickerId}-groups" class="ygtv-highlight"></div>
 						</div>
 					</div>
 					<div id="${pickerId}-dataTable" class="yui-u yui-skin-sam picker-part">
@@ -64,11 +64,12 @@
 								<span class="labelcustom">${msg("alvex.orgchart.im")}</span>
 								<span class="valuecustom" id="${pickerId}-person-im"></span>
 							</div>
-							<div class="row">
+							<!--div class="row">
 								<span class="labelcustom">${msg("alvex.orgchart.location")}</span>
 								<span class="valuecustom" id="${pickerId}-person-loc"></span>
-							</div>
+							</div-->
 							<div>
+								<br/>
 								<div id="${pickerId}-person-links"></div>
 							</div>
 							<hr/>

@@ -63,6 +63,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", managees_url, false);
+			if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+				xmlHttp.setRequestHeader( Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken() );
 			xmlHttp.send(null);
 
 			if (xmlHttp.status != 200)

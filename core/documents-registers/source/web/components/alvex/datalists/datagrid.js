@@ -569,7 +569,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       getSelectSearch: function f(key, options, width)
       {
          var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-         var html = '<span><select name="' + key + '" style="width:95%;">';
+         var html = '<span><select name="' + key + '" id="' + key + '-search" style="width:95%;">';
          html += '<option></option>';
          for( var o in options ) {
             var option = options[o].split('|');
@@ -585,7 +585,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       getTextSearch: function f(key, width)
       {
          var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-         return '<span><input type="text" name="' + key + '" style="width:95%;" value="' + value + '"/></span>';
+         return '<span><input type="text" name="' + key + '" style="width:95%;" value="' + $html(value.replace('\\"','"')) + '"/></span>';
       },
 
       getDateSearch: function f(key, width)
@@ -708,6 +708,8 @@ if (typeof Alvex == "undefined" || !Alvex)
                      row += scope.getTextSearch(key, outerWidth);
                      break;
 
+                  // TODO - handle numeric range search
+                  case "double":
                   default:
                      if (datalistColumn.type == "association")
                      {
@@ -715,7 +717,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                      }
                      else
                      {
-                        row += scope.getTextSearch(key, outerWidth);
+                        //row += scope.getTextSearch(key, outerWidth);
                      }
                      break;
                }
@@ -740,27 +742,21 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          scope.activateCalSelectors();
 
+         for( var col = 0; col < scope.datalistColumns.length; col++ )
+         {
+            var key = this.dataResponseFields[col];
+            var el = Dom.get( key + '-search' );
+            if( el != null )
+               el.onchange = function()
+                  {
+                     scope.doSearch( { "dataObj": scope.widgets.searchForm._buildAjaxForSubmit( Dom.get(scope.id + "-search-form") ) } );
+                  };
+         }
+
          scope.widgets.searchForm = new Alfresco.forms.Form(scope.id + "-search-form");
          scope.widgets.searchForm.doBeforeAjaxRequest = 
             {
-               fn: function f(config, object)
-               {
-                  config.url = Alfresco.constants.PROXY_URI
-                                  + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
-                  config.dataObj.fields = this.dataRequestFields;
-                  config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
-                  for(var i in config.dataObj) {
-                     this.savedSearch[i] = config.dataObj[i];
-                     if( i.match(/^prop_/) ) {
-                        config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
-                     } else if( i.match(/^assoc_/) ) {
-                        config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
-                     }
-                  }
-                  this._updateDataGrid(config.dataObj);
-                  // Prevent extra submission - everything should be handled by dataSource in _updateDataGrid call
-                  return false;
-               },
+               fn: scope.doSearch,
                scope: scope
             };
          scope.widgets.searchForm.setSubmitElements(scope.widgets.searchButton);
@@ -779,6 +775,26 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
          scope.widgets.searchForm.setSubmitAsJSON(true);
          scope.widgets.searchForm.init();
+      },
+
+      doSearch: function f(config, object)
+      {
+         config.url = Alfresco.constants.PROXY_URI
+                 + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
+         config.dataObj.fields = this.dataRequestFields;
+         config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
+         for(var i in config.dataObj) {
+            if( i.match(/^prop_/) ) {
+               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
+               config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
+            } else if( i.match(/^assoc_/) ) {
+               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
+               config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
+            }
+         }
+         this._updateDataGrid(config.dataObj);
+         // Prevent extra submission - everything should be handled by dataSource in _updateDataGrid call
+         return false;
       },
 
       /**
@@ -1195,11 +1211,19 @@ if (typeof Alvex == "undefined" || !Alvex)
                }
             }
          });
-         this.widgets.dataSource.connMgr.setDefaultPostHeader(Alfresco.util.Ajax.JSON);
 
          // Intercept data returned from data webscript to extract custom metadata
          this.widgets.dataSource.doBeforeCallback = function DataGrid_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
          {
+            for( var i in oParsedResponse.results )
+            {
+               if( oParsedResponse.results[i].itemData['prop_alvexdt_id'] )
+               {
+                  var value = oParsedResponse.results[i].itemData['prop_alvexdt_id'].value;
+                  if( value && value.match(/^[0-9]+$/g) )
+                     oParsedResponse.results[i].itemData['prop_alvexdt_id'].value = parseInt(value);
+               }
+            }
             // Container userAccess event
             var permissions = oFullResponse.metadata.parent.permissions;
             if (permissions && permissions.userAccess)
@@ -1270,8 +1294,19 @@ if (typeof Alvex == "undefined" || !Alvex)
             dynamicData: false,
             "MSG_EMPTY": this.msg("message.empty"),
             "MSG_ERROR": this.msg("message.error"),
+            sortedBy: {
+               "key": "prop_alvexdt_id",
+               "dir": YAHOO.widget.DataTable.CLASS_ASC
+            },
             paginator: this.widgets.paginator
          });
+
+         if( this.widgets.dataTable.getColumn("prop_alvexdt_id") != null )
+            me.currentSort =
+            {
+               oColumn: this.widgets.dataTable.getColumn("prop_alvexdt_id"),
+               sSortDir: YAHOO.widget.DataTable.CLASS_ASC
+            };
 
          // Update totalRecords with value from server
          this.widgets.dataTable.handleDataReturnPayload = function DataGrid_handleDataReturnPayload(oRequest, oResponse, oPayload)
@@ -2231,7 +2266,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          // TODO: No-cache? - add to URL retrieved from DataSource
          // "&noCache=" + new Date().getTime();
-         
+         if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
+         {
+            this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getParameter(), Alfresco.util.CSRFPolicy.getToken(), false);
+         }
          this.widgets.dataSource.sendRequest(YAHOO.lang.JSON.stringify(requestParams),
          {
             success: successHandler,

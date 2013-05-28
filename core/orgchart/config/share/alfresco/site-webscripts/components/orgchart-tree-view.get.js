@@ -5,7 +5,7 @@ var syncConfig = Alvex.configs.getConfig('orgchart', 'sync-config');
 
 // should this be done automatically in some library call?
 model.config = {
-	defaultRoleName: uiConfig.props['alvexoc:defaultRoleName'],
+	defaultRoleName: uiConfig.props['alvexoc:defaultRoleName'] ? uiConfig.props['alvexoc:defaultRoleName'] : '',
 	viewType: uiConfig.props['alvexoc:viewType'],
 	showUnitsRecursively: uiConfig.props['alvexoc:showUnitsRecursively'],
 	syncSource: syncConfig.props['alvexoc:syncSource']

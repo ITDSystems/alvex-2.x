@@ -54,7 +54,8 @@
 		}
 
 		connector = remote.connect("alvexupdate");
-		model.json = connector.post('/', jsonUtils.toJSONString(req));
+		model.localData = jsonUtils.toJSONString(req);
+		model.remoteData = connector.post('/', jsonUtils.toJSONString(req));
 		status.code = 200;
 	} catch (e)
 	{

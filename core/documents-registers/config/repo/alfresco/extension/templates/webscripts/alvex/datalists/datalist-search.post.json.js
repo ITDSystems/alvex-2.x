@@ -37,6 +37,37 @@ var Filters =
       return filter;
    },
 
+   searchParams: function f(nodes, filter)
+   {
+      var filtered = [];
+
+      for each (node in nodes)
+      {
+         var totalMatch = true;
+         for( var prop in filter.searchFields.props )
+         {
+            var filterMatch = true;
+            var pattern = filter.searchFields.props[prop];
+            prop = prop.replace("_",":");
+            if( pattern != "" && pattern[0] != '[' )
+            {
+               filterMatch = false;
+               var value = node.properties[prop];
+               if( value.toLowerCase != undefined )
+                  if( value.toLowerCase().match(pattern.toLowerCase()) )
+                     filterMatch = true;
+               else
+                  if( value == pattern )
+                     filterMatch = true;
+            }
+            totalMatch = (totalMatch && filterMatch);
+         }
+         if( totalMatch )
+            filtered.push(node);
+      }
+
+      return filtered;
+   },
 
    searchAssocs: function f(nodes, filter)
    {
@@ -195,19 +226,29 @@ var Filters =
 
          case "search":
             for( var prop in filter.searchFields.props )
-               if( filter.searchFields.props[prop] != "" )
+               if( filter.searchFields.props[prop] != "" && filter.searchFields.props[prop][0] == '[' )
                {
                   filterParams.query += "+@" + prop.replace("_", "\\:") + ":";
-                  var c = filter.searchFields.props[prop][0];
-                  if( (c !== '^') && (c !== '*') && (c !== '[') )
-                     filterParams.query += "*";
                   filterParams.query += filter.searchFields.props[prop];
-                  c = filter.searchFields.props[prop][ filter.searchFields.props[prop].length - 1 ];
-                  if( (c !== '$') && (c !== '*') && (c !== ']') )
-                     filterParams.query += "*";
                   filterParams.query += " ";
                }
             break;
+
+         //case "search":
+         //   for( var prop in filter.searchFields.props )
+         //      if( filter.searchFields.props[prop] != "" )
+         //      {
+         //         filterParams.query += "+@" + prop.replace("_", "\\:") + ":";
+         //         var c = filter.searchFields.props[prop][0];
+         //         if( (c !== '^') && (c !== '*') && (c !== '[') )
+         //            filterParams.query += "*";
+         //         filterParams.query += filter.searchFields.props[prop];
+         //         c = filter.searchFields.props[prop][ filter.searchFields.props[prop].length - 1 ];
+         //         if( (c !== '$') && (c !== '*') && (c !== ']') )
+         //            filterParams.query += "*";
+         //         filterParams.query += " ";
+         //      }
+         //   break;
 
          default:
             filterParams.query = filterQuery + filterQueryDefaults;
@@ -311,7 +352,10 @@ function getData()
    {
       // TODO - rework this slow filtering somehow
       if( filter.filterId === "search" )
+      {
+         allNodes = Filters.searchParams( allNodes, filter );
          allNodes = Filters.searchAssocs( allNodes, filter );
+      }
 
       for each (node in allNodes)
       {
