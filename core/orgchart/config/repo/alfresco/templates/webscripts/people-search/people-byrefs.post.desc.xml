@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Users by NodeRefs</shortname>
+  <description>Service to return metadata of multiple users to display in the object finder</description>
+  <url>/api/alvex/picker/users/byrefs</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction allow="readonly">required</transaction>
+</webscript>

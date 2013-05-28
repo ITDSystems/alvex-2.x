@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Search people by name</shortname>
+  <description>Service to search for people to display in the object finder.</description>
+  <url>/api/alvex/picker/users/search</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction allow="readonly">required</transaction>
+</webscript>

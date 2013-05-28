@@ -314,7 +314,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 			req['itemValueType'] = 'nodeRef';
 
 			Alfresco.util.Ajax.jsonRequest({
-				url: Alfresco.constants.PROXY_URI + "api/forms/picker/items",
+				url: Alfresco.constants.PROXY_URI + "api/alvex/picker/users/byrefs",
 				method: Alfresco.util.Ajax.POST,
 				dataObj: req,
 				successCallback:
@@ -322,7 +322,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 					fn: function (resp)
 					{
 						// Remember current assignees details
-						this.options.assignees = resp.json.data.items;
+						this.options.assignees = resp.json.data.people;
 						// And show them in HTML
 						for (m in this.options.assignees) {
 							Dom.get(this.id + "-cntrl-currentValueDisplay").innerHTML 
@@ -1241,7 +1241,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 			this.options.selectedGroup = null;
 			var searchTerm = Dom.get(this.options.pickerId + "-searchText").value;
 			var url = Alfresco.constants.PROXY_URI
-						+ "api/forms/picker/authority/children?selectableType=cm:person&" 
+						+ "api/alvex/picker/users/search?" 
 						+ "searchTerm=" + encodeURIComponent(searchTerm) + "&size=100";
 
 			Alfresco.util.Ajax.jsonRequest({
@@ -1252,27 +1252,25 @@ var labelType, useGradients, nativeTextSupport, animate;
 				{
 					fn: function (resp)
 					{
-						var users = resp.json;
+						var users = resp.json.data.people;
 
-						for (x in users.data.items)
-							users.data.items[x].roleDisplayName = this.msg("alvex.orgchart.people_found");
+						for (x in users)
+							users[x].roleDisplayName = this.msg("alvex.orgchart.people_found");
 
 						// clear data for display
 						this.options.usersDataStore.length = 0;
 
 						// sort alphabetically
-						this.sortPeople(users.data.items);
+						this.sortPeople(users);
 
 						// push all users to datasource to display placing them into default role
-						for (x in users.data.items) {	
-							users.data.items[x].userName = users.data.items[x].name.replace(/.*\(/, '').replace(/\).*/,'');
-							users.data.items[x].name = users.data.items[x].name.replace(/\(.*/,'');
+						for (x in users) {	
 							this.options.usersDataStore.push(
 								{
-									name: users.data.items[x].name,
-									userName: users.data.items[x].userName,
-									nodeRef: users.data.items[x].nodeRef,
-									role: users.data.items[x].role
+									name: users[x].name,
+									userName: users[x].userName,
+									nodeRef: users[x].nodeRef,
+									role: users[x].role
 								}
 							);
 						}
@@ -1557,6 +1555,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 		autoExpandTree: function(resp)
 		{
+			if( this.options.mode == 'admin' )
+				return;
 			var nodes = resp.json.data;
 			// Traverse all nodes up to the tree root
 			var traverse = [];
