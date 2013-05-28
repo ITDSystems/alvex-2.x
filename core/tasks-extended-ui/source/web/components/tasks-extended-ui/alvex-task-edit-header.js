@@ -184,6 +184,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          var task = args[1];
 
+         // Hide actions buttons if necessary
+         if( ! task.isEditable )
+         {
+            Dom.addClass( 
+               Selector.query(".suggested-actions", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), 
+               "hidden"
+            );
+         }
+
          // Save task id so we can use it when invoking actions later
          this.taskId = task.id;
 
