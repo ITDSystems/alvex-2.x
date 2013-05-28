@@ -48,6 +48,15 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="alvex-custom-workflows-default-variables-setter"
+		class="com.alvexcore.repo.workflow.activiti.WorkflowDefaultVariablesSetter"
+		parent="alvex-custom-workflows-activiti-listener">
+		<property name="matches">
+			<list>
+				<value>process-start@activitiBasicWorkflow</value>
+			</list>
+		</property>
+	</bean>
 	<bean id="alvex-custom-workflows" parent="alvex-extension"
 		class="com.alvexcore.repo.CustomWorkflowsExtension"
 		depends-on="alvex-custom-workflows-pre-parse-listener,alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader,alvex-related-workflows,alvex-workflows-discussions" />
