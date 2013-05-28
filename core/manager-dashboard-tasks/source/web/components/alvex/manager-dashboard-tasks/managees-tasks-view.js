@@ -58,36 +58,43 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		onReady: function ManageesTasksViewer_onReady()
 		{
-			var managees_url = Alfresco.constants.PROXY_URI + "api/alvex/orgchart/user/" 
-				+ encodeURIComponent(Alfresco.constants.USERNAME) + "/managees";
-
-			var xmlHttp = new XMLHttpRequest();
-			xmlHttp.open("GET", managees_url, false);
-			if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
-				xmlHttp.setRequestHeader( Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken() );
-			xmlHttp.send(null);
-
-			if (xmlHttp.status != 200)
-				return;
-
-			var manageesStruct = eval('(' + xmlHttp.responseText + ')');
-
-			for(var u in manageesStruct.managees)
-				if(manageesStruct.managees[u].userName != Alfresco.constants.USERNAME)
-					this.options.managees.push(manageesStruct.managees[u]);
-
-			this.options.managees = this.manageesSortAndUnique( this.options.managees );
-
-			this.widgets.pagingDataTable = [];
-
-			for(var m in this.options.managees)
+			Alfresco.util.Ajax.request(
 			{
-				document.getElementById(this.id + "-body").innerHTML +=
-					'	<div id="' + this.id + '-user-' + m + '"><div class="yui-ge task-list-bar flat-button" style="width:99%"><div class="yui-u first"><h2 id="' + this.id + '-title-' + m + '" class="thin"><a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + this.options.managees[m].userName + '/profile">' + this.options.managees[m].name + '</a></h2></div><div class="yui-u"><div id="' + this.id + '-paginator-' + m + '" class="paginator">&nbsp;</div></div></div><div id="' + this.id + '-tasks-' + m + '" class="tasks" style="margin: 0"></div></div>';
+				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/user/" 
+						+ encodeURIComponent(Alfresco.constants.USERNAME) + "/managees",
+				successCallback:
+				{
+					fn: function(resp)
+					{
+						for(var u in resp.json.managees)
+							if(resp.json.managees[u].userName != Alfresco.constants.USERNAME)
+								this.options.managees.push(resp.json.managees[u]);
 
-				YAHOO.util.Event.onContentReady(this.id + '-user-' + m,
-							this.createTasksDataTable, m, this);
-			}
+						this.options.managees = this.manageesSortAndUnique( this.options.managees );
+
+						this.widgets.pagingDataTable = [];
+
+						for(var m in this.options.managees)
+						{
+							document.getElementById(this.id + "-body").innerHTML += 
+								'<div id="' + this.id + '-user-' + m + '">' 
+								+ '<div class="yui-ge task-list-bar flat-button" ' 
+								+ 'style="width:100%; background-color: #eeeeee; margin: 0;">' 
+								+ '<div class="yui-u first"><h2 id="' + this.id + '-title-' + m 
+								+ '" class="thin"><a href="' + Alfresco.constants.URL_PAGECONTEXT 
+								+ 'user/' + this.options.managees[m].userName + '/profile">' 
+								+ this.options.managees[m].name + '</a></h2></div><div class="yui-u"><div id="' 
+								+ this.id + '-paginator-' + m + '" class="paginator">&nbsp;</div></div></div>' 
+								+ '<div id="' + this.id + '-tasks-' + m + '" class="tasks" style="margin: 0">' 
+								+ '</div></div>';
+							YAHOO.util.Event.onContentReady(this.id + '-user-' + m,
+										this.createTasksDataTable, m, this);
+						}
+					},
+					scope: this
+				},
+				failureMessage: "Can not get managees"
+			});
 		},
 
 
