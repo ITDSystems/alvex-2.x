@@ -16,7 +16,7 @@
 	<div id="${htmlId}-top-group-selector" class="hidden">
 		<strong>${msg("alvex.orgchart.show_top_group")} </strong>
 	</div>
-	<div id="${htmlId}-page-tree-view" class="hidden"></div>
+	<div id="${htmlId}-page-tree-view" class="hidden ygtv-highlight"></div>
 	<div id="${htmlId}-infovis" class="hidden" style="margin:10px"></div>
 </div>
 

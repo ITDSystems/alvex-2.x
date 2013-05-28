@@ -5,11 +5,16 @@
 		for each ( unit in user.getUnits() )
 		{
 			var unitName = unit.getDisplayName();
-			for each ( ri in user.getRoles( unit ) )
+			var id = unit.getId();
+			if( user.getRoles( unit ).length > 0 )
 			{
-				model.roleInsts.push( { 'unit':  unitName,
-									'role': ri.getDefinition().getDisplayName() 
-								} );
+				for each ( ri in user.getRoles( unit ) )
+				{
+					model.roleInsts.push( { 'unit':  unitName, 'id': id, 
+								'role': ri.getDefinition().getDisplayName() } );
+				}
+			} else {
+				model.roleInsts.push( { 'unit': unitName, 'id': id, 'role': '' } );
 			}
 		}
 		status.code = 200;

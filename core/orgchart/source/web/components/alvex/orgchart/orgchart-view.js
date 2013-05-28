@@ -988,18 +988,20 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 		createTree: function()
 		{
-			this.options.pageTreeView = new YAHOO.widget.TreeView(this.id + "-page-tree-view");
+			this.options.tree = new YAHOO.widget.TreeView(this.id + "-page-tree-view");
 			
-			YAHOO.widget.TreeView.FOCUS_CLASS_NAME = "";
+			this.options.tree.singleNodeHighlight = true;
+			this.options.tree.subscribe("clickEvent",this.options.tree.onEventToggleHighlight);
 			this.options.insituEditors = [];
 			
 			if(this.options.orgchart) {
-				var node = this.insertTreeLabel(this.options.pageTreeView.getRoot(), this.options.orgchart);
+				var node = this.insertTreeLabel(this.options.tree.getRoot(), this.options.orgchart);
 				node.expand();
 			}
-			this.options.pageTreeView.subscribe("expandComplete", this.onExpandComplete, this, true);
-			this.options.pageTreeView.draw();
-			this.onExpandComplete(null);			
+			this.options.tree.subscribe("expandComplete", this.onExpandComplete, this, true);
+			this.options.tree.draw();
+			this.onExpandComplete(null);
+			this.showMyUnit();
 		},
 
 		onExpandComplete: function DLT_onExpandComplete(oNode)
@@ -1010,14 +1012,6 @@ var labelType, useGradients, nativeTextSupport, animate;
 						this.options.insituEditors[i].params, 
 						this.options.insituEditors[i].callback
 					);			
-		},
-
-		pageTreeViewClicked: function(node)
-		{
-			var curNode = node;
-			curNode.id = node.labelElId;
-			curNode.name = node.label;
-			this.showViewDialog(curNode);
 		},
 
 		createPickerDialog: function()
@@ -1541,6 +1535,72 @@ var labelType, useGradients, nativeTextSupport, animate;
 			this.widgets.dialog.show();
 
 			Event.preventDefault(e);
+
+			this.showMyUnit();
+		},
+
+		showMyUnit: function()
+		{
+			// Expand the tree to show the unit current user belongs to
+			Alfresco.util.Ajax.request(
+			{
+				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/user/" 
+						+ encodeURIComponent(Alfresco.constants.USERNAME) + "/roles",
+				successCallback:
+				{
+					fn: this.autoExpandTree,
+					scope: this
+				},
+				failureMessage: "Can not get roles for current user"
+			});
+		},
+
+		autoExpandTree: function(resp)
+		{
+			var nodes = resp.json.data;
+			// Traverse all nodes up to the tree root
+			var traverse = [];
+			for( var i in nodes )
+			{
+				traverse[i] = [];
+				var node = this.options.tree.getNodeByProperty('labelElId', nodes[i].unitId);
+				while( node.depth >= 0 ) {
+					traverse[i].push(node);
+					node = node.parent;
+				}
+			}
+			// Find common anchestor
+			var targetIndex = 0;
+			for( var i = 1; i < traverse.length; i++ )
+			{
+				var found = false;
+				while( !found && targetIndex < traverse[0].length )
+				{
+					for( var k = 0; k < traverse[i].length; k++ )
+					{
+						if( traverse[0][targetIndex].labelElId == traverse[i][k].labelElId )
+						{
+							found = true;
+							break;
+						}
+					}
+					if( !found )
+						targetIndex++;
+				}
+			}
+			//Highlight and expand common anchestor
+			var targetNode = ( targetIndex < traverse[0].length ? traverse[0][targetIndex] : traverse[0][traverse[0].length] );
+			if( targetNode ) {
+				targetNode.highlight();
+				var parent = targetNode;
+				while( parent.depth > 0 ) {
+					parent.expand();
+					parent = parent.parent;
+				}
+			}
+			// Emulate click for picker - fill user table automatically
+			if( this.options.mode == 'picker' )
+				this.treeViewClicked(targetNode);
 		},
 
 		createViewDialog: function OrgchartViewerDialog_createDetailsDialog()
@@ -3128,7 +3188,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 								fn: function (response)
 								{
 									var parent = obj.params.curElem.parent;
-									obj.params.orgchartAdmin.options.pageTreeView.removeNode( obj.params.curElem );
+									obj.params.orgchartAdmin.options.tree.removeNode( obj.params.curElem );
 									parent.refresh();
 									obj.params.orgchartAdmin.onExpandComplete(null);
 

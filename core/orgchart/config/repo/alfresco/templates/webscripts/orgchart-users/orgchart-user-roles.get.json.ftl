@@ -8,7 +8,8 @@
 	<#list roleInsts as ri>
 		{
 			"role": "${ri.role}",
-			"unit": "${ri.unit}"
+			"unit": "${ri.unit}",
+			"unitId": "${ri.id}"
 		}<#if ri_has_next>,</#if>
 	</#list>
  	]
