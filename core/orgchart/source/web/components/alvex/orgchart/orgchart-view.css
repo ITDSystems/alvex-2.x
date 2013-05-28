@@ -37,8 +37,9 @@ div.picker-selection {
 	padding-bottom: 0.4em;
 }
 
-.alfresco-share .yui-panel .bd div.yui-u.picker-view-selector a {
+.alfresco-share .yui-panel .bd div.yui-u.picker-view-selector span {
 	margin-left: 0.7em;
+	cursor: pointer;
 }
 
 /* Highlight captions */
@@ -47,6 +48,7 @@ div.picker-selection {
 	border-radius: 6px;
 	padding-right: 6px;
 	padding-left: 6px;
+	color: #000;
 }
 
 /* Highlight for tree view */
@@ -99,8 +101,9 @@ div.showUserInfoTitle img {
 	border: 0px;
 }
 
-a.remove-item img {
+span.remove-item img {
 	border: 0px;
+	cursor: pointer;
 }
 
 div.showUserInfo a.orgchart-action-link {

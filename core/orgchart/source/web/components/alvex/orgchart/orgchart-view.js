@@ -2655,8 +2655,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 		getRemoveButtonHTML: function OrgchartViewerDialog_getRemoveButtonHTML(person)
 		{
-			return '<a href="#" class="remove-item" id="' + person.nodeRef 
-					+ '"><img src="/share/res/components/images/remove-icon-16.png" width="16"/></a>';
+			return '<span class="remove-item" id="' + person.nodeRef 
+					+ '"><img src="/share/res/components/images/remove-icon-16.png" width="16"/></span>';
 		},
 
 		attachRemoveClickListener: function OrgchartViewerDialog_attachRemoveClickListener(person)

@@ -16,8 +16,8 @@
 					</div>
 					<div id="${pickerId}-view-selector" class="yui-u yui-skin-sam picker-view-selector">
 						<strong>${msg("alvex.orgchart.show_by")} </strong>
-						<a href="#" id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</a>
-						<a href="#" id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</a>
+						<span id="${pickerId}-view-roles">${msg("alvex.orgchart.show_by_role")}</span>
+						<span id="${pickerId}-view-people">${msg("alvex.orgchart.show_by_name")}</span>
 					</div>
 					<div class="yui-u yui-skin-sam">
 					</div>
