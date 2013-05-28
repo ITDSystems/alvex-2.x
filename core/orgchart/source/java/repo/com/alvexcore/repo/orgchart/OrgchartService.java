@@ -300,6 +300,13 @@ public interface OrgchartService {
 	 */
 	public abstract OrgchartUnit modifyUnit(OrgchartUnit unit,
 			String displayName, Integer weight);
+	
+	/**
+	 * Moves whole orgchart subtree under new parent unit.
+	 * @param unit Subtree root node
+	 * @param newParent New parent orgchart unit
+	 */
+	public abstract void moveUnit(OrgchartUnit unit, OrgchartUnit newParent);
 
 	/**
 	 * Returns subunit by name

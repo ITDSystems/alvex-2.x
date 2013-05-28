@@ -1218,4 +1218,18 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 		else
 			extension.removeNodeFromCache(ID_BRANCHES_NODE);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.alvexcore.repo.orgchart.OrgchartServiceX#moveUnit(com.alvexcore.repo
+	 * .orgchart.OrgchartUnit, com.alvexcore.repo.orgchart.OrgchartUnit)
+	 */
+	@Override
+	public void moveUnit(OrgchartUnit unit, OrgchartUnit newParent) {
+		nodeService.moveNode(unit.getNode(), newParent.getNode(),
+				AlvexContentModel.ASSOC_SUBUNIT,
+				getSubunutAssocQName(unit.getName()));
+	}
 }

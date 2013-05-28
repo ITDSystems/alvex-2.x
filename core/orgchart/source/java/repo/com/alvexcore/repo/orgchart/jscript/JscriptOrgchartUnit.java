@@ -144,6 +144,10 @@ public class JscriptOrgchartUnit implements Serializable {
 		return new JscriptOrgchartUnit(orgchartService, serviceRegistry, scope,
 				orgchartService.modifyUnit(orgchartUnit, displayName, weight));
 	}
+	
+	public void move(JscriptOrgchartUnit newParent) {
+		orgchartService.moveUnit(orgchartUnit, newParent.getUnit());
+	}
 
 	public void addMember(ScriptNode person) {
 		// FIXME this depends on Alfresco content model, think
