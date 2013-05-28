@@ -886,11 +886,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 					html += this.getActionsMiniViewHTML(ref, filename);
 
 				if(allow_delete && !this.options.disabled) {
-					html += '</span><a href="#" id="' + this.id + '-remove-link-' + id + '" ' 
+					html += '</span><span style="cursor: pointer;" id="' + this.id + '-remove-link-' + id + '" ' 
 						+ 'title="' + this.msg("alvex.uploader.remove") + '">' 
 						+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
 						+ 'components/alvex/uploader/document-delete-16.png' + '"/>' 
-						+ '</a>'; 
+						+ '</span>'; 
 				}
 				html += '</div>';
 			} else {
@@ -898,11 +898,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 				html += '<td style="border-style:none; padding:5px; width:100%;">'
 					+ '<div style="text-align:right; vertical-align: middle;">';
 				if(allow_delete && !this.options.disabled) {
-					html += '<a href="#" id="' + this.id + '-remove-link-' + id + '" ' 
+					html += '<span style="cursor: pointer;" id="' + this.id + '-remove-link-' + id + '" ' 
 						+ 'title="' + this.msg("alvex.uploader.remove") + '">' 
 						+ '<img align="top" src="' + Alfresco.constants.URL_RESCONTEXT 
 						+ 'components/alvex/uploader/document-delete-16.png' + '"/> ' 
-						+ this.msg("alvex.uploader.remove") + '</a>';
+						+ this.msg("alvex.uploader.remove") + '</span>';
 				}
 				html += '</div></td>';
 				html += this.getStatusEndHTML();
