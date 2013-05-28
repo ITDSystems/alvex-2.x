@@ -30,6 +30,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 {
 	var Dom = YAHOO.util.Dom,
 		Event = YAHOO.util.Event,
+		DDM = YAHOO.util.DragDropMgr,
+		DDTarget = YAHOO.util.DDTarget,
 		KeyListener = YAHOO.util.KeyListener;
 	var $html = Alfresco.util.encodeHTML;
 
@@ -38,6 +40,7 @@ var labelType, useGradients, nativeTextSupport, animate;
 		Alvex.OrgchartViewer.superclass.constructor.call(this, "OrgchartViewer", htmlId);
 		YAHOO.Bubbling.on("formContentReady", this.onFormContentReady, this);
 		YAHOO.Bubbling.on("formContainerDestroyed", this.onFormDestroyed, this);
+		YAHOO.Bubbling.on("orgchartSubTreeMove", this.onSubtreeMove, this);
 		return this;
 	};
 
@@ -92,6 +95,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 			syncConfigNodeRef: '',
 			// Org chart sync source
 			syncSource: 'none',
+			// Maps nodes from TreeView to org chart units
+			treeNodesMap: {},
 			// Orgchart branch we are working with
 			curBranch: 'default',
 			// All orgchart branches
@@ -413,6 +418,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 
 		initAdmin: function()
 		{
+			this.options.treeNodesMap = {};
+
 			this.createUserRolesDialog();
 			this.createUnitRolesDialog();
 			this.createRolesTable();
@@ -1602,7 +1609,53 @@ var labelType, useGradients, nativeTextSupport, animate;
 			if( this.options.mode == 'picker' )
 				this.treeViewClicked(targetNode);
 		},
+		
+		onSubtreeMove: function(ev, arg)
+		{
+			var data = arg[1];
+			var dest = data.dest;
+			var src = this.options.treeNodesMap[data.src];
 
+			// Move subtree
+			Alfresco.util.Ajax.jsonRequest({
+				url: Alfresco.constants.PROXY_URI 
+							+ "api/alvex/orgchart/units/" + src + "/move/" + dest,
+				method: Alfresco.util.Ajax.POST,
+				dataObj: {},
+				successCallback:
+				{
+					fn: function (resp)
+					{
+						// We have some issues with stalled Insitu Editor after subtree move.
+						// So we will go with hardcore solution now, just to be on the safe side.
+						// this.loadOrgchartBranch(this.options.curBranch)
+						Alfresco.util.PopupManager.displayMessage( 
+						{
+							text: this.msg("message.please-wait"), 
+							spanClass: 'wait' 
+						} );
+						YAHOO.lang.later(1000, this, function() 
+						{
+							location.reload();
+						}, [] );
+					},
+					scope:this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						if (resp.serverResponse.statusText)
+						{
+							Alfresco.util.PopupManager.displayMessage(
+									{ text: resp.serverResponse.statusText });
+						}
+					},
+					scope:this
+				}
+			});
+		},
+		
 		createViewDialog: function OrgchartViewerDialog_createDetailsDialog()
 		{
 			this.widgets.dialog = Alfresco.util.createYUIPanel(this.options.pickerId,
@@ -1727,6 +1780,9 @@ var labelType, useGradients, nativeTextSupport, animate;
 			var me = this;
 			var curElem = new YAHOO.widget.TextNode(newNode.displayName, curRoot, false);
 			curElem.labelElId = newNode.id;
+			new DDList("ygtv" + curElem.index);
+			new DDTarget(curElem.labelElId);
+			this.options.treeNodesMap["ygtv" + curElem.index] = curElem.labelElId;
 			this.options.insituEditors.push( 
 				{
 					context: newNode.id, 
@@ -3224,6 +3280,49 @@ var labelType, useGradients, nativeTextSupport, animate;
 				}]
 			});
 			Event.stopEvent(e);
+		}
+	});
+	
+	//////////////////////////////////////////////////////////////////////////////
+	// Custom drag and drop implementation. Original ideas and code are from 
+	// http://www.coderfoo.com/2009/07/yui-treeview-with-drag-and-drop-nodes.html
+	// and 
+	// http://developer.yahoo.com/yui/examples/dragdrop/dd-reorder.html
+	//////////////////////////////////////////////////////////////////////////////
+	
+	DDList = function(id, sGroup, config)
+	{
+		DDList.superclass.constructor.call(this, id, sGroup, config);
+		var el = this.getDragEl();
+		Dom.setStyle(el, "opacity", 0.67); // The proxy is slightly transparent
+	};
+	
+	YAHOO.extend(DDList, YAHOO.util.DDProxy, 
+	{
+		startDrag: function(x, y)
+		{
+			// make the proxy look like the source element
+			var dragEl = this.getDragEl();
+			var clickEl = this.getEl();
+			var pEl = clickEl.parentNode;
+			Dom.setStyle(clickEl, "visibility", "hidden");
+			dragEl.innerHTML = clickEl.innerHTML;
+			Dom.setStyle(dragEl, "width", "100px");
+			Dom.setStyle(dragEl, "border", "2px solid gray");
+		},
+		
+		onDragDrop: function(e, id)
+		{
+			if( Dom.get( id ).nodeName.toLowerCase() == 'span' )
+			{
+				var destEl = Dom.get( id );
+				var srcEl = this.getEl();
+				YAHOO.Bubbling.fire('orgchartSubTreeMove',
+				{
+					'src': srcEl.id,
+					'dest': destEl.id
+				});
+			}
 		}
 	});
 	

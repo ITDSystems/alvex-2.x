@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>orgchart-unit-move</shortname>
+  <description><![CDATA[
+  Moves orgchart unit
+  ]]></description>
+  <url>/api/alvex/orgchart/units/{id}/move/{dest}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

@@ -18,6 +18,8 @@
 				<js  src="/jit/jit-yc.js" />
 				<js  src="/yui/resize/resize.js" />
 				<js  src="/yui/treeview/treeview.js" />
+				<js  src="/yui/animation/animation.js" />
+				<js  src="/yui/dragdrop/dragdrop.js" />
 				<js  src="/components/alvex/orgchart/orgchart-view.js" />
 				<js  src="/grouped-data-table/grouped-data-table.js" />
 			</dependencies>
