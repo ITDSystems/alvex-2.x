@@ -1615,6 +1615,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 			var data = arg[1];
 			var dest = data.dest;
 			var src = this.options.treeNodesMap[data.src];
+			if( dest == src )
+				return;
 
 			// Move subtree
 			Alfresco.util.Ajax.jsonRequest({
