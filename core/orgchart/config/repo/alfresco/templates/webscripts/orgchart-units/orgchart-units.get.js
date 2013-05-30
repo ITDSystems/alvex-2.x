@@ -1,3 +1,5 @@
+<import resource="classpath:alfresco/extension/templates/webscripts/alvex-config/alvex-config.lib.js">
+
 var sortByWeight = function(a, b)
 {
 	var weightA = parseFloat( a.definition.weight );
@@ -49,13 +51,10 @@ function addMembersFromUnit( unit, presentMap, showRecursively )
 
 (function(){
 	try{
-		// Get UI config node, create if it does not exist
-		var confFolder = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:orgchart')[0];
-		var conf = confFolder.childByNamePath('orgchart-view.default');
-		if(conf == null)
-			conf = confFolder.createNode('orgchart-view.default','alvexoc:UIConfig','sys:children');
-		
-		var showRecursively = conf.properties['alvexoc:showUnitsRecursively'];
+		var uiConfig = Alvex.configs.getConfig('orgchart', 'ui-config');
+		if( ! uiConfig )
+			uiConfig = Alvex.configs.createConfig('orgchart', 'ui-config');
+		var showRecursively = uiConfig.properties['alvexoc:showUnitsRecursively'];
 		var unitId = url.templateArgs['id'];
 		var unit = orgchart.getUnit(unitId);
 		model.unit = {
