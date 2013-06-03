@@ -803,6 +803,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void dropUnit(OrgchartUnit unit) {
+		for( OrgchartUnit subUnit : getSubunits(unit) )
+			dropUnit( subUnit );
 		final String groupName = unit.getGroupName();
 		AuthenticationUtil.runAsSystem(new RunAsWork<Void>() {
 			public Void doWork() throws Exception {
