@@ -220,14 +220,29 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 * Creates orgchart unit as a child of node in repo specified by reference 
 	 * @param parent Reference to parent node 
 	 * @param name Name of the unit to create
+	 * @param displayName Display name of this unit
 	 * @param weight Unit weight
 	 * @return New orgchart unit
 	 */
 	protected OrgchartUnit createUnit(NodeRef parent, String name,
 			String displayName, int weight) {
-		final String groupShortName = name;
+		return createUnit(parent, name, displayName, name, weight);
+	}
+
+	/**
+	 * Creates orgchart unit as a child of node in repo specified by reference 
+	 * @param parent Reference to parent node 
+	 * @param name Name of the unit to create
+	 * @param displayName Display name of this unit
+	 * @patem groupName Short name of Alfresco group to be created for this unit
+	 * @param weight Unit weight
+	 * @return New orgchart unit
+	 */
+	protected OrgchartUnit createUnit(NodeRef parent, String name,
+			String displayName, String groupName, int weight) {
+		final String groupShortName = groupName;
 		final String groupDisplayName = displayName;
-		final String groupName = AuthenticationUtil
+		final String groupFullName = AuthenticationUtil
 				.runAsSystem(new RunAsWork<String>() {
 					public String doWork() throws Exception {
 						String name = authorityService.createAuthority(
@@ -243,14 +258,14 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 				AlvexContentModel.ASSOC_SUBUNIT, getSubunutAssocQName(name),
 				AlvexContentModel.TYPE_ORGCHART_UNIT).getChildRef();
 		Map<QName, Serializable> props = new HashMap<QName, Serializable>();
-		props.put(AlvexContentModel.PROP_GROUP_NAME, groupName);
+		props.put(AlvexContentModel.PROP_GROUP_NAME, groupFullName);
 		props.put(AlvexContentModel.PROP_UNIT_NAME, name == null ? node.getId()
 				: name);
 		props.put(AlvexContentModel.PROP_UNIT_DISPLAY_NAME,
 				displayName == null ? node.getId() : displayName);
 		props.put(AlvexContentModel.PROP_UNIT_WEIGHT, weight);
 		nodeService.setProperties(node, props);
-		return new OrgchartUnit(node, name, displayName, groupName, weight);
+		return new OrgchartUnit(node, name, displayName, groupFullName, weight);
 	}
 
 	/**
@@ -758,7 +773,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public OrgchartUnit createBranch(String name, String displayName) {
 		if (branchExists(name))
 			throw new AlfrescoRuntimeException("Branch already exists");
-		return createUnit(getBranchesNode(), name, displayName, 0);
+		return createUnit(branchesNode, name, displayName, "orgchart." + name, 0);
 	}
 
 	/* (non-Javadoc)
