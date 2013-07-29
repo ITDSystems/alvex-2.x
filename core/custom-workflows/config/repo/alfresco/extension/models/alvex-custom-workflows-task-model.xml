@@ -20,7 +20,7 @@
 			<properties>
 				<property name="alvexwf:confirmationRequired">
 					<type>d:boolean</type>
-					<default>false</default>
+					<default>true</default>
 				</property>
 			</properties>
 			<!--Task mandatory aspects -->
