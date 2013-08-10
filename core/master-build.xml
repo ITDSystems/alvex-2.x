@@ -197,7 +197,10 @@
 		</if>
 		<!-- Minify JS -->
 		<if>
-			<isset property="dir.res.exists" />
+			<and>
+				<isset property="dir.res.exists" />
+				<isset property="build.js.minify" />
+			</and>
 			<then>
 				<yuicompress todir="${build.jar.share.dir}/META-INF">
 					<fileset dir="${res.dir}">
