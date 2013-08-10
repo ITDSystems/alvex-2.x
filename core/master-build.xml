@@ -44,20 +44,20 @@
 	<!-- Additional task definitions -->
 	<taskdef name="yuicompress" classname="com.simonbuckle.ant.tasks.CompressTask">
 		<classpath>
-			<pathelement location="../../lib/yuicompressor-2.4.2.jar" />
-			<pathelement location="../../lib/yuicompressor-taskdef-1.0.jar" />                       
+			<pathelement location="${lib.dir}/yuicompressor-2.4.2.jar" />
+			<pathelement location="${lib.dir}/yuicompressor-taskdef-1.0.jar" />                       
 		</classpath>
 	</taskdef>
 
 	<taskdef name="http" classname="org.missinglink.ant.task.http.HttpClientTask">
 		<classpath>
-			<pathelement location="../../lib/ml-ant-http-1.1.jar" />
+			<pathelement location="${lib.dir}/ml-ant-http-1.1.jar" />
 		</classpath>
 	</taskdef>
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>
-			<pathelement location="../../lib/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar"/>
 		</classpath>
 	</taskdef>
 
