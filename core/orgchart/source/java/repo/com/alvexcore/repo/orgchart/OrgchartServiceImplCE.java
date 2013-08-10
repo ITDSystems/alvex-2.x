@@ -773,7 +773,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public OrgchartUnit createBranch(String name, String displayName) {
 		if (branchExists(name))
 			throw new AlfrescoRuntimeException("Branch already exists");
-		return createUnit(branchesNode, name, displayName, "orgchart." + name, 0);
+		return createUnit(getBranchesNode(), name, displayName, "orgchart." + name, 0);
 	}
 
 	/* (non-Javadoc)
