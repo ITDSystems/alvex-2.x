@@ -4,3 +4,4 @@ tools/*/build/
 tools/*/bin/
 try*
 config.json
+*.sublime-*
