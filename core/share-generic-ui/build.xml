@@ -1,3 +1,0 @@
-<project basedir="." default="dist-jars" name="Alvex build script">
-	<import file="../master-build.xml" />
-</project>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<project>
+  <groupId>com.alvexcore.ce.repo</groupId>
+  <artifactId>compat-1.3-1.2</artifactId>
+  <version>1.0</version>
+  <parent>
+    <groupId>com.alvexcore.ce.repo</groupId>
+    <artifactId>master-pom</artifactId>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <name>Alvex 1.3-1.2 compat package [Repo]</name>
+</project>

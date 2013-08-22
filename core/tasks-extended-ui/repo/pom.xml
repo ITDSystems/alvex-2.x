@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project>
+  <groupId>com.alvexcore.ce.repo</groupId>
+  <artifactId>tasks-extended-ui</artifactId>
+  <version>1.4</version>
+  <parent>
+    <groupId>com.alvexcore.ce.repo</groupId>
+    <artifactId>master-pom</artifactId>
+    <version>1.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <name>Tasks Extended UI [Repo]</name>
+  <repositories>
+    <repository>
+      <id>itd-repository</id>
+	  <name>ITD Maven Repository</name>
+      <url>http://maven.itdhq.com/public/maven/repository</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>itd-repository</id>
+      <name>ITD Maven Repository</name>
+      <url>http://maven.itdhq.com/public/maven/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>${alvex.repo.groupId}</groupId>
+      <artifactId>extension-registry</artifactId>
+      <version>${extension_registry.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${alfresco.groupId}</groupId>
+      <artifactId>alfresco-remote-api</artifactId>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.alvexcore.maven</groupId>
+        <artifactId>alvex-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

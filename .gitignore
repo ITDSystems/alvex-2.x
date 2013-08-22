@@ -1,7 +1,3 @@
-core/*/build/
-core/*/bin/
-tools/*/build/
-tools/*/bin/
-try*
-config.json
+target
+target
 *.sublime-*
