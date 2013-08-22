@@ -1,3 +1,5 @@
 target
-target
 *.sublime-*
+core/*/manifest.mf
+core/*/nbbuild.xml
+core/*/nbproject/*
