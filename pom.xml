@@ -39,13 +39,4 @@
     <module>distr/amps</module>
     <module>distr/all-in-one</module>
   </modules>
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ftp</artifactId>
-        <version>1.0-beta-6</version>
-      </extension>
-    </extensions>
-  </build>
 </project>
