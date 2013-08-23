@@ -44,9 +44,9 @@
             <div class="set-bordered-panel-heading">
 
             <#if set.appearance == "spoiler-opened">
-               <span><input id="sp_button_${set.id}" class="btn" type="button" onclick="showSpoiler_${set.id}();" value=" - " /></span>
+               <span><input id="sp_button_${set.id}" class="btn" type="button" onclick="var inner = document.getElementById('sp_div_${set.id}'); var button = document.getElementById('sp_button_${set.id}'); if (inner.style.display == 'none') { inner.style.display = ''; button.value=' - '; } else { inner.style.display = 'none'; button.value=' + '; } YAHOO.Bubbling.fire('formVisibilityChanged');" value=" - " /></span>
             <#else>
-               <span><input id="sp_button_${set.id}" class="btn" type="button" onclick="showSpoiler_${set.id}();" value=" + " /></span>
+               <span><input id="sp_button_${set.id}" class="btn" type="button" onclick="var inner = document.getElementById('sp_div_${set.id}'); var button = document.getElementById('sp_button_${set.id}'); if (inner.style.display == 'none') { inner.style.display = ''; button.value=' - '; } else { inner.style.display = 'none'; button.value=' + '; } YAHOO.Bubbling.fire('formVisibilityChanged');" value=" + " /></span>
             </#if>
 
                ${set.label}

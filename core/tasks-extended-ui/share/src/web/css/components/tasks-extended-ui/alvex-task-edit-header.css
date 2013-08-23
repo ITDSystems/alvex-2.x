@@ -66,3 +66,12 @@
    clear: both;
 }
 
+.task-edit-header .tree-view button
+{
+   background-image: url( ../images/tree-24.png );
+   text-indent: -4em;
+   overflow: hidden;
+   width: 2em;
+   background-repeat: no-repeat;
+   margin-left: 2px;
+}

@@ -1,10 +1,10 @@
       <#assign el=args.htmlid?html>
        <div id="${el}-workflow-initial-task" style="padding-bottom: 2em; padding-top: 1em; display: none;">
          <div class="title set-bordered-panel-heading">
-            <span><input id="${el}-button-initial-task" class="btn" type="button" onclick="showSpoiler('initial-task');" value=" + " /></span>
+            <span><input id="${el}-button-initial-task" class="btn" type="button" onclick="showSpoiler('initial-task');" value=" - " /></span>
             <label style="display: inline;">${msg("header.initialTask")}</label>
          </div>
-         <div id="${el}-panel-initial-task" class="set-bordered-panel-body" style="display:none;">
+         <div id="${el}-panel-initial-task" class="set-bordered-panel-body">
             <div id="${el}-initialTask"></div>
          </div>
       </div>

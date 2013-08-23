@@ -7,6 +7,8 @@
 		<property name="resourceBundles">
 			<list>
 				<value>alfresco.web-extension.messages.alvex-uploader</value>
+				<value>alfresco.web-extension.messages.dnd-upload</value>
+				<value>alfresco.web-extension.messages.flash-upload</value>
 			</list>
 		</property>
 	</bean>

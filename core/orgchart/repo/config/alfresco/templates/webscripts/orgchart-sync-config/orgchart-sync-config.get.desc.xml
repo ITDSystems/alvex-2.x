@@ -5,7 +5,7 @@
   ]]></description>
   <url>/api/alvex/orgchart/sync-config</url>
   <format default="json"/>
-  <authentication>admin</authentication>
+  <authentication>user</authentication>
   <transaction>required</transaction>
   <lifecycle>public_api</lifecycle>
 </webscript>

@@ -415,7 +415,8 @@ if (typeof Alvex == 'undefined' || !Alvex)
 					var publishedDiv = document.createElement('div');
 					var textDiv = document.createElement('div');
 					
-					publishedDiv.textContent = item.author.firstName+' '+item.author.lastName+' '+item.createdOn;
+					publishedDiv.textContent = item.author.firstName+' '+item.author.lastName+' '
+							+Alfresco.util.formatDate(item.createdOn);
 					// TODO add correct replacement code below
 					textDiv.innerHTML = '<p>'+item.content.replace(/\n/g, '</p><p>')+'</p>';
 					

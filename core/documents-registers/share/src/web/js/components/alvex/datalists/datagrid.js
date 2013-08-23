@@ -429,7 +429,24 @@ if (typeof Alvex == "undefined" || !Alvex)
                               break;
                      
                            case "text":
+                              // WA for share site links
+                              var tokens = data.displayValue.split('|');
+                              if( tokens.length > 1 && tokens[0] == 'site:' )
+                              {
+                                 if( tokens[1] != '' )
+                                    html += '<a target="_blank" href="' + Alfresco.constants.URL_PAGECONTEXT + 'site/' + tokens[1] + '/dashboard' + '">' + tokens[2] + '</a>';
+                                 else
+                                    html += tokens[2];
+                                 break;
+							  }
                               html += $links($html(data.displayValue));
+                              break;
+
+                           case "boolean":
+                              if(data.value)
+                                 html += scope.msg("label.yes");
+                              else
+                                 html += scope.msg("label.no");
                               break;
 
                            default:
@@ -517,22 +534,33 @@ if (typeof Alvex == "undefined" || !Alvex)
             var maxVal = '';
             var minDate = null;
             var maxDate = null;
-            var calButtonLabel = '';//"Выбрать";
+            var calButtonLabel = '<span class="search-cal-button"></span>';//"Выбрать";
             if( value != '' )
             {
+               var uiString = '';
                minVal = value.replace(/\[/, '').replace(/ TO.*/,'').replace(/T.*/,'').split('\\-');
-               if( minVal[0] != "MIN" )
+               if( minVal[0] != "MIN" ) {
                   minDate = new Date(minVal);
-               else
+                  uiString += minDate.getDate() + '.' + (minDate.getMonth() + 1) 
+                             + '.' + minDate.getFullYear() + ' - ';
+			   } else {
                   minDate = "MIN";
+                  uiString += '... - ';
+			   }
 
                maxVal = value.replace(/.*TO /, '').replace(/T.*/,'').replace(/\]/, '').split('\\-');
-               if( maxVal[0] != "MAX" )
+               if( maxVal[0] != "MAX" ) {
                   maxDate = new Date(maxVal);
-               else
+                  uiString += maxDate.getDate() + '.' + (maxDate.getMonth() + 1) 
+                             + '.' + maxDate.getFullYear();
+			   } else {
                   maxDate = "MAX";
+                  uiString += '...';
+			   }
 
-               calButtonLabel = '';//"Сменить";
+               //calButtonLabel = '';//"Сменить";
+			   var el = Dom.get( scope.id + '-' + key + '-value' );
+			   el.innerHTML = uiString;
             }
 
             var index;
@@ -593,7 +621,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          var value = this.savedSearch[key] ? this.savedSearch[key] : '';
 
          return '<div><input type="hidden" id="' + this.id + '-' + key + '" name="' + key + '" value="' + value + '"/>' 
-			+ '<div id="' + this.id + '-' + key + '-btn"></div>'
+			+ '<div id="' + this.id + '-' + key + '-btn" style="float:left;"></div>'
+			+ '<div id="' + this.id + '-' + key + '-value"></div>'
 			+ '<div id="' + this.id + '-' + key + '-overlay" style="visibility:hidden"></div>'
                         + '</div>';
       },
@@ -1282,7 +1311,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          // Add actions as last column
          columnDefinitions.push(
-            { key: "actions", label: this.msg("label.column.actions"), sortable: false, formatter: this.fnRenderCellActions(), width: 80 }
+            { key: "actions", label: this.msg("label.column.actions"), sortable: false, formatter: this.fnRenderCellActions(), width: 90 }
          );
 
          // DataTable definition

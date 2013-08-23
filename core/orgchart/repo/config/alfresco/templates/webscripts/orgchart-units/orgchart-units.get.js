@@ -34,10 +34,14 @@ function addMembersFromUnit( unit, presentMap, showRecursively )
 		if (!(assignee.userName in presentMap))
 		{
 			var person = people.getPerson(assignee.userName);
+			var firstName = (person.properties['cm:firstName'] != null ) ? 
+								person.properties['cm:firstName'] : '';
+			var lastName = (person.properties['cm:lastName'] != null ) ? 
+								person.properties['cm:lastName'] : '';
 			model.unit.people.push({
 				userName: assignee.userName,
-				firstName: person.properties['cm:firstName'],
-				lastName: person.properties['cm:lastName'],
+				firstName: firstName,
+				lastName: lastName,
 				nodeRef: assignee.getNode().toString(),
 				roleName: '',
 				roleDisplayName: 'members'

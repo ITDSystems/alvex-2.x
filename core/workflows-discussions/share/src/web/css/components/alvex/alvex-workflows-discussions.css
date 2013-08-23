@@ -35,6 +35,7 @@
 	padding-bottom: 20px;
 	padding-left: 10px;
 	display: inline-block;
+	min-width: 500px;
 }
 .comment .content .author {
 	text-align: center;
@@ -42,6 +43,10 @@
 	width: 100px;
 	float: left;
 	position: relative;
+}
+
+.comment .content .published {
+	min-width: 250px;
 }
 
 .comment .content .text {

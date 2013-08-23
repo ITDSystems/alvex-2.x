@@ -66,9 +66,11 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
     public static final String DEFAULT_SORT_FIELD = "dueDate";
     public static final String SORT_FIELD_DUE_DATE = "DUEDATE";
     public static final String SORT_FIELD_START_DATE = "STARTDATE";
+	public static final String SORT_FIELD_COMPLETE_DATE = "COMPLETEDATE";
 
     private WorkflowTaskDueAscComparator taskDueComparator = new WorkflowTaskDueAscComparator();
     private WorkflowTaskStartAscComparator taskStartComparator = new WorkflowTaskStartAscComparator();
+	private WorkflowTaskCompleteAscComparator taskCompleteComparator = new WorkflowTaskCompleteAscComparator();
 
     @Override
     protected Map<String, Object> buildModel(WorkflowModelBuilder modelBuilder, WebScriptRequest req, Status status, Cache cache)
@@ -177,6 +179,10 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         if( SORT_FIELD_START_DATE.equals(sortField.toUpperCase()) )
         {
             Collections.sort(allTasks, taskStartComparator);
+        }
+		else if( SORT_FIELD_COMPLETE_DATE.equals(sortField.toUpperCase()) )
+        {
+            Collections.sort(allTasks, taskCompleteComparator);
         }
         else 
         {
@@ -416,4 +422,37 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         
     }
 
+    /**
+     * Comparator to sort workflow tasks by complete date in ascending order.
+     */
+    class WorkflowTaskCompleteAscComparator implements Comparator<WorkflowTask>
+    {
+        @Override
+        public int compare(WorkflowTask o1, WorkflowTask o2)
+        {
+            Date date1 = (Date)o1.getProperties().get(WorkflowModel.PROP_COMPLETION_DATE);
+            Date date2 = (Date)o2.getProperties().get(WorkflowModel.PROP_COMPLETION_DATE);
+            
+            long time1 = date1 == null ? Long.MAX_VALUE : date1.getTime();
+            long time2 = date2 == null ? Long.MAX_VALUE : date2.getTime();
+            
+            long result = time1 - time2;
+            
+            return (result > 0) ? 1 : (result < 0 ? -1 : startDateCompare(o1, o2));
+        }
+
+        private int startDateCompare(WorkflowTask o1, WorkflowTask o2)
+        {
+            Date date1 = (Date)o1.getProperties().get(WorkflowModel.PROP_START_DATE);
+            Date date2 = (Date)o2.getProperties().get(WorkflowModel.PROP_START_DATE);
+            
+            long time1 = date1 == null ? Long.MAX_VALUE : date1.getTime();
+            long time2 = date2 == null ? Long.MAX_VALUE : date2.getTime();
+            
+            long result = time1 - time2;
+            
+            return (result > 0) ? 1 : (result < 0 ? -1 : 0);
+        }
+    }
+	
 }

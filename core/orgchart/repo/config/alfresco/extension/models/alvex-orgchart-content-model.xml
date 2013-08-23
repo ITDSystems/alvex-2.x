@@ -30,6 +30,11 @@
 					<mandatory enforced='true'>true</mandatory>
 					<default>false</default>
 				</property>
+				<property name="alvexoc:superviseUnitsRecursively">
+					<type>d:boolean</type>
+					<mandatory enforced='true'>true</mandatory>
+					<default>false</default>
+				</property>
 				<property name="alvexoc:viewType">
 					<type>d:text</type>
 					<mandatory enforced='true'>true</mandatory>

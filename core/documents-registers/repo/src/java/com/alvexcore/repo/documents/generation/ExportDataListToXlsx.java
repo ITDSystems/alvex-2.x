@@ -67,6 +67,7 @@ import org.alfresco.service.cmr.repository.ContentService;
 import org.alfresco.service.cmr.repository.ContentWriter;
 import org.alfresco.service.cmr.repository.ContentReader;
 
+import org.springframework.extensions.surf.util.I18NUtil;
 
 public class ExportDataListToXlsx 
 		extends DeclarativeWebScript 
@@ -214,7 +215,21 @@ public class ExportDataListToXlsx
 			Row row = sheet.createRow((short) k);
 			JSONArray cells = (JSONArray)rows.get(k);
 			for(int c = 0; c < cells.size(); c++)
-				row.createCell(c).setCellValue( createHelper.createRichTextString( (String)cells.get(c) ) );
+			{
+				String displayValue;
+				if( cells.get(c) instanceof Boolean )
+				{
+					if( (Boolean)cells.get(c) )
+						displayValue = I18NUtil.getMessage("label.yes");
+					else
+						displayValue = I18NUtil.getMessage("label.no");
+				}
+				else
+				{
+					displayValue = (String)cells.get(c);
+				}
+				row.createCell(c).setCellValue( createHelper.createRichTextString( displayValue ) );
+			}
 		}
 
 		return wb;

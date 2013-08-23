@@ -476,7 +476,7 @@ public interface OrgchartService {
 	 * @param person Person
 	 * @param value Flag value
 	 */
-	public abstract void setOutOfOffice(OrgchartPerson person, boolean value);
+	public abstract void setOutOfOffice(OrgchartPerson person, boolean value) throws Exception;
 
 	/**
 	 * Gets out-of-office flag for person

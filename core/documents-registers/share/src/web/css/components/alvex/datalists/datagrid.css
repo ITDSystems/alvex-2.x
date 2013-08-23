@@ -306,6 +306,28 @@
    padding: 1em;
 }
 
+/* Generic forms layout, tweaked for 1/3 : 2/3 and 2/3 : 1/3 sets */
+
+.alfresco-share .yui-panel .bd .form-container .yui-gd .yui-u.first
+{
+	width: 31%;
+}
+
+.alfresco-share .yui-panel .bd .form-container .yui-gd .yui-u
+{
+	width: 62%;
+}
+
+.alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u.first
+{
+	width: 62%;
+}
+
+.alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u
+{
+	width: 32%;
+}
+
 /* Details Form */
 
 .form-container .edit-dataitem a
@@ -321,4 +343,14 @@
 	overflow: hidden; 
 	padding: 0 .75em; 
 	width: 2em; 
+}
+
+span.search-cal-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/form/images/calendar.png); 
 }

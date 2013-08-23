@@ -9,8 +9,9 @@
 	<#if form.mode == "view" || field.disabled >
 	<div id="${controlId}"></div>
 	<#else>
-	<select id="${controlId}" name="${field.name}">
-	</select>
+	<select id="${controlId}" name="${field.name}" tabindex="0" 
+			<#if field.control.params.styleClass??>class="${field.control.params.styleClass}" </#if>
+			<#if field.control.params.style??>style="${field.control.params.style}" </#if> ></select>
 	</#if>
 </div>
 
@@ -20,6 +21,8 @@ new Alvex.MasterDataSelect( "${fieldHtmlId}" ).setOptions({
 	<#if form.mode == "view" || field.disabled >
 	disabled: true,
 	</#if>
+	<#if field.control.params.style??>style: '${(field.control.params.style!"")?string}',</#if>
+	<#if field.control.params.styleClass??>styleClass: '${(field.control.params.styleClass!"")?string}',</#if>
 	field: '${field.name}',
 	url: '${(field.control.params.url!"")?string}',
 	label: '${(field.control.params.label!"")?string}',

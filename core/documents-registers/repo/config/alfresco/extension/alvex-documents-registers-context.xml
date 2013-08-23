@@ -24,6 +24,89 @@
 			</list>
 		</property>
 	</bean>
+
+	<bean id="alvex-template-service-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexTemplateService" class="com.alvexcore.repo.documents.generation.TemplateServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexTemplateService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexTemplateService" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.documents.generation.TemplateService</value>
+			</list>
+		</property>
+
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-template-service-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexTemplateService" alias="alvex-template-service" />
+	<bean id="alvex-template-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.documents.generation.JscriptTemplate">
+		<property name="extensionName">
+			<value>template</value>
+		</property>
+		<property name="templateService" ref="alvex-template-service" />
+	</bean>
+
+	<bean id="alvex-xml-service-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexXmlService" class="com.alvexcore.repo.documents.XmlServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexXmlService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexXmlService" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.documents.XmlService</value>
+			</list>
+		</property>
+
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-xml-service-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexXmlService" alias="alvex-xml-service" />
+	<bean id="alvex-xml-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.documents.JscriptXmlService">
+		<property name="extensionName">
+			<value>xmlService</value>
+		</property>
+		<property name="xmlService" ref="alvex-xml-service" />
+	</bean>
+
 	<bean id="alvex-documents-registers" class="com.alvexcore.repo.DocumentsRegistersExtension"
 		depends-on="alvex-custom-workflows" parent="alvex-extension" />
 </beans>

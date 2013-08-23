@@ -64,7 +64,7 @@ function main()
          destination = null,
          destNode = null,
          thumbnailNames = null,
-		 createUploadDirectory = false,
+		 createUploadDirectory = true,
          i;
 
       // Upload specific

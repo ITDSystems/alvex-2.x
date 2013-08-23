@@ -55,6 +55,10 @@
 					<mandatory enforced='true'>true</mandatory>
 					<default>1</default>
 				</property>
+				<property name="alvexdr:dropDateTime">
+					<type>d:datetime</type>
+					<mandatory>false</mandatory>
+				</property>
 			</properties>
 			<associations>
 				<association name="alvexdr:attachedMasterData">
@@ -104,6 +108,29 @@
 					</target>
 				</association>
 			</associations>
+		</type>
+
+		<type name="alvexdr:externalMasterData">
+			<title>External masterData config</title>
+			<parent>alvexdr:masterData</parent>
+			<properties>
+				<property name="alvexdr:masterDataURL">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexdr:masterDataDataRoot">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexdr:masterDataLabelField">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexdr:masterDataValueField">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+			</properties>
 		</type>
 
 	</types>

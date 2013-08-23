@@ -20,6 +20,7 @@
    <sort-menu>
       <sorter type="byDueDate"             parameters="sortBy=dueDate"/>
       <sorter type="byStartDate"           parameters="sortBy=startDate"/>
+      <sorter type="byCompleteDate"        parameters="sortBy=completeDate"/>
       <!--sorter type="byWorkflowType"        parameters=""/>
       <sorter type="byTaskType"            parameters=""/-->
    </sort-menu>

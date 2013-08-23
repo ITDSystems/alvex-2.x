@@ -26,7 +26,8 @@
 		{
 			var newItem = {};
 			for (p in item.properties)
-				newItem[p.replace(/\{.*\}/,'')] = item.properties[p].toString();
+				if(item.properties[p] != null)
+					newItem[p.replace(/\{.*\}/,'')] = item.properties[p].toString();
 			model.data.push(newItem);
 		}
 		

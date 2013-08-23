@@ -195,8 +195,31 @@ if (typeof Alvex == "undefined" || !Alvex)
 					+ '<div style="float:left;width:15em;">' 
 						+ '<select style="width:14em;" id="' + this.id + '-1-' + name + '" name="-"></select></div>'
 					+ '<div style="float:left;width:15em;">' 
-						+ '<select style="width:14em;" class="hidden" id="' + this.id + '-2-' + name + '" name="-"></select></div>'
-					+ '</div>';
+						+ '<select style="width:14em;" class="hidden" id="' + this.id + '-2-' + name + '" name="-"></select>';
+				if( this.options.useExternal )
+				{
+					el.innerHTML += '<span class="hidden" id="' + this.id + '-2-' + name + '-ext-data">' 
+						+ '<div>'
+						+ '<div style="width:4em;float:left">' + this.msg("alvex.masterData.config.url") + ':</div>'
+						+ '<input type="text" style="width:10em;" name="-" id="' + this.id + '-2-' + name + '-url"/>'
+						+ '</div>'
+						+ '<div>'
+						+ '<div style="width:4em;float:left">' + this.msg("alvex.masterData.config.rootPath") + ':</div>'
+						+ '<input type="text" style="width:10em;" name="-" id="' + this.id + '-2-' + name + '-root"/>'
+						+ '</div>'
+						+ '<div>'
+						+ '<div style="width:4em;float:left">' + this.msg("alvex.masterData.config.label") + ':</div>'
+						+ '<input type="text" style="width:10em;" name="-" id="' + this.id + '-2-' + name + '-label"/>'
+						+ '</div>'
+						+ '<div>'
+						+ '<div style="width:4em;float:left">' + this.msg("alvex.masterData.config.value") + ':</div>'
+						+ '<input type="text" style="width:10em;" name="-" id="' + this.id + '-2-' + name + '-value"/>'
+						+ '</div>'
+						+ '<button type="button" name="-" id="' + this.id + '-2-' + name + '-ok">' 
+						+ this.msg("button.ok") + '</button>'
+						+ '</span>'; 
+				}
+				el.innerHTML += '</div></div>';
 				var selectEl = Dom.get( this.id + '-1-' + name );
 				selectEl.options.add( new Option( this.msg("alvex.masterData.config.noMasterData"), '__none' ) );
 				if( this.options.useExternal )
@@ -214,22 +237,36 @@ if (typeof Alvex == "undefined" || !Alvex)
 			{
 				var name = this.options.targetFields[fieldNum].name;
 				var val = '__none';
+				var extData = {};
 				var column = '';
 				for( var c in this.options.currentMasterData )
 				{
 					if( this.options.currentMasterData[c].dlField == name )
-						for( var a in this.options.availableInternalMasterData )
-							if( this.options.availableInternalMasterData[a].nodeRef 
-									== this.options.currentMasterData[c].clRef )
-							{
-								val = a;
-								column = this.options.currentMasterData[c].clField;
-							}
+					{
+						if( this.options.currentMasterData[c].type == "internal" )
+						{
+							for( var a in this.options.availableInternalMasterData )
+								if( this.options.availableInternalMasterData[a].nodeRef 
+										== this.options.currentMasterData[c].clRef )
+								{
+									val = a;
+									column = this.options.currentMasterData[c].clField;
+								}
+						} else if( this.options.currentMasterData[c].type == "external" ) {
+							val = '__external';
+							extData.url = this.options.currentMasterData[c].url;
+							extData.root = this.options.currentMasterData[c].root;
+							extData.label = this.options.currentMasterData[c].label;
+							extData.value = this.options.currentMasterData[c].value;
+						}
+					}
 				}
 
 				Dom.get( this.id + '-1-' + name ).value = val;
-				if( val != '__none' )
+				if( val != '__none' && val != '__external' )
 					this.onSelect1Change(name, val, column);
+				else if( val == '__external' )
+					this.onSelect1Change(name, val, null, extData);
 
 				Dom.get( this.id + '-1-' + name ).onchange = function(ev)
 				{
@@ -239,12 +276,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 			}
 		},
 
-		onSelect1Change: function( field, masterDataId, column )
+		onSelect1Change: function( field, masterDataId, column, extData )
 		{
 			if( masterDataId == '__none' ) {
 				this.removeMasterData( field );
 			} else if ( masterDataId == '__external' ) {
-				this.configureExternalMasterData( field );
+				this.configureExternalMasterData( field, extData );
 			} else {
 				this.configureInternalMasterData( field, masterDataId, column );
 			}
@@ -260,6 +297,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 			var selectEl = Dom.get( this.id + '-2-' + field );
 			Dom.addClass( selectEl, "hidden" );
+			Dom.addClass( Dom.get( this.id + '-2-' + field + '-ext-data' ), "hidden" );
 		},
 
 		configureInternalMasterData: function( field, masterDataId, column )
@@ -282,7 +320,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 									new Option( resp.json.columns[c].label, resp.json.columns[c].name ) );
 						if( column && column != '' )
 							Dom.get( this.id + '-2-' + field ).value = column;
+						selectEl.parentNode.parentNode.style.height = '1.5em';
 						Dom.removeClass( selectEl, "hidden" );
+						Dom.addClass( Dom.get( this.id + '-2-' + field + '-ext-data' ), "hidden" );
 						Dom.get( this.id + '-2-' + field ).onchange = function(ev)
 						{
 							var fieldName = this.id.replace(me.id + '-2-','');
@@ -304,10 +344,38 @@ if (typeof Alvex == "undefined" || !Alvex)
 			});
 		},
 
-		configureExternalMasterData: function( field )
+		configureExternalMasterData: function( field, data )
 		{
+			var me = this;
 			var selectEl = Dom.get( this.id + '-2-' + field );
 			Dom.addClass( selectEl, "hidden" );
+			Dom.get( this.id + '-2-' + field + '-ext-data' ).parentNode.parentNode.style.height = '8em';
+			if( data )
+			{
+				Dom.get( this.id + '-2-' + field + '-url' ).value = data.url;
+				Dom.get( this.id + '-2-' + field + '-root' ).value = data.root;
+				Dom.get( this.id + '-2-' + field + '-label' ).value = data.label;
+				Dom.get( this.id + '-2-' + field + '-value' ).value = data.value;
+			}
+			Dom.removeClass( Dom.get( this.id + '-2-' + field + '-ext-data' ), "hidden" );
+			Dom.get( this.id + '-2-' + field + '-ok' ).onclick = function(ev)
+			{
+				var fieldName = this.id.replace(me.id + '-2-','').replace('-ok','');
+				me.onExtConfigOk(fieldName);
+			};
+		},
+
+		onExtConfigOk: function( field )
+		{
+			var url = Dom.get( this.id + '-2-' + field + '-url' ).value;
+			var root = Dom.get( this.id + '-2-' + field + '-root' ).value;
+			var label = Dom.get( this.id + '-2-' + field + '-label' ).value;
+			var value = Dom.get( this.id + '-2-' + field + '-value' ).value;
+			var dlMeta = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta;
+			var req = {};
+			req.data = { 'dlRef': dlMeta.nodeRef, 'dlField': field, 
+					'type': 'external', 'url': url, 'root': root, 'label': label, 'value': value };
+			this.sendSaveMasterDataReq( req );
 		},
 
 		onSelect2Change: function( field, masterData, columnName )

@@ -5,7 +5,7 @@
 	<input type="hidden" id="${fieldHtmlId}" name="-" value="${field.value}" />
 	<input type="hidden" id="${controlId}-added" name="${field.name}_added" value="" />
 	<input type="hidden" id="${controlId}-removed" name="${field.name}_removed" value="" />
-	<div id="${controlId}-spoiler" class="spoiler-${(field.control.params.spoilerView!"collapsed")?string}">
+	<div id="${controlId}-spoiler" class="spoiler-${(field.control.params.spoilerView!"expanded")?string}">
 		<img src="${url.context}/res/components/images/collapsed.png" class="collapsed"/>
 		<img src="${url.context}/res/components/images/expanded.png" class="expanded"/>
 		<h3>${field.label}</h3>

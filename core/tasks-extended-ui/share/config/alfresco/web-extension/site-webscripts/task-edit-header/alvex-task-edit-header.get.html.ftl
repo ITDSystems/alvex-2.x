@@ -1,5 +1,10 @@
 <#include "/org/alfresco/include/alfresco-macros.lib.ftl" />
 <#include "/alvex-meta.lib.ftl" />
+
+<!--[if IE]>
+	<script type="text/javascript" src="${url.context}/res/excanvas/excanvas.compiled.js"></script>
+<![endif]-->
+
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
 new Alvex.TaskEditHeader("${el}").setOptions(
@@ -29,7 +34,7 @@ new Alvex.TaskEditHeader("${el}").setOptions(
          </span>
 	<#if alvexEditionID == 'enterprise' >
          <span class="tree-view hidden">
-            <button id="${el}-tree-view">${msg("button.relatedWorkflowsTree")}</button>
+            <button id="${el}-tree-view"></button>
          </span>
 	</#if>
       </div>

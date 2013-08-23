@@ -333,7 +333,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 							Dom.get(this.id + "-cntrl-currentValueDisplay").innerHTML 
 									+= '<div><img src="/share/res/components/images/filetypes/generic-user-16.png" '
 									+ 'width="16" alt="" title="' + this.options.assignees[m].name + '"> ' 
-									+ this.options.assignees[m].name + ' </div>';
+									+ '<a href="/share/page/user/' + this.options.assignees[m].userName + '/profile">' 
+									+ this.options.assignees[m].name + '</a> </div>';
 						}
 					},
 					scope:this
@@ -2594,8 +2595,10 @@ var labelType, useGradients, nativeTextSupport, animate;
 							if( people[p].roleDisplayName == 'members')
 								people[p].roleDisplayName = this.options.defaultRoleName;
 
-						// Commented out becase of #168 - sorting is performed server-side now
-						// this.sortPeople(people);
+						// Sort by name only for 'by name' view
+						// For view 'by role' sorting is performed server-side
+						if( !showRoles )
+							this.sortPeople(people);
 						
 						for( var p in people )
 						{

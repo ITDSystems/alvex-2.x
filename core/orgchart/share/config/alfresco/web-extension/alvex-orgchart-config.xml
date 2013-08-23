@@ -35,6 +35,7 @@
 				<field-visibility>
 					<show id="alvexoc:viewType" />
 					<show id="alvexoc:showUnitsRecursively" />
+					<show id="alvexoc:superviseUnitsRecursively" />
 					<show id="alvexoc:defaultRoleName" />
 				</field-visibility>
 				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
@@ -42,6 +43,7 @@
 					<set id="config" appearance="" label="" />
 					<field set="config" id="alvexoc:viewType" />
 					<field set="config" id="alvexoc:showUnitsRecursively" />
+					<field set="config" id="alvexoc:superviseUnitsRecursively" />
 					<field set="config" id="alvexoc:defaultRoleName" />
 				</appearance>
 			</form>
@@ -55,6 +57,7 @@
 				<field-visibility>
 					<show id="alvexoc:viewType" />
 					<show id="alvexoc:showUnitsRecursively" />
+					<show id="alvexoc:superviseUnitsRecursively" />
 					<show id="alvexoc:defaultRoleName" />
 				</field-visibility>
 				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
@@ -63,6 +66,7 @@
 					<set id="config" appearance="" label="" />
 					<field set="config" id="alvexoc:viewType" />
 					<field set="config" id="alvexoc:showUnitsRecursively" />
+					<field set="config" id="alvexoc:superviseUnitsRecursively" />
 					<field set="config" id="alvexoc:defaultRoleName" />
 				</appearance>
 			</form>

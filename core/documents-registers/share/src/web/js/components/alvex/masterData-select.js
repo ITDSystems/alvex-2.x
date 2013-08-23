@@ -41,6 +41,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			initialized: false,
 			disabled: false,
+			style: "",
+			styleClass: "",
 			url: '',
 			root: '',
 			label: '',
@@ -82,8 +84,21 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		loadFromRepo: function()
 		{
+			var dlRef = null;
 			var fieldName = this.options.field;
-			var dlRef = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid").datalistMeta.nodeRef;
+			var dr = Alfresco.util.ComponentManager.findFirst("Alvex.RegisterDocuments");
+			var dl = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+			if( dr && dr.options.currentList )
+				dlRef = dr.options.currentList.nodeRef;
+			else if( dl && dl.datalistMeta )
+				dlRef = dl.datalistMeta.nodeRef;
+			// WA for UI view form crash on the second stage of registration workflow
+			if( !dlRef )
+			{
+				Dom.get( this.id + '-cntrl' ).innerHTML = Dom.get( this.id ).value;
+				return;
+			}
+
 			Alfresco.util.Ajax.jsonRequest({
 				url: Alfresco.constants.PROXY_URI + "api/alvex/masterData-config?dlRef=" + dlRef + "&fieldName=" + fieldName,
 				method: Alfresco.util.Ajax.GET,
@@ -137,10 +152,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 				input.id = this.id;
 				input.name = this.options.field;
 				input.value = value;
+				input.setAttribute('tabindex', "0");
+				input.setAttribute('style', this.options.style);
+				input.className = this.options.styleClass;
 				parent.appendChild( input );
 			} else {
 				var div = document.createElement( 'div' );
 				div.id = this.id;
+				div.setAttribute('style', this.options.style);
+				div.className = this.options.styleClass;
 				parent.appendChild( div );
 				Dom.get( this.id ).innerHTML = value;
 			}
@@ -171,20 +191,41 @@ if (typeof Alvex == "undefined" || !Alvex)
 						var me = this;
 						var curValue = Dom.get( this.id ).value;
 						var curLabel = "";
-						for(var r in resp.json) {
-							if( resp.json[r][this.options.value] == curValue )
-								curLabel = resp.json[r][this.options.label];
+
+						var path = this.options.root.split('.');
+						var opts = resp.json;
+						for( var p in path )
+							if( path[p] != '' )
+								opts = opts[path[p]];
+
+						var optsMap = {};
+						for(var r in opts)
+							optsMap[ opts[r][this.options.value] ] = opts[r][this.options.label];
+
+						opts.length = 0;
+						for( var o in optsMap )
+						{
+							var opt = {};
+							opt[this.options.value] = o;
+							opt[this.options.label] = optsMap[o];
+							opts.push( opt );
 						}
+
+						for(var r in opts) {
+							if( opts[r][this.options.value] == curValue )
+								curLabel = opts[r][this.options.label];
+						}
+
 						if(this.options.disabled) {
 							Dom.get( this.id + '-cntrl' ).innerHTML = (curLabel != '' ? curLabel : curValue);
 						} else {
 							var selectEl = Dom.get( this.id + '-cntrl' );
 							selectEl.options.add( new Option( '', '' ) );
-							for(var r in resp.json) {
+							for(var r in opts) {
 								selectEl.options.add( 
 									new Option(
-										resp.json[r][this.options.label], 
-										resp.json[r][this.options.value]
+										opts[r][this.options.label], 
+										opts[r][this.options.value]
 									)
 								);
 							}

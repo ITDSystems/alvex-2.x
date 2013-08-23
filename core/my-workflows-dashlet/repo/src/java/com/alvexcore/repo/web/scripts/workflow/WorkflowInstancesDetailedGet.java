@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.alfresco.model.ContentModel;
@@ -40,6 +42,13 @@ import org.springframework.extensions.webscripts.WebScriptRequest;
 import org.alfresco.repo.web.scripts.workflow.AbstractWorkflowWebscript;
 import org.alfresco.repo.web.scripts.workflow.WorkflowModelBuilder;
 
+import org.alfresco.service.cmr.workflow.WorkflowTaskState;
+import org.alfresco.service.cmr.workflow.WorkflowTaskQuery;
+import org.alfresco.service.cmr.workflow.WorkflowTask;
+import org.alfresco.service.namespace.QName;
+
+import com.alvexcore.repo.AlvexContentModel;
+
 /**
  * Patched java backed implementation for REST API to retrieve workflow instances.
  * 
@@ -48,6 +57,16 @@ import org.alfresco.repo.web.scripts.workflow.WorkflowModelBuilder;
  */
 public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
 {
+    public static final String TASK_WORKFLOW_INSTANCE_TASKS = "tasks";
+	public static final String TASK_STATE = "state";
+	public static final String TASK_NAME = "name";
+	public static final String TASK_TITLE = "title";
+	public static final String TASK_OWNER = "owner";
+	public static final String TASK_OWNER_SHORT_NAME = "shortName";
+	public static final String TASK_OWNER_FIRST_NAME = "firstName";
+	public static final String TASK_OWNER_LAST_NAME = "lastName";
+	public static final String TASK_RELATED = "relatedWorkflows";
+	
     public static final String PARAM_STATE = "state";
     public static final String PARAM_INITIATOR = "initiator";
     public static final String PARAM_PRIORITY = "priority";
@@ -65,9 +84,11 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
     public static final String DEFAULT_SORT_FIELD = "dueDate";
     public static final String SORT_FIELD_DUE_DATE = "DUEDATE";
     public static final String SORT_FIELD_START_DATE = "STARTDATE";
+	public static final String SORT_FIELD_COMPLETE_DATE = "COMPLETEDATE";
 
     private WorkflowInstanceDueAscComparator workflowDueComparator = new WorkflowInstanceDueAscComparator();
     private WorkflowInstanceStartAscComparator workflowStartComparator = new WorkflowInstanceStartAscComparator();
+	private WorkflowInstanceCompleteAscComparator workflowCompleteComparator = new WorkflowInstanceCompleteAscComparator();
 
     @Override
     protected Map<String, Object> buildModel(WorkflowModelBuilder modelBuilder, WebScriptRequest req, Status status, Cache cache)
@@ -133,6 +154,10 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
         {
             Collections.sort(workflows, workflowStartComparator);
         }
+		else if( SORT_FIELD_COMPLETE_DATE.equals(sortField.toUpperCase()) )
+        {
+            Collections.sort(workflows, workflowCompleteComparator);
+        }
         else 
         {
             Collections.sort(workflows, workflowDueComparator);
@@ -141,11 +166,84 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
         // filter result
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>(workflows.size());
 
+        int maxItems = getIntParameter(req, PARAM_MAX_ITEMS, DEFAULT_MAX_ITEMS);
+        int skipCount = getIntParameter(req, PARAM_SKIP_COUNT, DEFAULT_SKIP_COUNT);
+        int totalItems = workflows.size();
+        if ( maxItems < 1 || maxItems > totalItems )
+        {
+            maxItems = totalItems;
+        }
+        if ( skipCount < 0 )
+        {
+            skipCount = 0;
+        }
+        int endPoint = skipCount + maxItems;
+        if ( endPoint > totalItems )
+        {
+            endPoint = totalItems;
+        }
+
+        int pos = 0;
         for (WorkflowInstance workflow : workflows)
         {
             if (matches(workflow, filters, modelBuilder))
             {
-                results.add(modelBuilder.buildDetailed(workflow, true));
+                //results.add(modelBuilder.buildDetailed(workflow, true));
+                Map<String, Object> model = modelBuilder.buildSimple(workflow);
+                //Map<String, Object> model = modelBuilder.buildDetailed(workflow, false);
+                
+                if( pos >= skipCount && pos < endPoint )
+                {
+                    WorkflowTaskQuery tasksQuery = new WorkflowTaskQuery();
+                    tasksQuery.setTaskState(WorkflowTaskState.IN_PROGRESS);
+                    tasksQuery.setActive(Boolean.TRUE);
+                    tasksQuery.setProcessId(workflow.getId());
+                    List<WorkflowTask> tasks = workflowService.queryTasks(tasksQuery);
+
+                    ArrayList<Map<String, Object>> tresults = new ArrayList<Map<String, Object>>(tasks.size());
+
+                    for (WorkflowTask task : tasks)
+                    {
+                        //tresults.add(modelBuilder.buildSimple(task, null));
+						Map<QName, Serializable> props = task.getProperties();
+						String shortName = (String) props.get(ContentModel.PROP_OWNER);
+						String related = (String) props.get(AlvexContentModel.PROP_RELATED_WORKFLOWS);
+						Map<String, Object> tres = new HashMap<String, Object>();
+						
+						tres.put(TASK_NAME, task.getName());
+						tres.put(TASK_TITLE, task.getTitle());
+						tres.put(TASK_RELATED, related);
+						tres.put(TASK_STATE, task.getState().toString());
+						
+						if( shortName != null )
+						{
+							Map<String, String> owner = new HashMap<String, String>();
+							NodeRef person = personService.getPerson( shortName );
+							String firstName = person != null ?
+								(String) nodeService.getProperty(person, ContentModel.PROP_FIRSTNAME) : 
+								"";
+							String lastName = person != null ? 
+								(String) nodeService.getProperty(person, ContentModel.PROP_LASTNAME) :
+								"";
+						
+							owner.put(TASK_OWNER_SHORT_NAME, shortName);
+							owner.put(TASK_OWNER_FIRST_NAME, firstName);
+							owner.put(TASK_OWNER_LAST_NAME, lastName);
+							tres.put(TASK_OWNER, owner);
+						}
+						else
+						{
+							tres.put(TASK_OWNER, null);
+						}
+						
+						tresults.add(tres);
+                    }
+
+                    model.put(TASK_WORKFLOW_INSTANCE_TASKS, tresults);
+                }
+
+                pos++;
+                results.add(model);
             }
         }
 
@@ -394,4 +492,38 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
         
     }
 
+    /**
+     * Comparator to sort workflow instances by complete date in ascending order.
+     */
+    class WorkflowInstanceCompleteAscComparator implements Comparator<WorkflowInstance>
+    {
+        @Override
+        public int compare(WorkflowInstance o1, WorkflowInstance o2)
+        {
+            Date date1 = o1.getEndDate();
+            Date date2 = o2.getEndDate();
+            
+            long time1 = date1 == null ? Long.MAX_VALUE : date1.getTime();
+            long time2 = date2 == null ? Long.MAX_VALUE : date2.getTime();
+            
+            long result = time1 - time2;
+            
+            return (result > 0) ? 1 : (result < 0 ? -1 : startDateCompare(o1, o2));
+        }
+        
+        private int startDateCompare(WorkflowInstance o1, WorkflowInstance o2)
+        {
+            Date date1 = o1.getStartDate();
+            Date date2 = o2.getStartDate();
+            
+            long time1 = date1 == null ? Long.MAX_VALUE : date1.getTime();
+            long time2 = date2 == null ? Long.MAX_VALUE : date2.getTime();
+            
+            long result = time1 - time2;
+            
+            return (result > 0) ? 1 : (result < 0 ? -1 : 0);
+        }
+        
+    }
+	
 }

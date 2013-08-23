@@ -289,10 +289,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 								if( form[i].id.match('omment') || targetEl == null )
 									targetEl = form[i];
 
-						if( targetEl.value == '' )
-							targetEl.value = text;
-						else
-							targetEl.value += '\n\n' + text;
+						// Disable it - pass only fields that are the same
+						//if( targetEl )
+						//	if( targetEl.value == '' )
+						//		targetEl.value = text;
+						//	else
+						//		targetEl.value += '\n\n' + text;
 
 						// Final UI bits for child workflow form
 						Dom.addClass(p_dialog.id + "-form-cancel", "hidden");

@@ -19,5 +19,6 @@
 	<sort-menu>
 		<sorter type="byDueDate"			parameters="sortBy=dueDate"/>
 		<sorter type="byStartDate"			parameters="sortBy=startDate"/>
+		<sorter type="byCompleteDate"		parameters="sortBy=completeDate"/>
 	</sort-menu>
 </config>

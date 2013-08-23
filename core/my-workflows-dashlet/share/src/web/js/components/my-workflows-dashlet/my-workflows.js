@@ -399,8 +399,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 						task = workflow.tasks[t].title ? workflow.tasks[t].title : this.msg("workflow.no_message");
 
-						taskStarted = workflow.tasks[t].properties.cm_created ? 
-								Alfresco.util.fromISO8601(workflow.tasks[t].properties.cm_created) : null;
+						taskStarted = workflow.tasks[t].created ? 
+								Alfresco.util.fromISO8601(workflow.tasks[t].created) : null;
 
 						var statusDesc = task ? '<div><strong>' + this.msg("label.currentTask") + '</strong> ' + task + '</div>' : "";
 
@@ -408,8 +408,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 							+ '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' 
 							+ ownerUserName + '/profile">' + $html(assignee) + '</a> ' : "" ;
 						
-						statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 
-							+ Alfresco.util.formatDate(taskStarted, "longDate") + '</div>';
+						if( taskStarted != null )
+							statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 
+								+ Alfresco.util.formatDate(taskStarted, "longDate") + '</div>';
 
 						info += statusDesc;
 					}

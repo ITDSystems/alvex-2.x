@@ -68,7 +68,19 @@ public class JscriptOrgchartPerson implements Serializable {
 		return (String) serviceRegistry.getNodeService().getProperty(getNode(),
 				ContentModel.PROP_LASTNAME);
 	}
-
+	
+	public Scriptable getSupervisioningUnits() {
+		HashSet<Serializable> result = new HashSet<Serializable>();
+		for (OrgchartUnit unit : orgchartService
+				.getSupervisioningUnitsForPerson(person))
+		{
+			result.add(new JscriptOrgchartUnit(orgchartService,
+						serviceRegistry, scope, unit));
+		}
+		return (Scriptable) converter.convertValueForScript(serviceRegistry,
+				scope, null, result);
+	}
+	
 	public Scriptable getManagees() {
 		HashSet<Serializable> result = new HashSet<Serializable>();
 		for (OrgchartUnit unit : orgchartService
@@ -104,7 +116,7 @@ public class JscriptOrgchartPerson implements Serializable {
 		return orgchartService.isOutOfOffice(person);
 	}
 
-	public void setOutOfOffice(boolean value) {
+	public void setOutOfOffice(boolean value) throws Exception {
 		orgchartService.setOutOfOffice(person, value);
 	}
 

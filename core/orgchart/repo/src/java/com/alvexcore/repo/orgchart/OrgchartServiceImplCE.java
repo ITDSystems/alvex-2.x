@@ -42,6 +42,7 @@ import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.service.namespace.QNamePattern;
 import org.alfresco.service.namespace.RegexQNamePattern;
+import org.alfresco.service.namespace.NamespaceService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -82,6 +83,12 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 			AlvexContentModel.ALVEXOC_MODEL_URI, "branches");
 	private static final String ID_BRANCHES_NODE = "branchesNode";
 	private static final String ID_ROLES_NODE = "rolesNode";
+	protected static final String UI_CONFIG_FILE_NAME = "orgchart-view.default";
+	protected static final String SYNC_CONFIG_FILE_NAME = "orgchart-sync.default";
+	protected static final QName NAME_UI_CONFIG = QName.createQName(
+			NamespaceService.CONTENT_MODEL_1_0_URI, UI_CONFIG_FILE_NAME);
+	protected static final QName NAME_SYNC_CONFIG = QName.createQName(
+			NamespaceService.CONTENT_MODEL_1_0_URI, SYNC_CONFIG_FILE_NAME);
 
 	protected NodeService nodeService;
 	protected AuthorityService authorityService;
@@ -153,6 +160,23 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 				NAME_ROLES));
 		setBranchesNode(getFirstChild(getDataNode(), ContentModel.ASSOC_CHILDREN,
 				NAME_BRANCHES));
+		// FIXME - return this functionality back
+		/*if( getFirstChild(dataNode, ContentModel.ASSOC_CHILDREN, NAME_UI_CONFIG) == null )
+		{
+			Map<QName, Serializable> props = new HashMap<QName, Serializable>(1);
+			props.put(ContentModel.PROP_NAME, UI_CONFIG_FILE_NAME);
+			nodeService.createNode(dataNode,
+				ContentModel.ASSOC_CHILDREN, NAME_UI_CONFIG,
+				AlvexContentModel.TYPE_ORGCHART_UI_CONFIG, props);
+		}
+		if( getFirstChild(dataNode, ContentModel.ASSOC_CHILDREN, NAME_SYNC_CONFIG) == null )
+		{
+			Map<QName, Serializable> props = new HashMap<QName, Serializable>(1);
+			props.put(ContentModel.PROP_NAME, SYNC_CONFIG_FILE_NAME);
+			nodeService.createNode(dataNode,
+				ContentModel.ASSOC_CHILDREN, NAME_SYNC_CONFIG,
+				AlvexContentModel.TYPE_ORGCHART_SYNC_CONFIG, props);
+		}*/
 	}
 
 	/*
@@ -240,6 +264,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	protected OrgchartUnit createUnit(NodeRef parent, String name,
 			String displayName, String groupName, int weight) {
+		if( !unitOperationsAllowed( getUnitByRef(parent) ) ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		final String groupShortName = groupName;
 		final String groupDisplayName = displayName;
 		final String groupFullName = AuthenticationUtil
@@ -284,7 +310,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 * @return Orgchart unit or null
 	 */
 	protected OrgchartUnit getUnitByRef(NodeRef node) {
-		if (node == null)
+		if (node == null || node == getBranchesNode())
 			return null;
 		Map<QName, Serializable> props = nodeService.getProperties(node);
 		return new OrgchartUnit(node,
@@ -402,7 +428,37 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 			AuthenticationUtil.runAsSystem(new MakeOrgchartMember(nodeService,
 					person));
 	}
-
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	protected boolean orgchartOperationsAllowed()
+	{
+		return serviceRegistry.getAuthorityService().hasAdminAuthority();
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	protected boolean unitOperationsAllowed(OrgchartUnit unit)
+	{
+		if( orgchartOperationsAllowed() )
+			return true;
+		String userName = serviceRegistry.getAuthenticationService().getCurrentUserName();
+		NodeRef userRef = serviceRegistry.getPersonService().getPerson(userName);
+		OrgchartPerson person = getPersonByRef(userRef);
+		OrgchartUnit curUnit = unit;
+		while( curUnit != null )
+		{
+			if( isAdmin(curUnit, person) )
+				return true;
+			curUnit = getParentUnit(curUnit);
+		}
+		return false;
+	}
+	
 	/*
 	 * Base orgchart operations
 	 */
@@ -470,6 +526,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	public RoleDefinition createRole(String name, int weight, String displayName) {
 		if (roleExists(name))
 			throw new AlfrescoRuntimeException("Role already exists");
+		if( !orgchartOperationsAllowed() ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		final String groupShortName = name;
 		final String groupDisplayName = displayName;
 		final String groupFullName = AuthenticationUtil
@@ -526,6 +584,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void dropRole(String name) {
+		if( !orgchartOperationsAllowed() ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		RoleDefinition role = getRole(name);
 		for (OrgchartUnit unit : getUnitsWithRoleAdded(role))
 			removeRole(unit, role);
@@ -580,7 +640,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 				AlvexContentModel.TYPE_ROLE_INST).getChildRef();
 		nodeService.createAssociation(node, role.getNode(),
 				AlvexContentModel.ASSOC_ROLE_DEF);
-		return new RoleInstance(unit.getNode(), role.getNode());
+		return new RoleInstance(node, role.getNode());
 	}
 
 	/* (non-Javadoc)
@@ -631,6 +691,9 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void assignRole(RoleInstance role, OrgchartPerson person) {
+		if( !unitOperationsAllowed( getUnitByRef( nodeService.getPrimaryParent(
+					role.getNode()).getParentRef() ) ) )
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		nodeService.createAssociation(role.getNode(), person.getNode(),
 				AlvexContentModel.ASSOC_ROLE_MEMBER);
 		final String groupName = (String) nodeService.getProperty(
@@ -651,6 +714,9 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void revokeRole(RoleInstance role, OrgchartPerson person) {
+		if( !unitOperationsAllowed( getUnitByRef( nodeService.getPrimaryParent(
+					role.getNode()).getParentRef() ) ) )
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		nodeService.removeAssociation(role.getNode(), person.getNode(),
 				AlvexContentModel.ASSOC_ROLE_MEMBER);
 		final String groupName = (String) nodeService.getProperty(
@@ -818,6 +884,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void dropUnit(OrgchartUnit unit) {
+		if( !unitOperationsAllowed( unit ) ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		for( OrgchartUnit subUnit : getSubunits(unit) )
 			dropUnit( subUnit );
 		final String groupName = unit.getGroupName();
@@ -839,6 +907,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	@Override
 	public OrgchartUnit modifyUnit(OrgchartUnit unit, String displayName,
 			Integer weight) {
+		if( !unitOperationsAllowed( unit ) ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		if (displayName != null) {
 			nodeService.setProperty(unit.getNode(),
 					AlvexContentModel.PROP_UNIT_DISPLAY_NAME, displayName);
@@ -940,6 +1010,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void addMember(OrgchartUnit unit, OrgchartPerson person) {
+		if( !unitOperationsAllowed( unit ) ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		nodeService.createAssociation(unit.getNode(), person.getNode(),
 				AlvexContentModel.ASSOC_MEMBER);
 		final String personName = person.getName();
@@ -958,6 +1030,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public void removeMember(OrgchartUnit unit, OrgchartPerson person) {
+		if( !unitOperationsAllowed( unit ) ) 
+			throw new AlfrescoRuntimeException("Org chart modification is not allowed");
 		nodeService.removeAssociation(unit.getNode(), person.getNode(),
 				AlvexContentModel.ASSOC_MEMBER);
 		final String personName = person.getName();
@@ -1130,7 +1204,7 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 * @see com.alvexcore.repo.orgchart.OrgchartServiceX#setOutOfOffice(com.alvexcore.repo.orgchart.OrgchartPerson, boolean)
 	 */
 	@Override
-	public void setOutOfOffice(OrgchartPerson person, boolean value) {
+	public void setOutOfOffice(OrgchartPerson person, boolean value) throws Exception {
 		throw new AlfrescoRuntimeException("Not implemented in CE");
 	}
 

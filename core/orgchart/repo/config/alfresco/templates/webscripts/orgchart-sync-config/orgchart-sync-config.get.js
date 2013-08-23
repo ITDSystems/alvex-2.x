@@ -3,11 +3,13 @@
 		// Get config node, create if it does not exist
 		var confFolder = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:orgchart')[0];
 		var conf = confFolder.childByNamePath('orgchart-sync.default');
+		model.data = {};
+
+		// Default reply
 		if(conf == null)
 			conf = confFolder.createNode('orgchart-sync.default','alvexoc:syncConfig','sys:children');
 
 		// Read config and push it for the response
-		model.data = {};
 		model.data.configNodeRef = conf.getNodeRef().toString();
 		model.data.syncSource = conf.properties['alvexoc:syncSource'];
 		if( conf.properties['alvexoc:syncRootGroupName'] )

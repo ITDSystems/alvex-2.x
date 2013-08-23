@@ -2,8 +2,8 @@ function createPersonResult(node)
 {
    var personObject = {};
    personObject.nodeRef = "" + node.nodeRef;
-   personObject.firstName = node.properties.firstName;
-   personObject.lastName = node.properties.lastName;
+   personObject.firstName = (node.properties.firstName ? node.properties.firstName : '');
+   personObject.lastName = (node.properties.lastName ? node.properties.lastName : '');
    personObject.userName = node.properties.userName;
    personObject.fullName = (node.properties.lastName ? node.properties.lastName + ", " : "") 
 				+ (node.properties.firstName ? node.properties.firstName : "");

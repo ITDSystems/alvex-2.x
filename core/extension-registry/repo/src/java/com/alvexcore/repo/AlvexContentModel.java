@@ -40,6 +40,8 @@ public interface AlvexContentModel {
 	final static QName TYPE_EXTENSION_CONFIG = QName.createQName(ALVEX_MODEL_URI, "extensionConfig");
 	final static QName TYPE_ORGCHART_UNIT = QName.createQName(ALVEXOC_MODEL_URI, "unit");
 	final static QName TYPE_ORGCHART_DELEGATION = QName.createQName(ALVEXOC_MODEL_URI, "orgchartDelegation");
+	final static QName TYPE_ORGCHART_UI_CONFIG = QName.createQName(ALVEXOC_MODEL_URI, "UIConfig");
+	final static QName TYPE_ORGCHART_SYNC_CONFIG = QName.createQName(ALVEXOC_MODEL_URI, "syncConfig");
 	final static QName TYPE_ROLE_DEF = QName.createQName(ALVEXOC_MODEL_URI, "roleDefinition");
 	final static QName TYPE_ROLE_INST = QName.createQName(ALVEXOC_MODEL_URI, "roleInstance");
 	
@@ -58,6 +60,7 @@ public interface AlvexContentModel {
 	final static QName ASSOC_DELEGATION_ROLE = QName.createQName(ALVEXOC_MODEL_URI, "delegationRole");
 	final static QName ASSOC_DOCUMENTS = QName.createQName(ALVEXDOCREG_MODEL_URI, "documents");
 	final static QName ASSOC_FILES = QName.createQName(ALVEXDT_MODEL_URI, "files");
+	final static QName ASSOC_DOCUMENT_ASSIGNEE = QName.createQName(ALVEXDT_MODEL_URI, "assignee");
 	
 	final static QName ASSOC_NAME_SYSTEM = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "system");
 	final static QName ASSOC_NAME_ALVEX = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "alvex");
@@ -76,4 +79,10 @@ public interface AlvexContentModel {
 	final static QName PROP_ROLE_GROUP_NAME= QName.createQName(ALVEXOC_MODEL_URI, "roleGroupName");
 	final static QName PROP_OUT_OF_OFFICE = QName.createQName(ALVEXOC_MODEL_URI, "outOfOffice");
 	final static QName PROP_PARENT_REGISTER_NAME = QName.createQName(ALVEXDT_MODEL_URI, "parentRegisterName");
+	final static QName PROP_DOCUMENT_STATUS = QName.createQName(ALVEXDT_MODEL_URI, "status");
+	final static QName PROP_RELATED_WORKFLOWS = QName.createQName(ALVEXRWF_MODEL_URI, "relatedWorkflows");
+	
+	final static String DOCUMENT_STATUS_NOT_STARTED = "notStarted";
+	final static String DOCUMENT_STATUS_IN_PROGRESS = "inProgress";
+	final static String DOCUMENT_STATUS_COMPLETED = "completed";
 }

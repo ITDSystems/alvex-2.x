@@ -77,9 +77,14 @@ if (typeof Alvex == "undefined" || !Alvex)
    YAHOO.extend(Alvex.WorkflowList, Alfresco.component.Base);
 
    /**
-    * Augment prototype with Common Workflow actions to reuse createFilterURLParameters
+    * Augment prototype with Common Workflow actions from Alfresco
     */
    YAHOO.lang.augmentProto(Alvex.WorkflowList, Alfresco.action.WorkflowActions);
+
+   /**
+    * Augment prototype with Common Workflow actions from Alvex
+    */
+   YAHOO.lang.augmentProto(Alvex.WorkflowList, Alvex.WorkflowActions);
 
    /**
     * Augment prototype with main class implementation, ensuring overwrite is enabled
@@ -295,7 +300,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Reload data table so the cancelled workflow is removed
          this.widgets.alfrescoDataTable.loadDataTable();
       },
-
+      
       /**
        * DataTable Cell Renderers
        */
@@ -372,8 +377,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 
                   task = workflow.tasks[t].title ? workflow.tasks[t].title : this.msg("workflow.no_message");
 
-                  taskStarted = workflow.tasks[t].properties.cm_created ? 
-                                    Alfresco.util.fromISO8601(workflow.tasks[t].properties.cm_created) : null;
+                  taskStarted = workflow.tasks[t].created ? 
+                                    Alfresco.util.fromISO8601(workflow.tasks[t].created) : null;
 
                   var statusDesc = task ? '<div class="cur-task"><strong>' + this.msg("label.currentTask") + '</strong> ' + task + '</div>' : "";
 
@@ -381,7 +386,8 @@ if (typeof Alvex == "undefined" || !Alvex)
                              + '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + ownerUserName + '/profile">' 
                              + $html(assignee) + '</a> ' : "" ;
 
-                  statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 
+                  if( taskStarted != null )
+                     statusDesc += '<strong>' + this.msg("label.taskStarted") + '</strong> ' 
                                     + Alfresco.util.formatDate(taskStarted, "longDate") + '</div>';
 
                   info += statusDesc;
@@ -414,11 +420,14 @@ if (typeof Alvex == "undefined" || !Alvex)
          }
          else
          {
-            this.createAction(elCell, this.msg("link.deleteWorkflow"), "workflow-delete-link", function(event, oRecord)
+            if( Alfresco.constants.USERNAME == "admin" )
             {
-               this.deleteWorkflow(oRecord.getData("id"), oRecord.getData("message"));
-               Event.preventDefault(event);
-            }, oRecord);
+               this.createAction(elCell, this.msg("link.deleteWorkflow"), "workflow-delete-link", function(event, oRecord)
+               {
+                  this.deleteWorkflow(oRecord.getData("id"), oRecord.getData("message"));
+                  Event.preventDefault(event);
+               }, oRecord);
+			}
          }
       }
       
