@@ -23,15 +23,6 @@
 		</property>
 	</bean>
 
-	<!-- removeService to provide js object similar to 'remote' on Share-tier -->
-	<bean id="remoteService" parent="baseJavaScriptExtension" 
-				class="com.alvexcore.repo.jscript.RemoteService">
-		<property name="extensionName">
-			<value>remoteService</value>
-		</property>
-		<property name="ScriptRemote" ref="webscripts.script.remote"/>
-	</bean>
-
 	<!-- Define the model factory used to generate object models suitable for use with freemarker templates. -->
 	<bean id="templateActionModelFactory" 
 				class="org.alfresco.repo.action.scheduled.FreeMarkerWithLuceneExtensionsModelFactory">
