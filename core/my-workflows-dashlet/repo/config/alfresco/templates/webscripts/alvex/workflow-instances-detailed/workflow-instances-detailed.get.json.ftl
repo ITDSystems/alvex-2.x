@@ -44,9 +44,9 @@
               "owner": 
               <#if task.owner??>
               {
-                "userName": "${task.owner.shortName}",
-                "firstName": "${task.owner.firstName}",
-                "lastName": "${task.owner.lastName}"
+                "userName": "${task.owner.shortName!''}",
+                "firstName": "${task.owner.firstName!''}",
+                "lastName": "${task.owner.lastName!''}"
               },
               <#else>
               null,
