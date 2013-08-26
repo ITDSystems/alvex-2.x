@@ -77,16 +77,14 @@ if (typeof Alvex == "undefined" || !Alvex)
    };
 
    /**
-    * Extend from Alfresco.component.ShareFormManager
-    */
-   YAHOO.extend(Alvex.TaskEditHeader, Alfresco.component.ShareFormManager);
-
-   /**
     * Augment prototype with RelatedWorkflowsTreeView from Alvex
     */
    YAHOO.lang.augmentProto(Alvex.TaskEditHeader, Alvex.RelatedWorkflowsTreeView);
 
-   YAHOO.lang.augmentObject(Alvex.TaskEditHeader.prototype,
+   /**
+    * Extend from Alfresco.component.ShareFormManager
+    */
+   YAHOO.extend(Alvex.TaskEditHeader, Alfresco.component.ShareFormManager, 
    {
 
       /**
