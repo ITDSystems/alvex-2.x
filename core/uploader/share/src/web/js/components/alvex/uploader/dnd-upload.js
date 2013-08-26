@@ -1203,7 +1203,7 @@
          {
             url = Alfresco.constants.PROXY_URI + this.showConfig.uploadURL;
          }
-         if (Alfresco.util.CSRFPolicy.isFilterEnabled())
+         if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
          {
             url += "?" + Alfresco.util.CSRFPolicy.getParameter() + "=" + encodeURIComponent(Alfresco.util.CSRFPolicy.getToken());
          }
