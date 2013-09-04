@@ -7,7 +7,6 @@
 <@link rel="stylesheet" type="text/css" href="${url.context}/res/modules/delete-site.css" />
 <@link rel="stylesheet" type="text/css" href="${page.url.context}/res/modules/create-site.css" />
 
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/documents-registers/admin/create-site.js" />
-
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/documents-registers/admin/manage-sites.js" />
-<@link rel="stylesheet" type="text/css" href="${page.url.context}/res/components/alvex/documents-registers/admin/manage-sites.css" />
+<@script type="text/javascript" src="${page.url.context}/res/components/alvex-create-site.js" />
+<@script type="text/javascript" src="${page.url.context}/res/components/alvex-manage-sites.js" />
+<@link rel="stylesheet" type="text/css" href="${page.url.context}/res/components/alvex-manage-sites.css" />

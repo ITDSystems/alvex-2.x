@@ -47,21 +47,24 @@ if (typeof Alvex == "undefined" || !Alvex)
     * @return {Alvex.CreateSite} The new instance
     * @constructor
     */
-   Alvex.CreateDocRegSite = function(containerId)
+   Alvex.CreateSite = function(containerId)
    {
       var instance = Alfresco.util.ComponentManager.get(this.id);
       if (instance !== null)
       {
-         throw new Error("An instance of Alvex.CreateDocRegSite already exists.");
+         throw new Error("An instance of Alvex.CreateSite already exists.");
       }
 
-      Alvex.CreateDocRegSite.superclass.constructor.call(this, "Alvex.CreateDocRegSite", containerId, ["button", "container", "connection", "selector", "json"]);
+      Alvex.CreateSite.superclass.constructor.call(this, "Alvex.CreateSite", containerId, ["button", "container", "connection", "selector", "json"]);
 
       return this;
    };
 
-   YAHOO.extend(Alvex.CreateDocRegSite, Alfresco.component.Base,
+   YAHOO.extend(Alvex.CreateSite, Alfresco.component.Base,
    {
+      options:
+      {
+      },
       /**
        * Shows the CreteSite dialog to the user.
        *
@@ -296,7 +299,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          createSiteForm.applyTabFix();
          createSiteForm.init();
 
-         this._modifyDialog();
+         this._applyDialogParams();
 
          // Show the panel
          this._showPanel();
@@ -478,7 +481,15 @@ if (typeof Alvex == "undefined" || !Alvex)
          Dom.get(this.id + "-title").focus();
       },
 
-      _modifyDialog: function CreateSite__modifyDialog()
+      setParams: function(isPublic, isModerated, visibility, sitePreset)
+      {
+         this.options.isPublic = isPublic;
+         this.options.isModerated = isModerated;
+         this.options.visibility = visibility;
+         this.options.sitePreset = sitePreset;
+      },
+
+      _applyDialogParams: function CreateSite__modifyDialog()
       {
          var presetEl = Dom.get(this.id + '-sitePreset').parentNode.parentNode;
          var publicEl = Dom.get(this.id + '-isPublic').parentNode.parentNode;
@@ -487,23 +498,24 @@ if (typeof Alvex == "undefined" || !Alvex)
          presetEl.parentNode.removeChild(presetEl);
          privateEl.parentNode.removeChild(privateEl);
 
-         this.widgets.isPublic.checked = 'true';
-         this.widgets.isModerated.checked = 'true';
-         this.widgets.siteVisibility.value = 'MODERATED';
-
          var presetElHidden = document.createElement("input");
          presetElHidden.type = 'hidden';
          presetElHidden.id = this.id + '-sitePreset';
          presetElHidden.name = 'sitePreset';
-         presetElHidden.value = 'documents-register-dashboard';
          this.widgets.siteVisibility.parentNode.appendChild(presetElHidden);
+         this.widgets.sitePreset = Dom.get(this.id + '-sitePreset');
+
+         this.widgets.isPublic.checked = this.options.isPublic;
+         this.widgets.isModerated.checked = this.options.isModerated;
+         this.widgets.siteVisibility.value = this.options.visibility;
+         this.widgets.sitePreset.value = this.options.sitePreset;
       }
 
    });
 })();
 
-Alvex.getCreateDocRegSiteInstance = function()
+Alvex.getCreateSiteInstance = function()
 {
-   var instanceId = "alvex-createDocRegSite-instance";
-   return Alfresco.util.ComponentManager.get(instanceId) || new Alvex.CreateDocRegSite(instanceId);
+   var instanceId = "alvex-createSite-instance";
+   return Alfresco.util.ComponentManager.get(instanceId) || new Alvex.CreateSite(instanceId);
 };

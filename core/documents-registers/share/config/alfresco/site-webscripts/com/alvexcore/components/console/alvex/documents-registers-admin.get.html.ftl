@@ -5,7 +5,8 @@
 
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
-	new Alvex.DocRegSitesAdmin("${el}").setOptions({
+	new Alvex.SitesAdmin("${el}").setOptions({
+		siteType: "documents-register-dashboard"
 	}).setMessages(${messages});
 //]]></script>
 

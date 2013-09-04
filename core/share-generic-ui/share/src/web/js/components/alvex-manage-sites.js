@@ -32,10 +32,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 	var $html = Alfresco.util.encodeHTML,
 		$hasEventInterest = Alfresco.util.hasEventInterest; 
 
-	Alvex.DocRegSitesAdmin = function(htmlId)
+	Alvex.SitesAdmin = function(htmlId)
 	{
-		this.name = "Alvex.DocregSitesAdmin";
-		Alvex.DocRegSitesAdmin.superclass.constructor.call(this, htmlId);
+		this.name = "Alvex.SitesAdmin";
+		Alvex.SitesAdmin.superclass.constructor.call(this, htmlId);
 
 		Alfresco.util.ComponentManager.register(this);
 
@@ -55,82 +55,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			onLoad: function onLoad()
 			{
-				// Add site button
-				parent.widgets.addButton = new YAHOO.widget.Button(parent.id + "-add-site-button");
-				parent.widgets.addButton.on("click", parent.onSiteAddClick, null, parent);
-
-				// DataSource setup
-				parent.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + "api/sites?",
-				{
-					responseType: YAHOO.util.DataSource.TYPE_JSON,
-					responseSchema:
-					{
-						resultsList: "sites"
-					}
-				});
-
-				parent.widgets.dataSource.doBeforeParseData = function (oRequest, oFullResponse)
-				{
-					var updatedResponse = oFullResponse;
-
-					for (var i = 0; i < updatedResponse.length; i++)
-						updatedResponse[i].actions = '';
-
-					return {sites: updatedResponse};
-				};
-
-				// Hook action events
-				var me = parent;
-				var fnActionHandler = function fnActionHandler(layer, args)
-				{
-					var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
-					if (owner !== null)
-					{
-						if (typeof me[owner.className] == "function")
-						{
-							args[1].stop = true;
-							var asset = me.widgets.dataTable.getRecord(args[1].target.offsetParent).getData();
-							me[owner.className].call(me, asset, owner);
-						}
-					}
-					return true;
-				};
-				YAHOO.Bubbling.addDefaultAction(parent.id + "-action-link", fnActionHandler, true);
-
-				var columnDefinitions =
-				[
-					{ 
-						key: "title", label: parent.msg("drsa.label.site"), 
-						sortable: true, resizeable: true, width: 500, 
-						formatter: parent.renderSiteNameField
-					},
-					{ 
-						key: "actions", label: '', 
-						sortable: false, resizeable: true, width: 125, 
-						formatter: parent.renderActions 
-					}
-				];
-
-				// DataTable definition
-				parent.widgets.dataTable = new YAHOO.widget.DataTable(parent.id + "-datatable", 
-									columnDefinitions, parent.widgets.dataSource,
-				{
-					initialLoad: true,
-					initialRequest: 'size=250&spf=documents-register-dashboard',
-					renderLoopSize: 32,
-					sortedBy:
-					{
-						key: "title",
-						dir: "asc"
-					},
-					MSG_EMPTY: parent.msg("drsa.label.no_sites")
-				});
-				
-				// Enable row highlighting
-				parent.widgets.dataTable.subscribe("rowMouseoverEvent", parent.onEventHighlightRow, parent, true);
-				parent.widgets.dataTable.subscribe("rowMouseoutEvent", parent.onEventUnhighlightRow, parent, true);
-				
-				parent.widgets.dataTable.siteManage = parent;
+				parent.initUI();
 			}
 		});
 		new PanelHandler;
@@ -138,15 +63,94 @@ if (typeof Alvex == "undefined" || !Alvex)
 		return this;
 	};
 
-	YAHOO.extend(Alvex.DocRegSitesAdmin, Alfresco.ConsoleTool,
+	YAHOO.extend(Alvex.SitesAdmin, Alfresco.ConsoleTool,
 	{
 		options:
 		{
+			siteType: ""
 		},
 
 		onReady: function ()
 		{
-			Alvex.DocRegSitesAdmin.superclass.onReady.call(this);
+			Alvex.SitesAdmin.superclass.onReady.call(this);
+		},
+				
+		initUI: function ()
+		{
+			// Add site button
+			this.widgets.addButton = new YAHOO.widget.Button(this.id + "-add-site-button");
+			this.widgets.addButton.on("click", this.onSiteAddClick, null, this);
+
+			// DataSource setup
+			this.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + "api/sites?",
+			{
+				responseType: YAHOO.util.DataSource.TYPE_JSON,
+				responseSchema:
+				{
+					resultsList: "sites"
+				}
+			});
+
+			this.widgets.dataSource.doBeforeParseData = function (oRequest, oFullResponse)
+			{
+				var updatedResponse = oFullResponse;
+				for (var i = 0; i < updatedResponse.length; i++)
+					updatedResponse[i].actions = '';
+				return {sites: updatedResponse};
+			};
+
+			// Hook action events
+			var me = this;
+			var fnActionHandler = function fnActionHandler(layer, args)
+			{
+				var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+				if (owner !== null)
+				{
+					if (typeof me[owner.className] == "function")
+					{
+						args[1].stop = true;
+						var asset = me.widgets.dataTable.getRecord(args[1].target.offsetParent).getData();
+						me[owner.className].call(me, asset, owner);
+					}
+				}
+				return true;
+			};
+			YAHOO.Bubbling.addDefaultAction(this.id + "-action-link", fnActionHandler, true);
+
+			var columnDefinitions =
+			[
+				{ 
+					key: "title", label: this.msg("drsa.label.site"), 
+					sortable: true, resizeable: true, width: 500, 
+					formatter: this.renderSiteNameField
+				},
+				{ 
+					key: "actions", label: '', 
+					sortable: false, resizeable: true, width: 125, 
+					formatter: this.renderActions 
+				}
+			];
+
+			// DataTable definition
+			this.widgets.dataTable = new YAHOO.widget.DataTable(this.id + "-datatable", 
+								columnDefinitions, this.widgets.dataSource,
+			{
+				initialLoad: true,
+				initialRequest: 'size=250&spf=' + this.options.siteType,
+				renderLoopSize: 32,
+				sortedBy:
+				{
+					key: "title",
+					dir: "asc"
+				},
+				MSG_EMPTY: this.msg("drsa.label.no_sites")
+			});
+				
+			// Enable row highlighting
+			this.widgets.dataTable.subscribe("rowMouseoverEvent", this.onEventHighlightRow, this, true);
+			this.widgets.dataTable.subscribe("rowMouseoutEvent", this.onEventUnhighlightRow, this, true);
+			
+			this.widgets.dataTable.siteManage = me;
 		},
 
 		onDeleteSite: function (obj)
@@ -160,7 +164,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		onSiteAddClick: function ()
 		{
-			this.widgets.createSiteDialog = Alvex.getCreateDocRegSiteInstance();
+			this.widgets.createSiteDialog = Alvex.getCreateSiteInstance();
+			this.widgets.createSiteDialog.setParams('true', 'true', 'MODERATED', this.options.siteType);
 			this.widgets.createSiteDialog.show();
 		},
 
@@ -177,7 +182,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		updateTable: function (resp)
 		{
 			this.widgets.dataTable.getDataSource().sendRequest(
-				'size=250&spf=documents-register-dashboard', 
+				'size=250&spf=' + this.options.siteType, 
 				{ 
 					success: this.widgets.dataTable.onDataReturnInitializeTable, 
 					scope: this.widgets.dataTable
