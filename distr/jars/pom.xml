@@ -28,6 +28,16 @@
   <dependencies>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
+      <artifactId>case-management</artifactId>
+      <version>1.9</version>
+    </dependency>
+    <dependency>
+      <groupId>${alvex.share.groupId}</groupId>
+      <artifactId>case-management</artifactId>
+      <version>1.9</version>
+    </dependency>
+    <dependency>
+      <groupId>${alvex.repo.groupId}</groupId>
       <artifactId>custom-workflows</artifactId>
       <version>${custom_workflows.version}</version>
     </dependency>

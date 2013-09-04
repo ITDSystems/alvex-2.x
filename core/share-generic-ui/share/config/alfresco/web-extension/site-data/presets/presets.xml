@@ -223,7 +223,7 @@
 				<template-instance>dashboard-2-columns-wide-right</template-instance>
 				<authentication>user</authentication>
 				<properties>
-					<sitePages>[{"pageId":"calendar"},{"pageId":"documentLibrary"}]</sitePages>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"}]</sitePages>
 				</properties>
 			</page>
 		</pages>
