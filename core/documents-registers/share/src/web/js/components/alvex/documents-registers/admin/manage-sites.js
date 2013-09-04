@@ -42,8 +42,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 		Alfresco.util.YUILoaderHelper.require(["button", "container", "datasource", "datatable", "json", "history"], 
 												this.onComponentsLoaded, this);
 
-		YAHOO.Bubbling.on("removeSiteClick", this.onRemoveSiteClick, this);
 		YAHOO.Bubbling.on("siteCreatedEvent", this.onSiteCreated, this);
+		YAHOO.Bubbling.on("siteDeleted", this.onSiteDeleted, this);
 
 		var parent = this;
 
@@ -69,7 +69,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					}
 				});
 
-				parent.widgets.dataSource.doBeforeParseData = function WSA_doBeforeParseData(oRequest, oFullResponse)
+				parent.widgets.dataSource.doBeforeParseData = function (oRequest, oFullResponse)
 				{
 					var updatedResponse = oFullResponse;
 
@@ -79,29 +79,36 @@ if (typeof Alvex == "undefined" || !Alvex)
 					return {sites: updatedResponse};
 				};
 
-				var renderActions = function renderActions(elCell, oRecord, oColumn, oData)
+				// Hook action events
+				var me = parent;
+				var fnActionHandler = function fnActionHandler(layer, args)
 				{
-					// var removeLink = document.createElement("a");
-					// removeLink.href = '#';
-					// removeLink.innerHTML = '<div style="text-align:right;"><img align="top" src="' 
-					// 		+ Alfresco.constants.URL_RESCONTEXT 
-					// 		+ 'components/committees-sites-admin/document-delete-16.png' + '"/> '
-					// 		+ parent.msg("csa.button.remove") + '</div>';
-
-					// YAHOO.util.Event.addListener(removeLink, "click", function(e)
-					// {
-					// 	YAHOO.Bubbling.fire('removeSiteClick',
-					// 	{
-					// 		shortName: oRecord.getData("shortName")
-					// 	});
-					// }, null, parent);
-					// elCell.appendChild(removeLink);
+					var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+					if (owner !== null)
+					{
+						if (typeof me[owner.className] == "function")
+						{
+							args[1].stop = true;
+							var asset = me.widgets.dataTable.getRecord(args[1].target.offsetParent).getData();
+							me[owner.className].call(me, asset, owner);
+						}
+					}
+					return true;
 				};
+				YAHOO.Bubbling.addDefaultAction(parent.id + "-action-link", fnActionHandler, true);
 
 				var columnDefinitions =
 				[
-					{ key: "title", label: parent.msg("drsa.label.site"), sortable: true, width: 500 },
-					{ key: "actions", label: '', sortable: false, width: 125, formatter: renderActions }
+					{ 
+						key: "title", label: parent.msg("drsa.label.site"), 
+						sortable: true, resizeable: true, width: 500, 
+						formatter: parent.renderSiteNameField
+					},
+					{ 
+						key: "actions", label: '', 
+						sortable: false, resizeable: true, width: 125, 
+						formatter: parent.renderActions 
+					}
 				];
 
 				// DataTable definition
@@ -118,6 +125,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 					},
 					MSG_EMPTY: parent.msg("drsa.label.no_sites")
 				});
+				
+				// Enable row highlighting
+				parent.widgets.dataTable.subscribe("rowMouseoverEvent", parent.onEventHighlightRow, parent, true);
+				parent.widgets.dataTable.subscribe("rowMouseoutEvent", parent.onEventUnhighlightRow, parent, true);
+				
+				parent.widgets.dataTable.siteManage = parent;
 			}
 		});
 		new PanelHandler;
@@ -131,29 +144,37 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 		},
 
-		onReady: function CSA_onReady()
+		onReady: function ()
 		{
 			Alvex.DocRegSitesAdmin.superclass.onReady.call(this);
 		},
 
-		onRemoveSiteClick: function CSA_onRemoveSiteClick(e, args)
+		onDeleteSite: function (obj)
 		{
-			var site = args[1].shortName;
-			// Not implemented - use default site delete options
+			// Display the delete dialog for the site
+			Alfresco.module.getDeleteSiteInstance().show(
+			{
+				site: obj
+			});
 		},
 
-		onSiteAddClick: function CSA_onSiteAddClick()
+		onSiteAddClick: function ()
 		{
 			this.widgets.createSiteDialog = Alvex.getCreateDocRegSiteInstance();
 			this.widgets.createSiteDialog.show();
 		},
 
-		onSiteCreated: function CSA_onSiteCreated()
+		onSiteCreated: function ()
 		{
 			this.updateTable();
 		},
 
-		updateTable: function WSA_updateTable(resp)
+		onSiteDeleted: function ()
+		{
+			this.updateTable();
+		},
+
+		updateTable: function (resp)
 		{
 			this.widgets.dataTable.getDataSource().sendRequest(
 				'size=250&spf=documents-register-dashboard', 
@@ -163,7 +184,48 @@ if (typeof Alvex == "undefined" || !Alvex)
 				});
 		},
 
-		reportError: function WSA_reportError(res)
+		renderSiteNameField: function (elCell, oRecord, oColumn, oData)
+		{
+			var shortName = oRecord._oData.shortName;
+			var title = oRecord._oData.title;
+			var link = '<a href="' + Alfresco.constants.URL_PAGECONTEXT 
+							+ 'site/' + shortName + '/dashboard">' + title + '</a>';
+			elCell.innerHTML = link;
+		},
+
+		renderActions: function (elCell, oRecord, oColumn, oData)
+		{
+			var id = this.siteManage.id;
+			var html = '<div id="' + id + '-actions-' + oRecord.getId() + '" class="hidden action">';
+			
+			var msg = this.siteManage.msg('button.delete');
+			var clb = 'onDeleteSite';
+			html += '<div class="' + clb + '"><a href="" ' 
+					+ 'class="alvex-site-manage-action-link ' + id + '-action-link" ' 
+					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
+			html += '</div>';
+			elCell.innerHTML = html;
+		},
+
+		onEventHighlightRow: function (oArgs)
+		{
+			// Call through to get the row highlighted by YUI
+			// this.widgets.dataTable.onEventHighlightRow.call(this.widgets.dataTable, oArgs);
+
+			var elActions = Dom.get(this.id + "-actions-" + oArgs.target.id);
+			Dom.removeClass(elActions, "hidden");
+		},
+		
+		onEventUnhighlightRow: function (oArgs)
+		{
+			// Call through to get the row unhighlighted by YUI
+			// this.widgets.dataTable.onEventUnhighlightRow.call(this.widgets.dataTable, oArgs);
+
+			var elActions = Dom.get(this.id + "-actions-" + (oArgs.target.id));
+			Dom.addClass(elActions, "hidden");
+		},
+
+		reportError: function (res)
 		{
 			var json = Alfresco.util.parseJSON(res.serverResponse.responseText);
 			Alfresco.util.PopupManager.displayPrompt(
