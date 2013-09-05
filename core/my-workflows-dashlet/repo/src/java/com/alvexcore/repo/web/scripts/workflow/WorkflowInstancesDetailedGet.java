@@ -78,6 +78,7 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
     public static final String PARAM_COMPLETED_AFTER = "completedAfter";
     public static final String PARAM_DEFINITION_NAME = "definitionName";
     public static final String PARAM_DEFINITION_ID = "definitionId";
+	public static final String PARAM_TEXT_SEARCH = "text";
     public static final String VAR_DEFINITION_ID = "workflow_definition_id";
     
     public static final String PARAM_SORT_FIELD = "sortBy";
@@ -112,6 +113,7 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
         filters.put(PARAM_INITIATOR, req.getParameter(PARAM_INITIATOR));
         filters.put(PARAM_PRIORITY, req.getParameter(PARAM_PRIORITY));
         filters.put(PARAM_DEFINITION_NAME, req.getParameter(PARAM_DEFINITION_NAME));
+		filters.put(PARAM_TEXT_SEARCH, req.getParameter(PARAM_TEXT_SEARCH));
         
         String excludeParam = req.getParameter(PARAM_EXCLUDE);
         if (excludeParam != null && excludeParam.length() > 0)
@@ -384,6 +386,15 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
                         break;
                     }
                 }
+				else if (key.equals(PARAM_TEXT_SEARCH))
+				{
+					String msg = workflowInstance.getDescription();
+					if( !msg.toLowerCase().contains(filterValue.toString().toLowerCase()) )
+					{
+						result = false;
+						break;
+					}
+				}
             }
         }
 

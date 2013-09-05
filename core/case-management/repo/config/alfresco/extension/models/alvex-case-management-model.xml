@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+	Content model for different Alvex case management entities
+	@since 2.0
+ -->
+ <model
+	xmlns="http://www.alfresco.org/model/dictionary/1.0"
+	name="alvexcm:case_management_model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.alfresco.org/model/dictionary/1.0 modelSchema.xsd">
+
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+		<import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+	</imports>
+
+	<namespaces>
+		<namespace prefix="alvexcm" uri="http://alvexcore.com/prefix/alvexcm" />
+	</namespaces>
+
+	<types>
+		<type name="alvexcm:workflowRelation">
+			<title>Workflow Label</title>
+			<parent>sys:base</parent>
+			<properties>
+				<property name="alvexcm:workflowInstance">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+				<property name="alvexcm:relationType">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+				<property name="alvexcm:relatedObject">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
+			</properties>
+		</type>
+	</types>
+
+</model>

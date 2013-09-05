@@ -1,0 +1,12 @@
+<webscript>
+  <shortname>workflow-case-relation</shortname>
+  <description><![CDATA[
+  Deletes relation between workflow and case
+  ]]></description>
+  <url>/api/alvex/case/{caseId}/workflow/{workflowId}</url>
+  <url>/api/alvex/workflow/{workflowId}/case/{caseId}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>
