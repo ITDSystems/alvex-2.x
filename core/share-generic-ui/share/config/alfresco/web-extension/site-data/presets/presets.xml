@@ -205,13 +205,19 @@
 				<scope>page</scope>
 				<region-id>component-2-1</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/activityfeed</url>
+				<url>/components/dashlets/case-workflows</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-2-2</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
 				<url>/components/dashlets/docsummary</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-3</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/activityfeed</url>
 			</component>
 		</components>
 		<pages>
