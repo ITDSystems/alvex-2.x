@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-advanced-workflows-messages-deployer" class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent" depends-on="">
+		<property name="resourceBundles">
+			 <list>
+				<value>alfresco.web-extension.messages.alvex-advanced-workflows</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="alvex-advanced-workflows" class="com.alvexcore.share.AdvancedWorkflowsExtension" parent="alvex-extension"/>
+</beans>

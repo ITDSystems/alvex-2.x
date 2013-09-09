@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+	Content model for different Alvex advanced workflows entities
+	@since 2.0
+ -->
+ <model
+	xmlns="http://www.alfresco.org/model/dictionary/1.0"
+	name="awf:advanced_workflows_model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.alfresco.org/model/dictionary/1.0 modelSchema.xsd">
+
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+		<import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+	</imports>
+
+	<namespaces>
+		<namespace prefix="awf" uri="http://alvexcore.com/prefix/awf" />
+	</namespaces>
+
+	<types>
+	</types>
+
+</model>
