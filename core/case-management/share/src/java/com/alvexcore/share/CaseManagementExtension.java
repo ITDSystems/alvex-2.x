@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012 ITD Systems
+ * Copyright © 2013 ITD Systems
  *
  * This file is part of Alvex
  *
@@ -20,7 +20,7 @@
 package com.alvexcore.share;
 
 /**
- * DocumentsRegisters extension implementation
+ * CaseManagement extension implementation
  */
 
 public class CaseManagementExtension extends ShareExtension {

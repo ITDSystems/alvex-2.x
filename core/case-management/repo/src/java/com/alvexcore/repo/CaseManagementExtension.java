@@ -29,7 +29,7 @@ import org.alfresco.service.cmr.security.PermissionService;
 import org.alfresco.service.namespace.QName;
 
 /**
- * DocumentsRegisters extension implementation
+ * CaseManagement extension implementation
  */
 
 public class CaseManagementExtension extends RepositoryExtension {
