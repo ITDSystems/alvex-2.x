@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Tasks Title</shortname>
+  <description>Title for tasks page</description>
+  <url>/components/alvex/tasks-title</url>
+</webscript>

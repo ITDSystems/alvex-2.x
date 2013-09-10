@@ -6,7 +6,7 @@
 		<!-- Title -->
 		<component>
 			<region-id>task-title</region-id>
-			<url>/components/title/simple-title</url>
+			<url>/components/alvex/tasks-title</url>
 			<properties>
 				<title>page.alvexTasks.title</title>
 			</properties>
@@ -39,16 +39,10 @@
 			<url>/components/workflow/filter/assignee</url>
 		</component>
 		
-		<!-- Toolbar -->
-		<component>
-			<region-id>toolbar</region-id>
-			<url>/components/workflow/task-list-toolbar</url>
-		</component>
-		
 		<!-- List -->
 		<component>
 			<region-id>list</region-id>
-			<url>/components/workflow/task-list</url>
+			<url>/components/alvex/task-list</url>
 		</component>
 		
 	</components>

@@ -20,7 +20,6 @@
       <div class="yui-t1" id="alfresco-myworkflows">
          <div id="yui-main">
             <div class="yui-b" id="alf-content">
-               <@region id="toolbar" scope="template" />
                <@region id="list" scope="template" />
             </div>
          </div>
