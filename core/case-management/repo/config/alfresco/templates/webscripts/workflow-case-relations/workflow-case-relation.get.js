@@ -1,35 +1,41 @@
+var getNodes = function(folder)
+{
+	var nodes = [];
+	if( !folder || folder === null )
+		return nodes;
+	
+	for each(var node in folder.children)
+		if( node.properties['alvexcm:relationType'] === 'case-workflows' )
+			nodes.push(node);
+	for each(var nodeGroup in folder.assocs)
+	{
+		for each(var node in nodeGroup )
+			if( node.properties['alvexcm:relationType'] === 'case-workflows' )
+				nodes.push(node);
+	}
+	return nodes;
+};
+
 (function() {
 	// Request parameters
+	var workflowId = decodeURIComponent(url.templateArgs['workflowId']).split('$').join('$');
 	var caseId = decodeURIComponent(url.templateArgs['caseId']);
-	var workflowId = decodeURIComponent(url.templateArgs['workflowId']);
-	var nodes = [];
 	model.nodes = [];
+	var nodes = [];
 	
 	try {
 		// Get relations
-		if( caseId )
+		if( caseId && caseId !== null && caseId !== 'null' )
 		{
-			/*nodes = search.luceneSearch(
-					'+PATH:"/sys:system/sys:alvex/alvex:data/alvex:case-management//." ' 
-					+ '+TYPE: "alvexcm:workflowRelation" ' 
-					+ '+@alvexcm\\:relationType: "case" ' 
-					+ '+@alvexcm\\:relatedObject: "' + caseId + '" ');*/
 			var store = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
-			for each(var node in store.children)
-				if(node.name.match(caseId+'-') != null)
-					nodes.push(node);
+			var caseFolder = store.childByNamePath(caseId);
+			nodes = getNodes(caseFolder);
 		}
-		else if( workflowId )
+		else if( workflowId && workflowId !== null && workflowId !== 'null' )
 		{
-			/*nodes = search.luceneSearch(
-					'+PATH:"/sys:system/sys:alvex/alvex:data/alvex:case-management//." ' 
-					+ '+TYPE: "alvexcm:workflowRelation" ' 
-					+ '+@alvexcm\\:relationType: "case" ' 
-					+ '+@alvexcm\\:workflowInstance: "' + workflowId + '" ');*/
 			var store = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
-			for each(var node in store.children)
-				if(node.name.match('-'+workflowId) != null)
-					nodes.push(node);
+			var workflowFolder = store.childByNamePath(workflowId);
+			nodes = getNodes(workflowFolder);
 		}
 		// Process relations
 		for each( var node in nodes )
