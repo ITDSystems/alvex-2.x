@@ -53,3 +53,73 @@
 {
 	padding: 0.5em;
 }
+
+div.available,
+div.used
+{
+	padding-bottom: 1em;
+	padding-top: 1em;
+}
+
+h3.padded
+{
+	padding: 1em;
+}
+
+ul.usedList,
+ul.availableList
+{
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px dashed #000000;
+}
+
+ul.usedList
+{
+	width: 780px;
+	height: 7em;
+}
+
+ul.availableList
+{
+	width: 520px;
+	height: 12em;
+}
+
+.tableColumn
+{
+	margin: 0.5em;
+	background-color: #F7F7F7;
+	border: 1px dashed #C3C3C3;
+	width: 8em;
+	float: left;
+	height: 1.5em;
+	text-align: left;
+	border-style: none;
+	border-width: 0;
+	overflow: hidden;
+	cursor: move;
+}
+
+.tableColumn span
+{
+	position: relative;
+	top: 0em;
+	left: 0em;
+	opacity: 1;
+	white-space: nowrap;
+	filter: alpha(opacity=100);
+}
+
+.tableColumn div
+{
+	background-color: #FFFFFF;
+	opacity: 0.01;
+	filter: alpha(opacity=1);
+	height: 2em;
+	position: relative;
+	top: -1.5em;
+	width: 8em;
+}

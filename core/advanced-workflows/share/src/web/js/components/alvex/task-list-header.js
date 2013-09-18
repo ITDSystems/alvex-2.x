@@ -68,9 +68,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 	{
 		onReady: function WLT_onReady()
 		{
-			this.widgets.startWorkflowButton = Alfresco.util.createYUIButton(this, "startWorkflow-button", this.onStartWorkflowButtonClick, {});
 			this.widgets.configurePageButton = Alfresco.util.createYUIButton(this, "configurePage-button", this.onConfigurePageButtonClick, {});
-			Dom.removeClass(Selector.query(".hidden", this.id + "-body", true), "hidden");
 			
 			var dialogId = this.id + '-conf-dialog';
 			
@@ -79,8 +77,113 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.widgets.configurePageDialogCancel = new YAHOO.widget.Button(dialogId + '-cancel',
 						{ onclick: { fn: this.onConfigureCancel, obj: null, scope: this } });
 			
-			this.widgets.configurePageDialog = Alfresco.util.createYUIPanel(dialogId, { width: "540px" });
+			this.widgets.configurePageDialog = Alfresco.util.createYUIPanel(dialogId, { width: "800px" });
 			this.widgets.configurePageDialog.hideEvent.subscribe(this.onConfigureCancel, null, this);
+
+			this.createStartWorkflowMenu();
+		},
+		
+		createStartWorkflowMenu: function()
+		{
+			// Start workflow menu
+			var me = this;
+			var urlDefs = YAHOO.lang.substitute(
+				"{proxy}api/alvex/list-definitions?filter={filter}",
+				{
+					proxy: Alfresco.constants.PROXY_URI,
+					filter: ''
+				}
+				);
+
+			var urlAllowed = YAHOO.lang.substitute(
+				"{proxy}api/alvex/workflow-shortcut/allowed-workflows",
+				{
+					proxy: Alfresco.constants.PROXY_URI
+				}
+				);
+
+			Alvex.util.processAjaxQueue({
+				queue: [
+					{
+						url: urlAllowed,
+						responseContentType: Alfresco.util.Ajax.JSON,
+						successCallback: {
+							fn: function(response)
+							{
+								this.options.allowedWorkflows = response.json.workflows;
+							},
+							scope: this
+						}
+					},
+					{
+						url: urlDefs,
+						responseContentType: Alfresco.util.Ajax.JSON,
+						successCallback: {
+							fn: function(response)
+							{
+								var menuEl = Dom.get(me.id + '-startWorkflow-button-menu');
+								for (var key in response.json.data)  {
+									var task = response.json.data[key];
+									for (var i in this.options.allowedWorkflows)
+										if(this.options.allowedWorkflows[i].name === task.name)
+											menuEl.options.add(new Option(task.title, task.name));
+								}
+								me.widgets.startWorkflowButton = new YAHOO.widget.Button(
+									this.id + "-startWorkflow-button",
+									{
+										type: "menu",
+										menu: me.id + '-startWorkflow-button-menu'
+									} );
+								me.widgets.startWorkflowButton.getMenu().subscribe("click", me.onStartWorkflowClick, null, me)
+								Dom.removeClass(Selector.query(".hidden", me.id + "-body", true), "hidden");
+							},
+							scope: this
+						}						
+					}
+				]
+			});
+		},
+
+		createDNDArea: function()
+		{
+			this.widgets.availListEl = Dom.get(this.id + "-conf-dialog-column-ul-0");
+			this.widgets.usedListEl = Dom.get(this.id + "-conf-dialog-column-ul-1");
+			this.widgets.shadowEl = Dom.get(this.id + "-conf-dialog-dashlet-li-shadow");
+
+			var dndConfig =
+			{
+				shadow: this.widgets.shadowEl,
+				draggables: [
+					{
+						container: this.widgets.availListEl,
+						groups: [Alfresco.util.DragAndDrop.GROUP_MOVE],
+						cssClass: "availableDashlet",
+					},
+					{
+						container: this.widgets.usedListEl,
+						groups: [Alfresco.util.DragAndDrop.GROUP_MOVE],
+						cssClass: "usedDashlet",
+					}
+				],
+				targets: [
+					{
+						container: this.widgets.availListEl,
+						group: Alfresco.util.DragAndDrop.GROUP_MOVE
+					},
+					{
+						container: this.widgets.usedListEl,
+						group: Alfresco.util.DragAndDrop.GROUP_MOVE
+					}
+				]
+			};
+			var dnd = new Alfresco.util.DragAndDrop(dndConfig);
+		},
+		
+		onStartWorkflowClick: function(ev, obj)
+		{
+			var workflow = obj[1].value;
+			document.location.href = Alfresco.util.siteURL(
+					"start-workflow?workflow=" + workflow + "&referrer=tasks&myTasksLinkBack=true");
 		},
 
 		onFilterChanged: function BaseFilter_onFilterChanged(layer, args)
@@ -91,36 +194,67 @@ if (typeof Alvex == "undefined" || !Alvex)
 		
 		onTaskListPreferencesLoaded: function(layer, args)
 		{
-			var contId = this.id + '-conf-dialog-container';
-			var cont = Dom.get( contId );
-			cont.innerHTML = '';
+			this.widgets.availListEl = Dom.get(this.id + "-conf-dialog-column-ul-0");
+			this.widgets.usedListEl = Dom.get(this.id + "-conf-dialog-column-ul-1");
+
+			this.widgets.availListEl.innerHTML = '';
+			this.widgets.usedListEl.innerHTML = '';
+			
 			var data = args[1];
+			for(var k in data.currentColumns )
+			{
+				for(var c in data.availableColumns)
+				{
+					if(data.availableColumns[c].id !== data.currentColumns[k])
+						continue;
+					var el = this.createColumnDND(data.availableColumns[c]);
+					this.widgets.usedListEl.appendChild(el);
+				}
+			}
 			for(var c in data.availableColumns)
 			{
-				// create the necessary elements
-				var label= document.createElement("div");
-				label.className = 'column-config-container';
-				var description = document.createElement('span');
-				description.className = 'column-config-label';
-				description.innerHTML = data.availableColumns[c].label;
-				var checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.value = data.availableColumns[c].id;
-				checkbox.className = 'column-config-checkbox';
+				var used = false;
 				for(var k in data.currentColumns )
 					if(data.availableColumns[c].id === data.currentColumns[k])
-						checkbox.checked = true;
-				label.appendChild(checkbox);
-				label.appendChild(description);
-				cont.appendChild(label);
+						used = true;
+				if( !used )
+				{
+					var el = this.createColumnDND(data.availableColumns[c]);
+					this.widgets.availListEl.appendChild(el);
+				}
 			}
+			
+			this.createDNDArea();
 		},
-
-		onStartWorkflowButtonClick: function WLT_onNewFolder(e, p_obj)
+		
+		createColumnDND: function(column)
 		{
-			document.location.href = Alfresco.util.siteURL("start-workflow?referrer=tasks&myTasksLinkBack=true");
-		},
+			var li= document.createElement("li");
+			li.className = 'tableColumn';
+			var a = document.createElement('a');
+			a.href = "#";
+			var img = document.createElement('img');
+			img.className = "dnd-draggable";
+			img.src = Alfresco.constants.URL_CONTEXT + "res/yui/assets/skins/default/transparent.gif";
+			img.alt = '';
+			var span = document.createElement('span');
+			span.innerHTML = column.label;
+			var div = document.createElement('div');
+			div.className = "dnd-draggable";
+			div.title = this.msg("dnd.help.message");
+			var hidden = document.createElement('input');
+			hidden.type = "hidden";
+			hidden.name = "columnid";
+			hidden.value = column.id;
 
+			a.appendChild(img);
+			li.appendChild(a);
+			li.appendChild(span);
+			li.appendChild(div);
+			li.appendChild(hidden);
+			return li;
+		},
+		
 		onConfigurePageButtonClick: function(event, p_obj)
 		{
 			Event.preventDefault(event);
@@ -166,19 +300,37 @@ if (typeof Alvex == "undefined" || !Alvex)
 				
 		onConfigureOk: function(e, p_obj)
 		{
-			var fields = Selector.query(".column-config-checkbox", this.id + '-conf-dialog-container');
 			var result = [];
-			for( var f in fields )
-				if( fields[f].checked )
-					result.push(fields[f].value);
 			
-			this.services.preferences.set(PREFERENCES_MY_TASKS_COLUMNS, result.join(','));
+			var ul = Dom.get(this.id + "-conf-dialog-column-ul-1");
+			var lis = Dom.getElementsByClassName("tableColumn", "li", ul);
+			for (var j = 0; j < lis.length; j++)
+			{
+				var li = lis[j];
+				if(Dom.hasClass(li, "dnd-shadow"))
+					continue;
+				var id = Selector.query("input[type=hidden][name=columnid]", li, true).value
+				result.push(j + '$' + id);
+			}
+			
+			this.services.preferences.set(PREFERENCES_MY_TASKS_COLUMNS, result.join(','), 
+				{
+					successCallback: {
+						fn: this.onPreferencesSaved,
+						scope: this
+					}
+				});
 			
 			this.widgets.configurePageDialogEscapeListener.disable();
 			this.widgets.configurePageDialog.hide();
 			if (e) {
 				Event.preventDefault(e);
 			}
+		},
+				
+		onPreferencesSaved: function()
+		{
+			YAHOO.Bubbling.fire("taskListPrefsUpdated");
 		}
    });
 

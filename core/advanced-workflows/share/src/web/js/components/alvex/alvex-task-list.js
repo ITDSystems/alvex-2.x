@@ -70,6 +70,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		 * Decoupled event listeners
 		 */
 		YAHOO.Bubbling.on("filterChanged", this.onFilterChanged, this);
+		YAHOO.Bubbling.on("taskListPrefsUpdated", this.loadPreferences, this);
 
 		return this;
 	};
@@ -124,6 +125,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			/*
 			 * Columns to show in table view
 			 */
+			
+			style: "alvex",
+			
 			columns: [],
 			
 			taskProps: [
@@ -139,11 +143,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 			
 			// TODO - should we have 'created' separately for task and workflow?
 			extProps: [
-				{ prop: "state", width: 100, formatter: 'renderTextCell' },
-				{ prop: "initiator", width: 100, formatter: 'renderTextCell' },
-				{ prop: "owner", width: 100, formatter: 'renderTextCell' },
-				{ prop: "type", width: 100, formatter: 'renderTextCell' },
-				{ prop: "icons", width: 100, formatter: 'renderTextCell' }
+				{ prop: "state", width: 50, formatter: 'renderStateCell' },
+				{ prop: "initiator", width: 100, formatter: 'renderInitiatorCell' },
+				{ prop: "owner", width: 100, formatter: 'renderOwnerCell' },
+				{ prop: "taskType", width: 100, formatter: 'renderTaskTypeCell' },
+				{ prop: "wflType", width: 100, formatter: 'renderWflTypeCell' },
+				{ prop: "icons", width: 100, formatter: 'renderIconsCell' }
 			]
 		},
 		
@@ -162,7 +167,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 						menu: "sorters-menu",
 						lazyloadmenu: false
 					});
-
+			this.loadPreferences();
+		},
+		
+		loadPreferences: function ()
+		{
 			// Load preferences (after which the appropriate tasks will be displayed)
 			this.services.preferences.request(PREFERENCES_MY_TASKS,
 					{
@@ -189,9 +198,16 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.widgets.sorterMenuButton.set("label", this.msg("sorter." + sorter));
 			this.widgets.sorterMenuButton.value = sorter;
 
-			var style = Alfresco.util.findValueByDotNotation(p_response.json, PREFERENCES_MY_TASKS_STYLE, "alvex");
-			var columns = Alfresco.util.findValueByDotNotation(p_response.json, PREFERENCES_MY_TASKS_COLUMNS, "bpm_priority,bpm_description,bpm_startDate,bpm_dueDate");
-			this.options.columns = columns.split(',');
+			this.options.style = Alfresco.util.findValueByDotNotation(p_response.json, PREFERENCES_MY_TASKS_STYLE, "alvex");
+			var columns = Alfresco.util.findValueByDotNotation(p_response.json, PREFERENCES_MY_TASKS_COLUMNS, 
+									"1$bpm_priority,2$bpm_description,3$bpm_startDate,4$bpm_dueDate").split(',');
+			
+			this.options.columns = [];
+			for(var c in columns)
+			{
+				var col = columns[c].split('$');
+				this.options.columns.push(col[1]);
+			}
 			
 			var availableColumns = [];
 			for(var p in this.options.taskProps)
@@ -210,14 +226,19 @@ if (typeof Alvex == "undefined" || !Alvex)
 							label: this.msg(this.msg("column.title." + this.options.extProps[p].prop)) 
 						}
 					);
-					
+			
 			YAHOO.Bubbling.fire("taskListPreferencesLoaded",
 			{
 				availableColumns: availableColumns,
 				currentColumns: this.options.columns
 			});
+			
+			this.initUI();
+		},
 
-			if (style === "alfresco")
+		initUI: function()
+		{
+			if (this.options.style === "alfresco")
 				this.initAlfrescoUI();
 			else
 				this.initAlvexUI();
@@ -228,7 +249,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			// Display the toolbar now that we have selected the filter
 			// Dom.removeClass(Selector.query(".task-list div", this.id, true), "hidden");
 
-			var props = this.options.taskProps;
+			var props = [];
+			for( var p in this.options.taskProps )
+				props.push(this.options.taskProps[p]);
 			for( var p in this.options.extProps )
 				props.push(this.options.extProps[p]);
 
@@ -310,9 +333,64 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			var record = oRecord.getData();
 			var date = Alfresco.util.fromISO8601(record.properties[oColumn.key]);
-			elCell.innerHTML = Alfresco.util.formatDate(date, "mediumDate");
+			elCell.innerHTML = ( date !== null ?
+							Alfresco.util.formatDate(date, "mediumDate") : this.msg("label.noDate") );
 		},
-				
+		
+		renderStateCell: function(elCell, oRecord, oColumn, oData)
+		{
+			var record = oRecord.getData();
+			var msgId, cssClass;
+			if( !record.workflowInstance.isActive ) {
+				msgId = "label.completedWorkflow";
+				cssClass = "completed";
+			} else {
+				if( record.state === "IN_PROGRESS" ) {
+					msgId = "label.activeTask";
+					cssClass = "todo";
+				} else {
+					msgId = "label.completedTaskActiveWorkflow";
+					cssClass = "pending";
+				}
+			}
+			elCell.innerHTML = '<span class="' + cssClass + '" title="' + this.msg( msgId ) + '">&nbsp;</span>';
+		},
+		
+		renderInitiatorCell: function(elCell, oRecord, oColumn, oData)
+		{
+			elCell.innerHTML = this.getPersonHTML( oRecord.getData().workflowInstance.initiator );
+		},
+		
+		renderOwnerCell: function(elCell, oRecord, oColumn, oData)
+		{
+			elCell.innerHTML = this.getPersonHTML( oRecord.getData().owner );
+		},
+		
+		getPersonHTML: function(person)
+		{
+			return '<span class="person">' 
+					+ '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + person.userName + '/profile">' 
+					+ person.firstName + ' ' + person.lastName
+					+ '</a></span>';
+		},
+		
+		renderTaskTypeCell: function(elCell, oRecord, oColumn, oData)
+		{
+			var record = oRecord.getData();
+			elCell.innerHTML = record.title;
+		},
+		
+		renderWflTypeCell: function(elCell, oRecord, oColumn, oData)
+		{
+			var record = oRecord.getData();
+			elCell.innerHTML = record.workflowInstance.title;
+		},
+		
+		renderIconsCell: function(elCell, oRecord, oColumn, oData)
+		{
+			
+		},
+		
 		renderPriorityCell: function(elCell, oRecord, oColumn, oData)
 		{
 			var priority = oRecord.getData("properties")["bpm_priority"],

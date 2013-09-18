@@ -259,3 +259,27 @@
    padding-left: 1.5em;
    background: url(../images/warning-16.png) no-repeat;
 }
+
+.task-list span.person
+{
+   background: url(../images/user-16.png) no-repeat;
+   padding-left: 20px;
+}
+
+.task-list span.todo
+{
+   background: url(../images/to-do-16.png) no-repeat;
+   padding-left: 20px;
+}
+
+.task-list span.completed
+{
+   background: url(../images/completed-16.png) no-repeat;
+   padding-left: 20px;
+}
+
+.task-list span.pending
+{
+   background: url(../images/pending-16.png) no-repeat;
+   padding-left: 20px;
+}
