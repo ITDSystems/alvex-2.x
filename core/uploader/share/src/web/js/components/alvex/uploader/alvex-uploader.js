@@ -411,6 +411,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 								type: this.ATTACH_FROM_REPO
 							});
 							// Simply add to *-added because the file was just uploaded and can not be in *-removed
+							// FIXME - think about the following case:
+							// 	- Document was auto-generated in workflow transition
+							// 	- The next stage allows editing document package
+							// 	- Picker triggers events, items go into *-added and copies are created
+							// See commit of Thu Sep 19 23:20:56 2013 for details
 							this.addRefToControl( this.id + "-cntrl-added", file.nodeRef );
 							// Update current field to ensure current value will be correct any case 
 							this.addRefToControl( this.id + "-cntrl-current", file.nodeRef );
@@ -451,8 +456,6 @@ if (typeof Alvex == "undefined" || !Alvex)
 								allowDelete: _allowDelete,
 								type: this.ATTACH_FROM_REPO
 							});
-							// Simply add to *-added because the file was just uploaded and can not be in *-removed
-							this.addRefToControl( this.id + "-cntrl-added", file.nodeRef );
 							// Update current field to ensure current value will be correct any case 
 							this.addRefToControl( this.id + "-cntrl-current", file.nodeRef );
 						}
