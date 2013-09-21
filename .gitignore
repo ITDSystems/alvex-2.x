@@ -3,3 +3,4 @@ target
 core/*/manifest.mf
 core/*/nbbuild.xml
 core/*/nbproject/*
+core/*/bin
