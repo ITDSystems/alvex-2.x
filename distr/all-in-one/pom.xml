@@ -93,4 +93,12 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+        <id>compat-4.2.c</id>
+        <build>
+            <finalName>${project.artifactId}-${project.version}-compat-4.2.c</finalName>
+        </build>
+    </profile>
+  </profiles>
 </project>

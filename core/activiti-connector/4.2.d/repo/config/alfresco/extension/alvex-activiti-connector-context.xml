@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-activiti-connector-post-parse-handler"
+		class="com.alvexcore.repo.workflow.activiti.AlvexPostBpmnParseHandler">
+		<!--property name="activitiConfiguration" ref="activitiProcessEngineConfiguration" /-->
+	</bean>
+	<bean id="alvex-activiti-connector-activiti-listener" abstract="true">
+		<property name="alvexPostParseHandler" ref="alvex-activiti-connector-post-parse-handler" />
+		<property name="repository" ref="repositoryHelper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>	
+	<bean id="alvex-activiti-connector" parent="alvex-extension"
+		class="com.alvexcore.repo.ActivitiConnectorExtension"
+		depends-on="alvex-activiti-connector-post-parse-handler" />
+</beans>

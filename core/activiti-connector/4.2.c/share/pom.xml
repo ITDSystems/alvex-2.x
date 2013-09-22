@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <project>
-  <groupId>com.alvexcore.ce.repo</groupId>
-  <artifactId>custom-workflows</artifactId>
-  <version>1.3</version>
+  <groupId>com.alvexcore.ce.share</groupId>
+  <artifactId>activiti-connector</artifactId>
+  <version>4.2.c</version>
   <parent>
-    <groupId>com.alvexcore.ce.repo</groupId>
+    <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>
     <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <name>Custom Workflows [Repo]</name>
+  <name>Activiti Connector [Share</name>
   <repositories>
     <repository>
       <id>itd-repository</id>
@@ -26,7 +26,7 @@
   </pluginRepositories>
   <dependencies>
     <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
+      <groupId>${alvex.share.groupId}</groupId>
       <artifactId>extension-registry</artifactId>
       <version>${extension_registry.version}</version>
     </dependency>
@@ -39,29 +39,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>compat-4.2.c</id>
-      <dependencies>
-        <dependency>
-          <groupId>${alvex.repo.groupId}</groupId>
-          <artifactId>activiti-connector</artifactId>
-          <version>4.2.c</version>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>compat-be</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>${alvex.repo.groupId}</groupId>
-          <artifactId>activiti-connector</artifactId>
-          <version>${alvex.compat.be}</version>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

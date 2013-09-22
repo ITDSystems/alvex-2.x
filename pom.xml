@@ -6,6 +6,18 @@
   <modelVersion>4.0.0</modelVersion>
   <name>Alvex</name>
   <packaging>pom</packaging>
+  <parent>
+    <groupId>com.alvexcore</groupId>
+    <artifactId>master-pom</artifactId>
+    <version>1.0</version>
+  </parent>
+  <repositories>
+    <repository>
+      <id>itd-repository</id>
+      <name>ITD Maven Repository</name>
+      <url>http://maven.itdhq.com/public/maven/repository</url>
+    </repository>
+  </repositories>
   <modules>
     <module>core/advanced-workflows/repo</module>
     <module>core/case-management/repo</module>
@@ -43,4 +55,23 @@
     <module>distr/amps</module>
     <module>distr/all-in-one</module>
   </modules>
+  <profiles>
+    <profile>
+      <id>compat-4.2.c</id>
+      <modules>
+        <module>core/activiti-connector/4.2.c/repo</module>
+        <module>core/activiti-connector/4.2.c/share</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>compat-be</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>core/activiti-connector/${alvex.compat.be}/repo</module>
+        <module>core/activiti-connector/${alvex.compat.be}/share</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

@@ -9,5 +9,4 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Repository"/>
 	<classpathentry kind="src" path="/3rd Party"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/extension-registry"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/activiti-connector-compat-4.2.d"/>
 </classpath>

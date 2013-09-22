@@ -26,17 +26,8 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="alvex-custom-workflows-pre-parse-listener"
-		class="com.alvexcore.repo.workflow.activiti.AlvexPreParseListener">
-		<property name="activitiConfiguration" ref="activitiProcessEngineConfiguration" />
-	</bean>
-	<bean id="alvex-custom-workflows-activiti-listener" abstract="true">
-		<property name="alvexPreParseListener" ref="alvex-custom-workflows-pre-parse-listener" />
-		<property name="repository" ref="repositoryHelper" />
-		<property name="serviceRegistry" ref="ServiceRegistry" />
-	</bean>
 	<bean id="alvex-custom-workflows-permission-manager" abstract="true"
-		parent="alvex-custom-workflows-activiti-listener"
+		parent="alvex-activiti-connector-activiti-listener"
 		class="com.alvexcore.repo.workflow.activiti.WorkflowPermissionManager">
 	</bean>
 	<bean id="alvex-custom-workflows-permission-manager1" parent="alvex-custom-workflows-permission-manager">
@@ -50,7 +41,7 @@
 	</bean>
 	<bean id="alvex-custom-workflows-default-variables-setter"
 		class="com.alvexcore.repo.workflow.activiti.WorkflowDefaultVariablesSetter"
-		parent="alvex-custom-workflows-activiti-listener">
+		parent="alvex-activiti-connector-activiti-listener">
 		<property name="matches">
 			<list>
 				<value>process-start@activitiBasicWorkflow</value>
@@ -59,5 +50,5 @@
 	</bean>
 	<bean id="alvex-custom-workflows" parent="alvex-extension"
 		class="com.alvexcore.repo.CustomWorkflowsExtension"
-		depends-on="alvex-custom-workflows-pre-parse-listener,alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader,alvex-related-workflows,alvex-workflows-discussions" />
+		depends-on="alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader,alvex-related-workflows,alvex-workflows-discussions" />
 </beans>

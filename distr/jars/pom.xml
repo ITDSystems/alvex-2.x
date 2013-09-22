@@ -187,6 +187,41 @@
       <version>${workflow_shortcut_dashlet.version}</version>
     </dependency>
   </dependencies>
+  <profiles>
+    <profile>
+      <id>compat-4.2.c</id>
+      <dependencies>
+        <dependency>
+          <groupId>${alvex.repo.groupId}</groupId>
+          <artifactId>activiti-connector</artifactId>
+          <version>4.2.c</version>
+        </dependency>
+        <dependency>
+          <groupId>${alvex.share.groupId}</groupId>
+          <artifactId>activiti-connector</artifactId>
+          <version>4.2.c</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>compat-be</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>${alvex.repo.groupId}</groupId>
+          <artifactId>activiti-connector</artifactId>
+          <version>${alvex.compat.be}</version>
+        </dependency>
+        <dependency>
+          <groupId>${alvex.share.groupId}</groupId>
+          <artifactId>activiti-connector</artifactId>
+          <version>${alvex.compat.be}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
   <build>
     <plugins>
       <plugin>
