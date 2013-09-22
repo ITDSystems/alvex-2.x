@@ -205,9 +205,9 @@
     </profile>
     <profile>
       <id>compat-be</id>
-      <activation>
+      <!--activation>
         <activeByDefault>true</activeByDefault>
-      </activation>
+      </activation-->
       <dependencies>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
