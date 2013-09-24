@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Alvex Task Toolbar</shortname>
+  <description>Component for displaying common actions for all tasks</description>
+  <url>/components/alvex/task-toolbar</url>
+</webscript>

@@ -1,0 +1,42 @@
+.task-header
+{
+   clear: both;
+   padding: 0;
+   min-height: 4em;
+}
+
+.task-header h1
+{
+   float: left;
+   padding-left: 10px;
+   margin-bottom: 5px;
+}
+
+.task-header h3
+{
+   float: left;
+   clear: left;
+   padding-left: 10px;
+}
+
+.task-header .unassigned-message
+{
+   margin-bottom: 1em;
+   padding: 0.5em 1em;
+}
+
+.task-header .unassigned-message span
+{
+   background: left no-repeat url(../images/info-16.png);
+   padding: 1em 2em;
+}
+
+.task-header .clear
+{
+   clear: both;
+}
+
+.task-header .message-right
+{
+	float: right;
+}

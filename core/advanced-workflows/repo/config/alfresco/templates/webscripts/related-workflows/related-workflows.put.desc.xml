@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>related-workflows</shortname>
+  <description><![CDATA[
+  Creates new relation between workflows
+  ]]></description>
+  <url>/api/alvex/workflow/{srcWfId}/workflows</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

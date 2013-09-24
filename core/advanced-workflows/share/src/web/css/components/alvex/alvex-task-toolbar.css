@@ -1,0 +1,29 @@
+.task-toolbar.reassign-panel.yui-panel
+{
+   margin: 0;
+}
+
+.task-toolbar.reassign-panel.yui-panel .people-finder.list
+{
+   margin: 0;
+   padding: 0.1em 0 0.7em 0;
+}
+
+.task-toolbar.reassign-panel.yui-panel .people-finder.list .title
+{
+   display:none;
+}
+
+.task-toolbar .actions
+{
+   float: right;
+   padding-bottom: 0.5em;
+   padding-top: 0.5em;
+}
+
+.task-toolbar .links
+{
+   width: 30%;
+   float: right;
+   text-align: right;
+}

@@ -1,0 +1,56 @@
+.task-activities
+{
+   clear: both;
+   padding: 0;
+   min-height: 4em;
+}
+
+.task-activities h1
+{
+   float: left;
+   padding-left: 10px;
+   margin-bottom: 5px;
+}
+
+.task-activities h3
+{
+   float: left;
+   clear: left;
+   padding-left: 10px;
+}
+
+.task-activities .clear
+{
+   clear: both;
+}
+
+.task-activities .message-left
+{
+	float: left;
+}
+
+.task-activities .activities-header h2
+{
+	float: left;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-right: 1em;
+	padding-left: 1em;
+	cursor: pointer;
+	border: 1px solid;
+	border-color: #ccc;
+	-moz-top-left-border-radius: 1em;
+	-webkit-border-top-left-radius: 1em;
+	-khtml-top-left-border-radius: 1em;
+	border-top-left-radius: 1em;
+	-moz-top-right-border-radius: 1em;
+	-webkit-border-top-right-radius: 1em;
+	-khtml-top-right-border-radius: 1em;
+	border-top-right-radius: 1em;
+}
+
+.task-activities .line
+{
+	border-top: 1px solid;
+	border-color: #ccc;
+}

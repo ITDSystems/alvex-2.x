@@ -1,0 +1,12 @@
+<webscript>
+  <shortname>>workflow-discussion-relation</shortname>
+  <description><![CDATA[
+  Returns relations between workflows and discussions
+  ]]></description>
+  <url>/api/alvex/discussion/{discussionId}/workflows?exclude={exclude}</url>
+  <url>/api/alvex/workflow/{workflowId}/discussions?exclude={exclude}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

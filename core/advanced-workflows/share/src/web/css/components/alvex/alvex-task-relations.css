@@ -1,0 +1,68 @@
+.task-relations
+{
+   clear: both;
+   padding: 0;
+   min-height: 4em;
+}
+
+.task-relations h1
+{
+   float: left;
+   padding-left: 10px;
+   margin-bottom: 5px;
+}
+
+.task-relations h3
+{
+   float: left;
+   clear: left;
+   padding-left: 10px;
+}
+
+.task-relations .clear
+{
+   clear: both;
+}
+
+.task-relations .message-left
+{
+	float: left;
+}
+
+.task-relations .section-header
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-right: 2em;
+}
+
+.task-relations .section-action
+{
+	margin-top: 0.75em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog
+{
+	padding: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .attach-workflow-dialog-search
+{
+	padding-bottom: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .yui-dt thead
+{
+	display: none;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .attach-workflow-dialog-search input[type="text"]
+{
+	width: 350px;
+	line-height: 2em;
+	float: left;
+}
+
+.yui-skin-lightTheme .task-relations .yui-menu-button .push-button button {
+	background-image: none;
+}

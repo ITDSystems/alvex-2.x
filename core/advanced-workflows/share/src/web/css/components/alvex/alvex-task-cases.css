@@ -1,0 +1,137 @@
+.task-cases
+{
+   clear: both;
+   padding: 0;
+   min-height: 4em;
+}
+
+.task-cases h1
+{
+   float: left;
+   padding-left: 10px;
+   margin-bottom: 5px;
+}
+
+.task-cases h3
+{
+   float: left;
+   clear: left;
+   padding-left: 10px;
+}
+
+.task-cases .clear
+{
+   clear: both;
+}
+
+.task-cases .message-left
+{
+	float: left;
+}
+
+.task-cases .section-header
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-right: 2em;
+}
+
+.task-cases .section-action
+{
+	margin-top: 0.75em;
+}
+
+.task-cases div.case-item 
+{
+	float: left;
+	margin-left: 1em;
+	border: 1px solid;
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+	-khtml-border-radius: 1em;
+	border-radius: 1em;
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+	border-color: #ccc;
+}
+
+.task-cases .case-item span 
+{
+	line-height: 1.5em;
+	vertical-align: middle;
+	float: left;
+}
+
+.task-cases .action a
+{
+   cursor: pointer;
+   padding: 0em 0.75em;
+   visibility: hidden;
+}
+
+.task-cases .action div
+{
+   line-height: 1.5em;
+}
+
+.action span
+{
+	float: left;
+	line-height: 1em;
+}
+
+.action span.title
+{
+	display: none;
+}
+
+a.alvex-case-workflow-action
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.alvex-case-workflow-action,
+a:hover.alvex-case-workflow-action
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+div.onAttachCase a.alvex-case-workflow-action {
+	background-image: url(/share/res/components/images/add-icon-16.png);
+}
+
+div.onDetachCase a.alvex-case-workflow-action {
+	background-image: url(/share/res/components/images/remove-icon-16.png);
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog
+{
+	padding: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog .attach-case-dialog-search
+{
+	padding-bottom: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog .yui-dt thead
+{
+	display: none;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog .attach-case-dialog-search input[type="text"]
+{
+	width: 350px;
+	line-height: 2em;
+	float: left;
+}
+
+.yui-skin-lightTheme .task-cases .yui-menu-button button {
+	background-image: none;
+}

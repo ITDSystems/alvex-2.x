@@ -1,0 +1,33 @@
+.task-dates
+{
+   clear: both;
+   padding: 0;
+   min-height: 4em;
+   width: 300px;
+}
+
+.task-dates h2
+{
+	padding-bottom: 0.5em;
+	padding-top: 1.5em;
+}
+
+.task-dates label
+{
+	float: left;
+}
+
+.task-dates span
+{
+	float: right;
+}
+
+.task-dates .clear
+{
+   clear: both;
+}
+
+.task-dates .record
+{
+	margin-bottom: 0.25em;
+}

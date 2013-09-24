@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<template-instance>
+   <template-type>alvex/alvex-task-page</template-type>
+   <properties>
+      <pageFamily>documentlibrary</pageFamily>
+   </properties>
+
+   <components>
+      <!-- Title -->
+      <component>
+         <region-id>title</region-id>
+         <sub-components>
+            <sub-component id="default">
+               <evaluations>
+                  <!-- if referred from my tasks page: My Tasks title -->
+                  <evaluation id="tasks">
+                     <evaluators>
+                        <evaluator type="equals.component.evaluator">
+                           <params>
+                              <referrer>{referrer}</referrer>
+                              <tasks>tasks</tasks>
+                           </params>
+                        </evaluator>
+                     </evaluators>
+                     <url>/components/title/simple-title</url>
+                     <properties>
+                        <title>title.myTasks</title>
+                     </properties>
+                  </evaluation>
+                  <!-- if referred from my workflows page: My Workflows title -->
+                  <evaluation id="workflows">
+                     <evaluators>
+                        <evaluator type="equals.component.evaluator">
+                           <params>
+                              <referrer>{referrer}</referrer>
+                              <workflows>workflows</workflows>
+                           </params>
+                        </evaluator>
+                     </evaluators>
+                     <url>/components/title/simple-title</url>
+                     <properties>
+                        <title>title.myWorkflows</title>
+                     </properties>
+                  </evaluation>
+               </evaluations>
+            </sub-component>
+         </sub-components>
+      </component>
+   </components>
+
+</template-instance>
