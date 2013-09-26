@@ -19,16 +19,16 @@
 <@markup id="html">
    <@uniqueIdDiv>
       <div id="${el}-body" class="form-manager task-cases">
-         <div class="section-header message-left"><h2>${msg("header.cases")}</h2></div>
-         <div class="section-action message-left">
+         <div class="section-header"><h2>${msg("header.cases")}</h2></div>
+         <div id="${el}-cases-list" class=""></div>
+         <div class="clear"></div>
+         <div class="section-action">
             <span class="align-left yui-button yui-menu-button" id="${el}-add-case">
                <span class="first-child">
                   <button type="button" tabindex="0">${msg("action.addCase")}</button>
                </span>
             </span>
          </div>
-         <div class="clear"></div>
-         <div id="${el}-cases-list" class="message-left"></div>
       </div>
    </@>
 </@>

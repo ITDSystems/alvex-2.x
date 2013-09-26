@@ -137,6 +137,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 						   {
 							   var div = document.createElement("div");
 							   div.className = "case-item";
+							   //var img = document.createElement("img");
+							   //img.src = Alfresco.constants.URL_RESCONTEXT + "components/images/site-16.png";
 							   var span = document.createElement("span");
 							   span.innerHTML = '<a title="' + resp.json.data[a]['case']['description'] 
 									   + '" href="' + Alfresco.constants.URL_PAGECONTEXT 
@@ -154,6 +156,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 										+ me.id + '-detach-case-action-link" style="visibility: visible;" ' 
 										+ 'title="' + msg +'"><span class="title">' + msg + '</span></a></div>';
 			
+							   //div.appendChild( img );
 							   div.appendChild( span );
 							   div.appendChild( action );
 							   container.appendChild( div );

@@ -80,7 +80,7 @@ if (typeof Alvex == "undefined" || !Alvex)
    YAHOO.extend(Alvex.TaskRelations, Alfresco.component.ShareFormManager, 
    {
 
-      style: "bubbles", // options - "bubbles", "table"
+      style: "table", // options - "bubbles", "table"
 
       /**
        * Keeps track if this component is running an action or not

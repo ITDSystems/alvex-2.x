@@ -3,20 +3,13 @@
    clear: both;
    padding: 0;
    min-height: 4em;
+   width: 300px;  
 }
 
-.task-cases h1
+.task-cases h2
 {
-   float: left;
-   padding-left: 10px;
-   margin-bottom: 5px;
-}
-
-.task-cases h3
-{
-   float: left;
-   clear: left;
-   padding-left: 10px;
+	padding-bottom: 0.5em;
+	padding-top: 1.5em;
 }
 
 .task-cases .clear
@@ -29,19 +22,35 @@
 	float: left;
 }
 
-.task-cases .section-header
+/*.task-cases .section-header
 {
 	margin-top: 1em;
 	margin-bottom: 1em;
 	margin-right: 2em;
-}
+}*/
 
 .task-cases .section-action
 {
 	margin-top: 0.75em;
+	margin-left: 32px;
 }
 
-.task-cases div.case-item 
+.task-cases .section-action span
+{
+	border-style: none;
+}
+
+.task-cases .section-action .yui-button span
+{
+	border-style: none;
+}
+
+.task-cases .section-action button
+{
+	padding: 0px;
+}
+
+/*.task-cases div.case-item 
 {
 	float: left;
 	margin-left: 1em;
@@ -53,7 +62,7 @@
 	padding-left: 0.25em;
 	padding-right: 0.25em;
 	border-color: #ccc;
-}
+}*/
 
 .task-cases .case-item span 
 {
@@ -62,10 +71,19 @@
 	float: left;
 }
 
+/*.task-cases .case-item img
+{
+	float: left;
+	width: 24px;
+	height: 24px;
+	padding: 4px;
+}*/
+
 .task-cases .case-item span.case-site
 {
-	padding-left: 20px;
+	padding-left: 32px;
 	background: url(../images/site-16.png) no-repeat;
+	background-position: 8px 2px;
 }
 
 .task-cases .action a

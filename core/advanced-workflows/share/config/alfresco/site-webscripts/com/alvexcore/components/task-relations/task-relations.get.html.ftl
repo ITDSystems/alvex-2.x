@@ -20,7 +20,7 @@
    <@uniqueIdDiv>
       <div id="${el}-body" class="form-manager task-relations">
          <div class="section-header message-left"><h2>${msg("header.relatedWorkflows")}</h2></div>
-         <div class="section-action message-left">
+         <div class="section-action message-right">
             <span class="align-left yui-button yui-menu-button" id="${el}-attach-workflow">
                <span class="first-child push-button">
                   <button type="button" tabindex="0">${msg("action.attachWorkflow")}</button>
@@ -34,7 +34,7 @@
             <select id="${el}-start-workflow-menu"></select>
          </div>
          <div class="clear"></div>
-         <div id="${el}-related-workflows" class="message-left">
+         <div id="${el}-related-workflows" class="">
          </div>
       </div>
    </@>

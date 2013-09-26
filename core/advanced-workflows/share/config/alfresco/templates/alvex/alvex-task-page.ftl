@@ -14,12 +14,12 @@
       <div class="share-form" style="width: 850px; float: left;">
          <@region id="task-header" scope="page" />
          <@region id="task-form" scope="page" />
-         <@region id="task-cases" scope="page" />
          <@region id="task-relations" scope="page" />
          <@region id="task-activities" scope="page" />
       </div>
       <div class="share-form-column" style="float: left;">
          <@region id="task-dates" scope="page" />
+         <@region id="task-cases" scope="page" />
          <@region id="task-participants" scope="page" />
          <@region id="task-share" scope="page" />
       </div>

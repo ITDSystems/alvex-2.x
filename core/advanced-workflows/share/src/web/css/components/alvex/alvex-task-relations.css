@@ -29,6 +29,11 @@
 	float: left;
 }
 
+.task-relations .message-right
+{
+	float: right;
+}
+
 .task-relations .section-header
 {
 	margin-top: 1em;
@@ -84,6 +89,11 @@
 .task-relations .action div
 {
    line-height: 1.5em;
+}
+
+.task-relations table
+{
+	width: 100%;
 }
 
 .action span
