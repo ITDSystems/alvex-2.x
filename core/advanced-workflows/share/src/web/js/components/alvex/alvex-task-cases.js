@@ -142,6 +142,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 									   + '" href="' + Alfresco.constants.URL_PAGECONTEXT 
 									   + 'site/' + resp.json.data[a]['case']['shortName'] + '/dashboard">' 
 									   + resp.json.data[a]['case']['title'] + '</a>';
+							   span.className = 'case-site';
 							   var action = document.createElement("span");
 							   action.className = "action";
 			

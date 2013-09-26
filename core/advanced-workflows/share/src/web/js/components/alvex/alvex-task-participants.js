@@ -170,6 +170,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 	  {
 		  var cover = document.createElement("div");
 		  cover.className = "record";
+		  var img = document.createElement("img");
+		  img.src = Alfresco.constants.PROXY_URI + "slingshot/profile/avatar/" + person.userName;
 		  var label = document.createElement("label");
 		  var div = document.createElement("div");
 		  div.innerHTML = this.msg("label." + role);
@@ -177,6 +179,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				  '<a href=' + Alfresco.constants.URL_PAGECONTEXT + 'user/' + person.userName + '/profile>' 
 				  + person.firstName + ' ' + person.lastName + '</a>';
 		  
+		  cover.appendChild(img);
 		  cover.appendChild(label);
 		  cover.appendChild(div);
 		  return cover;

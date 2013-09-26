@@ -25,15 +25,21 @@
         {
                 var historyBody = document.getElementById("${el}-history");
                 var discussionBody = document.getElementById("${el}-discussion");
+                var historyHeader = document.getElementById("${el}-history-header");
+                var discussionHeader = document.getElementById("${el}-discussion-header");
                 if (name == "history")
                 {
                         historyBody.style.display = "";
                         discussionBody.style.display = "none";
+                        historyHeader.style.background = "#ccc";
+                        discussionHeader.style.background = "#fff";
                 }
                 else
                 {
                         historyBody.style.display = "none";
                         discussionBody.style.display = "";
+                        historyHeader.style.background = "#fff";
+                        discussionHeader.style.background = "#ccc";
                 }
                 YAHOO.Bubbling.fire("formVisibilityChanged");
         }
@@ -42,11 +48,11 @@
       <div id="${el}-body" class="form-manager task-activities">
 
          <div class="activities-header" id="${el}-activities-header">
-            <div class="" id="${el}-discussion-header">
-               <h2 onclick="showActivitiesSection('discussion');">${msg("header.workflowDiscussion")}</h2>
+            <div>
+               <h2 id="${el}-discussion-header" style="background: #ccc;" onclick="showActivitiesSection('discussion');">${msg("header.workflowDiscussion")}</h2>
             </div>
-            <div class="" id="${el}-history-header">
-               <h2 onclick="showActivitiesSection('history');">${msg("header.workflowHistory")}</h2>
+            <div>
+               <h2 id="${el}-history-header" onclick="showActivitiesSection('history');">${msg("header.workflowHistory")}</h2>
             </div>
          </div>
 

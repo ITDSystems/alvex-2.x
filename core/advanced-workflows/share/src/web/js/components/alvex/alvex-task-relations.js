@@ -80,6 +80,8 @@ if (typeof Alvex == "undefined" || !Alvex)
    YAHOO.extend(Alvex.TaskRelations, Alfresco.component.ShareFormManager, 
    {
 
+      style: "bubbles", // options - "bubbles", "table"
+
       /**
        * Keeps track if this component is running an action or not
        *
@@ -115,7 +117,10 @@ if (typeof Alvex == "undefined" || !Alvex)
       onWorkflowDetailedData: function (layer, args)
       {
          this.workflow = args[1];
-		 this.fillRelatedWorkflowTable();
+		 if( this.style === "table" )
+			this.fillRelatedWorkflowTable();
+		 else
+			 this.fillRelatedWorkflowList();
 		 this.createRelatedWorkflowButtons();
 	  },
 	
@@ -220,7 +225,23 @@ if (typeof Alvex == "undefined" || !Alvex)
 				}
 				return true;
 			};
+			var fnActionHandler1 = function fnActionHandler(layer, args)
+			{
+				var owner = YAHOO.Bubbling.getOwnerByTagName(args[1].anchor, "div");
+				if (owner !== null)
+				{
+					if (typeof me[owner.className] == "function")
+					{
+						args[1].stop = true;
+						var asset = owner.id;
+						me[owner.className].call(me, asset, owner);
+					}
+				}
+				return true;
+			};
+
 			YAHOO.Bubbling.addDefaultAction(this.id + "-attach-workflow-action-link", fnActionHandler, true);
+			YAHOO.Bubbling.addDefaultAction(this.id + "-cancel-workflow-action-link", fnActionHandler1, true);
 
 			var myColumnDefs = [
 				{key:'id', sortable:false, width:32, formatter: this.formatWorkflowAttachIconField},
@@ -280,7 +301,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var msg = this.parent.msg('action.attachWorkflow');
 			var clb = 'onAttachWorkflow';
 			
-			desc += '<div class="' + clb + '"><a href="" ' + 'class="alvex-case-workflow-action ' 
+			desc += '<div class="' + clb + '"><a href="" ' + 'class="alvex-related-workflow-action ' 
 					+ this.parent.id + '-attach-workflow-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			desc += '</div>';
@@ -337,7 +358,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						this.options.workflowsDataStore = [];
 						for( var w in resp.json.data )
 							this.options.workflowsDataStore.push(resp.json.data[w]);
-						this.widgets.workflowsDataTable.getDataSource().sendRequest('', 
+							this.widgets.workflowsDataTable.getDataSource().sendRequest('', 
 								{ 
 									success: this.widgets.workflowsDataTable.onDataReturnInitializeTable, 
 									scope: this.widgets.workflowsDataTable
@@ -378,13 +399,16 @@ if (typeof Alvex == "undefined" || !Alvex)
 							Alfresco.util.PopupManager.displayMessage( { 
 								text: resp.serverResponse.statusText });
 						}
-						me.options.dataSource.sendRequest(
-							null,
-							{
-								success: me.options.dataTable.onDataReturnInitializeTable, 
-								scope: me.options.dataTable
-							}
-						);
+						if( me.style === "table")
+							me.options.dataSource.sendRequest(
+								null,
+								{
+									success: me.options.dataTable.onDataReturnInitializeTable, 
+									scope: me.options.dataTable
+								}
+							);
+						else
+							me.fillRelatedWorkflowList();
 					},
 					scope:this
 				},
@@ -396,13 +420,16 @@ if (typeof Alvex == "undefined" || !Alvex)
 							Alfresco.util.PopupManager.displayMessage( { 
 								text: resp.serverResponse.statusText });
 						}
-						me.options.dataSource.sendRequest(
-							null,
-							{
-								success: me.options.dataTable.onDataReturnInitializeTable, 
-								scope: me.options.dataTable
-							}
-						);
+						if( me.style === "table" )
+							me.options.dataSource.sendRequest(
+								null,
+								{
+									success: me.options.dataTable.onDataReturnInitializeTable, 
+									scope: me.options.dataTable
+								}
+							);
+						else
+							me.fillRelatedWorkflowList();
 					},
 					scope:this
 				}
@@ -724,6 +751,76 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var elActions = Dom.get(this.id + "-actions-" + (oArgs.target.id));
 			Dom.addClass(elActions, "hidden");
 		},
+				
+				
+		fillRelatedWorkflowList: function()
+		{
+			var me = this;
+			var url = YAHOO.lang.substitute(
+				"{proxy}api/alvex/workflow/{workflowId}/workflows",
+				{
+					proxy: Alfresco.constants.PROXY_URI,
+					workflowId: this.workflow.id
+				}
+			);
+			 Alfresco.util.Ajax.jsonGet(
+			 {
+				url: url,
+				successCallback:
+				{
+				   fn: function(resp)
+				   {
+					   var container = Dom.get( me.id + "-related-workflows" );
+					   container.innerHTML = '';
+					   for( var a in resp.json.data )
+					   {
+							var link = YAHOO.lang.substitute(
+								'<a href="{page}workflow-details?workflowId={id}">{descr}</a>',
+								{
+									page: Alfresco.constants.URL_PAGECONTEXT,
+									id: resp.json.data[a].relatedWorkflow.id,
+									descr: YAHOO.lang.escapeHTML(resp.json.data[a].relatedWorkflow.description)
+								}
+							);
+						   
+						   var div = document.createElement("div");
+						   div.className = "related-workflow-item";
+						   var span = document.createElement("span");
+						   span.innerHTML = link;
+						   if( resp.json.data[a].relatedWorkflow.status === "in-progress" )
+							   span.className = "pending";
+						   else
+							   span.className = "completed";
+						   var action = document.createElement("span");
+						   action.className = "action";
+
+							var msg = me.msg('alvex.related_workflows.cancel');
+							var clb = 'cancelWorkflow';
+
+							action.innerHTML = '<div class="' + clb + '" id="' + resp.json.data[a].relatedWorkflow.id + '">' 
+									+ '<a href="" ' + 'class="alvex-related-workflow-action ' 
+									+ me.id + '-cancel-workflow-action-link" style="visibility: visible;" ' 
+									+ 'title="' + msg +'"><span class="title">' + msg + '</span></a></div>';
+
+						   div.appendChild( span );
+						   div.appendChild( action );
+						   container.appendChild( div );
+					   }
+				   },
+				   scope: this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						if (resp.serverResponse.statusText)
+							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+					},
+					scope: this
+				}
+			 });
+		},
+
 
 
 		cancelWorkflow: function (obj)

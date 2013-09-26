@@ -16,7 +16,8 @@
 {
    float: left;
    clear: left;
-   padding-left: 10px;
+   padding: 10px;
+   padding-top: 20px;
 }
 
 .task-activities .clear
@@ -53,4 +54,9 @@
 {
 	border-top: 1px solid;
 	border-color: #ccc;
+}
+
+.task-activities table
+{
+	width: 100%;
 }

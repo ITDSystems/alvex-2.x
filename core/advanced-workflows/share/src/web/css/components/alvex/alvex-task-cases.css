@@ -62,6 +62,12 @@
 	float: left;
 }
 
+.task-cases .case-item span.case-site
+{
+	padding-left: 20px;
+	background: url(../images/site-16.png) no-repeat;
+}
+
 .task-cases .action a
 {
    cursor: pointer;
