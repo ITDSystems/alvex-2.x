@@ -55,7 +55,7 @@ var pushCasesForWorkflow = function( workflowId, cases )
 		var relNode = workflowFolder.createNode(null, 'alvexcm:workflowRelation', 
 				{
 					'alvexcm:workflowInstance': workflowId, 
-					'alvexcm:relationType': 'case', 
+					'alvexcm:relationType': 'case-workflows', 
 					'alvexcm:relatedObject': caseId
 				}, 
 				'sys:children' );
