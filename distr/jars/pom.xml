@@ -118,16 +118,6 @@
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>share-generic-ui</artifactId>
-      <version>${share_generic_ui.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>share-generic-ui</artifactId>
-      <version>${share_generic_ui.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
       <artifactId>surf-evaluators</artifactId>
       <version>${surf_evaluators.version}</version>
     </dependency>
@@ -201,6 +191,16 @@
           <artifactId>activiti-connector</artifactId>
           <version>4.2.c</version>
         </dependency>
+        <dependency>
+          <groupId>${alvex.repo.groupId}</groupId>
+          <artifactId>share-generic-ui</artifactId>
+          <version>4.2.c</version>
+        </dependency>
+        <dependency>
+          <groupId>${alvex.share.groupId}</groupId>
+          <artifactId>share-generic-ui</artifactId>
+          <version>4.2.c</version>
+        </dependency>
       </dependencies>
     </profile>
     <profile>
@@ -217,6 +217,16 @@
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-connector</artifactId>
+          <version>${alvex.compat.be}</version>
+        </dependency>
+        <dependency>
+          <groupId>${alvex.repo.groupId}</groupId>
+          <artifactId>share-generic-ui</artifactId>
+          <version>${alvex.compat.be}</version>
+        </dependency>
+        <dependency>
+          <groupId>${alvex.share.groupId}</groupId>
+          <artifactId>share-generic-ui</artifactId>
           <version>${alvex.compat.be}</version>
         </dependency>
       </dependencies>

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <project>
-  <groupId>com.alvexcore.ce.repo</groupId>
+  <groupId>com.alvexcore.ce.share</groupId>
   <artifactId>share-generic-ui</artifactId>
-  <version>1.4</version>
+  <version>4.2.d</version>
   <parent>
-    <groupId>com.alvexcore.ce.repo</groupId>
+    <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>
     <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <name>Share Generic UI [Repo]</name>
+  <name>Share Generic UI [Share]</name>
   <repositories>
     <repository>
       <id>itd-repository</id>
@@ -26,7 +26,7 @@
   </pluginRepositories>
   <dependencies>
     <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
+      <groupId>${alvex.share.groupId}</groupId>
       <artifactId>extension-registry</artifactId>
       <version>${extension_registry.version}</version>
     </dependency>
@@ -36,6 +36,10 @@
       <plugin>
         <groupId>com.alvexcore.maven</groupId>
         <artifactId>alvex-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>yuicompressor-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

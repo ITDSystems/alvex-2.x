@@ -28,7 +28,6 @@
     <module>core/my-workflows-dashlet/repo</module>
     <module>core/orgchart/repo</module>
     <module>core/related-workflows/repo</module>
-    <module>core/share-generic-ui/repo</module>
     <module>core/surf-evaluators/repo</module>
     <module>core/tasks-extended-ui/repo</module>
     <module>core/uploader/repo</module>
@@ -44,7 +43,6 @@
     <module>core/my-workflows-dashlet/share</module>
     <module>core/orgchart/share</module>
     <module>core/related-workflows/share</module>
-    <module>core/share-generic-ui/share</module>
     <module>core/surf-evaluators/share</module>
     <module>core/tasks-extended-ui/share</module>
     <module>core/uploader/share</module>
@@ -61,6 +59,8 @@
       <modules>
         <module>core/activiti-connector/4.2.c/repo</module>
         <module>core/activiti-connector/4.2.c/share</module>
+        <module>core/share-generic-ui/4.2.c/repo</module>
+        <module>core/share-generic-ui/4.2.c/share</module>
       </modules>
     </profile>
     <profile>
@@ -71,6 +71,8 @@
       <modules>
         <module>core/activiti-connector/${alvex.compat.be}/repo</module>
         <module>core/activiti-connector/${alvex.compat.be}/share</module>
+        <module>core/share-generic-ui/${alvex.compat.be}/repo</module>
+        <module>core/share-generic-ui/${alvex.compat.be}/share</module>
       </modules>
     </profile>
   </profiles>

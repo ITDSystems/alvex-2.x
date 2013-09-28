@@ -1,0 +1,29 @@
+.action div{
+	float: left;
+	line-height: 1em;
+}
+
+.action span {
+	display: none;
+}
+
+a.alvex-site-manage-action-link
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.alvex-site-manage-action-link,
+a:hover.alvex-site-manage-action-link
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+div.onDeleteSite a.alvex-site-manage-action-link {
+	background-image: url(/share/res/components/images/delete-16.png);
+}
