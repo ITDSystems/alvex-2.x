@@ -18,11 +18,11 @@
 
 <@markup id="html">
    <@uniqueIdDiv>
-      <div class="page-title theme-bg-color-1 theme-border-1">
-         <h1 class="theme-color-3">
+      <div class="page-title theme-bg-color-1 theme-border-1" style="line-height: 32px;">
+         <h2 class="theme-color-3" style="float: left;">
             <span id="${el}-title">${msg(args.title)}</span>
             <span id="${el}-subtitle"><#if args.subtitle?? && msg(args.subtitle) != args.subtitle>${msg(args.subtitle)}</#if></span>
-         </h1>
+         </h2>
          <span id="${el}-body" class="task-list-toolbar toolbar">
             <span id="${el}-headerBar" class="header-bar flat-button theme-bg-2">
                <span class="header-actions">
