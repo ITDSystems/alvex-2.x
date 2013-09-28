@@ -1,4 +1,5 @@
 <#include "/org/alfresco/include/alfresco-template.ftl" />
+<#include "/alvex-meta.lib.ftl" />
 
 <@templateHeader>
    <@markup id="resizer">
@@ -11,8 +12,11 @@
 <@templateBody>
    <@markup id="alf-hd">
    <div id="alf-hd">
-      <@region id="header" scope="global" />
-      <@region id="task-title" scope="template" />
+      <#if useNewUI >
+         <@region id="share-header" scope="global" chromeless="true"/>
+      <#else>
+         <@region id="header" scope="global"/>
+      </#if>
    </div>
    </@>
    <@markup id="bd">
@@ -20,6 +24,7 @@
       <div class="yui-t1" id="alfresco-myworkflows">
          <div id="yui-main">
             <div class="yui-b" id="alf-content">
+               <@region id="task-title" scope="template" />
                <@region id="list" scope="template" />
             </div>
          </div>

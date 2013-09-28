@@ -1,12 +1,17 @@
 <#include "/org/alfresco/include/alfresco-template.ftl" />
+<#include "/alvex-meta.lib.ftl" />
 
 <@templateHeader />
 
 <@templateBody>
 	<div id="alf-hd">
-		<@region id="header" scope="global" />
-		<@region id="title" scope="template" />
-		<@region id="navigation" scope="template" />
+		<#if useNewUI >
+			<@region id="share-header" scope="global" chromeless="true"/>
+		<#else>
+			<@region id="header" scope="global" />
+			<@region id="title" scope="template" />
+			<@region id="navigation" scope="template" />
+		</#if>
 	</div>
 	<div id="bd">
 		<@region id="tasks-view" scope="template"/>

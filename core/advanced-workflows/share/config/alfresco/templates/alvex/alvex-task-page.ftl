@@ -1,11 +1,17 @@
 <#include "/org/alfresco/include/alfresco-template.ftl" />
+<#include "/alvex-meta.lib.ftl" />
+
 <@templateHeader />
 
 <@templateBody>
    <@markup id="alf-hd">
    <div id="alf-hd">
-      <@region id="header" scope="global"/>
-      <@region id="title" scope="template"/>
+      <#if useNewUI >
+         <@region id="share-header" scope="global" chromeless="true"/>
+      <#else>
+         <@region id="header" scope="global"/>
+         <@region id="title" scope="template"/>
+      </#if>
    </div>
    </@>
    <@markup id="bd">
