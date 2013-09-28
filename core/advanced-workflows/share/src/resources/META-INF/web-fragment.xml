@@ -5,14 +5,11 @@
 	<filter>
 		<description>Performs Alvex specific page redirects.</description>
 		<filter-name>AlvexUrlRewriteFilter</filter-name>
-		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+		<!-- We use custom class with overloaded configuration loader -->
+		<filter-class>com.alvexcore.share.tools.AlvexUrlRewriteFilter</filter-class>
 		<init-param>
 			<param-name>confPath</param-name>
-			<!-- TODO: we need to load conf xml from jar, but it does not work now.
-			See https://code.google.com/p/urlrewritefilter/source/browse/trunk/src/java/org/tuckey/web/filters/urlrewrite/UrlRewriteFilter.java?r=248#261
-			So, current impl requires manual placing alvex-advanced-workflows-urlrewrite.xml under WEB-INF/
-			-->
-			<param-value>/WEB-INF/alvex-advanced-workflows-urlrewrite.xml</param-value>
+			<param-value>alvex-advanced-workflows-urlrewrite.xml</param-value>
 		</init-param>
 		<init-param>
 			<param-name>logLevel</param-name>
