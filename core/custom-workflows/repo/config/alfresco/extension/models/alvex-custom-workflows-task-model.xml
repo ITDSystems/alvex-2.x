@@ -5,13 +5,12 @@
 		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
 		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
 		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
-		<import uri="http://alvexcore.com/prefix/alvexrwf" prefix="alvexrwf" />
-		<import uri="http://alvexcore.com/prefix/alvexwfd" prefix="alvexwfd" />
 	</imports>
 	<namespaces>
 		<namespace prefix="alvexwf"
 			uri="http://alvexcore.com/prefix/alvexwf" />
 	</namespaces>
+	
 	<!--List of types -->
 	<types>
 		<!--Type for alvexwf:startTask task -->
@@ -27,9 +26,10 @@
 			<mandatory-aspects>
 				<aspect>bpm:assignee</aspect>
 				<aspect>alvexwf:assignees</aspect>
-				<aspect>alvexwfd:discussable</aspect>
+				<aspect>alvexwf:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
+		
 		<!--Type for alvexwf:executeTask task -->
 		<type name="alvexwf:executeTask">
 			<parent>bpm:workflowTask</parent>
@@ -41,19 +41,18 @@
 			</overrides>
 			<!--Task mandatory aspects -->
 			<mandatory-aspects>
-				<aspect>alvexrwf:relatedWorkflows</aspect>
-				<aspect>alvexwfd:discussable</aspect>
+				<aspect>alvexwf:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
+		
 		<!--Type for alvexwf:assistTask task -->
 		<type name="alvexwf:assistTask">
 			<parent>bpm:workflowTask</parent>
-			<!--Task mandatory aspects -->
 			<mandatory-aspects>
-				<aspect>alvexrwf:relatedWorkflows</aspect>
-				<aspect>alvexwfd:discussable</aspect>
+				<aspect>alvexwf:taskDetails</aspect>
 			</mandatory-aspects>
-		</type>		
+		</type>
+		
 		<!--Type for alvexwf:controlTask task -->
 		<type name="alvexwf:controlTask">
 			<parent>bpm:activitiOutcomeTask</parent>
@@ -80,10 +79,11 @@
 				</property>
 			</overrides>
 			<mandatory-aspects>
-				<aspect>alvexwfd:discussable</aspect>
+				<aspect>alvexwf:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
 	</types>
+	
 	<aspects>
 		<aspect name="alvexwf:assignees">
 			<associations>
@@ -99,6 +99,13 @@
 					</target>
 				</association>
 			</associations>
+		</aspect>
+		<aspect name="alvexwf:taskDetails">
+			<properties>
+				<property name="alvexwf:description">
+					<type>d:text</type>
+				</property>
+			</properties>
 		</aspect>
 	</aspects>
 </model>
