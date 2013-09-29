@@ -65,10 +65,12 @@ if (typeof Alvex == "undefined" || !Alvex)
       this.options = YAHOO.lang.merge(this.options, Alvex.TaskParticipants.superclass.options);
       Alfresco.util.ComponentManager.reregister(this);
       this.isRunning = false;
-      this.taskId = null;
+	  this.task = null;
+      this.processingTask = false;
 
       /* Decoupled event listeners */
       YAHOO.Bubbling.on("taskDetailedData", this.onTaskDetailedData, this);
+	  YAHOO.Bubbling.on("workflowDetailedData", this.onWorkflowDetailedData, this);
 
       return this;
    };
@@ -113,13 +115,11 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onTaskDetailedData: function TEH_onTaskDetailedData(layer, args)
       {
-         // Hide button on the bottom of the form
-         // Dom.addClass(Selector.query(".form-buttons", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), "hidden");
-
          var task = args[1];
-
-         // Save task id so we can use it when invoking actions later
-         this.taskId = task.id;
+		 if( !task.id )
+			 return;
+		 this.task = task;
+		 this.processingTask = true;
 
 		var me = this;
          Alfresco.util.Ajax.jsonGet(
@@ -131,26 +131,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					   fn: function(resp)
 					   {
 						   YAHOO.Bubbling.fire("workflowDetailedData", resp.json.data);
-						   var initiator = resp.json.data.initiator;
-						   var assignee = task.owner;
-						   var assignees = [];
-						   for( var t in resp.json.data.tasks )
-						   {
-							   var user = resp.json.data.tasks[t].owner;
-							   var notSeenBefore = true;
-							   if(user.userName === initiator.userName || user.userName === assignee.userName)
-								   notSeenBefore = false;
-							   for( var a in assignees )
-								   if( user.userName === assignees[a].userName )
-									   notSeenBefore = false;
-							   if( notSeenBefore )
-									assignees.push(user);
-						   }
-						   var container = Dom.get( me.id + "-people-list" );
-						   container.appendChild( this.createUserElement(initiator, "initiator") );
-						   container.appendChild( this.createUserElement(assignee, "assignee") );
-						   for( var a in assignees )
-							   container.appendChild( this.createUserElement(assignees[a], "otherTaskAssignee") );
+						   me.processWorkflowData(resp.json.data);
 					   },
 					   scope: this
 					},
@@ -165,6 +146,41 @@ if (typeof Alvex == "undefined" || !Alvex)
 					}
 				 });
       },
+	  
+	  onWorkflowDetailedData: function(layer, args)
+	  {
+		  if( this.processingTask )
+			  return;
+		  var workflow = args[1];
+		  if( !workflow.id )
+			 return;
+		  this.processWorkflowData(workflow);
+	  },
+	  
+	  processWorkflowData: function(workflow)
+	  {
+		   var initiator = workflow.initiator;
+		   var assignee = this.task;
+		   var assignees = [];
+		   for( var t in workflow.tasks )
+		   {
+			   var user = workflow.tasks[t].owner;
+			   var notSeenBefore = true;
+			   if(user.userName === initiator.userName || (assignee != null && user.userName === assignee.userName))
+				   notSeenBefore = false;
+			   for( var a in assignees )
+				   if( user.userName === assignees[a].userName )
+					   notSeenBefore = false;
+			   if( notSeenBefore )
+					assignees.push(user);
+		   }
+		   var container = Dom.get( this.id + "-people-list" );
+		   container.appendChild( this.createUserElement(initiator, "initiator") );
+		   if(assignee != null)
+				container.appendChild( this.createUserElement(assignee, "assignee") );
+		   for( var a in assignees )
+			   container.appendChild( this.createUserElement(assignees[a], "otherTaskAssignee") );
+	  },
 	  
 	  createUserElement: function(person, role)
 	  {

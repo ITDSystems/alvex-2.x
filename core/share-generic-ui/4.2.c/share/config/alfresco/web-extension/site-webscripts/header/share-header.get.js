@@ -1,4 +1,4 @@
-<import resource="classpath:/alfresco/web-extension/site-webscripts/header/share-header.lib.js">
+<import resource="classpath:alfresco/web-extension/site-webscripts/header/share-header.lib.js">
 
 model.jsonModel = {
    rootNodeId: "share-header",

@@ -37,7 +37,8 @@
    <@markup id="alf-ft">
    <div id="alf-ft">
       <@region id="footer" scope="global"/>
-      <@region id="data-loader" scope="page" />
+      <@region id="task-data-loader" scope="page" />
+      <@region id="workflow-data-loader" scope="page" />
    </div>
    </@>
 </@>

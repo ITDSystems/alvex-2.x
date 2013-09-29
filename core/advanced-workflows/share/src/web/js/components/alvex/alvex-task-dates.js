@@ -69,6 +69,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
       /* Decoupled event listeners */
       YAHOO.Bubbling.on("taskDetailedData", this.onTaskDetailedData, this);
+	  YAHOO.Bubbling.on("workflowDetailedData", this.onWorkflowDetailedData, this);
 
       return this;
    };
@@ -113,14 +114,22 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onTaskDetailedData: function TEH_onTaskDetailedData(layer, args)
       {
-         // Hide button on the bottom of the form
-         // Dom.addClass(Selector.query(".form-buttons", this.id.replace('data-header','data-form').replace(/task-edit.*/, 'task-edit'), true), "hidden");
-
          var task = args[1];
+		 if( !task.id )
+			 return;
+		 this.showDates(task);
+	  },
 
-         // Save task id so we can use it when invoking actions later
-         this.taskId = task.id;
-
+	  onWorkflowDetailedData: function(layer, args)
+	  {
+		  var workflow = args[1];
+		  if( !workflow.id )
+			 return;
+		  this.showDates(workflow.tasks[0]);
+	  },
+	  
+	  showDates: function(task)
+	  {
          // Display task information
          Selector.query("span", this.id + "-due", true).innerHTML 
 							= this.getDateString(task.properties["bpm_dueDate"]);

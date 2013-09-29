@@ -24,7 +24,7 @@
             <div>
 
                <span class="<#if (page.url.args.myTasksLinkBack! == "true")>backLink<#else>forwardLink</#if>">
-                  <#if (page.url.args.referrer == "workflows")>
+                  <#if (page.url.args.referrer?? && page.url.args.referrer == "workflows")>
                      <a href="${siteURL("my-workflows")}">${msg("link.myWorkflows")}</a>
                   <#else>
                      <a href="${siteURL("my-tasks")}">${msg("link.myTasks")}</a>

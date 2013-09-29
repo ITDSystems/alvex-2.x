@@ -69,6 +69,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
       /* Decoupled event listeners */
       YAHOO.Bubbling.on("taskDetailedData", this.onTaskDetailedData, this);
+	  YAHOO.Bubbling.on("workflowDetailedData", this.onWorkflowDetailedData, this);
 
       return this;
    };
@@ -105,6 +106,20 @@ if (typeof Alvex == "undefined" || !Alvex)
       {
 
       },      
+			  
+	  onWorkflowDetailedData: function(layer, args)
+	  {
+		 var workflow = args[1];
+		 if( ! workflow.id )
+			 return;
+
+         // Display task information
+         Selector.query("h1 span", this.id + "-title", true).innerHTML = $html(workflow.message);
+         Selector.query("h3 span", this.id + "-subtitle", true).innerHTML = $html(workflow.description);
+		 
+         Selector.query("h3 span", this.id + "-prio", true).innerHTML = $html(workflow.tasks[0].propertyLabels.bpm_priority);
+         Selector.query("h3 span", this.id + "-status", true).innerHTML = ( workflow.isActive ? this.msg("label.inProgress") : this.msg("label.completed") );
+	  },
 
       /**
        * Event handler called when the "taskDetailedData" event is received
@@ -120,6 +135,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          Dom.addClass(formButEl, "hidden");
 
          var task = args[1];
+		 if( ! task.id )
+			 return;
 
          // Save task id so we can use it when invoking actions later
          this.taskId = task.id;

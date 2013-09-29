@@ -23,10 +23,11 @@
       <!-- Data Form -->
       <component>
          <region-id>task-form</region-id>
-         <url>/components/form</url>
+         <url>/components/alvex/task-form</url>
          <properties>
             <itemKind>task</itemKind>
-            <itemId>{taskId}</itemId>
+            <taskId>{taskId}</taskId>
+            <workflowId>{workflowId}</workflowId>
             <mode>edit</mode>
             <formUI>true</formUI>
             <submitType>json</submitType>
@@ -67,11 +68,20 @@
 
       <!-- Data Loader -->
       <component>
-         <region-id>data-loader</region-id>
+         <region-id>task-data-loader</region-id>
          <url>/components/data/data-loader</url>
          <properties>
             <url>api/task-instances/{taskId}?detailed=true</url>
             <eventName>taskDetailedData</eventName>
+            <eventData>data</eventData>
+         </properties>
+      </component>
+      <component>
+         <region-id>workflow-data-loader</region-id>
+         <url>/components/data/data-loader</url>
+         <properties>
+            <url>api/workflow-instances/{workflowId}?includeTasks=true</url>
+            <eventName>workflowDetailedData</eventName>
             <eventData>data</eventData>
          </properties>
       </component>

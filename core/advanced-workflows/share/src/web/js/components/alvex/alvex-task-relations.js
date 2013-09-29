@@ -654,7 +654,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		formatDescriptionField: function (elLiner, oRecord, oColumn, oData)
 		{
 			elLiner.innerHTML = YAHOO.lang.substitute(
-				'<a href="{page}/workflow-details?workflowId={id}">{descr}</a>',
+				'<a href="{page}workflow-details?workflowId={id}">{descr}</a>',
 				{
 					page: Alfresco.constants.URL_PAGECONTEXT,
 					id: oRecord._oData["relatedWorkflow.id"],
