@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.repo</groupId>
   <artifactId>workflows-discussions</artifactId>
-  <version>1.3</version>
+  <version>1.6</version>
   <parent>
     <groupId>com.alvexcore.ce.repo</groupId>
     <artifactId>master-pom</artifactId>

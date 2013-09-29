@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project>
   <groupId>com.alvexcore.ce.repo</groupId>
-  <artifactId>share-generic-ui</artifactId>
-  <version>4.2.d</version>
+  <artifactId>share-4.2.d-generic-ui</artifactId>
+  <version>1.6</version>
   <parent>
     <groupId>com.alvexcore.ce.repo</groupId>
     <artifactId>master-pom</artifactId>

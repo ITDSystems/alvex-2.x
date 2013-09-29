@@ -1,4 +1,4 @@
-<#assign alvexVersion = "2013.05">
+<#assign alvexVersion = "2013.09">
 <#assign alvexEdition = "Community">
 <#assign alvexCodename = "dev">
 
