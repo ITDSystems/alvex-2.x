@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="activitiBasicWorkflow" name="Basic workflow">
+  <process id="alvex-arbitrary-task" name="Basic workflow">
     <extensionElements>
       <activiti:executionListener event="start" class="org.alfresco.repo.workflow.activiti.listener.ScriptExecutionListener">
         <activiti:field name="script">
-          <activiti:string>execution.setVariable('alvexwf_createControlTask', execution.getVariable('alvexwf_confirmationRequired') == true);
+          <activiti:string>execution.setVariable('alvexwfat_createControlTask', execution.getVariable('alvexwfat_confirmationRequired') == true);
 						var kinds = new java.util.ArrayList();
 						var names = new java.util.ArrayList();
-						if (typeof alvexwf_assignees != 'undefined')
-							for (var i = 0; i &lt; alvexwf_assignees.size(); i++)
+						if (typeof alvexwfat_assignees != 'undefined')
+							for (var i = 0; i &lt; alvexwfat_assignees.size(); i++)
 							{
-								names.add(alvexwf_assignees.get(i).properties.userName);
+								names.add(alvexwfat_assignees.get(i).properties.userName);
 								kinds.add('assist');
 							}
 						kinds.add('main');
-						execution.setVariable('alvexwf_assistants', names);
-						execution.setVariable('alvexwf_subprocessKinds', kinds);
-						execution.setVariable('alvexwf_mainTaskDone', false);</activiti:string>
+						execution.setVariable('alvexwfat_assistants', names);
+						execution.setVariable('alvexwfat_subprocessKinds', kinds);
+						execution.setVariable('alvexwfat_mainTaskDone', false);</activiti:string>
         </activiti:field>
       </activiti:executionListener>
     </extensionElements>
-    <startEvent id="alfrescoStartevent1" name="Alfresco start" activiti:formKey="alvexwf:startTask"></startEvent>
+    <startEvent id="alfrescoStartevent1" name="Alfresco start" activiti:formKey="alvexwfat:startTask"></startEvent>
     <subProcess id="subprocess1" name="">
-      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${alvexwf_subprocessKinds}" activiti:elementVariable="alvexwf_subprocessKind">
-        <completionCondition>${alvexwf_mainTaskDone}</completionCondition>
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${alvexwfat_subprocessKinds}" activiti:elementVariable="alvexwfat_subprocessKind">
+        <completionCondition>${alvexwfat_mainTaskDone}</completionCondition>
       </multiInstanceLoopCharacteristics>
       <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-      <userTask id="alfrescoUsertask1" name="Perform a task" activiti:assignee="${executeTaskAssignee}" activiti:formKey="alvexwf:executeTask">
+      <userTask id="alfrescoUsertask1" name="Perform a task" activiti:assignee="${executeTaskAssignee}" activiti:formKey="alvexwfat:executeTask">
         <extensionElements>
           <activiti:taskListener event="create" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
             <activiti:field name="script">
@@ -43,11 +43,11 @@
           </activiti:taskListener>
         </extensionElements>
       </userTask>
-      <userTask id="alfrescoUsertask3" name="Control" activiti:assignee="${initiator.properties.userName}" activiti:formKey="alvexwf:controlTask">
+      <userTask id="alfrescoUsertask3" name="Control" activiti:assignee="${initiator.properties.userName}" activiti:formKey="alvexwfat:controlTask">
         <extensionElements>
           <activiti:taskListener event="complete" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
             <activiti:field name="script">
-              <activiti:string>execution.setVariable('alvexwf_controlOutcome', task.getVariableLocal('alvexwf_controlOutcome'));</activiti:string>
+              <activiti:string>execution.setVariable('alvexwfat_controlOutcome', task.getVariableLocal('alvexwfat_controlOutcome'));</activiti:string>
             </activiti:field>
           </activiti:taskListener>
           <activiti:taskListener event="create" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
@@ -68,7 +68,7 @@
         <extensionElements>
           <activiti:executionListener event="start" class="org.alfresco.repo.workflow.activiti.listener.ScriptExecutionListener">
             <activiti:field name="script">
-              <activiti:string>execution.setVariable('alvexwf_mainTaskDone', true);</activiti:string>
+              <activiti:string>execution.setVariable('alvexwfat_mainTaskDone', true);</activiti:string>
             </activiti:field>
           </activiti:executionListener>
         </extensionElements>
@@ -77,7 +77,7 @@
       <startEvent id="startevent1" name="Start"></startEvent>
       <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
       <endEvent id="endevent1" name="End"></endEvent>
-      <userTask id="usertask10" name="Assist" activiti:assignee="${assigneeName}" activiti:formKey="alvexwf:assistTask">
+      <userTask id="usertask10" name="Assist" activiti:assignee="${assigneeName}" activiti:formKey="alvexwfat:assistTask">
         <extensionElements>
           <activiti:taskListener event="create" class="org.alfresco.repo.workflow.activiti.tasklistener.ScriptTaskListener">
             <activiti:field name="script">
@@ -90,18 +90,18 @@
         </extensionElements>
       </userTask>
       <sequenceFlow id="flow12" name="Accepted" sourceRef="exclusivegateway3" targetRef="alfrescoScripttask10">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwf_controlOutcome == 'accepted'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwfat_controlOutcome == 'accepted'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow15" name="Rejected" sourceRef="exclusivegateway3" targetRef="alfrescoScripttask1">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwf_controlOutcome == 'rejected'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwfat_controlOutcome == 'rejected'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow20" name="" sourceRef="alfrescoUsertask1" targetRef="exclusivegateway2"></sequenceFlow>
       <sequenceFlow id="flow11" name="" sourceRef="alfrescoUsertask3" targetRef="exclusivegateway3"></sequenceFlow>
       <sequenceFlow id="flow9" name="" sourceRef="exclusivegateway2" targetRef="alfrescoUsertask3">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwf_createControlTask == true}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwfat_createControlTask == true}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow27" name="" sourceRef="exclusivegateway2" targetRef="alfrescoScripttask10">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwf_createControlTask == false}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwfat_createControlTask == false}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow19" name="" sourceRef="alfrescoScripttask1" targetRef="alfrescoUsertask1">
         <extensionElements>
@@ -115,18 +115,18 @@ execution.setVariable('executeTaskAssignee', realAssignee ? realAssignee : bpm_a
       </sequenceFlow>
       <sequenceFlow id="flow29" name="" sourceRef="startevent1" targetRef="exclusivegateway4"></sequenceFlow>
       <sequenceFlow id="flow30" name="" sourceRef="exclusivegateway4" targetRef="alfrescoScripttask1">
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwf_subprocessKind == 'main'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwfat_subprocessKind == 'main'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow32" name="" sourceRef="alfrescoScripttask10" targetRef="endevent1"></sequenceFlow>
       <sequenceFlow id="flow35" name="" sourceRef="exclusivegateway4" targetRef="usertask10">
         <extensionElements>
           <activiti:executionListener event="take" class="org.alfresco.repo.workflow.activiti.listener.ScriptExecutionListener">
             <activiti:field name="script">
-              <activiti:string>execution.setVariable('assigneeName', alvexwf_assistants.get(loopCounter));</activiti:string>
+              <activiti:string>execution.setVariable('assigneeName', alvexwfat_assistants.get(loopCounter));</activiti:string>
             </activiti:field>
           </activiti:executionListener>
         </extensionElements>
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwf_subprocessKind == 'assist'}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${alvexwfat_subprocessKind == 'assist'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="flow36" name="" sourceRef="usertask10" targetRef="endevent1"></sequenceFlow>
     </subProcess>
@@ -134,8 +134,8 @@ execution.setVariable('executeTaskAssignee', realAssignee ? realAssignee : bpm_a
     <sequenceFlow id="flow34" name="" sourceRef="alfrescoStartevent1" targetRef="subprocess1"></sequenceFlow>
     <sequenceFlow id="flow37" name="" sourceRef="subprocess1" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_activitiBasicWorkflow">
-    <bpmndi:BPMNPlane bpmnElement="activitiBasicWorkflow" id="BPMNPlane_activitiBasicWorkflow">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_alvex-arbitrary-task">
+    <bpmndi:BPMNPlane bpmnElement="alvex-arbitrary-task" id="BPMNPlane_alvex-arbitrary-task">
       <bpmndi:BPMNShape bpmnElement="alfrescoStartevent1" id="BPMNShape_alfrescoStartevent1">
         <omgdc:Bounds height="35" width="35" x="160" y="370"></omgdc:Bounds>
       </bpmndi:BPMNShape>

@@ -7,7 +7,7 @@
 			<list>
 				<props>
 					<prop key="engineId">activiti</prop>
-					<prop key="location">alfresco/extension/workflows/alvex-basic-workflow.bpmn20.xml</prop>
+					<prop key="location">alfresco/extension/workflows/alvex-arbitrary-task.bpmn20.xml</prop>
 					<prop key="mimetype">text/xml</prop>
 					<prop key="redeploy">false</prop>
 				</props>
@@ -22,7 +22,7 @@
 		<!-- Register models -->
 		<property name="models">
 			<list>
-				<value>alfresco/extension/models/alvex-custom-workflows-task-model.xml</value>
+				<value>alfresco/extension/models/alvex-arbitrary-task-task-model.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -33,9 +33,9 @@
 	<bean id="alvex-custom-workflows-permission-manager1" parent="alvex-custom-workflows-permission-manager">
 		<property name="matches">
 			<list>
-				<value>task-assign-after-change:.*@activitiBasicWorkflow</value>
-				<value>task-done:.*@activitiBasicWorkflow</value>
-				<value>process-start@activitiBasicWorkflow</value>
+				<value>task-assign-after-change:.*@alvex-arbitrary-task</value>
+				<value>task-done:.*@alvex-arbitrary-task</value>
+				<value>process-start@alvex-arbitrary-task</value>
 			</list>
 		</property>
 	</bean>
@@ -44,7 +44,7 @@
 		parent="alvex-activiti-connector-activiti-listener">
 		<property name="matches">
 			<list>
-				<value>process-start@activitiBasicWorkflow</value>
+				<value>process-start@alvex-arbitrary-task</value>
 			</list>
 		</property>
 	</bean>

@@ -1,6 +1,6 @@
 <alfresco-config>
-	<!--Form config for alvexwf:startTask rendering -->
-	<config evaluator="string-compare" condition="activiti$activitiBasicWorkflow">
+	<!--Form config for alvexwfat:startTask rendering -->
+	<config evaluator="string-compare" condition="activiti$alvex-arbitrary-task">
 		<forms>
 			<form>
 				<!--List of fields to render -->
@@ -8,10 +8,10 @@
 					<show id="bpm:workflowDescription" />
 					<show id="bpm:workflowDueDate" />
 					<show id="bpm:assignee" />
-					<show id="alvexwf:assignees" />
-					<show id="alvexwf:description" />
+					<show id="alvexwfat:assignees" />
+					<show id="alvexwfat:description" />
 					<show id="packageItems" />
-					<show id="alvexwf:confirmationRequired" />
+					<show id="alvexwfat:confirmationRequired" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
 				<appearance>
@@ -29,10 +29,10 @@
 					<field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="task-info">
 						<control template="/orgchart-picker.ftl" />
 					</field>
-					<field id="alvexwf:assignees" label-id="alvex.workflow.bpm_assignees" set="task-info">
+					<field id="alvexwfat:assignees" label-id="alvex.workflow.bpm_assignees" set="task-info">
 						<control template="/orgchart-picker.ftl" />
 					</field>
-					<field id="alvexwf:description" label-id="label.description" set="documents">
+					<field id="alvexwfat:description" label-id="label.description" set="documents">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 98%</control-param>
 						</control>
@@ -43,14 +43,14 @@
 							<control-param name="createUploadDirectory">true</control-param>
 						</control>
 					</field>
-					<field id="alvexwf:confirmationRequired" label-id="alvex.workflow.alvexwf_confirmationRequired" set="documents" />
+					<field id="alvexwfat:confirmationRequired" label-id="alvex.workflow.alvexwfat_confirmationRequired" set="documents" />
 				</appearance>
 			</form>
 		</forms>
 	</config>
 
 	<!--Form config to display workflow info -->
-	<config evaluator="task-type" condition="alvexwf:startTask">
+	<config evaluator="task-type" condition="alvexwfat:startTask">
 		<forms>
 			<form>
 				<!--List of fields to render -->
@@ -58,10 +58,10 @@
 					<show id="bpm:workflowDescription" />
 					<show id="bpm:workflowDueDate" />
 					<show id="bpm:assignee" />
-					<show id="alvexwf:assignees" />
-					<show id="alvexwf:description" />
+					<show id="alvexwfat:assignees" />
+					<show id="alvexwfat:description" />
 					<show id="packageItems" />
-					<show id="alvexwf:confirmationRequired" />
+					<show id="alvexwfat:confirmationRequired" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
 				<appearance>
@@ -79,10 +79,10 @@
 					<field id="bpm:assignee" label-id="alvex.workflow.bpm_assignee" set="task-info">
 						<control template="/orgchart-picker.ftl" />
 					</field>
-					<field id="alvexwf:assignees" label-id="alvex.workflow.bpm_assignees" set="task-info">
+					<field id="alvexwfat:assignees" label-id="alvex.workflow.bpm_assignees" set="task-info">
 						<control template="/orgchart-picker.ftl" />
 					</field>
-					<field id="alvexwf:description" label-id="label.description" set="documents">
+					<field id="alvexwfat:description" label-id="label.description" set="documents">
 						<control template="/org/alfresco/components/form/controls/textarea.ftl">
 							<control-param name="style">width: 98%</control-param>
 						</control>
@@ -93,19 +93,19 @@
 							<control-param name="createUploadDirectory">true</control-param>
 						</control>
 					</field>
-					<field id="alvexwf:confirmationRequired" label-id="alvex.workflow.alvexwf_confirmationRequired" set="documents" />
+					<field id="alvexwfat:confirmationRequired" label-id="alvex.workflow.alvexwfat_confirmationRequired" set="documents" />
 				</appearance>
 			</form>
 		</forms>
 	</config>
 	
-	<!--Form config for alvexwf:executeTask rendering -->
-	<config evaluator="task-type" condition="alvexwf:executeTask">
+	<!--Form config for alvexwfat:executeTask rendering -->
+	<config evaluator="task-type" condition="alvexwfat:executeTask">
 		<forms>
 			<form>
 				<!--List of fields to render -->
 				<field-visibility>
-					<show id="alvexwf:description" />
+					<show id="alvexwfat:description" />
 					<show id="packageItems" />
 					<show id="transitions" />
 				</field-visibility>
@@ -114,7 +114,7 @@
 					<!--Sets definition -->
 					<set id="documents" appearance="" />
 					<!--Fields -->
-					<field id="alvexwf:description" label-id="label.description" set="documents" read-only="true">
+					<field id="alvexwfat:description" label-id="label.description" set="documents" read-only="true">
 						<control template="/alvex-mltext.ftl">
 							<control-param name="style">width: 98%</control-param>
 						</control>
@@ -131,13 +131,13 @@
 		</forms>
 	</config>
 	
-	<!--Form config for alvexwf:executeTask rendering -->
-	<config evaluator="task-type" condition="alvexwf:assistTask">
+	<!--Form config for alvexwfat:executeTask rendering -->
+	<config evaluator="task-type" condition="alvexwfat:assistTask">
 		<forms>
 			<form>
 				<!--List of fields to render -->
 				<field-visibility>
-					<show id="alvexwf:description" />
+					<show id="alvexwfat:description" />
 					<show id="packageItems" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
@@ -145,7 +145,7 @@
 					<!--Sets definition -->
 					<set id="documents" appearance="" />
 					<!--Fields -->
-					<field id="alvexwf:description" label-id="label.description" set="documents" read-only="true">
+					<field id="alvexwfat:description" label-id="label.description" set="documents" read-only="true">
 						<control template="/alvex-mltext.ftl">
 							<control-param name="style">width: 98%</control-param>
 						</control>
@@ -161,22 +161,22 @@
 		</forms>
 	</config>	
 	
-	<!--Form config for alvexwf:controlTask rendering -->
-	<config evaluator="task-type" condition="alvexwf:controlTask">
+	<!--Form config for alvexwfat:controlTask rendering -->
+	<config evaluator="task-type" condition="alvexwfat:controlTask">
 		<forms>
 			<form>
 				<!--List of fields to render -->
 				<field-visibility>
-					<show id="alvexwf:description" />
+					<show id="alvexwfat:description" />
 					<show id="packageItems" />
-					<show id="alvexwf:controlOutcome" />
+					<show id="alvexwfat:controlOutcome" />
 				</field-visibility>
 				<!--Fields appearance configuration -->
 				<appearance>
 					<!--Sets definition -->
 					<set id="documents" appearance="" />
 					<!--Fields -->
-					<field id="alvexwf:description" label-id="label.description" set="documents" read-only="true">
+					<field id="alvexwfat:description" label-id="label.description" set="documents" read-only="true">
 						<control template="/alvex-mltext.ftl">
 							<control-param name="style">width: 98%</control-param>
 						</control>
@@ -187,7 +187,7 @@
 							<control-param name="createUploadDirectory">true</control-param>
 						</control>
 					</field>
-					<field id="alvexwf:controlOutcome" set="documents">
+					<field id="alvexwfat:controlOutcome" set="documents">
 						<control template="/org/alfresco/components/form/controls/workflow/activiti-transitions.ftl" />
 					</field>
 				</appearance>

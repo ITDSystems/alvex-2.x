@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="alvexwf:workflow_model">
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0" name="alvexwfat:alvex-arbitrary-task-model">
 	<!--Import necessary namespaces -->
 	<imports>
 		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
@@ -7,17 +7,17 @@
 		<import uri="http://www.alfresco.org/model/bpm/1.0" prefix="bpm" />
 	</imports>
 	<namespaces>
-		<namespace prefix="alvexwf"
-			uri="http://alvexcore.com/prefix/alvexwf" />
+		<namespace prefix="alvexwfat"
+			uri="http://alvexcore.com/prefix/alvexwfat" />
 	</namespaces>
 	
 	<!--List of types -->
 	<types>
-		<!--Type for alvexwf:startTask task -->
-		<type name="alvexwf:startTask">
+		<!--Type for alvexwfat:startTask task -->
+		<type name="alvexwfat:startTask">
 			<parent>bpm:startTask</parent>
 			<properties>
-				<property name="alvexwf:confirmationRequired">
+				<property name="alvexwfat:confirmationRequired">
 					<type>d:boolean</type>
 					<default>true</default>
 				</property>
@@ -25,13 +25,13 @@
 			<!--Task mandatory aspects -->
 			<mandatory-aspects>
 				<aspect>bpm:assignee</aspect>
-				<aspect>alvexwf:assignees</aspect>
-				<aspect>alvexwf:taskDetails</aspect>
+				<aspect>alvexwfat:assignees</aspect>
+				<aspect>alvexwfat:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
 		
-		<!--Type for alvexwf:executeTask task -->
-		<type name="alvexwf:executeTask">
+		<!--Type for alvexwfat:executeTask task -->
+		<type name="alvexwfat:executeTask">
 			<parent>bpm:workflowTask</parent>
 			<!--overrides default properties values -->
 			<overrides>
@@ -41,28 +41,28 @@
 			</overrides>
 			<!--Task mandatory aspects -->
 			<mandatory-aspects>
-				<aspect>alvexwf:taskDetails</aspect>
+				<aspect>alvexwfat:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
 		
-		<!--Type for alvexwf:assistTask task -->
-		<type name="alvexwf:assistTask">
+		<!--Type for alvexwfat:assistTask task -->
+		<type name="alvexwfat:assistTask">
 			<parent>bpm:workflowTask</parent>
 			<mandatory-aspects>
-				<aspect>alvexwf:taskDetails</aspect>
+				<aspect>alvexwfat:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
 		
-		<!--Type for alvexwf:controlTask task -->
-		<type name="alvexwf:controlTask">
+		<!--Type for alvexwfat:controlTask task -->
+		<type name="alvexwfat:controlTask">
 			<parent>bpm:activitiOutcomeTask</parent>
 			<!--Add outcome property for activiti tasks-->
 			<properties>
-				<property name="alvexwf:controlOutcome">
+				<property name="alvexwfat:controlOutcome">
 					<type>d:text</type>
 					<default>rejected</default>
 					<constraints>
-						<constraint type="LIST" name="alvexwf:controlOutcomeConstraint">
+						<constraint type="LIST" name="alvexwfat:controlOutcomeConstraint">
 							<parameter name="allowedValues">
 								<list>
 									<value>accepted</value>
@@ -75,19 +75,19 @@
 			</properties>
 			<overrides>
 				<property name="bpm:outcomePropertyName">
-					<default>{http://alvexcore.com/prefix/alvexwf}controlOutcome</default>
+					<default>{http://alvexcore.com/prefix/alvexwfat}controlOutcome</default>
 				</property>
 			</overrides>
 			<mandatory-aspects>
-				<aspect>alvexwf:taskDetails</aspect>
+				<aspect>alvexwfat:taskDetails</aspect>
 			</mandatory-aspects>
 		</type>
 	</types>
 	
 	<aspects>
-		<aspect name="alvexwf:assignees">
+		<aspect name="alvexwfat:assignees">
 			<associations>
-				<association name="alvexwf:assignees">
+				<association name="alvexwfat:assignees">
 					<source>
 						<mandatory>false</mandatory>
 						<many>false</many>
@@ -100,9 +100,9 @@
 				</association>
 			</associations>
 		</aspect>
-		<aspect name="alvexwf:taskDetails">
+		<aspect name="alvexwfat:taskDetails">
 			<properties>
-				<property name="alvexwf:description">
+				<property name="alvexwfat:description">
 					<type>d:text</type>
 				</property>
 			</properties>
