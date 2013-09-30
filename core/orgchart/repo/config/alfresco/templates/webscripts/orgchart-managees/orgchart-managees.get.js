@@ -24,7 +24,10 @@ function proceedUnit(unit, superviseRecursively)
 		var confFolder = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:orgchart')[0];
 		var conf = confFolder.childByNamePath('orgchart-view.default');
 		if(conf == null)
-			conf = confFolder.createNode('orgchart-view.default','alvexoc:UIConfig','sys:children');
+		{
+			var f = function() { conf = confFolder.createNode('orgchart-view.default','alvexoc:UIConfig','sys:children'); };
+			sudoUtils.sudo(f);
+		}
 		
 		var confValue = conf.properties['alvexoc:superviseUnitsRecursively'];
 		// Protect from confValue == null on first access after Alvex upgrade

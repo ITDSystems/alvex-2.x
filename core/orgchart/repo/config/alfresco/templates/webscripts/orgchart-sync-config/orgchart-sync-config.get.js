@@ -7,7 +7,10 @@
 
 		// Default reply
 		if(conf == null)
-			conf = confFolder.createNode('orgchart-sync.default','alvexoc:syncConfig','sys:children');
+		{
+			var f = function() { conf = confFolder.createNode('orgchart-sync.default','alvexoc:syncConfig','sys:children'); };
+			sudoUtils.sudo(f);
+		}
 
 		// Read config and push it for the response
 		model.data.configNodeRef = conf.getNodeRef().toString();
