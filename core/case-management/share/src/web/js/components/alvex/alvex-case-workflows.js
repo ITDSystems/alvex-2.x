@@ -478,8 +478,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 		formatWorkflowAttachNameField: function(elCell, oRecord, oColumn, oData)
 		{
 			var workflow = oRecord.getData();
-			var desc = '<h3><a href="' + $siteURL('workflow-details?workflowId=' + workflow.id 
-				+ '&referrer=workflows') + '" class="theme-color-1" title="' 
+			var desc = '<h3><a href="' + Alfresco.constants.URL_PAGECONTEXT 
+				+ 'workflow-details?workflowId=' + workflow.id 
+				+ '&referrer=workflows' + '" class="theme-color-1" title="' 
 				+ this.parent.msg("link.viewWorkflow") + '">' + $html(workflow.message) + '</a></h3>';
 			elCell.innerHTML = desc;
 		},
@@ -543,8 +544,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			}
 
 			workflow = workflow.workflow;
-			var info = '<h3><a href="' + $siteURL('workflow-details?workflowId=' + workflow.id 
-				+ '&referrer=workflows') + '" class="theme-color-1" title="' 
+			var info = '<h3><a href="' + Alfresco.constants.URL_PAGECONTEXT 
+				+ 'workflow-details?workflowId=' + workflow.id 
+				+ '&referrer=workflows' + '" class="theme-color-1" title="' 
 				+ this.msg("link.viewWorkflow") + '">' + $html(workflow.description) + '</a></h3>';
 
 			/*var message = workflow.message ? workflow.message : this.msg("workflow.no_message"),
@@ -557,8 +559,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 				task = null, 
 				taskStarted = null;
 			
-			var messageDesc = '<h3><a href="' + $siteURL('workflow-details?workflowId=' + workflow.id 
-				+ '&referrer=workflows') + '" class="theme-color-1" title="' 
+			var messageDesc = '<h3><a href="' + Alfresco.constants.URL_PAGECONTEXT + 'workflow-details?workflowId=' + workflow.id 
+				+ '&referrer=workflows' + '" class="theme-color-1" title="' 
 				+ this.msg("link.viewWorkflow") + '">' + $html(message) + '</a></h3>';
 			
 			var dateDesc = dueDate ? '<div class="' + (today > dueDate ? "workflow-delayed" : "") + '"><strong>' 
@@ -630,7 +632,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 			
 			data = data.workflow;
 			var desc = '<div class="action">';
-			desc += '<div><a href="' + $siteURL('workflow-details?workflowId=' + data.id + '&referrer=workflows') 
+			desc += '<div><a href="' + Alfresco.constants.URL_PAGECONTEXT 
+						+ 'workflow-details?workflowId=' + data.id + '&referrer=workflows' 
 						+ '" class="view-workflow" title="' + this.msg("link.viewWorkflow") + '">&nbsp;</a></div>';
 				
 			var msg = this.msg('action.detachWorkflowFromCase');
@@ -651,6 +654,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			{
 				title: me.msg("title.detachWorkflowFromCase"),
 				text: me.msg("message.detachWorkflowFromCase",  Alfresco.util.encodeHTML(workflow.description)),
+				noEscape: true,
 				buttons: [
 				{
 					text: me.msg("button.detachWorkflowFromCase"),

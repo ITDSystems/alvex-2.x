@@ -117,6 +117,8 @@ if (typeof Alvex == "undefined" || !Alvex)
       onWorkflowDetailedData: function (layer, args)
       {
          this.workflow = args[1];
+		 if( !this.workflow.id )
+			 return;
 		 if( this.style === "table" )
 			this.fillRelatedWorkflowTable();
 		 else

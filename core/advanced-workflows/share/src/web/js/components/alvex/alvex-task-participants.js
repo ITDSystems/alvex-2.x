@@ -160,7 +160,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 	  processWorkflowData: function(workflow)
 	  {
 		   var initiator = workflow.initiator;
-		   var assignee = this.task;
+		   var assignee = ( this.task ? this.task.owner : null );
 		   var assignees = [];
 		   for( var t in workflow.tasks )
 		   {

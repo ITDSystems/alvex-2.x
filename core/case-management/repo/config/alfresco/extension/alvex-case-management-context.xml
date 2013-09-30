@@ -1,6 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
+	<bean id="Sudo" parent="baseJavaScriptExtension" class="com.alvexcore.repo.tools.Sudo">
+		<property name="extensionName">
+			<value>sudoUtils</value>
+		</property>
+	</bean>
 	<bean id="alvex-case-management-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<!-- Register resource bundles -->
 		<!--property name="labels">

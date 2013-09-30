@@ -116,7 +116,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          this.workflow = args[1];
 		 this.historyTasks = [];
 		 this.currentTasks = [];
-		 var me = this;
+		 if( ! this.workflow.id )
+			return;
 		 this.showWorkflowHistory();
       },
 			  
