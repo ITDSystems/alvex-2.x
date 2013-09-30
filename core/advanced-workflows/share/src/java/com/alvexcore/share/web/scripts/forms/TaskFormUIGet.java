@@ -43,6 +43,7 @@ public class TaskFormUIGet extends FormUIGet
     protected Map<String, Object> executeImpl(WebScriptRequest req, Status status, Cache cache)
     {
         Map<String, Object> model = null;
+		viewOnly = false;
         
         String itemKind = getParameter(req, FormUIGet.PARAM_ITEM_KIND);
         String itemId = getParameter(req, FormUIGet.PARAM_ITEM_ID);
