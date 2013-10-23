@@ -3,7 +3,7 @@
 <beans>
 	<bean id="alvex-case-management-messages-deployer" class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent" depends-on="">
 		<property name="resourceBundles">
-			 <list>
+			<list>
 				<value>alfresco.web-extension.messages.alvex-case-management</value>
 			</list>
 		</property>

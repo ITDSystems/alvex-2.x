@@ -5,3 +5,4 @@ core/*/nbbuild.xml
 core/*/nbproject/*
 core/*/bin
 core/activiti-connector/*/bin
+nb-configuration.xml
