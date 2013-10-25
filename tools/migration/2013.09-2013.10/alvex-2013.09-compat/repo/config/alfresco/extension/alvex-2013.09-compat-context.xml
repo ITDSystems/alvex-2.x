@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<beans>
+	<bean id="alvex-2013.09-compat" parent="dictionaryModelBootstrap"
+		depends-on="dictionaryBootstrap">
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-related-workflows-task-model.xml</value>
+				<value>alfresco/extension/models/alvex-workflows-discussions-task-model.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>

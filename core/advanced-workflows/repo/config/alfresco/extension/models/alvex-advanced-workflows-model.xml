@@ -5,7 +5,7 @@
  -->
  <model
 	xmlns="http://www.alfresco.org/model/dictionary/1.0"
-	name="awf:advanced_workflows_model"
+	name="alvexaw:advanced_workflows_model"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.alfresco.org/model/dictionary/1.0 modelSchema.xsd">
 
@@ -16,7 +16,7 @@
 	</imports>
 
 	<namespaces>
-		<namespace prefix="awf" uri="http://alvexcore.com/prefix/awf" />
+		<namespace prefix="alvexaw" uri="http://alvexcore.com/prefix/alvexaw" />
 	</namespaces>
 
 	<types>

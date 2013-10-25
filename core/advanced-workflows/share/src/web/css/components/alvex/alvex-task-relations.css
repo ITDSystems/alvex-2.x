@@ -157,3 +157,52 @@ div.cancelWorkflow a.alvex-related-workflow-action {
 .yui-skin-lightTheme .task-relations .yui-menu-button .push-button button {
 	background-image: none;
 }
+
+/*
+.action div{
+	float: left;
+	line-height: 1em;
+}
+
+.action span {
+	display: none;
+}
+
+a.related-workflows-action-link
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.related-workflows-action-link,
+a:hover.related-workflows-action-link
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+div.cancelWorkflow a.related-workflows-action-link {
+	background-image: url(/share/res/components/images/delete-16.png);
+}
+
+div.retrieveDocuments a.related-workflows-action-link {
+	background-image: url(/share/res/components/alvex/images/retrieve-documents-16.png);
+}
+
+div.cancelWorkflowDisabled a.related-workflows-action-link {
+	background-image: url(/share/res/components/images/delete-disabled-16.png);
+}
+
+div.retrieveDocumentsDisabled a.related-workflows-action-link {
+	background-image: url(/share/res/components/alvex/images/retrieve-documents-disabled-16.png);
+}
+
+.alfresco-share .yui-panel .bd .yui-u.first
+{
+	text-align: left;
+}
+*/

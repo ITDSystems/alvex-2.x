@@ -1,6 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
+	
+	<!-- Web scripts -->
+	<bean id="webscript.alvex.tasks-instances.task-instances.get"
+		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
+		parent="abstractWorkflowWebScript" />
+	
+	<bean id="webscript.alvex.workflow-instances-detailed.workflow-instances-detailed.get"
+		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"
+		parent="abstractWorkflowWebScript" />
+	
+	<bean id="webscript.workflows-discussions.container.get" 
+			  parent="webscript" 
+			  class="com.alvexcore.repo.web.scripts.WorkflowDiscussionContainerGet" />
+	
+	<!-- Workaround - need to create orgchart-aware WorkflowPermissionInterceptor anchestor -->
+	<bean id="WorkflowService_security" 
+		  class="org.alfresco.repo.security.permissions.impl.AlwaysProceedMethodInterceptor" />
+	
 	<bean id="alvex-advanced-workflows-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<!-- Register resource bundles -->
 		<!--property name="labels">
@@ -15,6 +33,9 @@
 			</list>
 		</property>
 	</bean>
+	
 	<bean id="alvex-advanced-workflows" class="com.alvexcore.repo.AdvancedWorkflowsExtension"
-		depends-on="" parent="alvex-extension" />
+					depends-on="" parent="alvex-extension">
+		<property name="workflowDiscussionsContaingerGet" ref="webscript.workflows-discussions.container.get" />
+	</bean>
 </beans>

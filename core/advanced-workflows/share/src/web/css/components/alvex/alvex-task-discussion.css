@@ -1,0 +1,54 @@
+.spoiler-expanded .collapsed,
+.spoiler-collapsed .expanded {
+	display: none;
+}
+.spoiler-expanded .expanded,
+.spoiler-collapsed .collapsed {
+	display: block;
+}
+
+.spoiler-expanded img,
+.spoiler-collapsed img {
+	float: left;
+	padding-right: 5px;
+}
+.spoiler-expanded img,
+.spoiler-expanded h3,
+.spoiler-collapsed img,
+.spoiler-collapsed h3 {
+	cursor: pointer;
+}
+
+.discussion {
+	width: 100%;
+	max-height: 200px;
+	overflow: auto;
+}
+
+.comment {
+	margin-left: 30px;
+}
+
+.comment .content {
+	padding-top: 20px;
+	padding-right: 10px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	display: inline-block;
+	min-width: 500px;
+}
+.comment .content .author {
+	text-align: center;
+	margin-right: 10px;
+	width: 100px;
+	float: left;
+	position: relative;
+}
+
+.comment .content .published {
+	min-width: 250px;
+}
+
+.comment .content .text {
+	display: table;
+}

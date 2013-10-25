@@ -50,5 +50,5 @@
 	</bean>
 	<bean id="alvex-custom-workflows" parent="alvex-extension"
 		class="com.alvexcore.repo.CustomWorkflowsExtension"
-		depends-on="alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader,alvex-related-workflows,alvex-workflows-discussions" />
+		depends-on="alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader" />
 </beans>

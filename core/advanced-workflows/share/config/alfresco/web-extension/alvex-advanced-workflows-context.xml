@@ -5,6 +5,7 @@
 		<property name="resourceBundles">
 			 <list>
 				<value>alfresco.web-extension.messages.alvex-advanced-workflows</value>
+				<value>alfresco.web-extension.messages.alvex-my-workflows-dashlet</value>
 			</list>
 		</property>
 	</bean>

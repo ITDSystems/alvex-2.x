@@ -34,6 +34,15 @@ import org.alfresco.service.namespace.QName;
 
 public class AdvancedWorkflowsExtension extends RepositoryExtension {
 
+	private ExtensionAware workflowDiscussionsContaingerGet;
+	public static final String ID_DISCUSSIONS_DATA_PATH = "discDataPath";
+	public static final String WORKFLOW_DISCUSSIONS_MODULE_ID = "workflows-discussions";
+	
+	public void setWorkflowDiscussionsContaingerGet(
+				ExtensionAware workflowDiscussionsContaingerGet) {
+		this.workflowDiscussionsContaingerGet = workflowDiscussionsContaingerGet;
+	}
+	
 	// constructor
 	public AdvancedWorkflowsExtension() throws Exception {
 		id = "advanced-workflows";
@@ -45,14 +54,32 @@ public class AdvancedWorkflowsExtension extends RepositoryExtension {
 	public void init(boolean failIfInitialized) throws Exception {
 		super.init(failIfInitialized);
 		initializeStorage();
+		workflowDiscussionsContaingerGet.setExtension(this);
 	}
 
 	private void initializeStorage() throws Exception {
+		// Set access rights
 		PermissionService permissionService = extensionRegistry
 				.getServiceRegistry().getPermissionService();
 		permissionService.setPermission(getDataPath(),
 				PermissionService.ALL_AUTHORITIES,
 				PermissionService.CONTRIBUTOR, true);
+		
+		// Initialize storage for workflow discussions
+		QName[] DISCUSSIONS_DATA_PATH = new QName[DATA_PATH.length];
+		QName[] DISCUSSIONS_DATA_TYPES = new QName[DATA_PATH.length];
+		for(int i = 0; i < DATA_PATH.length; i++)
+		{
+			DISCUSSIONS_DATA_PATH[i] = DATA_PATH[i];
+			DISCUSSIONS_DATA_TYPES[i] = DATA_TYPES[i];
+		}
+		DISCUSSIONS_DATA_PATH[DATA_PATH.length - 1] = QName.createQName(
+						AlvexContentModel.ALVEX_MODEL_URI, WORKFLOW_DISCUSSIONS_MODULE_ID);
+		DISCUSSIONS_DATA_TYPES[DATA_PATH.length - 1] = ContentModel.TYPE_FOLDER;
+		NodeRef discDataPath = extensionRegistry.resolvePath(DISCUSSIONS_DATA_PATH, null);
+		if (discDataPath == null)
+			discDataPath = extensionRegistry.createPath(DISCUSSIONS_DATA_PATH, null, DISCUSSIONS_DATA_TYPES);
+		addNodeToCache(ID_DISCUSSIONS_DATA_PATH, discDataPath);
 	}
 
 	@Override

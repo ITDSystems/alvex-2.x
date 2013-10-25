@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <project>
   <groupId>com.alvexcore.ce.repo</groupId>
-  <artifactId>advanced-workflows</artifactId>
-  <version>1.9</version>
+  <artifactId>2013.09-compat</artifactId>
+  <version>1.0</version>
   <parent>
     <groupId>com.alvexcore.ce.repo</groupId>
     <artifactId>master-pom</artifactId>
     <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <name>Advanced Workflows [Repo]</name>
+  <name>Alvex 2013.09 Compat [Repo]</name>
   <repositories>
     <repository>
       <id>itd-repository</id>
@@ -29,10 +29,6 @@
       <groupId>${alvex.repo.groupId}</groupId>
       <artifactId>extension-registry</artifactId>
       <version>${extension_registry.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alfresco.groupId}</groupId>
-      <artifactId>alfresco-remote-api</artifactId>
     </dependency>
   </dependencies>
   <build>

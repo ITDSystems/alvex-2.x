@@ -3,6 +3,7 @@
 <@markup id="css" >
    <#-- CSS Dependencies -->
    <@link href="${url.context}/res/components/alvex/alvex-task-activities.css" group="workflow"/>
+   <@link href="${url.context}/res/components/alvex/alvex-task-discussion.css" group="workflow"/>
 </@>
 
 <@markup id="js">

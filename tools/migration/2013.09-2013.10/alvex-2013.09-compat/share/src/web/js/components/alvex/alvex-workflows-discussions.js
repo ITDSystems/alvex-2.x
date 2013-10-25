@@ -25,21 +25,13 @@ if (typeof Alvex == 'undefined' || !Alvex)
 	
 (function()
 {
-	Alvex.TaskDiscussion = function(htmlId)
+	Alvex.WorkflowsDiscussions = function(htmlId)
 	{
-		Alvex.TaskDiscussion.superclass.constructor.call(this, 'Alvex.TaskDiscussion', htmlId);
-		
-		// Instance variables
-		this.options = YAHOO.lang.merge(this.options, Alvex.TaskDiscussion.superclass.options);
-		Alfresco.util.ComponentManager.reregister(this);
-		
-		/* Decoupled event listeners */
-		YAHOO.Bubbling.on("workflowDetailedData", this.onWorkflowDetailedData, this);
-		
+		Alvex.WorkflowsDiscussions.superclass.constructor.call(this, 'Alvex.WorkflowsDiscussions', htmlId);
 		return this;
 	};
 
-	YAHOO.extend(Alvex.TaskDiscussion, Alfresco.component.Base,
+	YAHOO.extend(Alvex.WorkflowsDiscussions, Alfresco.component.Base,
 	{
 		isUpdating: false,
 
@@ -79,41 +71,69 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		SELECTED_BG: 'theme-bg-color-4',
 
 		/*
+		 * Names of the CSS class to use for displaying collapsed spoiler
+		 */
+		SPOILER_COLLAPSED: 'spoiler-collapsed',
+		
+		/*
+		 * Names of the CSS class to use for displaying expanded spoiler
+		 */
+		SPOILER_EXPANDED: 'spoiler-expanded',
+
+		/*
 		 * Creates workflows discussions control and performs initialization
 		 */
 		onReady: function()
 		{
-		},
-		
-		onWorkflowDetailedData: function(layer, args)
-		{
-			this.workflow = args[1];
-			this.thread = '';
-			this.initUI();
-		},
-		
-		initUI: function()
-		{
 			// get ui elements
-			this.textArea = YAHOO.util.Dom.get(this.id+'-discussion-textArea');
-			this.spinnerAnim = YAHOO.util.Dom.get(this.id+'-discussion-spinnerAnim');
-			this.discussionsContainer = YAHOO.util.Dom.get(this.id+'-discussion-container');
+			this.textArea = YAHOO.util.Dom.get(this.id+'-cntrl-textArea');
+			this.spinnerAnim = YAHOO.util.Dom.get(this.id+'-cntrl-spinnerAnim');
+			this.assocAdded = YAHOO.util.Dom.get(this.id+'-cntrl-added');
+			this.discussionsContainer = YAHOO.util.Dom.get(this.id+'-cntrl-discussionsContainer');
+			this.spoiler = YAHOO.util.Dom.get(this.id+'-cntrl-spoiler');
 			
 			// create comment button
-			this.addCommentButton = new YAHOO.widget.Button(this.id + '-discussion-addCommentButton');
+			this.addCommentButton = new YAHOO.widget.Button(this.id + '-cntrl-addCommentButton');
 			this.addCommentButton.set('disabled', true);
 			// subscribe to events 
 			this.addCommentButton.on('click', this.onAddCommentClicked, null, this);
 			YAHOO.util.Event.addListener(this.textArea, 'input', this.handleTextAreaInput, null, this);
+			YAHOO.util.Event.addListener(this.spoiler, 'click', this.onSpoilerClicked, this.spoiler, this);
+			// get action url
+			if (this.options.persistOnCreate && this.options.urlAuto)
+			{
+				var el = YAHOO.util.Dom.get(this.id);
+				// find form element
+				// TODO check if this approach is cross-browser safe
+				while (el.tagName != 'FORM')
+					el = el.parentNode;
+				this.options.actionUrl = el.action;
+			}			
+			// get discussion thread
+			this.thread = YAHOO.util.Dom.get(this.id).value;
 
-			this.getDiscussionThread( this.updateDiscussion );
+			// check control state
+			this.collapsed = YAHOO.util.Dom.hasClass(this.spoiler, this.SPOILER_COLLAPSED);
+
+			// check if thread already exists
+			if (this.thread == '')
+			{
+				// check options and decide if we should create new thread
+				if (this.options.createOnReady)
+				{
+					this.createNewThread(null, true);
+				}
+			}
+			else
+				// fetch discussion thread
+				this.updateDiscussion();
 		},
 		
 		/*
 		 * Changes availability of «add comment» button depending on current comment text length
 		 */
 		handleTextAreaInput: function(){
-			this.addCommentButton.set('disabled', this.textArea.value.length === 0);
+			this.addCommentButton.set('disabled', this.textArea.value.length == 0);
 		},
 		
 		/*
@@ -135,7 +155,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		onAddCommentClicked: function()
 		{
 			// check if comment is empty
-			if (this.textArea.value === '')
+			if (this.textArea.value == '')
 				return;
 			// show spinner
 			this.spinnerAnim.style.display='inline';
@@ -150,33 +170,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		 * Creates new discussion thread. Called when first discussion comment
 		 * is posted.
 		 */
-		getDiscussionThread: function(clb)
-		{
-			if( !this.workflow.id || this.workflow.id === undefined )
-				return;
-			Alfresco.util.Ajax.jsonGet(
-				{
-					url: Alfresco.constants.PROXY_URI + 
-							"api/alvex/workflow/" + this.workflow.id + "/discussions",
-					successCallback: {
-						fn: function (response)
-						{
-							if( response.json.data.length > 0 )
-							{
-								this.thread = response.json.data[0].discussion.nodeRef;
-								clb.call(this);
-							}
-							else
-							{
-								this.createDiscussionThread(clb);
-							}
-						},
-						scope: this
-					}
-				});
-		},
-		
-		createDiscussionThread: function(clb)
+		createNewThread: function(clb)
 		{
 			Alvex.util.processAjaxQueue({
 				queue: [
@@ -221,47 +215,16 @@ if (typeof Alvex == 'undefined' || !Alvex)
 							{
 								// update thread nodeRef
 								this.thread = response.json.item.nodeRef;
-								var url = YAHOO.lang.substitute(
-									'{proxy}/api/alvex/workflow/{workflowId}/discussions',
-									{
-										proxy: Alfresco.constants.PROXY_URI,
-										workflowId: this.workflow.id
-									}
-								);
-								response.config.config.queue[1].url = url;
-								var nodeInfo = this.thread.match(new RegExp('(.*)://(.*)/(.*)'));
-								var nodeId = nodeInfo[1] + '#' + nodeInfo[2] + '#' + nodeInfo[3];
-								response.config.config.queue[1].dataObj.data.discussions = nodeId;
+								this.assocAdded.value = this.thread;
+								// persist form if necessary
+								if (this.options.persistOnCreate)
+									this.persistForm();
 							},
 							scope: this
 						},
 						failureCallback: {
 							fn: this.showErrorMessage,
 							obj: this.msg('alvex.discussions.error.thread'),
-							scope: this
-						}
-					},
-					{
-						url: null,
-				        responseContentType: Alfresco.util.Ajax.JSON,
-						requestContentType: Alfresco.util.Ajax.JSON,
-						method: Alfresco.util.Ajax.PUT,
-						dataObj:
-						{
-							data: {
-								discussions: ''
-							}
-						},
-						successCallback: {
-							fn: function (response)
-							{
-								
-							},
-							scope: this
-						},
-						failureCallback: {
-							fn: this.showErrorMessage,
-							obj: this.msg('alvex.discussions.error.relation'),
 							scope: this
 						}
 					}
@@ -273,6 +236,26 @@ if (typeof Alvex == 'undefined' || !Alvex)
 				}
 			});	
 		},
+
+		persistForm: function (){
+			// send only two fields to persist association and
+			// not change all other form fields values
+			var dataObj = {};
+			dataObj[this.options.propName+'_added'] = this.thread;
+			dataObj[this.options.propName+'_removed'] = '';
+			Alfresco.util.Ajax.jsonRequest({
+				url: this.options.actionUrl,
+				method: Alfresco.util.Ajax.POST,
+				dataObj: dataObj,
+				failureCallback:
+				{
+					fn: this.showErrorMessage,
+					obj: this.msg('alvex.discussions.error.persist'),
+					scope:this
+				},
+				scope: this
+			});
+		},
 		
 		/*
 		 * Submits new comment to discussion.
@@ -280,9 +263,12 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		addComment: function()
 		{
 			// built url to submit data to
-			var nodeRef = ( this.selectedComment && this.selectedComment !== null ) ? this.selectedComment.name : this.thread;
-			if (nodeRef === '')
+			var nodeRef = this.selectedComment != null ? this.selectedComment.name : this.thread;
+			if (nodeRef == '')
 			{
+				// thread does not exist
+				this.createNewThread(this.addComment);
+				// FIXME bug in the code may cause infinite recursion
 				return;
 			}
 			var nodeInfo = nodeRef.match(new RegExp('(.*)://(.*)/(.*)'));
@@ -354,7 +340,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 				);
 			}
 			// check if discussion already exists
-			if (this.thread === '')
+			if (this.thread == '')
 			{
 				// thread is empty, nothing to load
 				this.onDiscussionUpdated();
@@ -495,7 +481,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		{
 			if (!YAHOO.util.Dom.hasClass(obj, this.SELECTED_BORDER))
 			{
-				if (obj !== this.selectedComment)
+				if (obj != this.selectedComment)
 				{
 					YAHOO.util.Dom.removeClass(this.selectedComment, this.SELECTED_BORDER);
 					this.unhighlightComment(null, this.selectedComment);
@@ -523,7 +509,30 @@ if (typeof Alvex == 'undefined' || !Alvex)
 			}
 			// change updating state
 			this.isUpdating = false;
+		},
+
+		/*
+		 * Function to call when spoiler was clicked
+		 */
+		onSpoilerClicked: function(ev, obj)
+		{
+			// get src element - cross-browser approach
+			var srcElement = (ev.target) ? ev.target : ev.srcElement;
+			// check if this event is triggered by «top» element
+			if (srcElement != obj && srcElement.parentNode != obj)
+				// ignore event
+				return;
+			if (this.collapsed)
+			{
+				YAHOO.util.Dom.removeClass(obj, this.SPOILER_COLLAPSED);
+				YAHOO.util.Dom.addClass(obj, this.SPOILER_EXPANDED);
+			}
+			else
+			{
+				YAHOO.util.Dom.removeClass(obj, this.SPOILER_EXPANDED);
+				YAHOO.util.Dom.addClass(obj, this.SPOILER_COLLAPSED);
+			}
+			this.collapsed = !this.collapsed;
 		}
-		
 	});
 })();

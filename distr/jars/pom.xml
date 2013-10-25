@@ -88,16 +88,6 @@
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>my-workflows-dashlet</artifactId>
-      <version>${my_workflows_dashlet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>my-workflows-dashlet</artifactId>
-      <version>${my_workflows_dashlet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
       <artifactId>orgchart</artifactId>
       <version>${orgchart.version}</version>
     </dependency>
@@ -108,36 +98,6 @@
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>related-workflows</artifactId>
-      <version>${related_workflows.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>related-workflows</artifactId>
-      <version>${related_workflows.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>surf-evaluators</artifactId>
-      <version>${surf_evaluators.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>surf-evaluators</artifactId>
-      <version>${surf_evaluators.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>tasks-extended-ui</artifactId>
-      <version>${tasks_extended_ui.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>tasks-extended-ui</artifactId>
-      <version>${tasks_extended_ui.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
       <artifactId>uploader</artifactId>
       <version>${uploader.version}</version>
     </dependency>
@@ -145,26 +105,6 @@
       <groupId>${alvex.share.groupId}</groupId>
       <artifactId>uploader</artifactId>
       <version>${uploader.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>workflows-discussions</artifactId>
-      <version>${workflows_discussions.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>workflows-discussions</artifactId>
-      <version>${workflows_discussions.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>workflows-extended-ui</artifactId>
-      <version>${workflows_extended_ui.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>workflows-extended-ui</artifactId>
-      <version>${workflows_extended_ui.version}</version>
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
