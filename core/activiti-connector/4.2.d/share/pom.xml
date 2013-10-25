@@ -9,7 +9,7 @@
     <version>1.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <name>Activiti Connector [Share]</name>
+  <name>Activiti Connector [Share</name>
   <repositories>
     <repository>
       <id>itd-repository</id>
