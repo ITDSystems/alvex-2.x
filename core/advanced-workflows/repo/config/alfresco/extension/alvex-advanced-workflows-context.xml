@@ -3,11 +3,11 @@
 <beans>
 	
 	<!-- Web scripts -->
-	<bean id="webscript.alvex.tasks-instances.task-instances.get"
+	<bean id="webscript.tasks-instances.task-instances.get"
 		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
 		parent="abstractWorkflowWebScript" />
 	
-	<bean id="webscript.alvex.workflow-instances-detailed.workflow-instances-detailed.get"
+	<bean id="webscript.workflow-instances-detailed.workflow-instances-detailed.get"
 		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"
 		parent="abstractWorkflowWebScript" />
 	

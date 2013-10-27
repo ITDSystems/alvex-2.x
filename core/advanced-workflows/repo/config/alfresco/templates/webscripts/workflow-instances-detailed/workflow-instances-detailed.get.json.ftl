@@ -6,6 +6,7 @@
 {
    "data": 
    [
+      <#if workflowInstances??>
       <#list workflowInstances as workflowInstance>
       {
          "id": "${workflowInstance.id}",
@@ -58,6 +59,7 @@
          </#if>
       }<#if workflowInstance_has_next>,</#if>
       </#list>
+      </#if>
    ]
 
    <@genericPaging.pagingJSON pagingVar="paging" />
