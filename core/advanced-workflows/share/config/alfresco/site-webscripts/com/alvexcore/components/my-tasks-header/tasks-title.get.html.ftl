@@ -19,7 +19,7 @@
 <@markup id="html">
    <@uniqueIdDiv>
       <div class="page-title theme-bg-color-1 theme-border-1" style="line-height: 32px;">
-         <h2 class="theme-color-3" style="float: left;">
+         <h2 class="theme-color-3" style="float: left; padding-right: 20px;">
             <span id="${el}-title">${msg(args.title)}</span>
             <span id="${el}-subtitle"><#if args.subtitle?? && msg(args.subtitle) != args.subtitle>${msg(args.subtitle)}</#if></span>
          </h2>

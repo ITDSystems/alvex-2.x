@@ -53,11 +53,11 @@
 	<!-- Models and so on -->
 	<bean id="alvex-case-management-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<!-- Register resource bundles -->
-		<!--property name="labels">
+		<property name="labels">
 			<list>
-				<value></value>
+				<value>alfresco.extension.messages.alvex-case-management</value>
 			</list>
-		</property!-->
+		</property>
 		<!-- Register models -->
 		<property name="models">
 			<list>

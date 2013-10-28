@@ -19,6 +19,18 @@
 		<namespace prefix="alvexcm" uri="http://alvexcore.com/prefix/alvexcm" />
 	</namespaces>
 
+	<constraints>
+		<constraint name="alvexcm:conversationTypeConstraint" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+					<value>email</value>
+					<value>phone</value>
+					<value>meeting</value>
+				</list>
+			</parameter>
+		</constraint>
+	</constraints>
+
 	<types>
 		<type name="alvexcm:workflowRelation">
 			<title>Workflow Label</title>
@@ -52,6 +64,56 @@
 					</index>
 				</property>
 			</properties>
+		</type>
+		
+		<type name="alvexcm:conversationItem">
+			<title>Case conversation item</title>
+			<parent>sys:base</parent>
+			<properties>
+				<property name="alvexcm:conversationType">
+					<type>d:text</type>
+					<default>email</default>
+					<constraints>
+						<constraint ref="alvexcm:conversationTypeConstraint" />
+					</constraints>
+				</property>
+				<property name="alvexcm:conversationDate">
+					<type>d:date</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexcm:conversationSummary">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexcm:conversationDetails">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexcm:conversationAttachments">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:content</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+				<association name="alvexcm:conversationParticipants">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
 		</type>
 	</types>
 

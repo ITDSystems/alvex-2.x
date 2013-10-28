@@ -1,0 +1,8 @@
+<page>
+	<title>Alvex Case Tasks</title>
+	<title-id>page.caseTasks.title</title-id>
+	<description>Work with case tasks</description>
+	<description-id>page.caseTasks.description</description-id>
+	<template-instance>alvex-tasks-view</template-instance>
+	<authentication>user</authentication>
+</page>

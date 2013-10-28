@@ -1,0 +1,94 @@
+<alfresco-config>
+
+	<config evaluator="model-type" condition="alvexcm:conversationItem">
+		<forms>
+			<!-- Create Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexcm:conversationType" />
+					<show id="alvexcm:conversationDate" />
+					<show id="alvexcm:conversationParticipants" />
+					<show id="alvexcm:conversationSummary" />
+					<show id="alvexcm:conversationDetails" />
+					<show id="alvexcm:conversationAttachments" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="first" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl" />
+					<set id="second" appearance="" label="" />
+					<field set="first" id="alvexcm:conversationType" />
+					<field set="first" id="alvexcm:conversationDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
+					<field set="first" id="alvexcm:conversationParticipants">
+						<control template="/orgchart-picker.ftl"/>
+					</field>
+					<field set="second" id="alvexcm:conversationSummary">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="second" id="alvexcm:conversationDetails">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="second" id="alvexcm:conversationAttachments">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexcm:conversationItem">
+		<forms>
+			<!-- View / Edit Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexcm:conversationType" />
+					<show id="alvexcm:conversationDate" />
+					<show id="alvexcm:conversationParticipants" />
+					<show id="alvexcm:conversationSummary" />
+					<show id="alvexcm:conversationDetails" />
+					<show id="alvexcm:conversationAttachments" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="first" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl" />
+					<set id="second" appearance="" label="" />
+					<field set="first" id="alvexcm:conversationType" />
+					<field set="first" id="alvexcm:conversationDate">
+						<control template="/alvex-autodate.ftl"/>
+					</field>
+					<field set="first" id="alvexcm:conversationParticipants">
+						<control template="/orgchart-picker.ftl"/>
+					</field>
+					<field set="second" id="alvexcm:conversationSummary">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="second" id="alvexcm:conversationDetails">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="second" id="alvexcm:conversationAttachments">
+						<control template="/alvex-uploader.ftl">
+							<control-param name="uploadDirectory">uploads</control-param>
+							<control-param name="createUploadDirectory">true</control-param>
+							<control-param name="viewType">mini</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+</alfresco-config>

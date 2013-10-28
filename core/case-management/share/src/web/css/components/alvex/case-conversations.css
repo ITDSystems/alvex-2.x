@@ -1,0 +1,95 @@
+/* Toolbars */
+
+.case-conversations .toolbar .yui-pg-container,
+.case-conversations .toolbar .yui-pg-container .yui-pg-current
+{
+   line-height: 2;
+   margin: 0 0 0 0.3em;
+   padding: 0;
+}
+
+/* Body */
+
+.case-conversations .body h4
+{
+   margin-bottom: 0.2em;
+}
+
+.case-conversations .body .unassigned-task
+{
+   padding: 0.15em;
+   text-transform: uppercase;
+   font-size: 80%;
+}
+
+/* Data Table */
+
+.case-conversations .yui-dt-col-isPooled div
+{
+   text-align: center   
+}
+
+.case-conversations .yui-dt-col-isPooled img
+{
+   margin-bottom: 0.5em;
+}
+
+.case-conversations .yui-dt-col-title .yui-dt-liner
+{
+   line-height: 1.4;
+   padding-top: 0;
+}
+
+.case-conversations .yui-dt-col-icon .yui-dt-liner
+{
+	padding: 4px;
+	text-align: center;
+}
+
+.case-conversations .action a
+{
+   cursor: pointer;
+   padding: 0em 0.75em;
+   visibility: hidden;
+}
+
+.case-conversations .yui-dt-highlighted a
+{
+   visibility: visible;
+}
+
+.action div{
+	float: left;
+	line-height: 1em;
+}
+
+.action span {
+	display: none;
+}
+
+a.alvex-case-conversations-action
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.alvex-case-conversations-action,
+a:hover.alvex-case-conversations-action
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+div.deleteItem {
+	background-image: url(/share/res/components/images/delete-16.png);
+}
+
+.case-conversations .yui-dt-col-name a:active,
+.case-conversations .yui-dt-col-name a:hover
+{
+   text-decoration: none;
+}

@@ -229,7 +229,7 @@
 				<template-instance>dashboard-2-columns-wide-right</template-instance>
 				<authentication>user</authentication>
 				<properties>
-					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"}]</sitePages>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"},{"pageId":"alvex-case-tasks"},{"pageId":"alvex-case-conversations"}]</sitePages>
 				</properties>
 			</page>
 		</pages>
