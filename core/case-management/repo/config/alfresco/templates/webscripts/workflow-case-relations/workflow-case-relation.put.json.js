@@ -1,3 +1,23 @@
+var createEvent = function(caseId, workflowId)
+{
+	var store = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
+	var wi = workflowHelper.getWorkflowInstance(workflowId)[0];
+	var event = calendarHelper.createEvent(caseId, wi.description, utils.toISO8601(wi.dueDate));
+	var eventId = event.nodeRef.id;
+	var eventFolder = getFolder(store, eventId);
+	var strRef = event.nodeRef.toString().replace("://","#").replace("/","#");
+	
+	var workflowFolder = getFolder(store, workflowId);
+	var relNode = workflowFolder.createNode(null, 'alvexcm:workflowRelation', 
+		{
+			'alvexcm:workflowInstance': workflowId, 
+			'alvexcm:relationType': 'workflow-deadline-event-' + caseId, 
+			'alvexcm:relatedObject': strRef
+		}, 
+		'sys:children' );
+	eventFolder.createAssociation(relNode, 'sys:children');
+}
+
 var getFolder = function(store, name)
 {
 	var folder;
@@ -30,6 +50,7 @@ var pushWorkflowsForCase = function( caseId, workflows )
 	{
 		if( relationExists(caseFolder, caseId, workflowId) )
 			continue;
+		createEvent(caseId, workflowId);
 		var relNode = caseFolder.createNode(null, 'alvexcm:workflowRelation', 
 				{
 					'alvexcm:workflowInstance': workflowId, 
@@ -52,6 +73,7 @@ var pushCasesForWorkflow = function( workflowId, cases )
 	{
 		if( relationExists(caseFolder, caseId, workflowId) )
 			continue;
+		createEvent(caseId, workflowId);
 		var relNode = workflowFolder.createNode(null, 'alvexcm:workflowRelation', 
 				{
 					'alvexcm:workflowInstance': workflowId, 

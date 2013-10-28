@@ -13,6 +13,16 @@
 						if( node.properties['alvexcm:relationType'] === 'case-workflows' 
 								&& node.properties['alvexcm:workflowInstance'] === workflowId )
 							node.remove();
+				var workflowFolder = store.childByNamePath(workflowId);
+				if( workflowFolder && workflowFolder !== null )
+					for each(var node in workflowFolder.children)
+						if( node.properties['alvexcm:relationType'] === 'workflow-deadline-event-' + caseId )
+						{
+							var parts = node.properties['alvexcm:relatedObject'].split('#');
+							var eventNode = search.findNode(parts[0] + "://" + parts[1] + "/" + parts[2]);
+							eventNode.remove();
+							node.remove();
+						}
 			};
 			sudoUtils.sudo(f);
 		}
