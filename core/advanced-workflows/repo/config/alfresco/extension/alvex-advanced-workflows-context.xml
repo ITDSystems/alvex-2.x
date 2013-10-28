@@ -19,6 +19,48 @@
 	<bean id="WorkflowService_security" 
 		  class="org.alfresco.repo.security.permissions.impl.AlwaysProceedMethodInterceptor" />
 	
+	<!-- Workflow helper -->
+	<bean id="alvex-workflow-helper-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexWorkflowHelper" class="com.alvexcore.repo.tools.WorkflowHelperImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexWorkflowHelper" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexWorkflowHelper" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.tools.WorkflowHelper</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-workflow-helper-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexWorkflowHelper" alias="alvex-workflow-helper" />
+	<bean id="alvex-workflow-helper-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.tools.JscriptWorkflowHelper">
+		<property name="extensionName">
+			<value>workflowHelper</value>
+		</property>
+		<property name="workflowHelper" ref="alvex-workflow-helper" />
+	</bean>
+	
+	<!-- Models and so on -->
 	<bean id="alvex-advanced-workflows-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<!-- Register resource bundles -->
 		<!--property name="labels">

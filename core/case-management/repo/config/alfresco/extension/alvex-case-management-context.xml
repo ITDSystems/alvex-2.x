@@ -1,11 +1,56 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
+	
+	<!-- Sudo helper -->
 	<bean id="Sudo" parent="baseJavaScriptExtension" class="com.alvexcore.repo.tools.Sudo">
 		<property name="extensionName">
 			<value>sudoUtils</value>
 		</property>
 	</bean>
+	
+	<!-- Calendar helper -->
+	<bean id="alvex-calendar-helper-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexCalendarHelper" class="com.alvexcore.repo.tools.CalendarHelperImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexCalendarHelper" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexCalendarHelper" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.tools.CalendarHelper</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-calendar-helper-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexCalendarHelper" alias="alvex-calendar-helper" />
+	<bean id="alvex-calendar-helper-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.tools.JscriptCalendarHelper">
+		<property name="extensionName">
+			<value>calendarHelper</value>
+		</property>
+		<property name="calendarHelper" ref="alvex-calendar-helper" />
+	</bean>
+
+	<!-- Models and so on -->
 	<bean id="alvex-case-management-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<!-- Register resource bundles -->
 		<!--property name="labels">
