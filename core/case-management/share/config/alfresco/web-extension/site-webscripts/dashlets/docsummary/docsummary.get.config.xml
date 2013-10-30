@@ -1,0 +1,17 @@
+<config>
+   <max-items>50</max-items>
+   <filter-items>
+      <filter type="all" />
+      <filter type="recentlyModifiedByMe" />
+      <!--filter type="editingMe" /-->
+      <filter type="favourites" />
+      <!--filter type="synced" evaluator="syncMode.getValue() != 'OFF'" />
+      <filter type="syncedErrors" evaluator="syncMode.getValue() == 'ON_PREMISE'" /-->
+   </filter-items>
+   <filter-range>
+      <filter type="1" label="today" />
+      <filter type="7" label="7days" />
+      <filter type="14" label="14days" />
+      <filter type="28" label="28days" />
+   </filter-range>
+</config>
