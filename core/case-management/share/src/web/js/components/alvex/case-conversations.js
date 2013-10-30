@@ -155,7 +155,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					[
 						{ key: "type", sortable: false, formatter: this.bind(this.renderCellIcon), width:90 },
 						{ key: "summary", sortable: false, formatter: this.bind(this.renderCellInfo) },
-						{ key: "actions", sortable: false, formatter: this.bind(this.renderCellActions), width:60 }
+						{ key: "actions", sortable: false, formatter: this.bind(this.renderCellActions), width:90 }
 					],
 					config:
 					{
@@ -245,6 +245,180 @@ if (typeof Alvex == "undefined" || !Alvex)
 				}
 			}).show();
 		},
+
+		onEditItem: function(item)
+		{
+			var me = this;
+			var templateUrl = YAHOO.lang.substitute(
+					Alfresco.constants.URL_SERVICECONTEXT 
+						+ "components/form?itemKind={itemKind}&itemId={itemId}&mode={mode}" 
+						+ "&submitType={submitType}&showCancelButton=true",
+				{
+					itemKind: "node",
+					itemId: item.ref,
+					mode: "edit",
+					submitType: "json"
+				});
+
+			// Intercept before dialog show
+			var doBeforeDialogShow = function(p_form, p_dialog)
+			{
+				Alfresco.util.populateHTML(
+					[ p_dialog.id + "-dialogTitle", this.msg("edit-item.title") ],
+					[ p_dialog.id + "-dialogHeader", this.msg("edit-item.title") ]
+				);
+			};
+
+			// Using Forms Service, so always create new instance
+			var editItemDialog = new Alfresco.module.SimpleDialog(this.id + "-editItemDialog");
+
+			editItemDialog.setOptions(
+			{
+				width: "50em",
+				templateUrl: templateUrl,
+				actionUrl: null,
+				destroyOnHide: true,
+
+				doBeforeDialogShow:
+				{
+					fn: doBeforeDialogShow,
+					scope: this
+				},
+				onSuccess:
+				{
+					fn: function(response, p_obj)
+					{
+						me.widgets.alfrescoDataTable.loadDataTable();
+					},
+					scope: this
+				},
+				onFailure:
+				{
+					fn: function(resp)
+					{
+						if (resp.serverResponse.statusText) {
+							Alfresco.util.PopupManager.displayMessage( { 
+								text: resp.serverResponse.statusText });
+						}
+					},
+					scope: this
+				}
+			}).show();
+		},
+
+		onViewItem: function(item)
+		{
+			var me = this;
+			var templateUrl = YAHOO.lang.substitute(
+					Alfresco.constants.URL_SERVICECONTEXT 
+						+ "components/form?itemKind={itemKind}&itemId={itemId}&mode={mode}" 
+						+ "&submitType={submitType}&showCancelButton=true",
+				{
+					itemKind: "node",
+					itemId: item.ref,
+					mode: "view",
+					submitType: "json"
+				});
+
+			// Intercept before dialog show
+			var doBeforeDialogShow = function(p_form, p_dialog)
+			{
+				Alfresco.util.populateHTML(
+					[ p_dialog.id + "-dialogTitle", this.msg("view-item.title") ],
+					[ p_dialog.id + "-dialogHeader", this.msg("view-item.title") ]
+				);
+			};
+
+			// Using Forms Service, so always create new instance
+			var viewItemDialog = new Alvex.SimpleDialog(this.id + "-viewItemDialog");
+
+			viewItemDialog.setOptions(
+			{
+				width: "50em",
+				templateUrl: templateUrl,
+				actionUrl: null,
+				destroyOnHide: true,
+				formsServiceAvailable: false,
+
+				doBeforeDialogShow:
+				{
+					fn: doBeforeDialogShow,
+					scope: this
+				},
+				onSuccess:
+				{
+					fn: function(response, p_obj)
+					{
+						me.widgets.alfrescoDataTable.loadDataTable();
+					},
+					scope: this
+				},
+				onFailure:
+				{
+					fn: function(resp)
+					{
+						if (resp.serverResponse.statusText) {
+							Alfresco.util.PopupManager.displayMessage( { 
+								text: resp.serverResponse.statusText });
+						}
+					},
+					scope: this
+				}
+			}).show();
+		},
+		
+		onDeleteItem: function(item)
+		{
+			var me = this;
+			Alfresco.util.PopupManager.displayPrompt(
+			{
+				title: me.msg("delete-item.title"),
+				text: me.msg("message.delete-item",  Alfresco.util.encodeHTML(item.summary)),
+				noEscape: true,
+				buttons: [
+				{
+					text: me.msg("button.delete"),
+					handler: function()
+					{
+						var deleteUrl = Alfresco.constants.PROXY_URI + 'api/alvex/case/conversation/' 
+										+ Alfresco.util.NodeRef( item.ref ).uri + '?alf_method=DELETE';
+						Alfresco.util.Ajax.jsonRequest({
+							url: deleteUrl,
+							method: Alfresco.util.Ajax.POST,
+							successCallback:
+							{
+								fn: function (resp)
+								{
+									this.destroy();
+									me.widgets.alfrescoDataTable.loadDataTable();
+								},
+								scope:this
+							},
+							failureCallback:
+							{
+								fn: function (resp)
+								{
+									this.destroy();
+									if (resp.serverResponse.statusText)
+									{
+										Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+									}
+								},
+								scope:this
+							}
+						});
+					}
+				},
+				{
+					text: me.msg("button.cancel"),
+					handler: function()
+					{
+						this.destroy();
+					},
+					isDefault: true
+				}]
+			});
+		},
 		
 		/**
 		* Priority & pooled icons custom datacell formatter
@@ -252,10 +426,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		renderCellIcon: function CaseConversations_onReady_renderCellIcons(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
-			//var desc = '<div class="conv-type">';
-			//desc += '<div><a rel="fafa" class="' + data.type + '">&nbsp;</a></div>';
-			var desc = '<img src="/share/res/components/images/' + data.type + '-48.png" style="padding-left: 10px; padding-right: 10px;"/>';
-
+			var desc = '<div style="width:100px; text-align:center;"><img src="/share/res/components/images/' + data.type + '-64.png" /></div>';
 			elCell.innerHTML = desc;
 		},
 
@@ -265,28 +436,24 @@ if (typeof Alvex == "undefined" || !Alvex)
 		renderCellInfo: function CaseConversations_onReady_renderCellTaskInfo(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
-			var info = '<h3>Topic: <a>' + data.summary + '</a></h3>';
+			var info = '<h3>Topic: ' + data.summary + '</h3>';
 			info += '<p>Date: ' + Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.date), "dd.mm.yyyy") + '</p>';
 			info += '<p>Participants: ';
 			for(var i in data.people)
-				info += '<a>' + data.people[i].name + '</a> ';
+			{
+				info += '<a href="' + Alfresco.constants.URL_PAGECONTEXT 
+						+ 'user/' + data.people[i].userName + '/profile">' 
+						+ data.people[i].name + '</a> ';
+			}
 			info += '</p>';
 			info += '<p>Files: ';
 			for(var i in data.files)
-				info += '<a>' + data.files[i].name + '</a> ';
-			info += '</p>';
-			/*if (workflow.isInfo)
 			{
-				elCell.innerHTML = '<div class="empty"><h3>' + workflow.title + '</h3>' 
-							+ '<span>' + workflow.description + '</span></div>';
-				return;
+				info += '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'site/' 
+						+ Alfresco.constants.SITE + '/document-details?nodeRef=' + data.files[i].ref + '">' 
+						+ data.files[i].name + '</a> ';
 			}
-
-			workflow = workflow.workflow;
-			var info = '<h3><a href="' + Alfresco.constants.URL_PAGECONTEXT 
-				+ 'workflow-details?workflowId=' + workflow.id 
-				+ '&referrer=workflows' + '" class="theme-color-1" title="' 
-				+ this.msg("link.viewWorkflow") + '">' + $html(workflow.description) + '</a></h3>';*/
+			info += '</p>';
 			elCell.innerHTML = info;
 		},
 
@@ -297,13 +464,28 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			var data = oRecord.getData();
 
-			/*var desc = '<div class="action">';
-			desc += '<div><a href="' + Alfresco.constants.URL_PAGECONTEXT 
-						+ '' 
-						+ '" class="deleteItem" title="' + this.msg("link.deleteItem") + '">&nbsp;</a></div>';
-*/
-			var desc = '<img src="/share/res/components/images/task-16.png"/>   ' + 
-					'<img src="/share/res/components/images/delete-16.png"/>';
+			var desc = '<div class="action">';
+			
+			var	msg = this.msg('action.viewItem');
+			var clb = 'onViewItem';
+			desc += '<div class="' + clb + '">' 
+					+ '<a href="" ' + 'class="alvex-case-conversations-action '+ this.id + '-action-link" ' 
+					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
+			
+			msg = this.msg('action.editItem');
+			clb = 'onEditItem';
+			desc += '<div class="' + clb + '">' 
+					+ '<a href="" ' + 'class="alvex-case-conversations-action '+ this.id + '-action-link" ' 
+					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
+			
+			msg = this.msg('action.deleteItem');
+			clb = 'onDeleteItem';
+			desc += '<div class="' + clb + '">' 
+					+ '<a href="" ' + 'class="alvex-case-conversations-action '+ this.id + '-action-link" ' 
+					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
+
+			desc += '</div>';
+
 			elCell.innerHTML = desc;
 		}
 

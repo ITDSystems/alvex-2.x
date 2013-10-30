@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>case-conversations</shortname>
+  <description><![CDATA[
+  Deletes case conversation
+  ]]></description>
+  <url>/api/alvex/case/conversation/{proto}/{space}/{id}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

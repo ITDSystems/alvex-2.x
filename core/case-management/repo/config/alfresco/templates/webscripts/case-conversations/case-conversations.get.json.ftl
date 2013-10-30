@@ -6,6 +6,7 @@
 	"data": [
 		<#list data as item>
 		{
+			"ref": "${item.ref}",
 			"type": "${item.type}",
 			"date": "${item.date}",
 			"summary": "${item.summary}",

@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>Case Conversations</shortname>
+	<description>Lists conversations related to current case</description>
+	<url>/components/alvex/case-conversations</url>
+</webscript>

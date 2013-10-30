@@ -4,13 +4,13 @@
 	<components>
 		
 		<!-- Title -->
-		<component>
+		<!--component>
 			<region-id>conversations-title</region-id>
-			<url>/components/alvex/case-conversations-title</url>
+			<url>/components/title/simple-title</url>
 			<properties>
 				<title>page.caseConversations.title</title>
 			</properties>
-		</component>
+		</component-->
 		
 		<!-- Time Filter -->
 		<!--component>
@@ -19,10 +19,10 @@
 		</component-->
 		
 		<!-- List -->
-		<!--component>
+		<component>
 			<region-id>list</region-id>
-			<url>/components/alvex/conversations-list</url>
-		</component-->
+			<url>/components/alvex/case-conversations</url>
+		</component>
 		
 	</components>
 </template-instance>

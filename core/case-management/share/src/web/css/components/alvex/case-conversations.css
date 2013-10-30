@@ -84,7 +84,15 @@ a:hover.alvex-case-conversations-action
 	text-decoration: none;
 }
 
-div.deleteItem {
+//div.onViewItem a.alvex-case-conversations-action {
+//	background-image: url(/share/res/components/images/delete-16.png);
+//}
+
+div.onEditItem a.alvex-case-conversations-action {
+	background-image: url(/share/res/components/images/edit-16.png);
+}
+
+div.onDeleteItem a.alvex-case-conversations-action {
 	background-image: url(/share/res/components/images/delete-16.png);
 }
 
@@ -92,4 +100,15 @@ div.deleteItem {
 .case-conversations .yui-dt-col-name a:hover
 {
    text-decoration: none;
+}
+
+/* Popup addItem dialog */
+.alfresco-share .yui-panel .bd .form-fields .set .yui-u.first
+{
+	text-align: left;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .form-fields .set .yui-u .yui-button button
+{
+	width: 15em;
 }

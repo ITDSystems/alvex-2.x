@@ -12,6 +12,7 @@
 		for each( var item in cont.children )
 		{
 			var data = {};
+			data.ref = item.nodeRef.toString();
 			data.type = item.properties['alvexcm:conversationType'];
 			data.date = utils.toISO8601(item.properties['alvexcm:conversationDate']);
 			data.summary = item.properties['alvexcm:conversationSummary'];
