@@ -9,7 +9,7 @@
 			<region-id>task-title</region-id>
 			<url>/components/alvex/tasks-title</url>
 			<properties>
-				<title>page.alvexTasks.title</title>
+				<title>page.caseTasks.title</title>
 			</properties>
 		</component>
 		<!-- All Filter -->

@@ -2,6 +2,8 @@ var createEvent = function(caseId, workflowId)
 {
 	var store = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
 	var wi = workflowHelper.getWorkflowInstance(workflowId)[0];
+	if( !wi.dueDate || wi.dueDate === null )
+		return;
 	var event = calendarHelper.createEvent(caseId, wi.description, utils.toISO8601(wi.dueDate));
 	var eventId = event.nodeRef.id;
 	var eventFolder = getFolder(store, eventId);

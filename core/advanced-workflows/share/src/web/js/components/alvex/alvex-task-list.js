@@ -71,6 +71,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		 */
 		YAHOO.Bubbling.on("filterChanged", this.onFilterChanged, this);
 		YAHOO.Bubbling.on("taskListPrefsUpdated", this.loadPreferences, this);
+		YAHOO.Bubbling.on("taskListTableReload", this.onTableReload, this);
 
 		return this;
 	};
@@ -130,6 +131,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 			
 			columns: [],
 			
+			caseWorkflows: [],
+			
 			taskProps: [
 				{ prop: "bpm_priority", width: 50, formatter: 'renderPriorityCell' }, 
 				{ prop: "bpm_status", width: 100, formatter: 'renderTextCell' }, 
@@ -167,20 +170,56 @@ if (typeof Alvex == "undefined" || !Alvex)
 						menu: "sorters-menu",
 						lazyloadmenu: false
 					});
-			this.loadPreferences();
+			
+			var me = this;
+			if( Alfresco.constants.SITE === "" )
+			{
+				this.loadPreferences();
+			}
+			else
+			{
+				var webscript = Alfresco.constants.PROXY_URI + 
+						YAHOO.lang.substitute("api/alvex/case/{caseId}/workflows?exclude={exclude}",
+				{
+					caseId: encodeURIComponent(Alfresco.constants.SITE),
+					exclude: this.options.hiddenWorkflowsNames.join(",")
+				});
+				Alfresco.util.Ajax.jsonRequest({
+					url: webscript,
+					method: Alfresco.util.Ajax.GET,
+					successCallback:
+					{
+						fn: function(resp)
+						{
+							me.options.caseWorkflows = resp.json.data;
+							me.loadPreferences();
+						},
+						scope:this
+					},
+					failureCallback:
+					{
+						fn: function (resp)
+						{
+							if (resp.serverResponse.statusText)
+								Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+						},
+						scope:this
+					}
+				});
+			}
 		},
 		
 		loadPreferences: function ()
 		{
 			// Load preferences (after which the appropriate tasks will be displayed)
 			this.services.preferences.request(PREFERENCES_MY_TASKS,
-					{
-						successCallback:
-								{
-									fn: this.onPreferencesLoaded,
-									scope: this
-								}
-					});
+			{
+				successCallback:
+				{
+					fn: this.onPreferencesLoaded,
+					scope: this
+				}
+			});
 		},
 		
 		/**
@@ -321,6 +360,50 @@ if (typeof Alvex == "undefined" || !Alvex)
 					}
 				}
 			});
+			
+			var me = this;
+			var dataTable = this.widgets.pagingDataTable.getDataTable();
+			var original_doBeforeLoadData = dataTable.doBeforeLoadData;
+			
+			dataTable.doBeforeLoadData = function(sRequest, oResponse, oPayload)
+			{
+				// Hide the paginator if there are fewer rows than would cause pagination
+				//Dom.setStyle(this.configs.paginator.getContainerNodes(), "visibility", 
+				//			(oResponse.results.length == 0) ? "hidden" : "visible");
+
+				//if (oResponse.results.length === 0)
+				//{
+				//	oResponse.results.unshift(
+				//	{
+				//		isInfo: true,
+				//		title: me.msg("empty.title"),
+				//		description: me.msg("empty.description")
+				//	});
+				//}
+				
+				if(Alfresco.constants.SITE !== "")
+				{
+					var resp = [];
+					for(var i = 0; i < oResponse.results.length; i++)
+					{
+						var our = false;
+						for(var j = 0; j < me.options.caseWorkflows.length; j++)
+						{
+							if( oResponse.results[i].workflowInstance.id 
+									=== me.options.caseWorkflows[j].workflow.id )
+							{
+								our = true
+							}
+						}
+						if(our)
+							resp.push(oResponse.results[i]);
+					}
+					oResponse.results = resp;
+				}
+				
+				return original_doBeforeLoadData.apply(this, arguments);
+			};
+
 		},
 		
 		renderTextCell: function(elCell, oRecord, oColumn, oData)
@@ -520,6 +603,103 @@ if (typeof Alvex == "undefined" || !Alvex)
 				// Save preferences
 				this.services.preferences.set(PREFERENCES_MY_TASKS_SORTER, menuItem.value);
 			}
+		},
+		
+		onTableReload: function()
+		{
+			var me = this;
+			var webscript = Alfresco.constants.PROXY_URI + 
+						YAHOO.lang.substitute("api/alvex/case/{caseId}/workflows?exclude={exclude}",
+			{
+				caseId: encodeURIComponent(Alfresco.constants.SITE),
+				exclude: this.options.hiddenWorkflowsNames.join(",")
+			});
+			Alfresco.util.Ajax.jsonRequest({
+				url: webscript,
+				method: Alfresco.util.Ajax.GET,
+				successCallback:
+				{
+					fn: function(resp)
+					{
+						me.options.caseWorkflows = resp.json.data;
+						this.widgets.pagingDataTable.loadDataTable(/*this.getReqParameters()*/);
+					},
+					scope:this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						if (resp.serverResponse.statusText)
+							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+					},
+					scope:this
+				}
+			});
+		},
+		
+		onDetachWorkflow: function(obj)
+		{
+			return;
+			var me = this;
+			var workflow = obj.workflow;
+			Alfresco.util.PopupManager.displayPrompt(
+			{
+				title: me.msg("title.detachWorkflowFromCase"),
+				text: me.msg("message.detachWorkflowFromCase",  Alfresco.util.encodeHTML(workflow.description)),
+				noEscape: true,
+				buttons: [
+				{
+					text: me.msg("button.detachWorkflowFromCase"),
+					handler: function()
+					{
+						var req = {};
+									
+						// Delete org chart role
+						Alfresco.util.Ajax.jsonRequest({
+							url: Alfresco.constants.PROXY_URI 
+										+ "api/alvex/case/" + encodeURIComponent(obj['case'].shortName) 
+										+ "/workflow/" + encodeURIComponent(workflow.id) + "?alf_method=DELETE",
+							method: Alfresco.util.Ajax.POST,
+							dataObj: req,
+							successCallback:
+							{
+								fn: function (resp)
+								{
+									this.destroy();
+									if (resp.serverResponse.statusText)
+									{
+										Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+									}
+									me.widgets.alfrescoDataTable.loadDataTable();
+								},
+								scope:this
+							},
+							failureCallback:
+							{
+								fn: function (resp)
+								{
+									this.destroy();
+									if (resp.serverResponse.statusText)
+									{
+										Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+									}
+									me.widgets.alfrescoDataTable.loadDataTable();
+								},
+								scope:this
+							}
+						});
+					}
+				},
+				{
+					text: me.msg("button.cancel"),
+					handler: function()
+					{
+						this.destroy();
+					},
+					isDefault: true
+				}]
+			});
 		},
 		
 		/**

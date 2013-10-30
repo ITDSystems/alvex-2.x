@@ -32,6 +32,7 @@
    {
       filterParameters: <@filter.jsonParameterFilter filterParameters />,
       hiddenTaskTypes: <@workflow.jsonHiddenTaskTypes hiddenTaskTypes/>,
+      hiddenWorkflowsNames: [<#list hiddenWorkflowsNames as workflow>"${workflow}"<#if workflow_has_next>, </#if></#list>],
       maxItems: ${maxItems!"50"},
       sorters:
       {<#list sorters as sorter>

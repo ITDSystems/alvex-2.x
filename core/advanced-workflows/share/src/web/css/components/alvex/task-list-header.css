@@ -123,3 +123,63 @@ ul.availableList
 	top: -1.5em;
 	width: 8em;
 }
+
+// Popup workflow start form
+.alfresco-share .yui-panel .bd .form-fields .set .yui-u.first
+{
+	text-align: left;
+}
+
+// Workflow attach
+
+.action div{
+	float: left;
+	line-height: 1em;
+}
+
+.action span {
+	display: none;
+}
+
+a.alvex-case-workflow-action
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.alvex-case-workflow-action,
+a:hover.alvex-case-workflow-action
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+div.onAttachWorkflow a.alvex-case-workflow-action {
+	background-image: url(/share/res/components/images/add-icon-16.png);
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog
+{
+	padding: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .attach-workflow-dialog-search
+{
+	padding-bottom: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .yui-dt thead
+{
+	display: none;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .attach-workflow-dialog-search input[type="text"]
+{
+	width: 350px;
+	line-height: 2em;
+	float: left;
+}
