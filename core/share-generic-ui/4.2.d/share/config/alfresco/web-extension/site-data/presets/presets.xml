@@ -187,19 +187,25 @@
 				<scope>page</scope>
 				<region-id>component-1-1</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/site-profile</url>
+				<url>/components/dashlets/calendar</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-1-2</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/calendar</url>
+				<url>/components/dashlets/case-checklists</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-1-3</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
 				<url>/components/dashlets/colleagues</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-1-4</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/case-contacts</url>
 			</component>
 			<component>
 				<scope>page</scope>
@@ -211,13 +217,19 @@
 				<scope>page</scope>
 				<region-id>component-2-2</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/docsummary</url>
+				<url>/components/dashlets/activityfeed</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-2-3</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/activityfeed</url>
+				<url>/components/dashlets/docsummary</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-4</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/case-conversations</url>
 			</component>
 		</components>
 		<pages>
@@ -229,7 +241,7 @@
 				<template-instance>dashboard-2-columns-wide-right</template-instance>
 				<authentication>user</authentication>
 				<properties>
-					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"},{"pageId":"alvex-case-tasks"},{"pageId":"alvex-case-conversations"}]</sitePages>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"},{"pageId":"alvex-case-tasks"},{"pageId":"alvex-case-conversations"},{"pageId":"alvex-case-contacts"}]</sitePages>
 				</properties>
 			</page>
 		</pages>

@@ -29,6 +29,14 @@
 				</list>
 			</parameter>
 		</constraint>
+		<constraint name="alvexcm:checkListItemStatusConstraint" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+					<value>pending</value>
+					<value>completed</value>
+				</list>
+			</parameter>
+		</constraint>
 	</constraints>
 
 	<types>
@@ -146,6 +154,23 @@
 				</property>
 			</properties>
 		</type>
+		
+		<type name="alvexcm:checkListItem">
+			<title>Case check list item</title>
+			<parent>sys:base</parent>
+			<properties>
+				<property name="alvexcm:checkListItemStatus">
+					<type>d:text</type>
+					<default>pending</default>
+					<constraints>
+						<constraint ref="alvexcm:checkListItemStatusConstraint" />
+					</constraints>
+				</property>
+				<property name="alvexcm:checkListItemSummary">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+			</properties>
+		</type>
 	</types>
-
 </model>

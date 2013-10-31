@@ -1,0 +1,8 @@
+<page>
+	<title>Alvex Case CheckLists</title>
+	<title-id>page.caseCheckLists.title</title-id>
+	<description>Work with case check lists</description>
+	<description-id>page.caseCheckLists.description</description-id>
+	<template-instance>alvex-case-checklists</template-instance>
+	<authentication>user</authentication>
+</page>

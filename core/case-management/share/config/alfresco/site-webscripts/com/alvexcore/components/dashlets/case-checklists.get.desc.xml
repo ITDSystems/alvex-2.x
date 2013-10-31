@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Case Checklists</shortname>
+	<description>Lists checklists related to current case</description>
+	<family>dashlet</family>
+	<url>/components/dashlets/case-checklists</url>
+</webscript>

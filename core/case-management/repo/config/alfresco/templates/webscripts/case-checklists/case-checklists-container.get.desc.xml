@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>case-checklists-container</shortname>
+  <description><![CDATA[
+  Returns case checklists container
+  ]]></description>
+  <url>/api/alvex/case/{caseId}/checklists/container</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

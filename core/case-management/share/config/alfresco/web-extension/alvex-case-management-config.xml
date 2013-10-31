@@ -196,5 +196,49 @@
 		</forms>
 	</config>
 
+	<config evaluator="model-type" condition="alvexcm:checkListItem">
+		<forms>
+			<!-- Create Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexcm:checkListItemStatus" />
+					<show id="alvexcm:checkListItemSummary" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="first" appearance="" label="" template="/alvex-2-column-set-wide-right.ftl" />
+					<field set="first" id="alvexcm:checkListItemStatus" />
+					<field set="first" id="alvexcm:checkListItemSummary">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexcm:checkListItem">
+		<forms>
+			<!-- View / Edit Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexcm:checkListItemStatus" />
+					<show id="alvexcm:checkListItemSummary" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="first" appearance="" label="" template="/alvex-2-column-set-wide-right.ftl" />
+					<field set="first" id="alvexcm:checkListItemStatus" />
+					<field set="first" id="alvexcm:checkListItemSummary">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
 
 </alfresco-config>

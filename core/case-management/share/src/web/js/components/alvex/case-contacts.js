@@ -427,6 +427,14 @@ if (typeof Alvex == "undefined" || !Alvex)
 		renderCellIcon: function CaseContacts_onReady_renderCellIcons(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
+			if (data.isInfo)
+			{
+				oColumn.width = 52;
+				Dom.setStyle(elCell, "width", oColumn.width + "px");
+				Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
+				elCell.innerHTML = '<img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/help-task-bw-32.png" />';
+				return;
+			}
 			var desc = '<div><img style="width:48px;" src="/share/res/components/images/no-user-photo-64.png" /></div>';
 			elCell.innerHTML = desc;
 		},
@@ -437,6 +445,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 		renderCellInfo: function CaseContacts_onReady_renderCellTaskInfo(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
+			if (data.isInfo)
+			{
+				elCell.innerHTML = '<div class="empty"><h3>' + data.title + '</h3>' 
+							+ '<span>' + data.description + '</span></div>';
+				return;
+			}
 			var info = '<h3>' + data.firstName + ' ' + data.lastName + '</h3>';
 			info += '<p>' + data.company + ', ' + data.position + '</p>';
 			elCell.innerHTML = info;
@@ -448,6 +462,13 @@ if (typeof Alvex == "undefined" || !Alvex)
 		renderCellActions:function CaseContacts_onReady_renderCellActions(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
+			if (data.isInfo)
+			{
+				oColumn.width = 0;
+				Dom.setStyle(elCell, "width", oColumn.width + "px");
+				Dom.setStyle(elCell.parentNode, "width", oColumn.width + "px");
+				return;
+			}
 
 			var desc = '<div class="action">';
 			
