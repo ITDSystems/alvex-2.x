@@ -27,7 +27,7 @@ if (typeof Alvex == "undefined" || !Alvex)
  * Case Workflows component.
  *
  * @namespace Alvex
- * @class Alvex.CaseConversations
+ * @class Alvex.CaseContacts
  */
 (function()
 {
@@ -53,15 +53,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 	var PREFERENCES_WORKFLOWS_DASHLET_SORTER = PREFERENCES_WORKFLOWS_DASHLET + ".sorter";
 
 	/**
-	* Dashboard CaseConversations constructor.
+	* Dashboard CaseContacts constructor.
 	*
 	* @param {String} htmlId The HTML id of the parent element
-	* @return {Alvex.CaseConversations} The new component instance
+	* @return {Alvex.CaseContacts} The new component instance
 	* @constructor
 	*/
-	Alvex.CaseConversations = function CaseConversations_constructor(htmlId)
+	Alvex.CaseContacts = function CaseContacts_constructor(htmlId)
 	{
-		Alvex.CaseConversations.superclass.constructor.call(this, "Alvex.CaseConversations", htmlId, 
+		Alvex.CaseContacts.superclass.constructor.call(this, "Alvex.CaseContacts", htmlId, 
 			["button", "container", "datasource", "datatable", "paginator", "history", "animation"]);
 
 		// Services
@@ -73,12 +73,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 	/**
 	* Extend from Alfresco.component.Base
 	*/
-	YAHOO.extend(Alvex.CaseConversations, Alfresco.component.Base);
+	YAHOO.extend(Alvex.CaseContacts, Alfresco.component.Base);
 
 	/**
 	* Augment prototype with main class implementation, ensuring overwrite is enabled
 	*/
-	YAHOO.lang.augmentObject(Alvex.CaseConversations.prototype,
+	YAHOO.lang.augmentObject(Alvex.CaseContacts.prototype,
 	{
 		/**
 		* Object container for initialization options
@@ -94,12 +94,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 		* Fired by YUI when parent element is available for scripting
 		* @method onReady
 		*/
-		onReady: function CaseConversations_onReady()
+		onReady: function CaseContacts_onReady()
 		{
 			var me = this;
 			Alfresco.util.Ajax.jsonGet(
 			{
-				url: Alfresco.constants.PROXY_URI + "api/alvex/case/" + encodeURIComponent(Alfresco.constants.SITE) + "/conversations/container",
+				url: Alfresco.constants.PROXY_URI + "api/alvex/case/" + encodeURIComponent(Alfresco.constants.SITE) + "/contacts/container",
 				successCallback:
 				{
 					fn: function(resp)
@@ -133,7 +133,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			};
 			YAHOO.Bubbling.addDefaultAction(this.id + "-action-link", fnActionHandler, true);
 
-			var url = Alfresco.constants.PROXY_URI + YAHOO.lang.substitute("api/alvex/case/{caseId}/conversations",
+			var url = Alfresco.constants.PROXY_URI + YAHOO.lang.substitute("api/alvex/case/{caseId}/contacts",
 			{
 				caseId: encodeURIComponent(Alfresco.constants.SITE),
 			});
@@ -150,11 +150,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 				},
 				dataTable:
 				{
-					container: this.id + "-conversations",
+					container: this.id + "-contacts",
 					columnDefinitions:
 					[
-						{ key: "type", sortable: false, formatter: this.bind(this.renderCellIcon), width:90 },
-						{ key: "summary", sortable: false, formatter: this.bind(this.renderCellInfo) },
+						{ key: "ref", sortable: false, formatter: this.bind(this.renderCellIcon), width:56 },
+						{ key: "firstName", sortable: false, formatter: this.bind(this.renderCellInfo) },
 						{ key: "actions", sortable: false, formatter: this.bind(this.renderCellActions), width:90 }
 					],
 					config:
@@ -169,7 +169,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				dataTable = this.widgets.alfrescoDataTable.getDataTable(),
 				original_doBeforeLoadData = dataTable.doBeforeLoadData;
 
-			dataTable.doBeforeLoadData = function CaseConversations_doBeforeLoadData(sRequest, oResponse, oPayload)
+			dataTable.doBeforeLoadData = function CaseContacts_doBeforeLoadData(sRequest, oResponse, oPayload)
 			{
 				
 				if (oResponse.results.length === 0)
@@ -194,7 +194,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						+ "&submitType={submitType}&destination={destination}&showCancelButton=true",
 				{
 					itemKind: "type",
-					itemId: "alvexcm:conversationItem",
+					itemId: "alvexcm:externalContact",
 					destination: this.options.containerRef,
 					mode: "create",
 					submitType: "json"
@@ -381,7 +381,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					text: me.msg("button.delete"),
 					handler: function()
 					{
-						var deleteUrl = Alfresco.constants.PROXY_URI + 'api/alvex/case/conversation/' 
+						var deleteUrl = Alfresco.constants.PROXY_URI + 'api/alvex/case/contact/' 
 										+ Alfresco.util.NodeRef( item.ref ).uri + '?alf_method=DELETE';
 						Alfresco.util.Ajax.jsonRequest({
 							url: deleteUrl,
@@ -424,44 +424,28 @@ if (typeof Alvex == "undefined" || !Alvex)
 		/**
 		* Priority & pooled icons custom datacell formatter
 		*/
-		renderCellIcon: function CaseConversations_onReady_renderCellIcons(elCell, oRecord, oColumn, oData)
+		renderCellIcon: function CaseContacts_onReady_renderCellIcons(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
-			var desc = '<div style="width:100px; text-align:center;"><img src="/share/res/components/images/' + data.type + '-64.png" /></div>';
+			var desc = '<div><img style="width:48px;" src="/share/res/components/images/no-user-photo-64.png" /></div>';
 			elCell.innerHTML = desc;
 		},
 
 		/**
 		* Task info custom datacell formatter
 		*/
-		renderCellInfo: function CaseConversations_onReady_renderCellTaskInfo(elCell, oRecord, oColumn, oData)
+		renderCellInfo: function CaseContacts_onReady_renderCellTaskInfo(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
-			var info = '<h3>Topic: ' + data.summary + '</h3>';
-			info += '<p>Date: ' + Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.date), "dd.mm.yyyy") + '</p>';
-			info += '<p>Participants: ';
-			for(var i in data.people)
-			{
-				info += '<a href="' + Alfresco.constants.URL_PAGECONTEXT 
-						+ 'user/' + data.people[i].userName + '/profile">' 
-						+ data.people[i].name + '</a> ';
-			}
-			info += '</p>';
-			info += '<p>Files: ';
-			for(var i in data.files)
-			{
-				info += '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'site/' 
-						+ Alfresco.constants.SITE + '/document-details?nodeRef=' + data.files[i].ref + '">' 
-						+ data.files[i].name + '</a> ';
-			}
-			info += '</p>';
+			var info = '<h3>' + data.firstName + ' ' + data.lastName + '</h3>';
+			info += '<p>' + data.company + ', ' + data.position + '</p>';
 			elCell.innerHTML = info;
 		},
 
 		/**
 		* Actions custom datacell formatter
 		*/
-		renderCellActions:function CaseConversations_onReady_renderCellActions(elCell, oRecord, oColumn, oData)
+		renderCellActions:function CaseContacts_onReady_renderCellActions(elCell, oRecord, oColumn, oData)
 		{
 			var data = oRecord.getData();
 
@@ -470,19 +454,19 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var	msg = this.msg('action.viewItem');
 			var clb = 'onViewItem';
 			desc += '<div class="' + clb + '">' 
-					+ '<a href="" ' + 'class="alvex-case-conversations-action '+ this.id + '-action-link" ' 
+					+ '<a href="" ' + 'class="alvex-case-contacts-action '+ this.id + '-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			
 			msg = this.msg('action.editItem');
 			clb = 'onEditItem';
 			desc += '<div class="' + clb + '">' 
-					+ '<a href="" ' + 'class="alvex-case-conversations-action '+ this.id + '-action-link" ' 
+					+ '<a href="" ' + 'class="alvex-case-contacts-action '+ this.id + '-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			
 			msg = this.msg('action.deleteItem');
 			clb = 'onDeleteItem';
 			desc += '<div class="' + clb + '">' 
-					+ '<a href="" ' + 'class="alvex-case-conversations-action '+ this.id + '-action-link" ' 
+					+ '<a href="" ' + 'class="alvex-case-contacts-action '+ this.id + '-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 
 			desc += '</div>';

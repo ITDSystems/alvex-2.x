@@ -115,6 +115,37 @@
 				</association>
 			</associations>
 		</type>
+
+		<type name="alvexcm:externalContact">
+			<title>External contact person for case</title>
+			<parent>sys:base</parent>
+			<properties>
+				<property name="alvexcm:contactFirstName">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="alvexcm:contactLastName">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="alvexcm:contactCompany">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="alvexcm:contactPosition">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="alvexcm:contactPhone">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+				<property name="alvexcm:contactEmail">
+					<type>d:text</type>
+					<mandatory>false</mandatory>
+				</property>
+			</properties>
+		</type>
 	</types>
 
 </model>

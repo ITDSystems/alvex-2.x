@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>Case Contacts</shortname>
+	<description>Lists contacts related to current case</description>
+	<url>/components/alvex/case-contacts</url>
+</webscript>

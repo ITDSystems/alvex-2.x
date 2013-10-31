@@ -91,4 +91,110 @@
 		</forms>
 	</config>
 
+	<config evaluator="model-type" condition="alvexcm:externalContact">
+		<forms>
+			<!-- Create Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexcm:contactFirstName" />
+					<show id="alvexcm:contactLastName" />
+					<show id="alvexcm:contactCompany" />
+					<show id="alvexcm:contactPosition" />
+					<show id="alvexcm:contactPhone" />
+					<show id="alvexcm:contactEmail" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="person" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl" />
+					<set id="company" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl" />
+					<set id="contacts" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl" />
+					<field set="person" id="alvexcm:contactFirstName">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="person" id="alvexcm:contactLastName">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="company" id="alvexcm:contactCompany">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="company" id="alvexcm:contactPosition">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="contacts" id="alvexcm:contactPhone">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="contacts" id="alvexcm:contactEmail">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexcm:externalContact">
+		<forms>
+			<!-- View / Edit Form -->
+			<form>
+				<field-visibility>
+					<show id="alvexcm:contactFirstName" />
+					<show id="alvexcm:contactLastName" />
+					<show id="alvexcm:contactCompany" />
+					<show id="alvexcm:contactPosition" />
+					<show id="alvexcm:contactPhone" />
+					<show id="alvexcm:contactEmail" />
+				</field-visibility>
+				<view-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<edit-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="person" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl" />
+					<set id="company" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl" />
+					<set id="contacts" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl" />
+					<field set="person" id="alvexcm:contactFirstName">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="person" id="alvexcm:contactLastName">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="company" id="alvexcm:contactCompany">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="company" id="alvexcm:contactPosition">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="contacts" id="alvexcm:contactPhone">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+					<field set="contacts" id="alvexcm:contactEmail">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 98%</control-param>
+						</control>
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+
 </alfresco-config>

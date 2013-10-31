@@ -1,0 +1,8 @@
+<page>
+	<title>Alvex Case Contacts</title>
+	<title-id>page.caseContacts.title</title-id>
+	<description>Work with case contacts</description>
+	<description-id>page.caseContacts.description</description-id>
+	<template-instance>alvex-case-contacts</template-instance>
+	<authentication>user</authentication>
+</page>
