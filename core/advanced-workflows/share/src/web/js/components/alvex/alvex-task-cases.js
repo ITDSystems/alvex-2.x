@@ -25,10 +25,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 }
 
 /**
- * TaskCases component.
+ * TaskProjects component.
  *
  * @namespace Alvex
- * @class Alvex.TaskCases
+ * @class Alvex.TaskProjects
  */
 (function()
 {
@@ -49,21 +49,21 @@ if (typeof Alvex == "undefined" || !Alvex)
        $combine = Alfresco.util.combinePaths;
 
    /**
-    * TaskCases constructor.
+    * TaskProjects constructor.
     *
     * @param {String} htmlId The HTML id of the parent element
-    * @return {Alvex.TaskCases} The new TaskCases instance
+    * @return {Alvex.TaskProjects} The new TaskProjects instance
     * @constructor
     */
-   Alvex.TaskCases = function TaskCases_constructor(htmlId)
+   Alvex.TaskProjects = function TaskProjects_constructor(htmlId)
    {
-      Alvex.TaskCases.superclass.constructor.call(this, htmlId, ["button"]);
+      Alvex.TaskProjects.superclass.constructor.call(this, htmlId, ["button"]);
 
       // Re-register with our own name
-      this.name = "Alvex.TaskCases";
+      this.name = "Alvex.TaskProjects";
 
       // Instance variables
-      this.options = YAHOO.lang.merge(this.options, Alvex.TaskCases.superclass.options);
+      this.options = YAHOO.lang.merge(this.options, Alvex.TaskProjects.superclass.options);
       Alfresco.util.ComponentManager.reregister(this);
       this.isRunning = false;
       this.taskId = null;
@@ -77,7 +77,7 @@ if (typeof Alvex == "undefined" || !Alvex)
    /**
     * Extend from Alfresco.component.ShareFormManager
     */
-   YAHOO.extend(Alvex.TaskCases, Alfresco.component.ShareFormManager, 
+   YAHOO.extend(Alvex.TaskProjects, Alfresco.component.ShareFormManager, 
    {
 
       /**
@@ -119,43 +119,43 @@ if (typeof Alvex == "undefined" || !Alvex)
 		 if( !this.workflowId )
 			 return;
 		 this.initUI();
-		 this.fillCasesList();
+		 this.fillProjectsList();
 	  },
 			  
-	fillCasesList: function()
+	fillProjectsList: function()
 	{
 		var me = this;
          Alfresco.util.Ajax.jsonGet(
 				 {
 					url: Alfresco.constants.PROXY_URI + "api/alvex/workflow/" 
-							+ me.workflowId + "/cases",
+							+ me.workflowId + "/projects",
 					successCallback:
 					{
 					   fn: function(resp)
 					   {
-						   var container = Dom.get( me.id + "-cases-list" );
+						   var container = Dom.get( me.id + "-projects-list" );
 						   container.innerHTML = '';
 						   for( var a in resp.json.data )
 						   {
 							   var div = document.createElement("div");
-							   div.className = "case-item";
+							   div.className = "project-item";
 							   //var img = document.createElement("img");
 							   //img.src = Alfresco.constants.URL_RESCONTEXT + "components/images/site-16.png";
 							   var span = document.createElement("span");
-							   span.innerHTML = '<a title="' + resp.json.data[a]['case']['description'] 
+							   span.innerHTML = '<a title="' + resp.json.data[a]['project']['description'] 
 									   + '" href="' + Alfresco.constants.URL_PAGECONTEXT 
-									   + 'site/' + resp.json.data[a]['case']['shortName'] + '/dashboard">' 
-									   + resp.json.data[a]['case']['title'] + '</a>';
-							   span.className = 'case-site';
+									   + 'site/' + resp.json.data[a]['project']['shortName'] + '/dashboard">' 
+									   + resp.json.data[a]['project']['title'] + '</a>';
+							   span.className = 'project-site';
 							   var action = document.createElement("span");
 							   action.className = "action";
 			
-								var msg = me.msg('action.detachCase');
-								var clb = 'onDetachCase';
+								var msg = me.msg('action.detachProject');
+								var clb = 'onDetachProject';
 
-								action.innerHTML = '<div class="' + clb + '" id="' + resp.json.data[a]['case']['shortName'] + '">' 
-										+ '<a href="" ' + 'class="alvex-case-workflow-action ' 
-										+ me.id + '-detach-case-action-link" style="visibility: visible;" ' 
+								action.innerHTML = '<div class="' + clb + '" id="' + resp.json.data[a]['project']['shortName'] + '">' 
+										+ '<a href="" ' + 'class="alvex-project-workflow-action ' 
+										+ me.id + '-detach-project-action-link" style="visibility: visible;" ' 
 										+ 'title="' + msg +'"><span class="title">' + msg + '</span></a></div>';
 			
 							   //div.appendChild( img );
@@ -181,12 +181,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 	initUI: function()
 	{
 		var me = this;
-			// Listener for add case buttons
-			me.widgets.attachCaseButton = new YAHOO.widget.Button(this.id + "-add-case",
-								{ onclick: { fn: this.onAttachCaseDialog, obj: null, scope: this } });
+			// Listener for add project buttons
+			me.widgets.attachProjectButton = new YAHOO.widget.Button(this.id + "-add-project",
+								{ onclick: { fn: this.onAttachProjectDialog, obj: null, scope: this } });
 
-			// Dialog for case attach
-			var dialogId = this.id + "-attach-case-dialog";
+			// Dialog for project attach
+			var dialogId = this.id + "-attach-project-dialog";
 			
 			// Setup search button
 			this.widgets.searchButton = new YAHOO.widget.Button(dialogId + "-search-ok");
@@ -204,8 +204,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 				correctScope: true
 			}, "keydown").enable();
 
-			this.widgets.attachCaseDialog = Alfresco.util.createYUIPanel(dialogId, { width: "540px" });
-			this.widgets.attachCaseDialog.hideEvent.subscribe(this.onAttachCancel, null, this);
+			this.widgets.attachProjectDialog = Alfresco.util.createYUIPanel(dialogId, { width: "540px" });
+			this.widgets.attachProjectDialog.hideEvent.subscribe(this.onAttachCancel, null, this);
 
 			var me = this;
 			
@@ -218,7 +218,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					if (typeof me[owner.className] == "function")
 					{
 						args[1].stop = true;
-						var asset = me.widgets.casesDataTable.getRecord(args[1].target.offsetParent).getData();
+						var asset = me.widgets.projectsDataTable.getRecord(args[1].target.offsetParent).getData();
 						me[owner.className].call(me, asset, owner);
 					}
 				}
@@ -238,90 +238,90 @@ if (typeof Alvex == "undefined" || !Alvex)
 				}
 				return true;
 			};
-			YAHOO.Bubbling.addDefaultAction(this.id + "-attach-case-action-link", fnActionHandler, true);
-			YAHOO.Bubbling.addDefaultAction(this.id + "-detach-case-action-link", fnActionHandler1, true);
+			YAHOO.Bubbling.addDefaultAction(this.id + "-attach-project-action-link", fnActionHandler, true);
+			YAHOO.Bubbling.addDefaultAction(this.id + "-detach-project-action-link", fnActionHandler1, true);
 
 			var myColumnDefs = [
-				{key:'shortName', sortable:false, width:32, formatter: this.formatCaseAttachIconField},
-				{key:'title', sortable:false, width: 310, formatter: this.formatCaseAttachNameField},
-				{key:'action', sortable:false, width:45, formatter: this.formatCaseAttachActionsField}
+				{key:'shortName', sortable:false, width:32, formatter: this.formatProjectAttachIconField},
+				{key:'title', sortable:false, width: 310, formatter: this.formatProjectAttachNameField},
+				{key:'action', sortable:false, width:45, formatter: this.formatProjectAttachActionsField}
 			];
 
-			this.options.casesDataStore = [];
-			this.widgets.casesDataSource = new YAHOO.util.DataSource(me.options.casesDataStore);
-			this.widgets.casesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-			this.widgets.casesDataSource.responseSchema = {
+			this.options.projectsDataStore = [];
+			this.widgets.projectsDataSource = new YAHOO.util.DataSource(me.options.projectsDataStore);
+			this.widgets.projectsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+			this.widgets.projectsDataSource.responseSchema = {
 				fields: ["shortName", "title", "action"]
 			};
 			
-			this.widgets.casesDataSource.doBeforeParseData = function (oRequest, oFullResponse)
+			this.widgets.projectsDataSource.doBeforeParseData = function (oRequest, oFullResponse)
 			{
 				var response = [];
-				for( var i in me.options.casesDataStore )
+				for( var i in me.options.projectsDataStore )
 				{
-					me.options.casesDataStore[i].action = '';
-					response.push(me.options.casesDataStore[i]);
+					me.options.projectsDataStore[i].action = '';
+					response.push(me.options.projectsDataStore[i]);
 				}		
 				return response;
 			};
 			
-			this.widgets.casesDataTable = new YAHOO.widget.DataTable(dialogId + "-options-table",
-				myColumnDefs, this.widgets.casesDataSource,
+			this.widgets.projectsDataTable = new YAHOO.widget.DataTable(dialogId + "-options-table",
+				myColumnDefs, this.widgets.projectsDataSource,
 			{
-				MSG_EMPTY: this.msg("message.noCases"),
+				MSG_EMPTY: this.msg("message.noProjects"),
 				renderLoopSize: 100
 			} );
 			
-			this.widgets.casesDataTable.parent = me;
+			this.widgets.projectsDataTable.parent = me;
 
 			this.onSearch();
       },
 	  
-  		formatCaseAttachIconField: function(elCell, oRecord, oColumn, oData)
+  		formatProjectAttachIconField: function(elCell, oRecord, oColumn, oData)
 		{
 			var desc = '<img src="' + Alfresco.constants.URL_RESCONTEXT 
 					+ 'components/images/site-16.png"/>';
 			elCell.innerHTML = desc;
 		},
 		
-		formatCaseAttachNameField: function(elCell, oRecord, oColumn, oData)
+		formatProjectAttachNameField: function(elCell, oRecord, oColumn, oData)
 		{
 			var item = oRecord.getData();
 			var desc = '<h3><a href="' + $siteURL('site/' + item.shortName + '/dashboard') 
 				+ '" class="theme-color-1" title="' 
-				+ this.parent.msg("link.viewCase") + '">' + $html(item.title) + '</a></h3>';
+				+ this.parent.msg("link.viewProject") + '">' + $html(item.title) + '</a></h3>';
 			elCell.innerHTML = desc;
 		},
 		
-		formatCaseAttachActionsField: function(elCell, oRecord, oColumn, oData)
+		formatProjectAttachActionsField: function(elCell, oRecord, oColumn, oData)
 		{
 			var item = oRecord.getData();
 			var desc = '<div class="action">';
 			
-			var msg = this.parent.msg('action.attachCase');
-			var clb = 'onAttachCase';
+			var msg = this.parent.msg('action.attachProject');
+			var clb = 'onAttachProject';
 			
-			desc += '<div class="' + clb + '"><a href="" ' + 'class="alvex-case-workflow-action ' 
-					+ this.parent.id + '-attach-case-action-link" ' 
+			desc += '<div class="' + clb + '"><a href="" ' + 'class="alvex-project-workflow-action ' 
+					+ this.parent.id + '-attach-project-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			desc += '</div>';
 
 			elCell.innerHTML = desc;
 		},
 
-		onAttachCaseDialog: function (event)
+		onAttachProjectDialog: function (event)
 		{
 			Event.preventDefault(event);
 			var me = this;
 			
-			if( ! this.widgets.attachCaseDialog )
+			if( ! this.widgets.attachProjectDialog )
 				return;
 			
 			// Enable esc listener
-			if (!this.widgets.attachCaseDialogEscapeListener)
+			if (!this.widgets.attachProjectDialogEscapeListener)
 			{
-				this.widgets.attachCaseDialogEscapeListener = new KeyListener(
-					this.id + "-attach-case-dialog",
+				this.widgets.attachProjectDialogEscapeListener = new KeyListener(
+					this.id + "-attach-project-dialog",
 					{
 						keys: KeyListener.KEY.ESCAPE
 					},
@@ -335,12 +335,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 						correctScope: true
 					});
 			}
-			this.widgets.attachCaseDialogEscapeListener.enable();
+			this.widgets.attachProjectDialogEscapeListener.enable();
 
 			// Show the dialog
-			this.widgets.attachCaseDialog.show();
-			Dom.removeClass(this.id + "-attach-case-dialog", "hidden");
-			this.widgets.attachCaseDialog.center();
+			this.widgets.attachProjectDialog.show();
+			Dom.removeClass(this.id + "-attach-project-dialog", "hidden");
+			this.widgets.attachProjectDialog.center();
 		},
 		
 		onSearch: function()
@@ -348,19 +348,19 @@ if (typeof Alvex == "undefined" || !Alvex)
 			// Get possible workflows to attach, fill dataTable
 			Alfresco.util.Ajax.jsonRequest({
 				url: Alfresco.constants.PROXY_URI 
-						+ "api/sites?size=250&spf=case-dashboard",
+						+ "api/sites?size=250&spf=project-dashboard",
 				method: Alfresco.util.Ajax.GET,
 				successCallback:
 				{
 					fn: function (resp)
 					{
-						this.options.casesDataStore = [];
+						this.options.projectsDataStore = [];
 						for( var w in resp.json )
-							this.options.casesDataStore.push(resp.json[w]);
-						this.widgets.casesDataTable.getDataSource().sendRequest('', 
+							this.options.projectsDataStore.push(resp.json[w]);
+						this.widgets.projectsDataTable.getDataSource().sendRequest('', 
 								{ 
-									success: this.widgets.casesDataTable.onDataReturnInitializeTable, 
-									scope: this.widgets.casesDataTable
+									success: this.widgets.projectsDataTable.onDataReturnInitializeTable, 
+									scope: this.widgets.projectsDataTable
 								}
 							);
 					},
@@ -380,13 +380,13 @@ if (typeof Alvex == "undefined" || !Alvex)
 			});
 		},
 			
-		onAttachCase: function(obj)
+		onAttachProject: function(obj)
 		{
 			var me = this;
 			
 			Alfresco.util.Ajax.jsonRequest({
 				url: Alfresco.constants.PROXY_URI 
-						+ "api/alvex/case/" 
+						+ "api/alvex/project/" 
 						+ encodeURIComponent(obj.shortName) + "/workflows",
 				method: Alfresco.util.Ajax.PUT,
 				dataObj: { data: { workflows: me.workflowId } },
@@ -398,7 +398,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 							Alfresco.util.PopupManager.displayMessage( { 
 								text: resp.serverResponse.statusText });
 						}
-						me.fillCasesList();
+						me.fillProjectsList();
 					},
 					scope:this
 				},
@@ -410,7 +410,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 							Alfresco.util.PopupManager.displayMessage( { 
 								text: resp.serverResponse.statusText });
 						}
-						me.fillCasesList();
+						me.fillProjectsList();
 					},
 					scope:this
 				}
@@ -419,24 +419,24 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		onAttachCancel: function(e, p_obj)
 		{
-			this.widgets.attachCaseDialogEscapeListener.disable();
-			this.widgets.attachCaseDialog.hide();
+			this.widgets.attachProjectDialogEscapeListener.disable();
+			this.widgets.attachProjectDialog.hide();
 			if (e) {
 				Event.preventDefault(e);
 			}
 		},
 				
-		onDetachCase: function(caseId)
+		onDetachProject: function(projectId)
 		{
 			var me = this;
 
 			Alfresco.util.PopupManager.displayPrompt(
 			{
-				title: me.msg("title.detachCaseFromWorkflow"),
-				text: me.msg("message.detachCaseFromWorkflow"),
+				title: me.msg("title.detachProjectFromWorkflow"),
+				text: me.msg("message.detachProjectFromWorkflow"),
 				buttons: [
 				{
-					text: me.msg("button.detachCaseFromWorkflow"),
+					text: me.msg("button.detachProjectFromWorkflow"),
 					handler: function()
 					{
 						var req = {};
@@ -444,7 +444,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						// Delete org chart role
 						Alfresco.util.Ajax.jsonRequest({
 							url: Alfresco.constants.PROXY_URI 
-										+ "api/alvex/case/" + encodeURIComponent(caseId) 
+										+ "api/alvex/project/" + encodeURIComponent(projectId) 
 										+ "/workflow/" + encodeURIComponent(me.workflowId) + "?alf_method=DELETE",
 							method: Alfresco.util.Ajax.POST,
 							dataObj: req,
@@ -457,7 +457,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 									{
 										Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
 									}
-									me.fillCasesList();
+									me.fillProjectsList();
 								},
 								scope:this
 							},
@@ -470,7 +470,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 									{
 										Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
 									}
-									me.fillCasesList();
+									me.fillProjectsList();
 								},
 								scope:this
 							}

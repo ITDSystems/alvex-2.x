@@ -310,11 +310,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 						button.children[0].children[0].innerHTML = this.msg("button.startWorkflow");
 						Alfresco.util.populateHTML([
 							p_dialog.id + "-dialogTitle", 
-							Alfresco.util.message(this.msg("header.startWorkflowForCase"))
+							Alfresco.util.message(this.msg("header.startWorkflowForProject"))
 							]);
 						Alfresco.util.populateHTML([
 							p_dialog.id + "-form-container_h", 
-							Alfresco.util.message(this.msg("header.startWorkflowForCase"))
+							Alfresco.util.message(this.msg("header.startWorkflowForProject"))
 							]);
 					},
 					scope: this
@@ -439,7 +439,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			
 			Alfresco.util.Ajax.jsonRequest({
 				url: Alfresco.constants.PROXY_URI 
-						+ "api/alvex/case/" 
+						+ "api/alvex/project/" 
 						+ encodeURIComponent(Alfresco.constants.SITE) + "/workflows",
 				method: Alfresco.util.Ajax.PUT,
 				dataObj: { data: { workflows: obj.id } },
@@ -497,7 +497,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var msg = this.parent.msg('action.attachWorkflow');
 			var clb = 'onAttachWorkflow';
 			
-			desc += '<div class="' + clb + '"><a href="" ' + 'class="alvex-case-workflow-action ' 
+			desc += '<div class="' + clb + '"><a href="" ' + 'class="alvex-project-workflow-action ' 
 					+ this.parent.id + '-attach-workflow-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			desc += '</div>';

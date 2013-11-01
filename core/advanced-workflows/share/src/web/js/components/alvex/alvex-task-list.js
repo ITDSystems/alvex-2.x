@@ -131,7 +131,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			
 			columns: [],
 			
-			caseWorkflows: [],
+			projectWorkflows: [],
 			
 			taskProps: [
 				{ prop: "bpm_priority", width: 50, formatter: 'renderPriorityCell' }, 
@@ -179,9 +179,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			else
 			{
 				var webscript = Alfresco.constants.PROXY_URI + 
-						YAHOO.lang.substitute("api/alvex/case/{caseId}/workflows?exclude={exclude}",
+						YAHOO.lang.substitute("api/alvex/project/{projectId}/workflows?exclude={exclude}",
 				{
-					caseId: encodeURIComponent(Alfresco.constants.SITE),
+					projectId: encodeURIComponent(Alfresco.constants.SITE),
 					exclude: this.options.hiddenWorkflowsNames.join(",")
 				});
 				Alfresco.util.Ajax.jsonRequest({
@@ -191,7 +191,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					{
 						fn: function(resp)
 						{
-							me.options.caseWorkflows = resp.json.data;
+							me.options.projectWorkflows = resp.json.data;
 							me.loadPreferences();
 						},
 						scope:this
@@ -387,10 +387,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 					for(var i = 0; i < oResponse.results.length; i++)
 					{
 						var our = false;
-						for(var j = 0; j < me.options.caseWorkflows.length; j++)
+						for(var j = 0; j < me.options.projectWorkflows.length; j++)
 						{
 							if( oResponse.results[i].workflowInstance.id 
-									=== me.options.caseWorkflows[j].workflow.id )
+									=== me.options.projectWorkflows[j].workflow.id )
 							{
 								our = true
 							}
@@ -609,9 +609,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			var me = this;
 			var webscript = Alfresco.constants.PROXY_URI + 
-						YAHOO.lang.substitute("api/alvex/case/{caseId}/workflows?exclude={exclude}",
+						YAHOO.lang.substitute("api/alvex/project/{projectId}/workflows?exclude={exclude}",
 			{
-				caseId: encodeURIComponent(Alfresco.constants.SITE),
+				projectId: encodeURIComponent(Alfresco.constants.SITE),
 				exclude: this.options.hiddenWorkflowsNames.join(",")
 			});
 			Alfresco.util.Ajax.jsonRequest({
@@ -621,7 +621,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				{
 					fn: function(resp)
 					{
-						me.options.caseWorkflows = resp.json.data;
+						me.options.projectWorkflows = resp.json.data;
 						this.widgets.pagingDataTable.loadDataTable(/*this.getReqParameters()*/);
 					},
 					scope:this
@@ -645,12 +645,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var workflow = obj.workflow;
 			Alfresco.util.PopupManager.displayPrompt(
 			{
-				title: me.msg("title.detachWorkflowFromCase"),
-				text: me.msg("message.detachWorkflowFromCase",  Alfresco.util.encodeHTML(workflow.description)),
+				title: me.msg("title.detachWorkflowFromProject"),
+				text: me.msg("message.detachWorkflowFromProject",  Alfresco.util.encodeHTML(workflow.description)),
 				noEscape: true,
 				buttons: [
 				{
-					text: me.msg("button.detachWorkflowFromCase"),
+					text: me.msg("button.detachWorkflowFromProject"),
 					handler: function()
 					{
 						var req = {};
@@ -658,7 +658,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						// Delete org chart role
 						Alfresco.util.Ajax.jsonRequest({
 							url: Alfresco.constants.PROXY_URI 
-										+ "api/alvex/case/" + encodeURIComponent(obj['case'].shortName) 
+										+ "api/alvex/project/" + encodeURIComponent(obj['project'].shortName) 
 										+ "/workflow/" + encodeURIComponent(workflow.id) + "?alf_method=DELETE",
 							method: Alfresco.util.Ajax.POST,
 							dataObj: req,

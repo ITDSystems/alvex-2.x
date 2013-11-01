@@ -20,7 +20,7 @@
   </repositories>
   <modules>
     <module>core/advanced-workflows/repo</module>
-    <module>core/case-management/repo</module>
+    <module>core/project-management/repo</module>
     <module>core/custom-workflows/repo</module>
     <module>core/documents-registers/repo</module>
     <module>core/extension-registry/repo</module>
@@ -29,7 +29,7 @@
     <module>core/uploader/repo</module>
     <module>core/workflow-shortcut-dashlet/repo</module>
     <module>core/advanced-workflows/share</module>
-    <module>core/case-management/share</module>
+    <module>core/project-management/share</module>
     <module>core/custom-workflows/share</module>
     <module>core/documents-registers/share</module>
     <module>core/extension-registry/share</module>

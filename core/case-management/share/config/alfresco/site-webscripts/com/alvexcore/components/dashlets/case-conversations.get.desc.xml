@@ -1,6 +1,0 @@
-<webscript>
-	<shortname>Case Conversations</shortname>
-	<description>Lists conversations related to current case</description>
-	<family>dashlet</family>
-	<url>/components/dashlets/case-conversations</url>
-</webscript>

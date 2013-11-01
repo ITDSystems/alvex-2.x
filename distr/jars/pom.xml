@@ -38,13 +38,13 @@
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
-      <artifactId>case-management</artifactId>
-      <version>${case_management.version}</version>
+      <artifactId>project-management</artifactId>
+      <version>${project_management.version}</version>
     </dependency>
     <dependency>
       <groupId>${alvex.share.groupId}</groupId>
-      <artifactId>case-management</artifactId>
-      <version>${case_management.version}</version>
+      <artifactId>project-management</artifactId>
+      <version>${project_management.version}</version>
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>

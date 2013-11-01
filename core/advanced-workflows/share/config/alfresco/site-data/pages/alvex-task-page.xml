@@ -36,10 +36,10 @@
          </properties>
       </component>
 
-      <!-- Cases -->
+      <!-- Projects -->
       <component>
-         <region-id>task-cases</region-id>
-         <url>/components/alvex/task-cases</url>
+         <region-id>task-projects</region-id>
+         <url>/components/alvex/task-projects</url>
       </component>
 
       <!-- Relations -->

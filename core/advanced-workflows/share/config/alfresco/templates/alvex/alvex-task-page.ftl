@@ -25,7 +25,7 @@
       </div>
       <div class="share-form-column" style="float: left;">
          <@region id="task-dates" scope="page" />
-         <@region id="task-cases" scope="page" />
+         <@region id="task-projects" scope="page" />
          <@region id="task-participants" scope="page" />
          <@region id="task-share" scope="page" />
       </div>

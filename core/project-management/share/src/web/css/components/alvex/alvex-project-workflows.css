@@ -1,0 +1,137 @@
+/* Toolbars */
+
+.project-workflows .toolbar .yui-pg-container,
+.project-workflows .toolbar .yui-pg-container .yui-pg-current
+{
+   line-height: 2;
+   margin: 0 0 0 0.3em;
+   padding: 0;
+}
+
+/* Body */
+
+.project-workflows .body h4
+{
+   margin-bottom: 0.2em;
+}
+
+.project-workflows .body .unassigned-task
+{
+   padding: 0.15em;
+   text-transform: uppercase;
+   font-size: 80%;
+}
+
+/* Data Table */
+
+.project-workflows .yui-dt-col-isPooled div
+{
+   text-align: center   
+}
+
+.project-workflows .yui-dt-col-isPooled img
+{
+   margin-bottom: 0.5em;
+}
+
+.project-workflows .yui-dt-col-title .yui-dt-liner
+{
+   line-height: 1.4;
+   padding-top: 0;
+}
+
+.project-workflows .yui-dt-col-icon .yui-dt-liner
+{
+	padding: 4px;
+	text-align: center;
+}
+
+.project-workflows .workflow-delayed
+{
+   padding-left: 1.5em;
+   background: url(../images/warning-16.png) no-repeat; 
+}
+
+.project-workflows .action a
+{
+   cursor: pointer;
+   padding: 0em 0.75em;
+   visibility: hidden;
+}
+
+.project-workflows .yui-dt-highlighted a
+{
+   visibility: visible;
+}
+
+.project-workflows a.view-workflow
+{
+   background: url(../images/task-16.png) no-repeat center;
+}
+
+.project-workflows a.edit-workflow
+{
+   background: url(../images/edit-16.png) no-repeat center;
+}
+
+.action div{
+	float: left;
+	line-height: 1em;
+}
+
+.action span {
+	display: none;
+}
+
+a.alvex-project-workflow-action
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.alvex-project-workflow-action,
+a:hover.alvex-project-workflow-action
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+div.onDetachWorkflow a.alvex-project-workflow-action {
+	background-image: url(/share/res/components/images/delete-link-16.png);
+}
+
+div.onAttachWorkflow a.alvex-project-workflow-action {
+	background-image: url(/share/res/components/images/add-icon-16.png);
+}
+
+.project-workflows .yui-dt-col-name a:active,
+.project-workflows .yui-dt-col-name a:hover
+{
+   text-decoration: none;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog
+{
+	padding: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .attach-workflow-dialog-search
+{
+	padding-bottom: 1em;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .yui-dt thead
+{
+	display: none;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .attach-workflow-dialog .attach-workflow-dialog-search input[type="text"]
+{
+	width: 350px;
+	line-height: 2em;
+	float: left;
+}

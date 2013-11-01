@@ -1,4 +1,4 @@
-.task-cases
+.task-projects
 {
    clear: both;
    padding: 0;
@@ -6,51 +6,51 @@
    width: 300px;  
 }
 
-.task-cases h2
+.task-projects h2
 {
 	padding-bottom: 0.5em;
 	padding-top: 1.5em;
 }
 
-.task-cases .clear
+.task-projects .clear
 {
    clear: both;
 }
 
-.task-cases .message-left
+.task-projects .message-left
 {
 	float: left;
 }
 
-/*.task-cases .section-header
+/*.task-projects .section-header
 {
 	margin-top: 1em;
 	margin-bottom: 1em;
 	margin-right: 2em;
 }*/
 
-.task-cases .section-action
+.task-projects .section-action
 {
 	margin-top: 0.75em;
 	margin-left: 32px;
 }
 
-.task-cases .section-action span
+.task-projects .section-action span
 {
 	border-style: none;
 }
 
-.task-cases .section-action .yui-button span
+.task-projects .section-action .yui-button span
 {
 	border-style: none;
 }
 
-.task-cases .section-action button
+.task-projects .section-action button
 {
 	padding: 0px;
 }
 
-/*.task-cases div.case-item 
+/*.task-projects div.project-item 
 {
 	float: left;
 	margin-left: 1em;
@@ -64,14 +64,14 @@
 	border-color: #ccc;
 }*/
 
-.task-cases .case-item span 
+.task-projects .project-item span 
 {
 	line-height: 1.5em;
 	vertical-align: middle;
 	float: left;
 }
 
-/*.task-cases .case-item img
+/*.task-projects .project-item img
 {
 	float: left;
 	width: 24px;
@@ -79,21 +79,21 @@
 	padding: 4px;
 }*/
 
-.task-cases .case-item span.case-site
+.task-projects .project-item span.project-site
 {
 	padding-left: 32px;
 	background: url(../images/site-16.png) no-repeat;
 	background-position: 8px 2px;
 }
 
-.task-cases .action a
+.task-projects .action a
 {
    cursor: pointer;
    padding: 0em 0.75em;
    visibility: hidden;
 }
 
-.task-cases .action div
+.task-projects .action div
 {
    line-height: 1.5em;
 }
@@ -109,7 +109,7 @@
 	display: none;
 }
 
-a.alvex-case-workflow-action
+a.alvex-project-workflow-action
 {
 	background-position: 4px 1px;
 	background-repeat: no-repeat;
@@ -118,44 +118,44 @@ a.alvex-case-workflow-action
 	background-image: url(/share/res/components/images/list-16.png);
 }
 
-a:active.alvex-case-workflow-action,
-a:hover.alvex-case-workflow-action
+a:active.alvex-project-workflow-action,
+a:hover.alvex-project-workflow-action
 {
 	background-color: #fff;
 	border: 1px solid #2b6eb5;
 	text-decoration: none;
 }
 
-div.onAttachCase a.alvex-case-workflow-action {
+div.onAttachProject a.alvex-project-workflow-action {
 	background-image: url(/share/res/components/images/add-icon-16.png);
 }
 
-div.onDetachCase a.alvex-case-workflow-action {
+div.onDetachProject a.alvex-project-workflow-action {
 	background-image: url(/share/res/components/images/remove-icon-16.png);
 }
 
-.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog
+.yui-skin-lightTheme .yui-panel .bd .attach-project-dialog
 {
 	padding: 1em;
 }
 
-.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog .attach-case-dialog-search
+.yui-skin-lightTheme .yui-panel .bd .attach-project-dialog .attach-project-dialog-search
 {
 	padding-bottom: 1em;
 }
 
-.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog .yui-dt thead
+.yui-skin-lightTheme .yui-panel .bd .attach-project-dialog .yui-dt thead
 {
 	display: none;
 }
 
-.yui-skin-lightTheme .yui-panel .bd .attach-case-dialog .attach-case-dialog-search input[type="text"]
+.yui-skin-lightTheme .yui-panel .bd .attach-project-dialog .attach-project-dialog-search input[type="text"]
 {
 	width: 350px;
 	line-height: 2em;
 	float: left;
 }
 
-.yui-skin-lightTheme .task-cases .yui-menu-button button {
+.yui-skin-lightTheme .task-projects .yui-menu-button button {
 	background-image: none;
 }

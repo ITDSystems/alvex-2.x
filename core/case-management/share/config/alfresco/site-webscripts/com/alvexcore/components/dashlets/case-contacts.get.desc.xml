@@ -1,6 +1,0 @@
-<webscript>
-	<shortname>Case Contacts</shortname>
-	<description>Lists contacts related to current case</description>
-	<family>dashlet</family>
-	<url>/components/dashlets/case-contacts</url>
-</webscript>

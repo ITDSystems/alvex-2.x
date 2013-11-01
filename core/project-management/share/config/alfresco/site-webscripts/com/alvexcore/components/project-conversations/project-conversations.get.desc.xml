@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>Project Conversations</shortname>
+	<description>Lists conversations related to current project</description>
+	<url>/components/alvex/project-conversations</url>
+</webscript>

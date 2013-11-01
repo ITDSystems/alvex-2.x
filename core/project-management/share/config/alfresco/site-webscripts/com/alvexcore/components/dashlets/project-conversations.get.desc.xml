@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Project Conversations</shortname>
+	<description>Lists conversations related to current project</description>
+	<family>dashlet</family>
+	<url>/components/dashlets/project-conversations</url>
+</webscript>

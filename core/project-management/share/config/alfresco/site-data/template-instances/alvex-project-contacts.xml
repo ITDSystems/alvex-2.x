@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<template-instance>
+	<template-type>alvex/alvex-project-conversations</template-type>
+	<components>
+		
+		<!-- Title -->
+		<!--component>
+			<region-id>conversations-title</region-id>
+			<url>/components/title/simple-title</url>
+			<properties>
+				<title>page.projectConversations.title</title>
+			</properties>
+		</component-->
+		
+		<!-- Time Filter -->
+		<!--component>
+			<region-id>time-filter</region-id>
+			<url>/components/conversations/filter/time</url>
+		</component-->
+		
+		<!-- List -->
+		<component>
+			<region-id>list</region-id>
+			<url>/components/alvex/project-contacts</url>
+		</component>
+		
+	</components>
+</template-instance>

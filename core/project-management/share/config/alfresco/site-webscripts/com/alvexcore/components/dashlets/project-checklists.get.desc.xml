@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Project Checklists</shortname>
+	<description>Lists checklists related to current project</description>
+	<family>dashlet</family>
+	<url>/components/dashlets/project-checklists</url>
+</webscript>

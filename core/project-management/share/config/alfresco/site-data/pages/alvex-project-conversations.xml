@@ -1,0 +1,8 @@
+<page>
+	<title>Alvex Project Conversations</title>
+	<title-id>page.projectConversations.title</title-id>
+	<description>Work with project conversations</description>
+	<description-id>page.projectConversations.description</description-id>
+	<template-instance>alvex-project-conversations</template-instance>
+	<authentication>user</authentication>
+</page>

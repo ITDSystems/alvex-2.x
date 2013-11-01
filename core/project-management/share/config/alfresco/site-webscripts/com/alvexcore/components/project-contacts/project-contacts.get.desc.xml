@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>Project Contacts</shortname>
+	<description>Lists contacts related to current project</description>
+	<url>/components/alvex/project-contacts</url>
+</webscript>

@@ -1,6 +1,0 @@
-<webscript>
-	<shortname>Alvex: Admin Component for Case sites</shortname>
-	<description>Alvex: Admin Component for Case sites</description>
-	<url>/components/admin/alvex/case-sites</url>
-	<family>admin-console</family>
-</webscript>

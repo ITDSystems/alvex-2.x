@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>project-contacts-container</shortname>
+  <description><![CDATA[
+  Returns project contacts container
+  ]]></description>
+  <url>/api/alvex/project/{projectId}/contacts/container</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

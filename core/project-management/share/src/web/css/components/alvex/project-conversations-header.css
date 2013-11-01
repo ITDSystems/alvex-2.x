@@ -1,0 +1,49 @@
+.project-conversations-toolbar
+{
+   margin: 0px -10px;   
+}
+
+.project-conversations-toolbar .header-bar
+{
+   clear: both;
+   min-height: 1.7em;
+   padding: 4px 0.5em 9px;
+}
+
+.project-conversations-toolbar .hidden
+{
+   visibility: hidden;
+}
+
+.project-conversations-toolbar .left
+{
+   float: left;
+}
+
+.project-conversations-toolbar .right
+{
+   float: right;
+}
+
+.project-conversations-toolbar .header-actions
+{
+   margin-left:5em;
+   margin-top: 0.5em;
+   float:right;
+}
+
+.project-conversations-toolbar .add-item span.first-child
+{
+   background: url("../images/add-icon-16.png") no-repeat scroll 12px 4px transparent;
+   padding-left: 22px;
+}
+
+.alfresco-share .yui-panel .bd .form-fields .set .yui-u.first
+{
+	text-align: left;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .form-fields .set .yui-u .yui-button button
+{
+	width: 15em;
+}

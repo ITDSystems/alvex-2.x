@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>project-checklists-container</shortname>
+  <description><![CDATA[
+  Returns project checklists container
+  ]]></description>
+  <url>/api/alvex/project/{projectId}/checklists/container</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

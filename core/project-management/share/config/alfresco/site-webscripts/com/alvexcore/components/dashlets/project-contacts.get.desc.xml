@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Project Contacts</shortname>
+	<description>Lists contacts related to current project</description>
+	<family>dashlet</family>
+	<url>/components/dashlets/project-contacts</url>
+</webscript>

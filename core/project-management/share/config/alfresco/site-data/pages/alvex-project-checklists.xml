@@ -1,0 +1,8 @@
+<page>
+	<title>Alvex Project CheckLists</title>
+	<title-id>page.projectCheckLists.title</title-id>
+	<description>Work with project check lists</description>
+	<description-id>page.projectCheckLists.description</description-id>
+	<template-instance>alvex-project-checklists</template-instance>
+	<authentication>user</authentication>
+</page>

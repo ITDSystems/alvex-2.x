@@ -1,11 +1,11 @@
 function main()
 {
    // Widget instantiation metadata...
-   var taskCases = {
-      id : "TaskCases",
-      name : "Alvex.TaskCases"
+   var taskProjects = {
+      id : "TaskProjects",
+      name : "Alvex.TaskProjects"
    };
-   model.widgets = [taskCases];
+   model.widgets = [taskProjects];
 }
 
 main();

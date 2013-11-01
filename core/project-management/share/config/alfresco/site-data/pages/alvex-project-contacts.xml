@@ -1,0 +1,8 @@
+<page>
+	<title>Alvex Project Contacts</title>
+	<title-id>page.projectContacts.title</title-id>
+	<description>Work with project contacts</description>
+	<description-id>page.projectContacts.description</description-id>
+	<template-instance>alvex-project-contacts</template-instance>
+	<authentication>user</authentication>
+</page>

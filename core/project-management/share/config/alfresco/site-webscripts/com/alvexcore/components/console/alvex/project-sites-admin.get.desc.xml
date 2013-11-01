@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Alvex: Admin Component for Project sites</shortname>
+	<description>Alvex: Admin Component for Project sites</description>
+	<url>/components/admin/alvex/project-sites</url>
+	<family>admin-console</family>
+</webscript>

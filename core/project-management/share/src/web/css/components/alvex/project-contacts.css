@@ -1,0 +1,114 @@
+/* Toolbars */
+
+.project-contacts .toolbar .yui-pg-container,
+.project-contacts .toolbar .yui-pg-container .yui-pg-current
+{
+   line-height: 2;
+   margin: 0 0 0 0.3em;
+   padding: 0;
+}
+
+/* Body */
+
+.project-contacts .body h4
+{
+   margin-bottom: 0.2em;
+}
+
+.project-contacts .body .unassigned-task
+{
+   padding: 0.15em;
+   text-transform: uppercase;
+   font-size: 80%;
+}
+
+/* Data Table */
+
+.project-contacts .yui-dt-col-isPooled div
+{
+   text-align: center   
+}
+
+.project-contacts .yui-dt-col-isPooled img
+{
+   margin-bottom: 0.5em;
+}
+
+.project-contacts .yui-dt-col-title .yui-dt-liner
+{
+   line-height: 1.4;
+   padding-top: 0;
+}
+
+.project-contacts .yui-dt-col-icon .yui-dt-liner
+{
+	padding: 4px;
+	text-align: center;
+}
+
+.project-contacts .action a
+{
+   cursor: pointer;
+   padding: 0em 0.75em;
+   visibility: hidden;
+}
+
+.project-contacts .yui-dt-highlighted a
+{
+   visibility: visible;
+}
+
+.action div{
+	float: left;
+	line-height: 1em;
+}
+
+.action span {
+	display: none;
+}
+
+a.alvex-project-contacts-action
+{
+	background-position: 4px 1px;
+	background-repeat: no-repeat;
+	border: 1px solid transparent;
+	padding: 0 0 0 24px;
+	background-image: url(/share/res/components/images/list-16.png);
+}
+
+a:active.alvex-project-contacts-action,
+a:hover.alvex-project-contacts-action
+{
+	background-color: #fff;
+	border: 1px solid #2b6eb5;
+	text-decoration: none;
+}
+
+//div.onViewItem a.alvex-project-contacts-action {
+//	background-image: url(/share/res/components/images/delete-16.png);
+//}
+
+div.onEditItem a.alvex-project-contacts-action {
+	background-image: url(/share/res/components/images/edit-16.png);
+}
+
+div.onDeleteItem a.alvex-project-contacts-action {
+	background-image: url(/share/res/components/images/delete-16.png);
+}
+
+.project-contacts .yui-dt-col-name a:active,
+.project-contacts .yui-dt-col-name a:hover
+{
+   text-decoration: none;
+}
+
+/* Popup addItem dialog */
+.alfresco-share .yui-panel .bd .form-fields .set .yui-u.first
+{
+	text-align: left;
+}
+
+.yui-skin-lightTheme .yui-panel .bd .form-fields .set .yui-u .yui-button button
+{
+	width: 15em;
+}

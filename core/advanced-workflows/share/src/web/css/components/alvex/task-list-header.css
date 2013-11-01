@@ -141,7 +141,7 @@ ul.availableList
 	display: none;
 }
 
-a.alvex-case-workflow-action
+a.alvex-project-workflow-action
 {
 	background-position: 4px 1px;
 	background-repeat: no-repeat;
@@ -150,15 +150,15 @@ a.alvex-case-workflow-action
 	background-image: url(/share/res/components/images/list-16.png);
 }
 
-a:active.alvex-case-workflow-action,
-a:hover.alvex-case-workflow-action
+a:active.alvex-project-workflow-action,
+a:hover.alvex-project-workflow-action
 {
 	background-color: #fff;
 	border: 1px solid #2b6eb5;
 	text-decoration: none;
 }
 
-div.onAttachWorkflow a.alvex-case-workflow-action {
+div.onAttachWorkflow a.alvex-project-workflow-action {
 	background-image: url(/share/res/components/images/add-icon-16.png);
 }
 

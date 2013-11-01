@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>Project Checklists</shortname>
+	<description>Lists checklists related to current project</description>
+	<url>/components/alvex/project-checklists</url>
+</webscript>

@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>project-contacts</shortname>
+  <description><![CDATA[
+  Deletes project contacts
+  ]]></description>
+  <url>/api/alvex/project/contact/{proto}/{space}/{id}</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>
