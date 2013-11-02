@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.share</groupId>
   <artifactId>share-4.2.d-generic-ui</artifactId>
-  <version>1.6</version>
+  <version>1.8</version>
   <parent>
     <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>

@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.repo</groupId>
   <artifactId>custom-workflows</artifactId>
-  <version>1.6</version>
+  <version>1.7</version>
   <parent>
     <groupId>com.alvexcore.ce.repo</groupId>
     <artifactId>master-pom</artifactId>
@@ -46,7 +46,7 @@
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
-          <version>1.1</version>
+          <version>1.2</version>
         </dependency>
       </dependencies>
     </profile>
@@ -59,7 +59,7 @@
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
-          <version>1.1</version>
+          <version>1.2</version>
         </dependency>
       </dependencies>
     </profile>

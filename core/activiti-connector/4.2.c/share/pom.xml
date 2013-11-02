@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.share</groupId>
   <artifactId>activiti-5.11-connector</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <parent>
     <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>
