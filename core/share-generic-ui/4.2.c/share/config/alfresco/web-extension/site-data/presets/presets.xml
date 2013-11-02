@@ -164,9 +164,9 @@
 		</pages>
 	</preset>
 
-	<!-- TODO - it should be part of case module -->
-	<!-- Not so well known preset used to generate Case site -->
-	<preset id="case-dashboard">
+	<!-- TODO - it should be part of project module -->
+	<!-- Not so well known preset used to generate Project site -->
+	<preset id="project-dashboard">
 		<components>         
 			<!-- title -->
 			<component>
@@ -187,13 +187,13 @@
 				<scope>page</scope>
 				<region-id>component-1-1</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/site-profile</url>
+				<url>/components/dashlets/calendar</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-1-2</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/calendar</url>
+				<url>/components/dashlets/project-checklists</url>
 			</component>
 			<component>
 				<scope>page</scope>
@@ -203,33 +203,45 @@
 			</component>
 			<component>
 				<scope>page</scope>
+				<region-id>component-1-4</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/project-contacts</url>
+			</component>
+			<component>
+				<scope>page</scope>
 				<region-id>component-2-1</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/case-workflows</url>
+				<url>/components/dashlets/project-workflows</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-2-2</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/docsummary</url>
+				<url>/components/dashlets/activityfeed</url>
 			</component>
 			<component>
 				<scope>page</scope>
 				<region-id>component-2-3</region-id>
 				<source-id>site/${siteid}/dashboard</source-id>
-				<url>/components/dashlets/activityfeed</url>
+				<url>/components/dashlets/docsummary</url>
+			</component>
+			<component>
+				<scope>page</scope>
+				<region-id>component-2-4</region-id>
+				<source-id>site/${siteid}/dashboard</source-id>
+				<url>/components/dashlets/project-conversations</url>
 			</component>
 		</components>
 		<pages>
 			<page id="site/${siteid}/dashboard">
-				<title>Case Dashboard</title>
+				<title>Project Dashboard</title>
 				<title-id>page.siteDashboard.title</title-id>
-				<description>Case dashboard page</description>
+				<description>Project dashboard page</description>
 				<description-id>page.siteDashboard.description</description-id>
 				<template-instance>dashboard-2-columns-wide-right</template-instance>
 				<authentication>user</authentication>
 				<properties>
-					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"}]</sitePages>
+					<sitePages>[{"pageId":"calendar"},{"pageId":"documentlibrary"},{"pageId":"alvex-project-tasks"},{"pageId":"alvex-project-conversations"},{"pageId":"alvex-project-contacts"}]</sitePages>
 				</properties>
 			</page>
 		</pages>
