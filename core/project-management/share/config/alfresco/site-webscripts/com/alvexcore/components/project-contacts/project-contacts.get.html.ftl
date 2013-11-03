@@ -1,21 +1,16 @@
-<@markup id="css" >
-   <#-- CSS Dependencies -->
-   <@link href="${url.context}/res/components/alvex/project-contacts.css" group="workflow"/>
-</@>
-
-<@markup id="js">
-   <#-- JavaScript Dependencies -->
-   <@script src="${page.url.context}/res/modules/simple-dialog.js" />
-   <@script src="${page.url.context}/res/components/alvex/simple-dialog.js" />
-   <@script src="${url.context}/res/components/alvex/project-contacts.js" group="workflow"/>
-</@>
-
-<@markup id="widgets">
-   <@createWidgets group="workflow"/>
-</@>
-
 <#assign id = args.htmlid>
 <#assign jsid = args.htmlid?js_string>
+
+<script type="text/javascript">//<![CDATA[
+(function()
+{
+	new Alvex.ProjectContacts("${jsid}").setOptions(
+	{
+	}).setMessages(${messages});
+
+	new Alfresco.widget.DashletResizer("${id}", "${instance.object.id}");
+})();
+//]]></script>
 
 <div class="project-contacts">
 	<div class="toolbar flat-button">

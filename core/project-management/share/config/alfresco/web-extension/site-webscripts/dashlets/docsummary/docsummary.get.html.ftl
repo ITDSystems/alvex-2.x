@@ -1,21 +1,49 @@
-<@markup id="css" >
-   <#-- CSS Dependencies -->
-   <@link rel="stylesheet" type="text/css" href="${url.context}/res/components/alvex/docsummary.css" group="dashlets"/>
-</@>
+<#assign id = args.htmlid>
+<#assign jsid = args.htmlid?js_string>
+<#assign prefFilter = preferences.filter!"all">
+<#assign prefRange = preferences.range!"7">
+<#assign prefSimpleView = preferences.simpleView!true>
+<script type="text/javascript">//<![CDATA[
+(function()
+{
+   new Alvex.DocSummary("${jsid}").setOptions(
+   {
+      filter: "${prefFilter?js_string}",
+      validFilters: [<#list filters as filter>
+						{
+							"type": "${filter.type?js_string}",
+							"parameters": "${filter.parameters?js_string}"
+						}<#if filter_has_next>,</#if>
+					</#list>],
+      range: "${prefFilter?js_string}",
+      validRanges: [<#list ranges as range>
+						{
+							"type": "${range.type?js_string}",
+							"parameters": "${range.parameters?js_string}"
+						}<#if range_has_next>,</#if>
+					</#list>],
+      simpleView: ${prefSimpleView?string?js_string},
+      maxItems: ${maxItems?c}
+   }).setMessages(${messages});
+   new Alfresco.widget.DashletResizer("${jsid}", "${instance.object.id}");
+   new Alfresco.widget.DashletTitleBarActions("${jsid}").setOptions(
+   {
+      actions:
+      [
+         {
+            cssClass: "help",
+            bubbleOnClick:
+            {
+               message: "${msg("dashlet.help")?js_string}"
+            },
+            tooltip: "${msg("dashlet.help.tooltip")?js_string}"
+         }
+      ]
+   });
+})();
+//]]></script>
 
-<@markup id="js">
-   <#-- JavaScript Dependencies -->
-   <@script type="text/javascript" src="${url.context}/res/components/alvex/docsummary.js" group="dashlets"/>
-</@>
 
-<@markup id="widgets">
-   <@createWidgets group="dashlets"/>
-</@>
-
-<@markup id="html">
-   <@uniqueIdDiv>
-      <#assign id = args.htmlid?html>
-      <#assign prefSimpleView = preferences.simpleView!true>
       <div class="dashlet docsummary">
          <div class="title">${msg("header")}</div>
          <div class="toolbar flat-button">
@@ -59,5 +87,3 @@
             <div id="${id}-documents"></div>
          </div>
       </div>
-   </@>
-</@>

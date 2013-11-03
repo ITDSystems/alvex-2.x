@@ -1,20 +1,16 @@
-<@markup id="css" >
-   <#-- CSS Dependencies -->
-   <@link href="${url.context}/res/components/alvex/project-checklists.css" group="workflow"/>
-</@>
-
-<@markup id="js">
-   <#-- JavaScript Dependencies -->
-   <@script src="${page.url.context}/res/components/alvex/simple-dialog.js" />
-   <@script src="${url.context}/res/components/alvex/project-checklists.js" group="workflow"/>
-</@>
-
-<@markup id="widgets">
-   <@createWidgets group="workflow"/>
-</@>
-
 <#assign id = args.htmlid>
 <#assign jsid = args.htmlid?js_string>
+
+<script type="text/javascript">//<![CDATA[
+(function()
+{
+	new Alvex.ProjectChecklists("${jsid}").setOptions(
+	{
+	}).setMessages(${messages});
+
+	new Alfresco.widget.DashletResizer("${id}", "${instance.object.id}");
+})();
+//]]></script>
 
 <div class="dashlet project-checklists">
 	<div class="title">${msg("header")}</div>

@@ -15,7 +15,9 @@
       <#if useNewUI >
          <@region id="share-header" scope="global" chromeless="true"/>
       <#else>
-         <@region id="header" scope="global"/>
+         <@region id="header" scope="global" />
+         <@region id="title" scope="template" />
+         <@region id="navigation" scope="template" />
       </#if>
    </div>
    </@>
