@@ -16,6 +16,7 @@
 		<property name="configs">
 			<list>
 				<value>classpath:alfresco/web-extension/alvex-2013.09-compat-config.xml</value>
+				<value>classpath:alfresco/web-extension/alvex-basic-workflow-config.xml</value>
 			</list>
 		</property>
 	</bean>
