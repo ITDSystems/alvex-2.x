@@ -1,0 +1,11 @@
+<webscript>
+  <shortname>project-containers</shortname>
+  <description><![CDATA[
+  Returns project containers
+  ]]></description>
+  <url>/api/alvex/project/{projectId}/containers</url>
+  <format default="json"/>
+  <authentication>user</authentication>
+  <transaction>required</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>
