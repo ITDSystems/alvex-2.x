@@ -45,43 +45,43 @@
 
 .workflow-form .summary .status
 {
-   background-image: url(../images/workflow-20.png);
+   background-image: url(../../images/workflow-20.png);
    margin-top: 1em;
 }
 
 .workflow-form .summary .due
 {
-   background-image: url(../images/calendar-20.png);
+   background-image: url(../../images/calendar-20.png);
 }
 
 .workflow-form .summary .completed
 {
-   background-image: url(../images/calendar-20.png);
+   background-image: url(../../images/calendar-20.png);
 }
 
 .workflow-form .summary .started
 {
-   background-image: url(../images/calendar-20.png);
+   background-image: url(../../images/calendar-20.png);
 }
 
 .workflow-form .summary .priority.high
 {
-   background-image: url(../images/priority-high-20.png);
+   background-image: url(../../images/priority-high-20.png);
 }
 
 .workflow-form .summary .priority.medium
 {
-   background-image: url(../images/priority-medium-20.png);
+   background-image: url(../../images/priority-medium-20.png);
 }
 
 .workflow-form .summary .priority.low
 {
-   background-image: url(../images/priority-low-20.png);
+   background-image: url(../../images/priority-low-20.png);
 }
 
 .workflow-form .summary .initiator
 {
-   background-image: url(../images/user-20.png);
+   background-image: url(../../images/user-16.png);
 }
 
 .workflow-form .summary .summary-icons
@@ -168,16 +168,16 @@
 
 .workflow-form .current-tasks table a.task-edit
 {
-   background: url("../images/edit-16.png") no-repeat scroll left center transparent;
+   background: url("../../images/edit-16.png") no-repeat scroll left center transparent;
 }
 
 .workflow-form .current-tasks table a.task-details
 {
-   background: url("../images/task-16.png") no-repeat scroll left center transparent;
+   background: url("../../images/task-16.png") no-repeat scroll left center transparent;
 }
 
 .workflow-form .summary .workflow-delayed
 {
    padding-left: 1.5em;
-   background: url(../images/warning-16.png) no-repeat;
+   background: url(../../images/warning-16.png) no-repeat;
 }

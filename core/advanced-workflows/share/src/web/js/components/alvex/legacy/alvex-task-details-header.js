@@ -131,26 +131,26 @@ if (typeof Alvex == "undefined" || !Alvex)
          Selector.query("h1 span", this.id, true).innerHTML = $html(task.workflowInstance.message);
          Selector.query("h3 span", this.id, true).innerHTML = $html(task.title);
 
-         Alfresco.util.Ajax.jsonGet(
-         {
-            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflowId, "/parent-task"),
-            successCallback:
-            {
-               fn: function(resp)
-               {
-                  if( resp.json.data.parentTask == '' )
-                     return;
-                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
-                  if (this.options.referrer)
-                  {
-                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
-                  }
-                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
-                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
-               },
-               scope: this
-            }
-         });
+//         Alfresco.util.Ajax.jsonGet(
+//         {
+//            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflowId, "/parent-task"),
+//            successCallback:
+//            {
+//               fn: function(resp)
+//               {
+//                  if( resp.json.data.parentTask == '' )
+//                     return;
+//                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
+//                  if (this.options.referrer)
+//                  {
+//                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+//                  }
+//                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
+//                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
+//               },
+//               scope: this
+//            }
+//         });
 
          // Edit button
          if( ( task.owner && task.owner.userName == Alfresco.constants.USERNAME ) 

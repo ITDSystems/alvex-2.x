@@ -219,26 +219,26 @@ if (typeof Alvex == "undefined" || !Alvex)
          Selector.query("a", this.id + '-workflow', true).setAttribute("href", Alfresco.util.siteURL(workflowDetailsUrl));
          Dom.removeClass(Selector.query(".links", this.id, true), "hidden");
 
-         Alfresco.util.Ajax.jsonGet(
-         {
-            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflowId, "/parent-task"),
-            successCallback:
-            {
-               fn: function(resp)
-               {
-                  if( resp.json.data.parentTask == '' )
-                     return;
-                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
-                  if (this.options.referrer)
-                  {
-                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
-                  }
-                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
-                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
-               },
-               scope: this
-            }
-         });
+//         Alfresco.util.Ajax.jsonGet(
+//         {
+//            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/related-workflows/", workflowId, "/parent-task"),
+//            successCallback:
+//            {
+//               fn: function(resp)
+//               {
+//                  if( resp.json.data.parentTask == '' )
+//                     return;
+//                  var parentTaskUrl = "task-details?taskId=" + resp.json.data.parentTask;
+//                  if (this.options.referrer)
+//                  {
+//                     parentTaskUrl += "&referrer=" + encodeURIComponent(this.options.referrer);
+//                  }
+//                  Selector.query("a", this.id + '-parent', true).setAttribute("href", Alfresco.util.siteURL(parentTaskUrl));
+//                  Dom.removeClass(Dom.get(this.id + '-parent'), "hidden");
+//               },
+//               scope: this
+//            }
+//         });
 
          // ALF-13115 fix, inform user that this task has been completed
          if (!task.isEditable)
