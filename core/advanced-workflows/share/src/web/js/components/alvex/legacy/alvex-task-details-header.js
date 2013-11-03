@@ -69,7 +69,7 @@ if (typeof Alvex == "undefined" || !Alvex)
    /**
     * Augment prototype with RelatedWorkflowsTreeView from Alvex
     */
-   YAHOO.lang.augmentProto(Alvex.TaskDetailsHeader, Alvex.RelatedWorkflowsTreeView);
+   // YAHOO.lang.augmentProto(Alvex.TaskDetailsHeader, Alvex.RelatedWorkflowsTreeView);
 
    YAHOO.lang.augmentObject(Alvex.TaskDetailsHeader.prototype,
    {

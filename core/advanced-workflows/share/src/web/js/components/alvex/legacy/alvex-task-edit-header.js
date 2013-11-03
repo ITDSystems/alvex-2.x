@@ -76,7 +76,7 @@ if (typeof Alvex == "undefined" || !Alvex)
    /**
     * Augment prototype with RelatedWorkflowsTreeView from Alvex
     */
-   YAHOO.lang.augmentProto(Alvex.TaskEditHeader, Alvex.RelatedWorkflowsTreeView);
+   // YAHOO.lang.augmentProto(Alvex.TaskEditHeader, Alvex.RelatedWorkflowsTreeView);
 
    /**
     * Extend from Alfresco.component.ShareFormManager
