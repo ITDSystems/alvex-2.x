@@ -1,3 +1,9 @@
+.share-form .task-activities
+{
+	padding: 10px;
+	margin-top: 20px;
+}
+
 .task-activities
 {
    clear: both;
@@ -33,10 +39,7 @@
 .task-activities .activities-header h2
 {
 	float: left;
-	padding-top: 1em;
-	padding-bottom: 1em;
-	padding-right: 1em;
-	padding-left: 1em;
+	padding: 10px;
 	cursor: pointer;
 	border: 1px solid;
 	border-color: #ccc;
@@ -48,6 +51,13 @@
 	-webkit-border-top-right-radius: 1em;
 	-khtml-top-right-border-radius: 1em;
 	border-top-right-radius: 1em;
+}
+
+.task-activities .activities-body
+{
+	padding: 5px;
+	border: 1px solid;
+	border-color: #ccc;
 }
 
 .task-activities .line
