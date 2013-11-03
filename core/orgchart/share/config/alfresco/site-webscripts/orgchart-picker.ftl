@@ -29,7 +29,7 @@
 				<input type="hidden" id="${controlId}-added" name="${field.name}_added" value="" />
 				<input type="hidden" id="${controlId}-removed" name="${field.name}_removed" value="" />
 				<@renderOrgchartPickerDialogHTML controlId />
-				<div id="${controlId}-itemGroupActions" class="show-picker">
+				<div id="${controlId}-itemGroupActions" class="orgchart-picker">
 					<input type="button" id="${controlId}-orgchart-picker-button" name="-" 
 						value="${msg("alvex.orgchart.orgchart_picker_button")}"/>
 				</div>
