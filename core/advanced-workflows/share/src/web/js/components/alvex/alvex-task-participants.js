@@ -165,6 +165,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 		   for( var t in workflow.tasks )
 		   {
 			   var user = workflow.tasks[t].owner;
+			   if( !user || user === null )
+				   continue;
 			   var notSeenBefore = true;
 			   if(user.userName === initiator.userName || (assignee != null && user.userName === assignee.userName))
 				   notSeenBefore = false;
