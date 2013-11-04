@@ -79,6 +79,9 @@ public class AdvancedWorkflowsExtension extends RepositoryExtension {
 		NodeRef discDataPath = extensionRegistry.resolvePath(DISCUSSIONS_DATA_PATH, null);
 		if (discDataPath == null)
 			discDataPath = extensionRegistry.createPath(DISCUSSIONS_DATA_PATH, null, DISCUSSIONS_DATA_TYPES);
+		permissionService.setPermission(discDataPath,
+				PermissionService.ALL_AUTHORITIES,
+				PermissionService.CONTRIBUTOR, true);
 		addNodeToCache(ID_DISCUSSIONS_DATA_PATH, discDataPath);
 	}
 
