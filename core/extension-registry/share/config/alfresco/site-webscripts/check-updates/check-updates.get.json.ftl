@@ -1,3 +1,3 @@
 {
-	"localData": ${localData}
+	<#-- "localData": ${localData} -->
 }
