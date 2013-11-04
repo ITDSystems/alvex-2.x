@@ -35,10 +35,13 @@ var getNodes = function(folder)
 			nodes = getNodes(projectFolder);
 			// Proceed legacy nodes - migration from 2013.09 release when project-management was case-management
 			var legacyStore = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
-			var legacyProjectFolder = legacyStore.childByNamePath(projectId);
-			legacyNodes = getNodes(legacyProjectFolder);
-			for each(var ln in legacyNodes)
-				nodes.push(ln);
+			if( legacyStore && legacyStore !== null )
+			{
+				var legacyProjectFolder = legacyStore.childByNamePath(projectId);
+				legacyNodes = getNodes(legacyProjectFolder);
+				for each(var ln in legacyNodes)
+					nodes.push(ln);
+			}
 		}
 		else if( workflowId && workflowId !== null && workflowId !== 'null' )
 		{
@@ -47,10 +50,13 @@ var getNodes = function(folder)
 			nodes = getNodes(workflowFolder);
 			// Proceed legacy nodes - migration from 2013.09 release when project-management was case-management
 			var legacyStore = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
-			var legacyProjectFolder = legacyStore.childByNamePath(workflowId);
-			legacyNodes = getNodes(legacyProjectFolder);
-			for each(var ln in legacyNodes)
-				nodes.push(ln);
+			if( legacyStore && legacyStore !== null )
+			{
+				var legacyProjectFolder = legacyStore.childByNamePath(workflowId);
+				legacyNodes = getNodes(legacyProjectFolder);
+				for each(var ln in legacyNodes)
+					nodes.push(ln);
+			}
 		}
 		// Process relations
 		for each( var node in nodes )
