@@ -391,7 +391,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                   fn: function CreateSite_onCreateSiteSuccess_successCallback()
                   {
                      this.widgets.feedbackMessage.hide();
-                     YAHOO.Bubbling.fire("siteCreatedEvent");
+                     YAHOO.Bubbling.fire("siteCreatedEvent", {"shortName": shortName});
                      return;
                      // We prevent redirect here because this code is meant to be called from admin panel only
                      document.location.href = Alfresco.constants.URL_PAGECONTEXT + "site/" + shortName + "/dashboard";

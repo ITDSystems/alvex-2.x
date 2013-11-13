@@ -302,3 +302,7 @@ span.insitu-delete-orgchart
 	font-size: 100%;
 }
 
+.orgchart-picker button
+{
+	width: 183px;
+}

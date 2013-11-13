@@ -61,7 +61,7 @@ function getMaxItems()
 }
 
 var regionId = args['region-id'];
-model.preferences = AlfrescoUtil.getPreferences("org.alfresco.share.docsummary.dashlet." + regionId);
+model.preferences = AlfrescoUtil.getPreferences("com.alvexcore.docsummary.dashlet");
 model.filters = getFilters();
 model.ranges = getRanges();
 model.maxItems = getMaxItems();

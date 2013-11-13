@@ -8,6 +8,7 @@
 <@markup id="js">
    <#-- JavaScript Dependencies -->
    <@script src="${url.context}/res/components/alvex/alvex-task-relations.js" group="workflow"/>
+   <@script type="text/javascript" src="${page.url.context}/res/modules/simple-dialog.js" />
 </@>
 
 <@markup id="widgets">

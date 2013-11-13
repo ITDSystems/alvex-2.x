@@ -1,0 +1,56 @@
+.task-details-header
+{
+   clear: both;
+   padding: 0;
+}
+
+.task-details-header .actions
+{
+   float: right;
+   padding-bottom: 0.5em;
+   padding-top: 0.5em;
+}
+
+.task-details-header .links
+{
+   width: 30%;
+   float: right;
+   text-align: right;
+}
+
+.task-details-header h1
+{
+   width: 65%;
+   float: left;
+   padding-left: 10px;
+   margin-bottom: 5px;
+}
+
+.task-details-header h3
+{
+   float: left;
+   clear: left;
+   padding-left: 10px;
+   margin-bottom: 15px;
+}
+
+.task-details-header .clear
+{
+   clear: both;
+}
+
+.task-details-header .separator
+{
+   padding-left: 1em;
+   padding-right: 1em;
+}
+
+.task-details-header .tree-view button
+{
+   background-image: url( ../images/tree-24.png );
+   text-indent: -4em;
+   overflow: hidden;
+   width: 2em;
+   background-repeat: no-repeat;
+   margin-left: 2px;
+}

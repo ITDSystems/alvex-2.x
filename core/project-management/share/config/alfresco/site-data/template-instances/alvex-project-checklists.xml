@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <template-instance>
-	<template-type>alvex/alvex-project-checklists</template-type>
+	<template-type>alvex/alvex-project-conversations</template-type>
 	<components>
 		
 		<!-- Title -->

@@ -1,0 +1,24 @@
+<config>
+	<max-items>10</max-items>
+	<filter-menu>
+		<!--
+			The value of the "parameters" attribute will be added to the end of the task-instances webscript url
+
+			Note that it is possible to create dynamic values by using the following keys inside "{}":
+			* {0dt} - resolves to a iso08601 datetime representation of the current date and time
+			* {0d} - resolves to a iso8601 date representation of the current day
+			* {-7d} - resolves to a iso8601 date representation of the current day rolled the given number of days back
+			* {+7d} - resolves to a iso8601 date representation of the current day rolled the given number of days forward
+		-->
+		<filter type="allActiveWorkflows"		parameters="state=ACTIVE"/>
+		<filter type="allCompletedWorkflows"	parameters="state=COMPLETED"/>
+		<filter type="dueTodayWorkflows"		parameters="dueAfter={-1d}&amp;dueBefore={0d}"/>
+		<filter type="dueTomorrowWorkflows"		parameters="dueAfter={0d}&amp;dueBefore={1d}"/>
+		<filter type="overdueWorkflows"			parameters="dueBefore={-1d}"/>
+	</filter-menu>
+	<sort-menu>
+		<sorter type="byDueDate"			parameters="sortBy=dueDate"/>
+		<sorter type="byStartDate"			parameters="sortBy=startDate"/>
+		<sorter type="byCompleteDate"		parameters="sortBy=completeDate"/>
+	</sort-menu>
+</config>

@@ -17,4 +17,16 @@
 		<from>^/page/workflow-details(.*)</from>
 		<to>/page/alvex-task-page?$1</to>
 	</rule>
+	<rule>
+		<from>^/page/site/(.*)/task-edit?(.*)</from>
+		<to>/page/site/$1/alvex-task-page?$2</to>
+	</rule>
+	<rule>
+		<from>^/page/site/(.*)/task-details(.*)</from>
+		<to>/page/site/$1/alvex-task-page?$2</to>
+	</rule>
+	<rule>
+		<from>^/page/site/(.*)/workflow-details(.*)</from>
+		<to>/page/site/$1/alvex-task-page?$2</to>
+	</rule>
 </urlrewrite>

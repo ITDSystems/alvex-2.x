@@ -159,3 +159,8 @@ Alvex.util.createClearNodeName = function Alvex_createClearNodeName(name)
 {
 	return name.replace(/([\"\*\\\>\<\?\/\:\|]+)/g, ' ');
 }
+
+Alvex.util.getSiteDisplayName = function Alvex_getSiteDisplayName()
+{
+	return document.getElementsByTagName('h1')[0].getElementsByTagName('span')[0].innerHTML;
+};

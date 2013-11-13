@@ -56,21 +56,38 @@ if (typeof Alvex == "undefined" || !Alvex)
       /**
        * Preferences
        */
-      PREFERENAlvex_DOCSUMMARY_DASHLET: "",
-      PREFERENAlvex_DOCSUMMARY_DASHLET_FILTER: "",
-      PREFERENAlvex_DOCSUMMARY_DASHLET_RANGE: "",
-      PREFERENAlvex_DOCSUMMARY_DASHLET_VIEW: "",
+      PREFERENCES_DOCSUMMARY_DASHLET: "",
+      PREFERENCES_DOCSUMMARY_DASHLET_FILTER: "",
+      PREFERENCES_DOCSUMMARY_DASHLET_RANGE: "",
+      PREFERENCES_DOCSUMMARY_DASHLET_VIEW: "",
       /**
        * Fired by YUI when parent element is available for scripting
        * @method onReady
        */
       onReady: function DocSummary_onReady()
       {
-         this.PREFERENAlvex_DOCSUMMARY_DASHLET = this.services.preferences.getDashletId(this, "docsummary");
-         this.PREFERENAlvex_DOCSUMMARY_DASHLET_FILTER = this.PREFERENAlvex_DOCSUMMARY_DASHLET + ".filter";
-         this.PREFERENAlvex_DOCSUMMARY_DASHLET_RANGE = this.PREFERENAlvex_DOCSUMMARY_DASHLET + ".range";
-         this.PREFERENAlvex_DOCSUMMARY_DASHLET_VIEW = this.PREFERENAlvex_DOCSUMMARY_DASHLET + ".simpleView";
+         this.PREFERENCES_DOCSUMMARY_DASHLET = "com.alvexcore.docsummary.dashlet";
+         this.PREFERENCES_DOCSUMMARY_DASHLET_FILTER = this.PREFERENCES_DOCSUMMARY_DASHLET + ".filter";
+         this.PREFERENCES_DOCSUMMARY_DASHLET_RANGE = this.PREFERENCES_DOCSUMMARY_DASHLET + ".range";
+         this.PREFERENCES_DOCSUMMARY_DASHLET_VIEW = this.PREFERENCES_DOCSUMMARY_DASHLET + ".simpleView";
+		 
+		// Load preferences (after which the appropriate tasks will be displayed)
+		this.services.preferences.request(this.PREFERENCES_DOCSUMMARY_DASHLET,
+		{
+			successCallback:
+			{
+				fn: this.onPreferencesLoaded,
+				scope: this
+			}
+		});
+	  },
 
+      onPreferencesLoaded: function(p_response)
+      {
+         // Select the preferred options for UI
+         this.options.filter = Alfresco.util.findValueByDotNotation(p_response.json, this.PREFERENCES_DOCSUMMARY_DASHLET_FILTER, "all");
+		 this.options.range = Alfresco.util.findValueByDotNotation(p_response.json, this.PREFERENCES_DOCSUMMARY_DASHLET_RANGE, "7");
+		 this.options.simpleView = Alfresco.util.findValueByDotNotation(p_response.json, this.PREFERENCES_DOCSUMMARY_DASHLET_VIEW, false);
          // Create Dropdown filter
          this.widgets.filter = Alfresco.util.createYUIButton(this, "filters", this.onFilterChange,
          {
@@ -176,7 +193,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             this.widgets.filter.set("label", menuItem.cfg.getProperty("text"));
             this.widgets.filter.value = menuItem.value;
 
-            this.services.preferences.set(this.PREFERENAlvex_DOCSUMMARY_DASHLET_FILTER, this.widgets.filter.value);
+            this.services.preferences.set(this.PREFERENCES_DOCSUMMARY_DASHLET_FILTER, this.widgets.filter.value);
 
             this.reloadDataTable();
          }
@@ -197,7 +214,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             this.widgets.range.set("label", menuItem.cfg.getProperty("text"));
             this.widgets.range.value = menuItem.value;
 
-            this.services.preferences.set(this.PREFERENAlvex_DOCSUMMARY_DASHLET_RANGE, this.widgets.range.value);
+            this.services.preferences.set(this.PREFERENCES_DOCSUMMARY_DASHLET_RANGE, this.widgets.range.value);
 
             this.reloadDataTable();
          }
@@ -213,7 +230,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       onSimpleDetailed: function DocSummary_onSimpleDetailed(e, p_obj)
       {
          this.options.simpleView = e.newValue.index === 0;
-         this.services.preferences.set(this.PREFERENAlvex_DOCSUMMARY_DASHLET_VIEW, this.options.simpleView);
+         this.services.preferences.set(this.PREFERENCES_DOCSUMMARY_DASHLET_VIEW, this.options.simpleView);
          if (e)
          {
             Event.preventDefault(e);

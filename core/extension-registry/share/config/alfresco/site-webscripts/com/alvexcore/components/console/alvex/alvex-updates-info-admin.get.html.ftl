@@ -13,8 +13,7 @@
 		<div class="title"><label>${msg("aui.systemInfo")}</label></div>
 		<div class="header">Alfresco: ${serverEdition?html} v${serverVersion?html} schema ${serverSchema?html}</div>
 		<div class="header">Alvex: ${alvexEdition?html} v${alvexVersion?html} (${alvexCodename})</div>
-		<br/>
-		<div class="title"><label>${msg("aui.title")}</label></div>
-		<div id="${el}-updates-table"></div>
+		<!--div class="title"><label>${msg("aui.title")}</label></div-->
+		<!--div id="${el}-updates-table"></div-->
 	</div>
 </div>

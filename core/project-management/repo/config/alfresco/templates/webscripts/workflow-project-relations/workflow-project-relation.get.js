@@ -5,12 +5,14 @@ var getNodes = function(folder)
 		return nodes;
 	
 	for each(var node in folder.children)
-		if( node.properties['alvexcm:relationType'] === 'project-workflows' )
+		if( ( node.properties['alvexcm:relationType'] === 'project-workflows' )
+					|| ( node.properties['alvexcm:relationType'] === 'case-workflows' ) )
 			nodes.push(node);
 	for each(var nodeGroup in folder.assocs)
 	{
 		for each(var node in nodeGroup )
-			if( node.properties['alvexcm:relationType'] === 'project-workflows' )
+			if( ( node.properties['alvexcm:relationType'] === 'project-workflows' )
+					|| ( node.properties['alvexcm:relationType'] === 'case-workflows' ) )
 				nodes.push(node);
 	}
 	return nodes;
@@ -22,6 +24,7 @@ var getNodes = function(folder)
 	var projectId = decodeURIComponent(url.templateArgs['projectId']);
 	model.nodes = [];
 	var nodes = [];
+	var legacyNodes = [];
 	
 	try {
 		// Get relations
@@ -30,12 +33,30 @@ var getNodes = function(folder)
 			var store = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:project-management')[0];
 			var projectFolder = store.childByNamePath(projectId);
 			nodes = getNodes(projectFolder);
+			// Proceed legacy nodes - migration from 2013.09 release when project-management was case-management
+			var legacyStore = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
+			if( legacyStore && legacyStore !== null )
+			{
+				var legacyProjectFolder = legacyStore.childByNamePath(projectId);
+				legacyNodes = getNodes(legacyProjectFolder);
+				for each(var ln in legacyNodes)
+					nodes.push(ln);
+			}
 		}
 		else if( workflowId && workflowId !== null && workflowId !== 'null' )
 		{
 			var store = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:project-management')[0];
 			var workflowFolder = store.childByNamePath(workflowId);
 			nodes = getNodes(workflowFolder);
+			// Proceed legacy nodes - migration from 2013.09 release when project-management was case-management
+			var legacyStore = companyhome.childrenByXPath('/sys:system/sys:alvex/alvex:data/alvex:case-management')[0];
+			if( legacyStore && legacyStore !== null )
+			{
+				var legacyProjectFolder = legacyStore.childByNamePath(workflowId);
+				legacyNodes = getNodes(legacyProjectFolder);
+				for each(var ln in legacyNodes)
+					nodes.push(ln);
+			}
 		}
 		// Process relations
 		for each( var node in nodes )

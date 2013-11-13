@@ -1,6 +1,7 @@
 (function(){
 	model.json = null;
 	try{
+		/*
 		// establish connection
 		var connector = remote.connect("alfresco");
 
@@ -53,9 +54,10 @@
 			extensions: extensions
 		}
 
-		connector = remote.connect("alvexupdate");
+		//connector = remote.connect("alvexupdate");
 		model.localData = jsonUtils.toJSONString(req);
-		model.remoteData = connector.post('/', jsonUtils.toJSONString(req));
+		//model.remoteData = connector.post('/', jsonUtils.toJSONString(req));
+		*/
 		status.code = 200;
 	} catch (e)
 	{

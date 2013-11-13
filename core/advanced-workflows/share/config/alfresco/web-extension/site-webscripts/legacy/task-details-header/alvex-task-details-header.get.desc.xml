@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>Alvex Task Details Header</shortname>
+	<url>/components/workflow/task-details-header</url>
+	<family>Alvex Tasks Extended UI</family>
+</webscript>

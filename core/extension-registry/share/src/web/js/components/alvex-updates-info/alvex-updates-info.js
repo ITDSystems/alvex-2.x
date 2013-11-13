@@ -144,6 +144,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		},
 
 		displayBriefStatus: function( localData ) {
+			return;
 			this.options.extensions.length = 0;
 			for( var e in localData.extensions )
 				this.options.extensions.push( 

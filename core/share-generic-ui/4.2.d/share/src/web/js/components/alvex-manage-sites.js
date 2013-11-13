@@ -169,9 +169,35 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.widgets.createSiteDialog.show();
 		},
 
-		onSiteCreated: function ()
+		onSiteCreated: function (ev, obj)
 		{
-			this.updateTable();
+			// FIXME - ugly hack
+			if( this.options.siteType === "project-dashboard" )
+			{
+				var shortName = obj[1].shortName;
+				Alfresco.util.Ajax.jsonGet(
+				{
+					url: Alfresco.constants.PROXY_URI + "api/alvex/project/" + shortName + "/containers",
+					successCallback:
+					{
+						fn: this.updateTable,
+						scope: this
+					},
+					failureCallback:
+					{
+						fn: function (resp)
+						{
+							if (resp.serverResponse.statusText)
+								Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+						},
+						scope: this
+					}
+				});
+			}
+			else
+			{
+				this.updateTable();
+			}
 		},
 
 		onSiteDeleted: function ()

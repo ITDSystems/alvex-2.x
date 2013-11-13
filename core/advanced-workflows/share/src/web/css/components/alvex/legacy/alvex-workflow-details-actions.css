@@ -1,0 +1,16 @@
+.workflow-details-actions .actions
+{
+   text-align: center;
+}
+
+.workflow-details-actions .actions .workflow-cancel-action span.first-child
+{
+   background: url("../../images/remove-icon-16.png") no-repeat scroll 12px 4px transparent;
+   padding-left: 22px;
+}
+
+.workflow-details-actions .actions .workflow-delete-action span.first-child
+{
+   background: url("../../images/delete-16.png") no-repeat scroll 12px 4px transparent;
+   padding-left: 22px;
+}
