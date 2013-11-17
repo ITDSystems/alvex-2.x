@@ -153,6 +153,12 @@ if (typeof Alvex == "undefined" || !Alvex)
             Dom.removeClass(Selector.query(".unassigned-message", this.id), "hidden");
          }
 
+         // If it's not my task - that's it 
+         if( task.owner.userName !== Alfresco.constants.USERNAME )
+            return;
+
+         // If it's my - update it
+
          // Mark task as started
          var dataObj = {};
          dataObj["prop_bpm_status"] = "In Progress";
