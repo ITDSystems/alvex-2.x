@@ -181,9 +181,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 			el.innerHTML += '<div style="padding:10px;height:1.5em;">' 
 				+ '<div style="float:left;width:14em;text-align:right;margin-right:1em;">' 
 					+ '<strong>' + this.msg("alvex.masterData.config.field") + '</strong></div>'
-				+ '<div style="float:left;width:15em;">' 
+				+ '<div style="float:left;width:14em;">' 
 					+ '<strong>' + this.msg("alvex.masterData.config.masterData") + '</strong></div>'
-				+ '<div style="float:left;width:15em;">' 
+				+ '<div style="float:left;width:14em;">' 
 					+ '<strong>' + this.msg("alvex.masterData.config.column") + '</strong></div>'
 				+ '</div>';
 			for(var f in this.options.targetFields)
@@ -192,13 +192,13 @@ if (typeof Alvex == "undefined" || !Alvex)
 				el.innerHTML += '<div style="padding:10px;height:1.5em;">' 
 					+ '<div style="float:left;width:14em;text-align:right;margin-right:1em;">' 
 						+ this.options.targetFields[f].label + ':</div>'
-					+ '<div style="float:left;width:15em;">' 
+					+ '<div style="float:left;width:14em;">' 
 						+ '<select style="width:14em;" id="' + this.id + '-1-' + name + '" name="-"></select></div>'
-					+ '<div style="float:left;width:15em;">' 
+					+ '<div style="float:left;width:14em;">' 
 						+ '<select style="width:14em;" class="hidden" id="' + this.id + '-2-' + name + '" name="-"></select>';
 				if( this.options.useExternal )
 				{
-					el.innerHTML += '<span class="hidden" id="' + this.id + '-2-' + name + '-ext-data">' 
+					el.innerHTML += '<div class="hidden" id="' + this.id + '-2-' + name + '-ext-data" style="margin-left:30em;">' 
 						+ '<div>'
 						+ '<div style="width:4em;float:left">' + this.msg("alvex.masterData.config.url") + ':</div>'
 						+ '<input type="text" style="width:10em;" name="-" id="' + this.id + '-2-' + name + '-url"/>'
@@ -217,7 +217,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						+ '</div>'
 						+ '<button type="button" name="-" id="' + this.id + '-2-' + name + '-ok">' 
 						+ this.msg("button.ok") + '</button>'
-						+ '</span>'; 
+						+ '</div>'; 
 				}
 				el.innerHTML += '</div></div>';
 				var selectEl = Dom.get( this.id + '-1-' + name );
@@ -349,7 +349,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var me = this;
 			var selectEl = Dom.get( this.id + '-2-' + field );
 			Dom.addClass( selectEl, "hidden" );
-			Dom.get( this.id + '-2-' + field + '-ext-data' ).parentNode.parentNode.style.height = '8em';
+			//Dom.get( this.id + '-2-' + field + '-ext-data' ).parentNode.parentNode.style.height = '8em';
 			if( data )
 			{
 				Dom.get( this.id + '-2-' + field + '-url' ).value = data.url;
