@@ -16,7 +16,7 @@
    </@>
    <@markup id="bd">
    <div id="bd">
-      <@region id="task-toolbar" scope="page" />
+      <@region id="task-toolbar" style="width: 850px; float: left;" scope="page" />
       <div class="share-form" style="width: 850px; float: left;">
          <@region id="task-header" scope="page" />
          <@region id="task-form" scope="page" />

@@ -21,7 +21,7 @@
       <#include "/org/alfresco/include/alfresco-macros.lib.ftl" />
       <div class="share-toolbar theme-bg-2" style="border-bottom: 0px solid #ccc; border-top: 1px solid #ccc;">
          <div class="navigation-bar task-toolbar">
-            <div>
+            <div class="buttons-panel">
 
                <span class="<#if (page.url.args.myTasksLinkBack! == "true")>backLink<#else>forwardLink</#if>">
                   <#if (page.url.args.referrer?? && page.url.args.referrer == "workflows")>
@@ -42,6 +42,9 @@
                      <span class="release hidden">      
                         <button id="${el}-release">${msg("button.release")}</button>
                      </span>
+                  </span>
+                  <span class="workflow-summary-buttons">
+                     <button id="${el}-viewWorkflowDiagram" class="hidden">${msg("button.viewWorkflowDiagram")}</button>
                   </span>
                </span>
 

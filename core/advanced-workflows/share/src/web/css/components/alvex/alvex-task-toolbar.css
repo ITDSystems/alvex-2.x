@@ -1,3 +1,10 @@
+.task-toolbar,
+.task-toolbar .buttons-panel
+{
+	width: 850px;
+	float: left;
+}
+
 .task-toolbar.reassign-panel.yui-panel
 {
    margin: 0;
@@ -16,14 +23,20 @@
 
 .task-toolbar .actions
 {
-   float: right;
+   //float: right;
    padding-bottom: 0.5em;
    padding-top: 0.5em;
 }
 
+.task-toolbar .workflow-summary-buttons
+{
+   float: right;
+   padding: 5px;
+}
+
 .task-toolbar .links
 {
-   width: 30%;
-   float: right;
-   text-align: right;
+   width: 70%;
+   //float: right;
+   //text-align: left;
 }
