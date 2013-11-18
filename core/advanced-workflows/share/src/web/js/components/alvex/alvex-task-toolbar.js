@@ -69,6 +69,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
       /* Decoupled event listeners */
       YAHOO.Bubbling.on("taskDetailedData", this.onTaskDetailedData, this);
+      YAHOO.Bubbling.on("workflowDetailedData", this.onWorkflowDetailedData, this);
 
       return this;
    };
@@ -335,6 +336,31 @@ if (typeof Alvex == "undefined" || !Alvex)
                   scope: this
                }
             });
+         }
+      },
+	  
+      onWorkflowDetailedData: function(layer, args)
+      {
+         this.workflow = args[1];
+         if( !this.workflow.id )
+            return;
+         // Display the view diagrambutton if diagram is available
+         if (this.workflow.diagramUrl)
+         {
+            Dom.removeClass(this.id + "-viewWorkflowDiagram");
+            Alfresco.util.createYUIButton(this, "viewWorkflowDiagram", this.viewWorkflowDiagram);
+         }  
+      },
+
+      /**
+       * Called when view workflow diagram button is clicked.
+       * WIll display the workflow's diagram.
+       */
+      viewWorkflowDiagram: function()
+      {
+         if (this.workflow.diagramUrl)
+         {
+            showLightbox({ src: Alfresco.constants.PROXY_URI + this.workflow.diagramUrl });
          }
       },
 
