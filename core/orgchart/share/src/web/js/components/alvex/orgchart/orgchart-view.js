@@ -1566,6 +1566,8 @@ var labelType, useGradients, nativeTextSupport, animate;
 			if( this.options.mode == 'admin' )
 				return;
 			var nodes = resp.json.data;
+			if( nodes.length == 0 )
+				return;
 			// Traverse all nodes up to the tree root
 			var traverse = [];
 			for( var i in nodes )
