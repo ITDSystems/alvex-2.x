@@ -52,6 +52,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			files: [],
 			// Form mode
 			mode: null,
+			multipleSelectMode: true,
 			// Uploader itself
 			uploader: null,
 			// Data table to show files
@@ -92,6 +93,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		*/
 		defaultShowConfig:
 		{
+			mode: null,
 			siteId: null,
 			containerId: null,
 			destination: null,
@@ -214,7 +216,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				containerId: 'documentLibrary',
 				contentType: this.options.contentType,
 				uploadURL: 'api/alvex/upload',
-                mode: this.uploader.MODE_MULTI_UPLOAD,
+                mode: (this.options.multipleSelectMode ? this.uploader.MODE_MULTI_UPLOAD : this.uploader.MODE_SINGLE_UPLOAD),
                 onFileUploadComplete: {
 					fn: this.onUploadSuccess,
 					scope: this
@@ -252,7 +254,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			if( (!this.options.disabled) && (Dom.get(this.id + "-cntrl-addFilesButton") != null) )
 			{
-				var addFilesButton = new YAHOO.widget.Button(this.id + "-cntrl-addFilesButton", 
+				this.addFilesButton = new YAHOO.widget.Button(this.id + "-cntrl-addFilesButton", 
 								{ onclick: { fn: this.showUploadDialog, obj: null, scope: this } });
 				this.uploader = Alvex.getFileUploadInstance().setOptions(
 				{
@@ -263,7 +265,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				});
 				var isReady = this.uploader.getReady();
 				if( !isReady )
-					addFilesButton.set("disabled", true);
+					this.addFilesButton.set("disabled", true);
 			}
 		},
 		
@@ -650,6 +652,17 @@ if (typeof Alvex == "undefined" || !Alvex)
 					scope: this.options.dataTable
 				}
 			);
+			if( this.options.files && this.options.files.length > 0 
+					&& ! this.options.multipleSelectMode )
+			{
+				this.addFilesButton.set("disabled", true);
+				this.options.picker.widgets.addButton.set("disabled", true);
+			}
+			else
+			{
+				this.addFilesButton.set("disabled", false);
+				this.options.picker.widgets.addButton.set("disabled", false);
+			}
 			this.activateWorkflowButtons();
 		},
 		

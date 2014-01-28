@@ -22,7 +22,7 @@
 
 <div class="form-field">
 	<label for="${controlId}">${field.label?html}:
-		<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
+		<#if (field.mandatory || field.endpointMandatory)><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
 	</label>
 	<div id="${controlId}">
 		<input type="hidden" id="${fieldHtmlId}" name="-" value="${field.value}" />
@@ -245,6 +245,7 @@ new Alvex.Uploader( "${fieldHtmlId}" ).setOptions({
 	disabled: true,
 	</#if>
 	adobeFlashEnabled: ${((adobeFlashEnabled!"true") == "true")?string},
+	multipleSelectMode: ${field.endpointMany?string},
 	<#if (field.control.params.parentUploaderId)??>
 	parentUploaderId: '${field.control.params.parentUploaderId}',
 	</#if>

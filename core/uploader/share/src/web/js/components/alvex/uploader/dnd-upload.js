@@ -679,7 +679,7 @@
 
             // Only set the multiple attribute on the input element if running in multi-file upload
             // (i.e. we don't want to allow multiple file selection when updating a file)
-            if (this.suppliedConfig.mode !== this.MODE_SINGLE_UPDATE)
+            if (this.suppliedConfig.mode === this.MODE_MULTI_UPLOAD)
             {
                Dom.setAttribute(this.fileSelectionInput, "multiple", "");
             }
