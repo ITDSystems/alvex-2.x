@@ -429,6 +429,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                               break;
                      
                            case "text":
+                           case "mltext":
                               // WA for share site links
                               var tokens = data.displayValue.split('|');
                               if( tokens.length > 1 && tokens[0] == 'site:' )
@@ -734,6 +735,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                      break;
 
                   case "text":
+                  case "mltext":
                      row += scope.getTextSearch(key, outerWidth);
                      break;
 
