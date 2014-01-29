@@ -75,6 +75,8 @@
 			</associations>
 		</type>	
 
+		<!-- We do not use it now. Most probably, we never will. -->
+		<!--
 		<type name="alvexdt:content">
 			<parent>cm:content</parent>
 			<associations>
@@ -91,6 +93,7 @@
 				</association>
 			</associations>
 		</type>	
+		-->
 
 		<type name="alvexdt:agreement">
 			<parent>alvexdt:object</parent>
