@@ -652,16 +652,19 @@ if (typeof Alvex == "undefined" || !Alvex)
 					scope: this.options.dataTable
 				}
 			);
-			if( this.options.files && this.options.files.length > 0 
-					&& ! this.options.multipleSelectMode )
+			if( ! this.options.disabled )
 			{
-				this.addFilesButton.set("disabled", true);
-				this.options.picker.widgets.addButton.set("disabled", true);
-			}
-			else
-			{
-				this.addFilesButton.set("disabled", false);
-				this.options.picker.widgets.addButton.set("disabled", false);
+				if( this.options.files && this.options.files.length > 0 
+						&& ! this.options.multipleSelectMode )
+				{
+					this.addFilesButton.set("disabled", true);
+					this.options.picker.widgets.addButton.set("disabled", true);
+				}
+				else
+				{
+					this.addFilesButton.set("disabled", false);
+					this.options.picker.widgets.addButton.set("disabled", false);
+				}
 			}
 			this.activateWorkflowButtons();
 		},
