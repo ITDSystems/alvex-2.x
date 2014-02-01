@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<page>
+	<title>View Metadata</title>
+	<title-id>page.viewMetadata.title</title-id>
+	<description>View metadata of a node</description>
+	<description-id>page.viewMetadata.description</description-id>
+	<template-instance>view-metadata</template-instance>
+	<authentication>user</authentication>
+</page>
