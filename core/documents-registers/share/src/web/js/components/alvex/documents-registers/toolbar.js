@@ -118,7 +118,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
          
          // Using Forms Service, so always create new instance
-         var countersConfigDialog = new Alfresco.module.SimpleDialog(this.id + "-countersConfig");
+         var countersConfigDialog = new Alvex.SimpleDialog(this.id + "-countersConfig");
 
          countersConfigDialog.setOptions(
          {

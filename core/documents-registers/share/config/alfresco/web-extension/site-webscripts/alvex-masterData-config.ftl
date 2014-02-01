@@ -6,7 +6,7 @@
 	<input type="hidden" id="${fieldHtmlId}" name="-" value="${field.value}" />
 	<input type="hidden" id="${fieldHtmlId}-added" name="${field.name}_added" value="" />
 	<input type="hidden" id="${fieldHtmlId}-removed" name="${field.name}_removed" value="" />
-	<!--label for="${fieldHtmlId}-view">${field.label?html}:</label-->
+	<!--label for="${fieldHtmlId}-view" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:</label-->
 	<div id="${fieldHtmlId}-view"></div>
 </div>
 

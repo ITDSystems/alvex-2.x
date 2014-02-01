@@ -4,7 +4,7 @@
 <div class="form-field">
    <#if (form.mode == "view") || field.disabled>
       <div class="viewmode-field">
-         <label for="${fieldHtmlId}" class="hidden">${field.label?html}</label>
+         <label for="${fieldHtmlId}" class="hidden" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}</label>
          <input type="hidden" id="${fieldHtmlId}" name="${field.name}" value="${field.value?html}" />
          <#if field.mandatory && field.value == "">
             <span class="incomplete-warning"><img src="${url.context}/res/components/form/images/warning-16.png" title="${msg("form.field.incomplete")}" /><span>
@@ -18,7 +18,7 @@
          <span class="viewmode-value"><#if fieldValue == "">${msg("form.control.novalue")}<#else>${fieldValue?replace("\n", "<br/>")}</#if></span>
       </div>
    <#else>
-      <label for="${fieldHtmlId}">${field.label?html}:<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if></label>
+      <label for="${fieldHtmlId}" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if></label>
       <textarea id="${fieldHtmlId}" name="${field.name}" rows="${rows}" cols="${columns}" tabindex="0"
                 <#if field.description??>title="${field.description}"</#if>
                 <#if field.control.params.styleClass??>class="${field.control.params.styleClass}"</#if>

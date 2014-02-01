@@ -599,7 +599,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
 
          // Using Forms Service, so always create new instance
-         var newList = new Alfresco.module.SimpleDialog(this.id + "-newList");
+         var newList = new Alvex.SimpleDialog(this.id + "-newList");
 
          newList.setOptions(
          {
@@ -679,7 +679,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
 
          // Using Forms Service, so always create new instance
-         var editList = new Alfresco.module.SimpleDialog(this.id + "-editList");
+         var editList = new Alvex.SimpleDialog(this.id + "-editList");
 
          editList.setOptions(
          {

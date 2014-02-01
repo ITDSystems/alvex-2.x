@@ -44,7 +44,7 @@
       </div>
    <#elseif !multiValued>
       <#if jsDisabled>
-         <label for="${fieldHtmlId}">${field.label?html}:<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if></label>
+         <label for="${fieldHtmlId}" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if></label>
          <input id="${fieldHtmlId}" name="${field.name}" type="text" class="date-entry" value="${value?html}" <#if field.description??>title="${field.description}"</#if> <#if disabled>disabled="true"<#else>tabindex="0"</#if> />
          <div class="format-info">
             <span class="date-format">${msg("form.control.date-picker.entry.datetime.format.nojs")}</span>
@@ -70,7 +70,7 @@
       
          <input id="${fieldHtmlId}" type="hidden" name="${field.name}" value="${value?html}" />
       
-         <label for="${controlId}-date">${field.label?html}:<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if></label>
+         <label for="${controlId}-date" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if></label>
          <input id="${controlId}-date" name="-" type="text" class="date-entry" <#if field.description??>title="${field.description}"</#if> <#if disabled>disabled="true"<#else>tabindex="0"</#if> />
       
          <#if disabled == false>

@@ -332,7 +332,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       _showDialog: function AmSD__showDialog()
       {
-         var form = Dom.get(this.id + "-form");
+         Dom.removeClass(this.id + '-dialogTitle',"hidden");
+		 
+		 var form = Dom.get(this.id + "-form");
          
          // Make sure forms without Share-specific templates render roughly ok
          Dom.addClass(form, "bd");
@@ -443,7 +445,8 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       _showViewDialog: function AmSVD__showViewDialog()
       {
-
+         Dom.removeClass(this.id + '-dialogTitle',"hidden");
+		 
          // Custom before show event interest registered?
          var doBeforeDialogShow = this.options.doBeforeDialogShow;
          if (doBeforeDialogShow && typeof doBeforeDialogShow.fn == "function")

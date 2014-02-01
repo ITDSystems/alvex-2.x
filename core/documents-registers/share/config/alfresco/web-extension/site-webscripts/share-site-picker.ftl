@@ -5,7 +5,7 @@
 
 	<input type="hidden" id="${fieldHtmlId}" name="${field.name}" value="${field.value}" />
 
-	<label for="${controlId}-display">${field.label?html}:
+	<label for="${controlId}-display" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:
 		<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
 	</label>
 

@@ -3,7 +3,7 @@
 
 <div class="form-field">
 	<input type="hidden" id="${fieldHtmlId}" name="-" value="${field.value?html}" />
-	<label for="${controlId}">${field.label?html}:
+	<label for="${controlId}" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:
 		<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
 	</label>
 	<#if form.mode == "view" || field.disabled >

@@ -2,7 +2,7 @@
 <#assign controlId = fieldHtmlId + "-cntrl">
 
 <div class="form-field">
-	<label for="${fieldHtmlId}">${field.label?html}:
+	<label for="${fieldHtmlId}" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:
 		<#if field.mandatory><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
 	</label>
 	<#if form.mode != "create" >

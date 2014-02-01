@@ -1783,7 +1783,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
 
          // Using Forms Service, so always create new instance
-         var editDetails = new Alfresco.module.SimpleDialog(this.id + "-editDetails");
+         var editDetails = new Alvex.SimpleDialog(this.id + "-editDetails");
          editDetails.setOptions(
          {
             width: "50em",

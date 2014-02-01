@@ -87,7 +87,7 @@
 </#macro>
 
 <div id="${id}-dialog">
-   <div id="${id}-dialogTitle" class="hd">${msg("title")}</div>
+   <div id="${id}-dialogTitle" class="hd hidden">${msg("title")}</div>
    <div class="bd">
 
       <div id="${formId}-container" class="form-container">
@@ -114,10 +114,12 @@
 
             </div>
 
-            <div class="bdft">
+            <#if form.mode != "view">
+            <div class="bdft" style="margin-top: 0.5em; padding-left: 1em;">
                <input id="${formId}-submit" type="submit" value="${msg("form.button.submit.label")}" />
                &nbsp;<input id="${formId}-cancel" type="button" value="${msg("form.button.cancel.label")}" />
             </div>
+            </#if>
       
          </form>
 
