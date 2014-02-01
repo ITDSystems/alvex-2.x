@@ -21,7 +21,7 @@
 
 
 <div class="form-field">
-	<label for="${controlId}">${field.label?html}:
+	<label for="${controlId}" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:
 		<#if (field.mandatory || field.endpointMandatory)><span class="mandatory-indicator">${msg("form.required.fields.marker")}</span></#if>
 	</label>
 	<div id="${controlId}">
