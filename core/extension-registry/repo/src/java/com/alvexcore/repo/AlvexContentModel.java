@@ -28,6 +28,7 @@ public interface AlvexContentModel {
 	final static String ALVEXOC_MODEL_URI = "http://alvexcore.com/prefix/alvexoc";	
 	final static String ALVEXRWF_MODEL_URI = "http://alvexcore.com/prefix/alvexrwf";
 	final static String ALVEXDOCREG_MODEL_URI = "http://alvexcore.com/prefix/alvexdocreg";
+	final static String ALVEXDR_MODEL_URI = "http://alvexcore.com/prefix/alvexdr";
 	final static String ALVEXDT_MODEL_URI = "http://alvexcore.com/prefix/alvexdt";
 	
 	final static String ALVEX_MODEL_PREFIX = "alvex";
@@ -35,6 +36,7 @@ public interface AlvexContentModel {
 	final static String ALVEXOC_MODEL_PREFIX = "alvexoc";
 	final static String ALVEXRWF_MODEL_PREFIX = "alvexrwf";
 	final static String ALVEXDOCREG_MODEL_PREFIX = "alvexdocreg";
+	final static String ALVEXDR_MODEL_PREFIX = "alvexdr";
 	final static String ALVEXDT_MODEL_PREFIX = "alvexdt";
 	
 	final static QName TYPE_EXTENSION_CONFIG = QName.createQName(ALVEX_MODEL_URI, "extensionConfig");
@@ -44,6 +46,8 @@ public interface AlvexContentModel {
 	final static QName TYPE_ORGCHART_SYNC_CONFIG = QName.createQName(ALVEXOC_MODEL_URI, "syncConfig");
 	final static QName TYPE_ROLE_DEF = QName.createQName(ALVEXOC_MODEL_URI, "roleDefinition");
 	final static QName TYPE_ROLE_INST = QName.createQName(ALVEXOC_MODEL_URI, "roleInstance");
+	final static QName TYPE_DOCUMENT_REGISTER = QName.createQName(ALVEXDR_MODEL_URI, "documentRegister");
+	final static QName TYPE_DOCUMENT_REGISTER_ITEM = QName.createQName(ALVEXDT_MODEL_URI, "object");
 	
 	final static QName ASPECT_ORGCHART_MEMBER = QName.createQName(ALVEXOC_MODEL_URI, "orgchartMember");
 	
@@ -80,6 +84,7 @@ public interface AlvexContentModel {
 	final static QName PROP_OUT_OF_OFFICE = QName.createQName(ALVEXOC_MODEL_URI, "outOfOffice");
 	final static QName PROP_PARENT_REGISTER_NAME = QName.createQName(ALVEXDT_MODEL_URI, "parentRegisterName");
 	final static QName PROP_DOCUMENT_STATUS = QName.createQName(ALVEXDT_MODEL_URI, "status");
+	final static QName PROP_DOCUMENT_ID = QName.createQName(ALVEXDT_MODEL_URI, "id");
 	final static QName PROP_RELATED_WORKFLOWS = QName.createQName(ALVEXRWF_MODEL_URI, "relatedWorkflows");
 	
 	final static String DOCUMENT_STATUS_NOT_STARTED = "notStarted";

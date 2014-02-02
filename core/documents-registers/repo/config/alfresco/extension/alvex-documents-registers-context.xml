@@ -108,5 +108,7 @@
 	</bean>
 
 	<bean id="alvex-documents-registers" class="com.alvexcore.repo.DocumentsRegistersExtension"
-		depends-on="alvex-custom-workflows" parent="alvex-extension" />
+										depends-on="alvex-custom-workflows" parent="alvex-extension">
+		<property name="policyComponent" ref="policyComponent" />
+	</bean>
 </beans>
