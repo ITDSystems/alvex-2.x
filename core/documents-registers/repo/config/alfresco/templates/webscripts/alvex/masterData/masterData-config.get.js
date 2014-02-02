@@ -2,6 +2,13 @@
 	try {
 		model.masterData = [];
 		var dlRef = args['dlRef'];
+		var itemRef = args['itemRef'];
+		if(itemRef && itemRef != '')
+		{
+			var node = search.findNode( itemRef );
+			dlRef = (node && node.parent ? node.parent.nodeRef.toString() : '');
+		}
+		
 		var fieldName = args['fieldName'];
 		var refs = args['refs'];
 

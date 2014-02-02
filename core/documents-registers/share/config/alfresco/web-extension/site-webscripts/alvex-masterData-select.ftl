@@ -24,6 +24,7 @@ new Alvex.MasterDataSelect( "${fieldHtmlId}" ).setOptions({
 	<#if field.control.params.style??>style: '${(field.control.params.style!"")?string}',</#if>
 	<#if field.control.params.styleClass??>styleClass: '${(field.control.params.styleClass!"")?string}',</#if>
 	field: '${field.name}',
+	mode: '${form.mode}',
 	url: '${(field.control.params.url!"")?string}',
 	label: '${(field.control.params.label!"")?string}',
 	value: '${(field.control.params.value!"")?string}'

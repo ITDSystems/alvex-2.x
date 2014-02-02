@@ -69,38 +69,35 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		fillSelect: function SiteChooser_fillSelect()
 		{
-			//this.options.url = Alfresco.constants.PROXY_URI + "api/sites?size=250";
-			//this.options.label = "title";
-			//this.options.value = "title";
-
 			if( (this.options.url == '') && (this.options.label == '') && (this.options.value == '') )
 				this.loadFromRepo();
 			else if( (this.options.url != '') && (this.options.label != '') && (this.options.value != '') )
 				this.loadFromURL();
 			else
 				return;
-
 		},
 
 		loadFromRepo: function()
 		{
-			var dlRef = null;
 			var fieldName = this.options.field;
-			var dr = Alfresco.util.ComponentManager.findFirst("Alvex.RegisterDocuments");
-			var dl = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
-			if( dr && dr.options.currentList )
-				dlRef = dr.options.currentList.nodeRef;
-			else if( dl && dl.datalistMeta )
-				dlRef = dl.datalistMeta.nodeRef;
-			// WA for UI view form crash on the second stage of registration workflow
-			if( !dlRef )
-			{
-				Dom.get( this.id + '-cntrl' ).innerHTML = Dom.get( this.id ).value;
-				return;
-			}
+			var formEl = Alvex.util.getFormElement(this.id);
+			var destInput = Dom.get( formEl.id + '-destination' );
+			var parentNodeRef = ( destInput != null ? destInput.value : null );
+			var action = formEl.action;
+			var curentNodeRef = null;
+			if( action.match('api\/node\/') )
+				curentNodeRef = action.replace(/.*api\/node\//,'').replace(/\/formprocessor/,'').replace(/\//,':\/\/');
 
+			var url = null;
+			if(parentNodeRef)
+				url = Alfresco.constants.PROXY_URI + "api/alvex/masterData-config?dlRef=" + parentNodeRef + "&fieldName=" + fieldName;
+			else if(curentNodeRef)
+				url = Alfresco.constants.PROXY_URI + "api/alvex/masterData-config?itemRef=" + curentNodeRef + "&fieldName=" + fieldName;
+			else
+				return;
+			
 			Alfresco.util.Ajax.jsonRequest({
-				url: Alfresco.constants.PROXY_URI + "api/alvex/masterData-config?dlRef=" + dlRef + "&fieldName=" + fieldName,
+				url: url,
 				method: Alfresco.util.Ajax.GET,
 				dataObj: null,
 				successCallback:
@@ -153,13 +150,13 @@ if (typeof Alvex == "undefined" || !Alvex)
 				input.name = this.options.field;
 				input.value = value;
 				input.setAttribute('tabindex', "0");
-				input.setAttribute('style', this.options.style);
+				input.setAttribute('style', (this.options.style ? this.options.style : 'width: 12em;'));
 				input.className = this.options.styleClass;
 				parent.appendChild( input );
 			} else {
 				var div = document.createElement( 'div' );
 				div.id = this.id;
-				div.setAttribute('style', this.options.style);
+				div.setAttribute('style', (this.options.style ? this.options.style : 'width: 12em;'));
 				div.className = this.options.styleClass;
 				parent.appendChild( div );
 				Dom.get( this.id ).innerHTML = value;
