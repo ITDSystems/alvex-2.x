@@ -410,6 +410,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 								modified: ( file.modified && file.modified != null
 											? Alfresco.util.fromISO8601(file.modified) : new Date() ),
 								allowDelete: true,
+								isMetadataOnly: /\/dataLists\//.test(file.displayPath),
 								type: this.ATTACH_FROM_REPO
 							});
 							// Simply add to *-added because the file was just uploaded and can not be in *-removed
@@ -456,6 +457,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 								modified: ( file.modified && file.modified != null
 											? Alfresco.util.fromISO8601(file.modified) : new Date() ),
 								allowDelete: _allowDelete,
+								isMetadataOnly: /\/dataLists\//.test(file.displayPath),
 								type: this.ATTACH_FROM_REPO
 							});
 							// Update current field to ensure current value will be correct any case 
@@ -534,7 +536,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.options.dataSource = new YAHOO.util.DataSource(this.options.files);
 			this.options.dataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 			this.options.dataSource.responseSchema = {
-				fields: ["name", "nodeRef", "modifier", "modified", "allowDelete", "type"]
+				fields: ["name", "nodeRef", "modifier", "modified", "allowDelete", "isMetadataOnly", "type"]
 			};
 			
 			this.options.dataTable = new YAHOO.widget.DataTable(this.id + "-cntrl-dataTableContainer",
@@ -579,9 +581,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 			
 			var link = '';
 			if(ref != null) {
-				link = '<a href="' + Alfresco.constants.PROXY_URI + 'api/node/content/' 
-					+ Alfresco.util.NodeRef(ref).uri + '/' + filename 
-					+ '" target="_blank" ' + 'title="' + this.uploader.msg('actions.document.download') + '">' 
+				link = '<a href="' + this.uploader.getViewUrl(oRecord._oData) 
+					+ '" target="_blank" ' + 'title="' + this.uploader.msg('actions.document.view') + '">' 
 					+ filename + '</a>';
 			} else {
 				link = filename;
@@ -611,21 +612,25 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var clb, msg;
 			var id = this.uploader.id;
 			var allowDelete = oRecord._oData.allowDelete;
+			var canDownload = ! oRecord._oData.isMetadataOnly;
 			
 			var html = '<div id="' + id + '-actions-' + oRecord.getId() + '" class="hidden action">';
-			
-			msg = this.uploader.msg('actions.document.download');
-			clb = 'downloadFile';
-			
-			html += '<div class="' + clb + '"><a target="_blank" href="" ' 
-					+ 'class="alvex-uploader-action-link ' + id + '-action-link" ' 
-					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			
 			msg = this.uploader.msg('actions.document.view');
 			clb = 'viewFile';
 			
 			html += '<div class="' + clb + '"><a target="_blank" href="" ' 
 					+ 'class="alvex-uploader-action-link ' + id + '-action-link"' 
+					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
+			
+			if( canDownload )
+				clb = 'downloadFile';
+			else
+				clb = 'downloadFileDisabled';
+			
+			msg = this.uploader.msg('actions.document.download');
+			html += '<div class="' + clb + '"><a target="_blank" href="" ' 
+					+ 'class="alvex-uploader-action-link ' + id + '-action-link" ' 
 					+ 'title="' + msg +'"><span>' + msg + '</span></a></div>';
 			
 			if( allowDelete && (this.uploader.options.mode != 'view') )
@@ -669,15 +674,35 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.activateWorkflowButtons();
 		},
 		
+		downloadFileDisabled: function(obj)
+		{
+			this.downloadFile(obj);
+		},
+		
 		downloadFile: function(obj)
 		{
-			window.open( Alfresco.constants.PROXY_URI + 'api/node/content/' 
+			if( obj.isMetadataOnly )
+			{
+				Alfresco.util.PopupManager.displayMessage( { 
+						text: this.msg("alvex.uploader.canNotDownloadEmptyFile")
+				} );
+			} else {
+				window.open( Alfresco.constants.PROXY_URI + 'api/node/content/' 
 					+ Alfresco.util.NodeRef(obj.nodeRef).uri + '/' + obj.name );
+			}
 		},
 		
 		viewFile: function(obj)
 		{
-			window.open( Alfresco.constants.URL_PAGECONTEXT + 'document-details?nodeRef=' + obj.nodeRef );
+			window.open( this.getViewUrl(obj) );
+		},
+		
+		getViewUrl: function(obj)
+		{
+			if( obj.isMetadataOnly )
+				return Alfresco.constants.URL_PAGECONTEXT + 'view-metadata?nodeRef=' + obj.nodeRef;
+			else
+				return Alfresco.constants.URL_PAGECONTEXT + 'document-details?nodeRef=' + obj.nodeRef;
 		},
 		
 		deleteFile: function(obj)

@@ -28,6 +28,10 @@ div.downloadFile a.alvex-uploader-action-link {
 	background-image: url(/share/res/components/alvex/uploader/document-download-16.png);
 }
 
+div.downloadFileDisabled a.alvex-uploader-action-link {
+	background-image: url(/share/res/components/alvex/uploader/document-download-disabled-16.png);
+}
+
 div.viewFile a.alvex-uploader-action-link {
 	background-image: url(/share/res/components/alvex/uploader/document-edit-properties-16.png);
 }
