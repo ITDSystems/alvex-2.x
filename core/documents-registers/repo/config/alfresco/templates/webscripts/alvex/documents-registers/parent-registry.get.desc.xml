@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Documents Registers - Get Parent Registry for Item</shortname>
+  <url>/api/alvex/documents-registers/parent-registry?itemRef={itemRef}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

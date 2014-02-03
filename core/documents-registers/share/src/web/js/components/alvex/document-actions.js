@@ -48,4 +48,34 @@
 			});
 		}
 	});
+	YAHOO.Bubbling.fire("registerAction",
+	{
+		actionName: "onActionViewCompleteRegistry",
+		fn: function (file) {
+			Alfresco.util.Ajax.jsonRequest({
+				url: Alfresco.constants.PROXY_URI + "api/alvex/documents-registers/parent-registry"
+						+ "?itemRef=" + file.nodeRef,
+				method: Alfresco.util.Ajax.GET,
+				dataObj: null,
+				successCallback:
+				{
+					fn: function (resp)
+					{
+						window.location = Alfresco.constants.URL_PAGECONTEXT +
+											"site/" + resp.json.siteName + "/documentsregister?register=" + resp.json.registryName;
+					},
+					scope:this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						if (resp.serverResponse.statusText)
+							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+					},
+					scope:this
+				}
+			});
+		}
+	});
 })();

@@ -2,6 +2,7 @@
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
 	<bean id="evaluator.alvex.isContentNode" class="com.alvexcore.share.evaluators.ContentExistsEvaluator" />
+	<bean id="evaluator.alvex.workflowsAvailableForRegistryItem" class="com.alvexcore.share.evaluators.WorkflowsAvailableForRegistryItemEvaluator" />
 	<bean id="evaluator.alvex.isAttachedToRegistryItem" class="com.alvexcore.share.evaluators.AttachedToRegistryItemEvaluator" />
 	<bean id="alvex-documents-registers-messages-deployer" class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent" depends-on="">
 		<property name="resourceBundles">

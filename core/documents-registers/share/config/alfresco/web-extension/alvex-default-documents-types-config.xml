@@ -19,38 +19,37 @@
 				<param name="function">onActionViewRegistryItem</param>
 				<evaluator>evaluator.alvex.isAttachedToRegistryItem</evaluator>
 			</action>
-			<!-- Custom start workflow actions. -->
-			<!-- We use them as triggers to remove actions when necessary. -->
-			<action id="alvex.document-assign-workflow-content-node" type="javascript" 
-					label="actions.document.assign-workflow" icon="document-assign-workflow">
-				<param name="function">onActionAssignWorkflow</param>
-				<evaluator>evaluator.alvex.isContentNode</evaluator>
-				<override>document-assign-workflow</override>
-			</action>
-			<action id="alvex.document-assign-workflow-metadata-node" type="javascript" 
-					label="actions.document.assign-workflow" icon="document-assign-workflow">
-				<param name="function">onActionAssignWorkflow</param>
+			<!-- View complete registry action -->
+			<action id="alvex.document-view-complete-registry" type="javascript" 
+					label="actions.alvex.document-view-complete-registry" icon="document-view-details">
+				<param name="function">onActionViewCompleteRegistry</param>
 				<evaluator negate="true">evaluator.alvex.isContentNode</evaluator>
 				<override>document-assign-workflow</override>
 				<override>document-download</override>
 				<override>document-view-content</override>
-				<!--override>alvex.document-view-metadata</override-->
 				<override>document-upload-new-version</override>
 				<override>document-inline-edit</override>
 				<override>document-edit-online</override>
 				<override>document-edit-offline</override>
 				<override>document-publish</override>
 			</action>
+			<!-- Custom start workflow action -->
+			<!-- We use them as triggers to remove actions when necessary. -->
+			<action id="alvex.document-assign-workflow-metadata-node" type="javascript" 
+					label="actions.document.assign-workflow" icon="document-assign-workflow">
+				<param name="function">onActionAssignWorkflow</param>
+				<evaluator>evaluator.alvex.workflowsAvailableForRegistryItem</evaluator>
+			</action>
 		</actions>
 		<actionGroups>
 			<actionGroup id="document-browse">
 				<action index="125" id="alvex.document-view-metadata" />
-				<action index="275" id="alvex.document-assign-workflow-content-node" />
+				<action index="127" id="alvex.document-view-complete-registry" />
 				<action index="275" id="alvex.document-assign-workflow-metadata-node" />
 			</actionGroup>
 			<actionGroup id="document-details">
 				<action index="115" id="alvex.document-view-registry-item" />
-				<action index="275" id="alvex.document-assign-workflow-content-node" />
+				<action index="117" id="alvex.document-view-complete-registry" />
 				<action index="275" id="alvex.document-assign-workflow-metadata-node" />
 			</actionGroup>
 		</actionGroups>
