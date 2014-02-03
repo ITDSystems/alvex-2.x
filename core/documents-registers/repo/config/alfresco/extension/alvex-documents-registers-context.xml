@@ -7,20 +7,33 @@
 		<property name="serviceRegistry" ref="ServiceRegistry" />
 	</bean>
 
-	<bean id="alvex-documents-registers-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
+	<bean id="alvex-documents-types-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<!-- Register resource bundles -->
 		<property name="labels">
 			<list>
-				<value>alfresco.extension.messages.alvex-documents-registers</value>
-				<value>alfresco.extension.messages.alvex-documents-types</value>
 				<value>alfresco.extension.messages.alvex-default-documents-types</value>
 			</list>
 		</property>
 		<!-- Register models -->
 		<property name="models">
 			<list>
-				<value>alfresco/extension/models/alvex-documents-types-model.xml</value>
 				<value>alfresco/extension/models/alvex-default-documents-types-model.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="alvex-documents-registers-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap, alvex-documents-types-deployer">
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.alvex-documents-registers</value>
+				<value>alfresco.extension.messages.alvex-documents-types</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-documents-types-model.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -110,5 +123,6 @@
 	<bean id="alvex-documents-registers" class="com.alvexcore.repo.DocumentsRegistersExtension"
 										depends-on="alvex-custom-workflows" parent="alvex-extension">
 		<property name="policyComponent" ref="policyComponent" />
+		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
 	</bean>
 </beans>

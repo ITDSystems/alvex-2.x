@@ -48,6 +48,8 @@ public interface AlvexContentModel {
 	final static QName TYPE_ROLE_INST = QName.createQName(ALVEXOC_MODEL_URI, "roleInstance");
 	final static QName TYPE_DOCUMENT_REGISTER = QName.createQName(ALVEXDR_MODEL_URI, "documentRegister");
 	final static QName TYPE_DOCUMENT_REGISTER_ITEM = QName.createQName(ALVEXDT_MODEL_URI, "object");
+
+	final static QName ASPECT_ATTACHED_TO_REGISTRY_ITEM = QName.createQName(ALVEXDR_MODEL_URI, "attachedToRegistryItem");
 	
 	final static QName ASPECT_ORGCHART_MEMBER = QName.createQName(ALVEXOC_MODEL_URI, "orgchartMember");
 	
@@ -65,6 +67,7 @@ public interface AlvexContentModel {
 	final static QName ASSOC_DOCUMENTS = QName.createQName(ALVEXDOCREG_MODEL_URI, "documents");
 	final static QName ASSOC_FILES = QName.createQName(ALVEXDT_MODEL_URI, "files");
 	final static QName ASSOC_DOCUMENT_ASSIGNEE = QName.createQName(ALVEXDT_MODEL_URI, "assignee");
+	final static QName ASSOC_PARENT_REGISTRY = QName.createQName(ALVEXDR_MODEL_URI, "parentRegister");
 	
 	final static QName ASSOC_NAME_SYSTEM = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "system");
 	final static QName ASSOC_NAME_ALVEX = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "alvex");
