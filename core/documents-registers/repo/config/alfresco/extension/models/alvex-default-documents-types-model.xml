@@ -73,6 +73,9 @@
 					</target>
 				</association>
 			</associations>
+			<mandatory-aspects>
+				<aspect>alvexdt:identified</aspect>
+			</mandatory-aspects>
 		</type>	
 
 		<!-- We do not use it now. Most probably, we never will. -->
@@ -118,7 +121,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:companyable</aspect>
 				<aspect>alvexdt:contractorable</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
@@ -144,7 +146,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:correspondentable</aspect>
 				<aspect>alvexdt:withRelatedSent</aspect>
 				<aspect>alvexdt:summarizable</aspect>
@@ -169,7 +170,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:correspondentable</aspect>
 				<aspect>alvexdt:signed</aspect>
 				<aspect>alvexdt:withRelatedReceived</aspect>
@@ -195,7 +195,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:withPrimaryDocument</aspect>
 				<aspect>alvexdt:summarizable</aspect>
 			</mandatory-aspects>
@@ -248,7 +247,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:companyable</aspect>
 				<aspect>alvexdt:contractorable</aspect>
 				<aspect>alvexdt:withPrimaryDocument</aspect>
@@ -274,7 +272,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:companyable</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:summarizable</aspect>
@@ -298,7 +295,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:companyable</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:summarizable</aspect>
@@ -337,7 +333,6 @@
 			</properties>
 
 			<mandatory-aspects>
-				<aspect>alvexdt:identified</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:contractorable</aspect>
 				<aspect>alvexdt:expiring</aspect>
