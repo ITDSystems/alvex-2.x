@@ -1546,6 +1546,8 @@ if (typeof Alvex == "undefined" || !Alvex)
             {
                action = actions[i];
                aTag = action.firstChild;
+               if( aTag.href[aTag.href.length-1] === '=')
+                  aTag.href += record.getData("nodeRef");
                spanTag = aTag.firstChild;
                if (spanTag && actionLabels[action.className])
                {
@@ -1752,6 +1754,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onActionEdit: function DataGrid_onActionEdit(item)
       {
+         window.location = Alfresco.constants.URL_PAGECONTEXT +
+                                   "edit-metadata?nodeRef=" + item.nodeRef;
+         
          var scope = this;
          
          // Intercept before dialog show
@@ -1859,6 +1864,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onActionView: function DataGrid_onActionView(item)
       {
+         window.location = Alfresco.constants.URL_PAGECONTEXT +
+                                   "view-metadata?nodeRef=" + item.nodeRef;
+         
          var scope = this;
          
          // Intercept before dialog show
