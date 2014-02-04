@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Documents Registers - Get Registries from Site</shortname>
+  <url>/api/alvex/documents-registers/site-registries?siteRef={siteRef}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>
