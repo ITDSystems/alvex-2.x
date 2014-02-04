@@ -320,7 +320,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			picker.singleSelectedItem = null;
 			YAHOO.Bubbling.fire("parentChanged",
 			{
-				eventGroup: picker,
+				eventGroup: this.options.picker,
 				label: '',
 				nodeRef: this.options.pickerRoot
 			});
