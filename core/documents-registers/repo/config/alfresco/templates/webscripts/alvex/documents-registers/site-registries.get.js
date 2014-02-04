@@ -3,21 +3,21 @@
 		model.regs = [];
 		
 		var siteRef = args['siteRef'];
-		
+      
 		var item = search.findNode( siteRef );
 		var dlCont = null;
 		for(var i = 0; i < item.children.length; i++)
 		{
-			if( item.children[i].name === "dataLists" )
-			dlCont = item.children[i];
+			if( item.children[i].name == "dataLists" )
+			   dlCont = item.children[i];
 		}
 
 		for(var i = 0; i < dlCont.children.length; i++)
 		{
-			if( alvexDictionaryService.isRegistry( cont.children[i] ) )
+			if( alvexDictionaryService.isRegistry( dlCont.children[i] ) )
 			{
-				regs.push( {
-					"ref": dlCont.children[i].nodeRef,
+				model.regs.push( {
+					"ref": dlCont.children[i].nodeRef.toString(),
 					"name": dlCont.children[i].name
 				} );
 			}
