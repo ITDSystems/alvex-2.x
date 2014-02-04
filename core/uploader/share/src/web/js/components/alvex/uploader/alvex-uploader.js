@@ -63,6 +63,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			adobeFlashEnabled: true,
 			// Picker object from standard file picker to attach existing files
 			picker: null,
+			regPicker: null,
 			packageItemActionGroup: '',
 			pickerRoot: '',
 			allowedExtensions: '',
@@ -162,6 +163,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 		
 		onReady: function Uploader_init()
 		{
+			// WA
+			if( this.options.regPicker !== null )
+				this.options.regPicker.onReady();
 			// We don't init by onReady event for edit and create forms 
 			//		because it causes init BEFORE form is ready
 			// In this case flash layer is generated in some strange place and it does not work
@@ -296,15 +300,27 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			// Skip 'formValueChanged' from all form components except our 'embedded' picker
 			var pickerId = args[1].eventGroup.pickerId;
-			if( !(pickerId) || (pickerId != this.id + '-cntrl-picker') )
+			if( !(pickerId) || (pickerId != this.id + '-cntrl-picker' && pickerId != this.id + '-reg-cntrl-picker') )
 				return;
 
+			var picker = null;
+			var el = null;
+			if( pickerId === this.id + '-cntrl-picker' )
+			{
+				picker = this.options.picker;
+				el = Dom.get( this.id );
+			}
+			else if( pickerId === this.id + '-reg-cntrl-picker' )
+			{
+				picker = this.options.regPicker;
+				el = Dom.get( this.id + '-reg' );
+			}
 			// Clear standard picker state
-			this.options.picker.selectedItems = {}; 
-			this.options.picker.singleSelectedItem = null;
+			picker.selectedItems = {}; 
+			picker.singleSelectedItem = null;
 			YAHOO.Bubbling.fire("parentChanged",
 			{
-				eventGroup: this.options.picker,
+				eventGroup: picker,
 				label: '',
 				nodeRef: this.options.pickerRoot
 			});
@@ -316,7 +332,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			}
 
 			// Process newly attached files
-			var items = Dom.get( this.id ).value.split(',');
+			var items = el.value.split(',');
 			var curItems = Dom.get( this.id + "-cntrl-current" ).value.split(',');
 			var newItems = []
 			for( var i in items )
