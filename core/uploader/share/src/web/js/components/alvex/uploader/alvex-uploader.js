@@ -268,7 +268,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					adobeFlashEnabled: true
 				});
 				var isReady = this.uploader.getReady();
-				if( !isReady )
+				if( !isReady && this.addFilesButton )
 					this.addFilesButton.set("disabled", true);
 			}
 		},
@@ -287,7 +287,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				//    (c) in form.mode == 'view' picker does not trigger event.
 				// In this case we should cover it, process existing files and set 'started' state manually.
 				// Otherwise 'onExistingItemAttach' will go crazy on the first run because 'started' state is not set.
-				if( !(this.options.picker) || (Dom.get(this.id).value == '') || (this.options.disabled) )
+				if( !(this.options.picker || this.options.regPicker ) || (Dom.get(this.id).value == '') || (this.options.disabled) )
 					this.attachOldItems();
 
 				// Remember initial value
@@ -316,18 +316,28 @@ if (typeof Alvex == "undefined" || !Alvex)
 				el = Dom.get( this.id + '-reg' );
 			}
 			// Clear standard picker state
-			picker.selectedItems = {}; 
-			picker.singleSelectedItem = null;
-			YAHOO.Bubbling.fire("parentChanged",
+			if( picker )
 			{
-				eventGroup: this.options.picker,
-				label: '',
-				nodeRef: this.options.pickerRoot
-			});
+				picker.selectedItems = {}; 
+				picker.singleSelectedItem = null;
+				//YAHOO.Bubbling.fire("parentChanged",
+				//{
+				//	eventGroup: this.options.picker,
+				//	label: '',
+				//	nodeRef: this.options.pickerRoot
+				//});
+			}
 
 			// Handle 'valueChange' that happens on form load
-			if( !this.options.oldItemsProcessed ) {
-				this.attachOldItems();
+			if( !this.options.oldItemsProcessed )
+			{
+				// We need this complex condition to ensure we call attachOldItems only once
+				// for any enabled / disabled picker combination
+				if( ( this.options.picker && (pickerId === this.id + '-cntrl-picker') ) 
+						|| ( !this.options.picker && (pickerId === this.id + '-reg-cntrl-picker') ) )
+				{
+					this.attachOldItems();
+				}
 				return;
 			}
 
@@ -678,13 +688,21 @@ if (typeof Alvex == "undefined" || !Alvex)
 				if( this.options.files && this.options.files.length > 0 
 						&& ! this.options.multipleSelectMode )
 				{
-					this.addFilesButton.set("disabled", true);
-					this.options.picker.widgets.addButton.set("disabled", true);
+					if( this.addFilesButton )
+						this.addFilesButton.set("disabled", true);
+					if( this.options.picker )
+						this.options.picker.widgets.addButton.set("disabled", true);
+					if( this.options.regPicker )
+						this.options.regPicker.widgets.addButton.set("disabled", true);
 				}
 				else
 				{
-					this.addFilesButton.set("disabled", false);
-					this.options.picker.widgets.addButton.set("disabled", false);
+					if( this.addFilesButton )
+						this.addFilesButton.set("disabled", false);
+					if( this.options.picker )
+						this.options.picker.widgets.addButton.set("disabled", false);
+					if( this.options.regPicker )
+						this.options.regPicker.widgets.addButton.set("disabled", false);
 				}
 			}
 			this.activateWorkflowButtons();

@@ -13,6 +13,7 @@
 				<js  src="/components/alvex/uploader/alvex-uploader.js" />
 				<css src="/components/alvex/uploader/alvex-uploader.css" />
 				<js  src="/components/alvex/uploader/alvex-uploader-dialog.js" />
+				<js  src="/components/alvex/uploader/alvex-docreg-object-finder.js" />
 				<!-- Copied from 4.2.c. WA for 4.1.x where HTML5 uploader is not good -->
 				<css src="/components/alvex/uploader/dnd-upload.css" />
 				<js  src="/components/alvex/uploader/dnd-upload.js" />

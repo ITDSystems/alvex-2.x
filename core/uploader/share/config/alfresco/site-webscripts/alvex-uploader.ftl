@@ -1,6 +1,12 @@
 <#include "/org/alfresco/components/component.head.inc">
 <#include "org/alfresco/components/form/controls/common/picker.inc.ftl">
 <#assign controlId = fieldHtmlId + "-cntrl">
+<#assign regHtmlId = fieldHtmlId + "-reg">
+<#assign regPickerId = regHtmlId + "-cntrl">
+
+<#assign showLocalDrive = ! (withoutLocalDrive?? || field.control.params.withoutLocalDrive??)>
+<#assign showRepo = ! (withoutRepo?? || field.control.params.withoutRepo?? )>
+<#assign showRegistries = ! (withoutRegistries?? || field.control.params.withoutRegistries?? )>
 
 <#assign fileUploadConfig = config.scoped["DocumentLibrary"]["file-upload"]!>
 <#if fileUploadConfig.getChildValue??>
@@ -18,7 +24,7 @@
 <#else>
 	<#assign packageItemActionGroup = "edit_and_remove_package_item_actions">
 </#if>
-
+<#assign showRegistries = ! (showLocalDrive || showRepo) >
 
 <div class="form-field">
 	<label for="${controlId}" <#if form.mode == "view">class="viewmode-label"</#if>>${field.label?html}:
@@ -31,8 +37,13 @@
 		<input type="hidden" id="${controlId}-current" name="-" value="" />
 		<!-- This input is just an ugly hack to prevent system uploader from failing in view mode -->
 		<input type="hidden" id="${controlId}-currentValueDisplay" name="-" value="" />
+		<#if showRegistries>
+		<input type="hidden" id="${regPickerId}-currentValueDisplay" name="-" value="" />
+		<input type="hidden" id="${regHtmlId}" name="-" value="" />
+		</#if>
 		<input type="hidden" id="${controlId}-initial" name="-" value="" />
 		<div <#if form.mode == "view" || field.disabled >style="display:none;"</#if>><table><tr>
+			<#if showLocalDrive>
 			<td>
 				<#if "${packageActionGroup}" == "add_package_item_actions">
 					<div id="${controlId}-addFilesButton-container" style="z-index:1">
@@ -44,18 +55,37 @@
 					</div>
 				</#if>
 			</td>
+			</#if>
+			<#if showRepo>
 			<td>
 				<#if "${packageActionGroup}" == "add_package_item_actions">
 					<div id="${controlId}-itemGroupActions" class="show-picker"></div>
 				</#if>
 			</td>
+			</#if>
+			<#if showRegistries>
+			<td>
+				<#if "${packageActionGroup}" == "add_package_item_actions">
+					<div id="${regPickerId}-itemGroupActions" class="show-picker"></div>
+				</#if>
+			</td>
+			</#if>
 		</tr></table></div>
 		<div id="${controlId}-dataTableContainer"></div>
 		<div id="${controlId}-default-picker" class="object-finder">
+		<#if showRepo>
 		<#if "${packageActionGroup}" == "add_package_item_actions">
 			<@renderPickerHTML controlId />
 		</#if>
+		</#if>
 		</div>
+		<#if showRegistries>
+		<div id="${controlId}-reg-picker" class="object-finder">
+		<#if "${packageActionGroup}" == "add_package_item_actions">
+			<@renderPickerHTML regPickerId />
+		</#if>
+		</div>
+		</#if>
 	</div>
 </div>
 
@@ -215,6 +245,7 @@
 
 <script type="text/javascript">
 if( "${packageActionGroup}" == "add_package_item_actions" ) {
+	<#if showRepo>
 	<@renderPickerJS field "picker" />
 	picker.setOptions(
 	{
@@ -235,6 +266,62 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 	<#if form.mode == "view" || field.disabled >
 	YAHOO.Bubbling.unsubscribe("renderCurrentValue", picker.onRenderCurrentValue, picker);
 	</#if>
+	<#else>
+	var picker = null;
+	</#if>
+
+	var regPicker = null;
+	<#if showRegistries>
+	regPicker = new Alvex.DocRegObjectFinder("${regPickerId}", "${regHtmlId}").setOptions(
+	{
+		<#if form.mode == "view" || (field.disabled && !(field.control.params.forceEditable?? && field.control.params.forceEditable == "true"))>disabled: true,</#if>
+		field: "${field.name}",
+		compactMode: ${compactMode?string},
+	<#if field.mandatory??>
+		mandatory: ${field.mandatory?string},
+	<#elseif field.endpointMandatory??>
+		mandatory: ${field.endpointMandatory?string},
+	</#if>
+	<#if field.control.params.startLocation??>
+		startLocation: "${field.control.params.startLocation}",
+		<#if form.mode == "edit" && args.itemId??>currentItem: "${args.itemId?js_string}",</#if>
+		<#if form.mode == "create" && form.destination?? && form.destination?length &gt; 0>currentItem: "${form.destination?js_string}",</#if>
+	</#if>
+	<#if field.control.params.startLocationParams??>
+		startLocationParams: "${field.control.params.startLocationParams?js_string}",
+	</#if>
+		currentValue: "${field.value}",
+		<#if field.control.params.valueType??>valueType: "${field.control.params.valueType}",</#if>
+		<#if renderPickerJSSelectedValue??>selectedValue: "${renderPickerJSSelectedValue}",</#if>
+		<#if field.control.params.selectActionLabelId??>selectActionLabelId: "${field.control.params.selectActionLabelId}",</#if>
+		selectActionLabel: "${field.control.params.selectActionLabel!msg("button.select")}",
+		minSearchTermLength: ${field.control.params.minSearchTermLength!'1'},
+		maxSearchResults: ${field.control.params.maxSearchResults!'1000'}
+	}).setMessages(
+		${messages}
+	);
+	
+	regPicker.setOptions(
+	{
+		maintainAddedRemovedItems: false,
+		itemFamily: "node",
+		itemType: '${(field.control.params.pickerContentType!"alvexdt:object")?string}',
+		multipleSelectMode: true,
+                startLocation: '${(field.control.params.pickerRoot!"alfresco://sites/home")?string}',
+		displayMode: "items",
+		compactMode: '${(field.control.params.pickerCompactMode!false)?string}' == 'true',
+		showLinkToTarget: false,
+		allowRemoveAction: false,
+		allowRemoveAllAction: false,
+		allowSelectAction: true,
+		selectActionLabel: '${msg("alvex.uploader.associateRegItems")?js_string}'
+	});
+
+	<#if form.mode == "view" || field.disabled >
+	YAHOO.Bubbling.unsubscribe("renderCurrentValue", regPicker.onRenderCurrentValue, regPicker);
+	</#if>
+
+	</#if>
 }
 
 new Alvex.Uploader( "${fieldHtmlId}" ).setOptions({
@@ -253,6 +340,7 @@ new Alvex.Uploader( "${fieldHtmlId}" ).setOptions({
 	uploaderId: '${field.control.params.uploaderId}',
 	</#if>
 	picker: picker,
+	regPicker: regPicker,
 	packageItemActionGroup: "${packageItemActionGroup}",
 	pickerRoot: '${(field.control.params.pickerRoot!"alfresco://user/home")?string}',
 	uploadDirectory: '${(field.control.params.uploadDirectory!"/")?string}',
