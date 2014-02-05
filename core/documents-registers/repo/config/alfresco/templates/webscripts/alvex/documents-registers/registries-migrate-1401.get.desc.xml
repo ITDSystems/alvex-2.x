@@ -1,0 +1,7 @@
+<webscript>
+  <shortname>Documents Registers - Migrate Registries to New Format</shortname>
+  <url>/api/alvex/documents-registers/1401-migrate</url>
+  <url>/api/alvex/documents-registers/202-migrate</url>
+  <format default="json">argument</format>
+  <authentication>admin</authentication>
+</webscript>
