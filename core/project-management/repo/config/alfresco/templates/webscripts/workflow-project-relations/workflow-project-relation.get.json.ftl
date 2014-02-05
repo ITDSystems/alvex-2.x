@@ -7,6 +7,7 @@
 	[
 		<#if nodes??>
 		<#list nodes as node>
+		<#if node.workflowInstance?? && node.projectSite??>
 		{
 			"workflow": 
 			{
@@ -19,7 +20,7 @@
 				"title": "${node.projectSite.title}",
 				"description": "${node.projectSite.description}"
 			}
-		}<#if node_has_next>,</#if>
+		}</#if><#if node_has_next>,</#if>
 		</#list>
 		</#if>
 	]

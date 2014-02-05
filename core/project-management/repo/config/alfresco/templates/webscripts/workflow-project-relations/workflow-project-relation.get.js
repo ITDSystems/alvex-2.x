@@ -63,7 +63,9 @@ var getNodes = function(folder)
 		{
 			var projectSite = siteService.getSite(node.properties["alvexcm:relatedObject"]);
 			var workflowInstance = workflow.getInstance(node.properties["alvexcm:workflowInstance"]);
-			model.nodes.push(
+			if( projectSite && workflowInstance)
+			{
+				model.nodes.push(
 					{
 						"projectSite": {
 							"shortName": projectSite.shortName,
@@ -75,6 +77,7 @@ var getNodes = function(folder)
 							"description": workflowInstance.description
 						}
 					});
+			}
 		}
 		
 		status.code = 200;
