@@ -29,8 +29,8 @@ import org.activiti.bpmn.model.Process;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.ExecutionListener;
 import org.activiti.engine.delegate.TaskListener;
-//import org.activiti.engine.impl.bpmn.behavior.AbstractBpmnActivityBehavior;
-//import org.activiti.engine.impl.bpmn.behavior.ParallelMultiInstanceBehavior;
+import org.activiti.engine.impl.bpmn.behavior.AbstractBpmnActivityBehavior;
+import org.activiti.engine.impl.bpmn.behavior.ParallelMultiInstanceBehavior;
 import org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.activiti.engine.impl.bpmn.parser.BpmnParse;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
@@ -38,7 +38,7 @@ import org.activiti.engine.impl.pvm.delegate.ActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.parse.BpmnParseHandler;
-//import org.alfresco.error.AlfrescoRuntimeException;
+import org.alfresco.error.AlfrescoRuntimeException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
@@ -48,6 +48,8 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.ManagedList;
 
+import java.lang.reflect.Method;
+import java.lang.NoSuchMethodException;
 
 class AssignTaskListener implements TaskListener {
 	private static final long serialVersionUID = -4057748622633153271L;
@@ -137,18 +139,37 @@ public class AlvexPostBpmnParseHandler implements BpmnParseHandler,
 					element.getId());
 			ActivityBehavior activityBehavior = activity.getActivityBehavior();
 			UserTaskActivityBehavior userTaskActivitiBehaviour = null;
+			
+			// Ugly hack - check if getInnerActivityBehavior() is present.
+			// It exists for 4.2.e+ and 4.2.0+ only and is absent for 4.2.d.
+			// However, 4.2.d contains ParallelMultiInstanceBehavior already.
+			// So we determine is the method is present to prevent bad calls later.
+			// If we do not do it, we just crash on 4.2.d during startup.
+			// Please, remove this hack as soon as we decide to drop 4.2.d completely.
+			// Also consider removing imports for Method and NoSuchMethodException.
+			Method getInnerActivityBehavior = null;
+			try {
+				getInnerActivityBehavior = ParallelMultiInstanceBehavior.class.getMethod(
+												"getInnerActivityBehavior", (Class<?>[]) null);
+			} catch (NoSuchMethodException e) {
+				// Do nothing
+			}
+			
 			if (activityBehavior instanceof UserTaskActivityBehavior) {
 				userTaskActivitiBehaviour = (UserTaskActivityBehavior) activityBehavior;
-			}/* 
-				FIXME Not sure, but this code may be useful for 4.2.e
-			
-				else if (activityBehavior instanceof ParallelMultiInstanceBehavior) {
+			}
+			/* 
+				This code works only for 4.2.e+ and 4.2.0+
+				ParallelMultiInstanceBehavior and AbstractBpmnActivityBehavior are not in 4.2.d
+			*/
+			else if (activityBehavior instanceof ParallelMultiInstanceBehavior
+						&& getInnerActivityBehavior != null) {
 				ParallelMultiInstanceBehavior parallelMultiInstanceBehavior = (ParallelMultiInstanceBehavior)activityBehavior;
 				AbstractBpmnActivityBehavior innerActivityBehavior = parallelMultiInstanceBehavior.getInnerActivityBehavior();
 				if (!(innerActivityBehavior instanceof UserTaskActivityBehavior))
 					throw new AlfrescoRuntimeException("Inner behaviour in not instance of UserTaskActivityBehavior");
 				userTaskActivitiBehaviour = (UserTaskActivityBehavior)innerActivityBehavior;
-			}*/
+			}
 			else
 				return;
 
