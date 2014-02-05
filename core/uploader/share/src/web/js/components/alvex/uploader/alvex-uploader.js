@@ -164,7 +164,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		onReady: function Uploader_init()
 		{
 			// WA
-			if( this.options.regPicker !== null )
+			if( this.options.regPicker && this.options.regPicker !== null )
 				this.options.regPicker.onReady();
 			// We don't init by onReady event for edit and create forms 
 			//		because it causes init BEFORE form is ready
