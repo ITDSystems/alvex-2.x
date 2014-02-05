@@ -625,6 +625,14 @@ if (typeof Alvex == "undefined" || !Alvex)
 				]
 			};
 			this.options.dataSource.maxCacheEntries = 0;
+			this.options.dataSource.doBeforeParseData = function (oRequest, oFullResponse)
+			{
+				var updatedResponse = { "data": [] };
+				for (var i = 0; i < oFullResponse.data.length; i++)
+					if( oFullResponse.data[i].relatedWorkflow.id !== me.workflow.id )
+						updatedResponse.data.push(oFullResponse.data[i]);
+				return updatedResponse;
+			};
 
 			// Create the table
 			this.options.dataTable = new YAHOO.widget.DataTable(
@@ -674,7 +682,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			elLiner.innerHTML = {
 				'in-progress': this.relatedWorkflows.msg("alvex.related_workflows.in_progress")
-				+ ( oRecord._oData["relatedWorkflow.dueDate"] && oRecord._oData["relatedWorkflow.dueDate"] != '' ? 
+				+ ( oRecord._oData["relatedWorkflow.dueDate"] && oRecord._oData["relatedWorkflow.dueDate"] != '' && oRecord._oData["relatedWorkflow.dueDate"] != 'null' ? 
 					"<br/>" + this.relatedWorkflows.msg("alvex.related_workflows.dueDate") + " " 
 				+ Alfresco.util.formatDate( Alfresco.util.fromISO8601(oRecord._oData["relatedWorkflow.dueDate"]) , "mediumDate") : "" ),
 				'complete': this.relatedWorkflows.msg("alvex.related_workflows.complete")
