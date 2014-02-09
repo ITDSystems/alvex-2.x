@@ -100,7 +100,7 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 				.getServiceRegistry().getNodeService();
 		NodeRef nodeRef = childAssocRef.getChildRef();
 		String title = (String) nodeService.getProperty(nodeRef, ContentModel.PROP_TITLE);
-		nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, title);
+		nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, title.replace('/','_'));
 	}
 	
 	public void onCreateRegisterItem(ChildAssociationRef childAssocRef)
@@ -109,7 +109,7 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 				.getServiceRegistry().getNodeService();
 		NodeRef nodeRef = childAssocRef.getChildRef();
 		String title = (String) nodeService.getProperty(nodeRef, AlvexContentModel.PROP_DOCUMENT_ID);
-		nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, title);
+		nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, title.replace('/','_'));
 	}
 	
 	public void onCreateAssociation(AssociationRef nodeAssocRef)

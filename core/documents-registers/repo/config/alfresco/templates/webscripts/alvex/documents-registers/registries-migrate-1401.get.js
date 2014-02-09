@@ -6,7 +6,7 @@
 		for each(var node in nodes)
 		{
 			// Process registries names
-			var targetName = node.properties.title;
+			var targetName = node.properties.title.replace(/\//g,'_');
 			var nameOk = true;
 			do
 			{
@@ -29,7 +29,7 @@
 			for each(var entry in node.children)
 			{
 				// Name
-				entry.name = entry.properties["alvexdt:id"];
+				entry.name = entry.properties["alvexdt:id"].replace(/\//g,'_');
 				// Files
 				for each( var file in entry.assocs["alvexdt:files"] )
 				{
