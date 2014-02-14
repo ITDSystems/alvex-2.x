@@ -451,9 +451,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 							+ '<span>' + data.description + '</span></div>';
 				return;
 			}
-			var info = '<h3>Topic: ' + data.summary + '</h3>';
-			info += '<p>Date: ' + Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.date), "dd.mm.yyyy") + '</p>';
-			info += '<p>Participants: ';
+			var info = '<h3>' + this.msg('label.topic') + ': ' + data.summary + '</h3>';
+			info += '<p>' + this.msg('label.date') + ': ' + Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.date), "dd.mm.yyyy") + '</p>';
+			info += '<p>' + this.msg('label.participants') + ': ';
 			for(var i in data.people)
 			{
 				info += '<a href="' + Alfresco.constants.URL_PAGECONTEXT 
@@ -461,7 +461,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						+ data.people[i].name + '</a> ';
 			}
 			info += '</p>';
-			info += '<p>Files: ';
+			info += '<p>' + this.msg('label.files') + ': ';
 			for(var i in data.files)
 			{
 				info += '<a href="' + Alfresco.constants.URL_PAGECONTEXT + 'site/' 
