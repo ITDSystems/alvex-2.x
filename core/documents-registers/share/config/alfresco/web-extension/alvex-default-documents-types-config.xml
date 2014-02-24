@@ -297,7 +297,9 @@
 					 <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedSent"/>
+               <field set="related" id="alvexdt:relatedSent">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
             </appearance>
          </form>
       </forms>
@@ -368,7 +370,9 @@
 					 <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedSent"/>
+               <field set="related" id="alvexdt:relatedSent">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
             </appearance>
          </form>
       </forms>
@@ -448,7 +452,9 @@
 					 <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedReceived"/>
+               <field set="related" id="alvexdt:relatedReceived">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
             </appearance>
          </form>
       </forms>
@@ -518,7 +524,9 @@
 					 <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedReceived"/>
+               <field set="related" id="alvexdt:relatedReceived">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
             </appearance>
          </form>
       </forms>
@@ -572,7 +580,9 @@
 					 <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:primaryDocument"/>
+               <field set="related" id="alvexdt:primaryDocument">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
             </appearance> 
          </form>
       </forms>
@@ -618,7 +628,9 @@
 					 <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:primaryDocument"/>
+               <field set="related" id="alvexdt:primaryDocument">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
             </appearance>
          </form>
       </forms>
@@ -680,8 +692,8 @@
                   </control>
                </field>
                <field set="related" id="alvexdt:relatedDocuments">
-				   <control template="/alvex-docreg-picker.ftl"/>
-			   </field>
+                  <control template="/alvex-docreg-picker.ftl"/>
+               </field>
                <field set="mark" id="alvexdt:mark">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -817,7 +829,9 @@
                <field set="amount" id="alvexdt:currency">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
-               <field set="internal" id="alvexdt:primaryDocument"/>
+               <field set="internal" id="alvexdt:primaryDocument">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
                <field set="internal" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
@@ -896,7 +910,9 @@
                <field set="amount" id="alvexdt:currency">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
-               <field set="internal" id="alvexdt:primaryDocument"/>
+               <field set="internal" id="alvexdt:primaryDocument">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
                <field set="internal" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
