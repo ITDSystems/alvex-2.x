@@ -310,11 +310,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 						button.children[0].children[0].innerHTML = this.msg("button.startWorkflow");
 						Alfresco.util.populateHTML([
 							p_dialog.id + "-dialogTitle", 
-							Alfresco.util.message(this.msg("header.startWorkflowForProject"))
+							Alfresco.util.message(this.msg("header.startNewWorkflow"))
 							]);
 						Alfresco.util.populateHTML([
 							p_dialog.id + "-form-container_h", 
-							Alfresco.util.message(this.msg("header.startWorkflowForProject"))
+							Alfresco.util.message(this.msg("header.startNewWorkflow"))
 							]);
 					},
 					scope: this
