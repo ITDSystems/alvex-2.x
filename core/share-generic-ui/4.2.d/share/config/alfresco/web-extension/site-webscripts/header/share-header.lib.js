@@ -1140,7 +1140,7 @@ function generateAppItems() {
                            config: {
                               id: "HEADER_MY_FILES",
                               label: "header.menu.myfiles.label",
-                              iconClass: "alf-myfiles-icon",
+                              iconClass: "alf-recent-site-icon",
                               targetUrl: "context/mine/myfiles"
                            }
                         },
@@ -1150,7 +1150,7 @@ function generateAppItems() {
                            config: {
                               id: "HEADER_SHARED_FILES",
                               label: "header.menu.shared.label",
-                              iconClass: "alf-sharedfiles-icon",
+                              iconClass: "alf-recent-site-icon",
                               targetUrl: "context/shared/sharedfiles"
                            }
                         }
