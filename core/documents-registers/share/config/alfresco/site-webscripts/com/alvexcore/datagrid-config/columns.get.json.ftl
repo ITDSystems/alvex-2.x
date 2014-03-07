@@ -8,6 +8,15 @@
    <#list columns as col>
       {
          "renderer": "${col.renderer}",
+      <#if col.isSortKey>
+         "isSortKey": true,
+      </#if>
+      <#if col.sortOrder??>
+         "sortOrder": "${col.sortOrder}",
+      </#if>
+      <#if col.isItemName>
+         "isItemName": true,
+      </#if>
          "type": "${col.type}",
          "name": "${col.name}",
          "formsName": "<#if col.type == "association">assoc<#else>prop</#if>_${col.name?replace(":", "_")}",

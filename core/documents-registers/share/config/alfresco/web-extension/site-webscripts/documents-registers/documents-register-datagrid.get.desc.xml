@@ -1,5 +1,5 @@
 <webscript>
     <shortname>Alvex: Data Grid</shortname>
     <description>Alvex: Data Grid component</description>
-    <url>/alvex/datalists/datagrid</url>
+    <url>/components/data-lists/datagrid</url>
 </webscript>

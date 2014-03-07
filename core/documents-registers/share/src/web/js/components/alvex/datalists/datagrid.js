@@ -47,6 +47,8 @@ if (typeof Alvex == "undefined" || !Alvex)
       $combine = Alfresco.util.combinePaths,
       $userProfile = Alfresco.util.userProfileLink;
 
+   var $func = Alvex.util.getFunctionByName;
+
    /**
     * DataGrid constructor.
     * 
@@ -79,15 +81,15 @@ if (typeof Alvex == "undefined" || !Alvex)
       this.calOverlays = [];
 
 	  // Datagrid cell renderers
-	  this.defaultRenderers = {};
-	  this.defaultRenderers["default"] = "DatagridTextRenderer";
-	  this.defaultRenderers["text"] = "DatagridTextRenderer";
-	  this.defaultRenderers["mltext"] = "DatagridTextRenderer";
-	  this.defaultRenderers["date"] = "DatagridDateRenderer";
-	  this.defaultRenderers["datetime"] = "DatagridDateRenderer";
-	  this.defaultRenderers["boolean"] = "DatagridBoolRenderer";
-	  this.defaultRenderers["cm:person"] = "DatagridPersonRenderer";
-	  this.defaultRenderers["association"] = "DatagridAssocRenderer";
+	  this.defaultRenderersNames = {};
+	  this.defaultRenderersNames["default"] = "Alvex.DatagridTextRenderer";
+	  this.defaultRenderersNames["text"] = "Alvex.DatagridTextRenderer";
+	  this.defaultRenderersNames["mltext"] = "Alvex.DatagridTextRenderer";
+	  this.defaultRenderersNames["date"] = "Alvex.DatagridDateRenderer";
+	  this.defaultRenderersNames["datetime"] = "Alvex.DatagridDateRenderer";
+	  this.defaultRenderersNames["boolean"] = "Alvex.DatagridBoolRenderer";
+	  this.defaultRenderersNames["cm:person"] = "Alvex.DatagridPersonRenderer";
+	  this.defaultRenderersNames["association"] = "Alvex.DatagridAssocRenderer";
 
       /**
        * Decoupled event listeners
@@ -315,8 +317,7 @@ if (typeof Alvex == "undefined" || !Alvex)
        * @type Object
        */
       dataResponseFields: null,
-
-
+	  
       /**
        * DataTable Cell Renderers
        */
@@ -381,18 +382,18 @@ if (typeof Alvex == "undefined" || !Alvex)
        * @method getCellFormatter
        * @return {function} Function to render read-only value
        */
-      getCellFormatter: function DataGrid_getCellFormatter(type, datatype, renderer)
+      getCellFormatter: function DataGrid_getCellFormatter(type, datatype, rendererName)
       {
-         if(typeof Alvex[renderer] === "function")
-            return Alvex[renderer];
+         if(typeof $func(rendererName) === "function")
+            return $func(rendererName);
          
-         if(typeof Alvex[this.defaultRenderers[datatype]] === "function")
-            return Alvex[this.defaultRenderers[datatype]];
+         if(typeof $func(this.defaultRenderersNames[datatype]) === "function")
+            return $func(this.defaultRenderersNames[datatype]);
 
          if( type === "association" )
-            return Alvex[this.defaultRenderers["association"]];
+            return $func(this.defaultRenderersNames["association"]);
          else
-            return Alvex[this.defaultRenderers["default"]];
+            return $func(this.defaultRenderersNames["default"]);
       },
 
       onCalButtonClick: function f(ev, data)
@@ -1187,10 +1188,6 @@ if (typeof Alvex == "undefined" || !Alvex)
          };
       },
 
-      // onGridResize: function f()
-      // {
-      // },
-
       /**
        * DataTable set-up and event registration
        *
@@ -1199,11 +1196,6 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       _setupDataTable: function DataGrid__setupDataTable(columns)
       {
-         // Commenting this out because #184
-         // This code looks dead anyway. If nothing breaks, just remove it on next refactoring
-         // var divEl = document.getElementById(this.id + '-grid');
-         // divEl.onresize = this.onGridResize();
-
          // YUI DataTable column definitions
          var columnDefinitions =
          [
@@ -1211,9 +1203,16 @@ if (typeof Alvex == "undefined" || !Alvex)
          ];
 
          var column;
+         var initialSortBy;
+         var initialSortOrder;
          for (var i = 0, ii = this.datalistColumns.length; i < ii; i++)
          {
             column = this.datalistColumns[i];
+            if( column.isSortKey )
+               initialSortBy = column.formsName;
+            if( column.sortOrder )
+               initialSortOrder = ( column.sortOrder.toLowerCase() === "asc" 
+                               ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC );
             columnDefinitions.push(
             {
                key: this.dataResponseFields[i],
@@ -1244,17 +1243,17 @@ if (typeof Alvex == "undefined" || !Alvex)
             "MSG_EMPTY": this.msg("message.empty"),
             "MSG_ERROR": this.msg("message.error"),
             sortedBy: {
-               "key": "prop_alvexdt_id",
-               "dir": YAHOO.widget.DataTable.CLASS_ASC
+               "key": initialSortBy,
+               "dir": initialSortOrder
             },
             paginator: this.widgets.paginator
          });
 
-         if( this.widgets.dataTable.getColumn("prop_alvexdt_id") != null )
+         if( this.widgets.dataTable.getColumn(initialSortBy) !== null )
             me.currentSort =
             {
-               oColumn: this.widgets.dataTable.getColumn("prop_alvexdt_id"),
-               sSortDir: YAHOO.widget.DataTable.CLASS_ASC
+               oColumn: this.widgets.dataTable.getColumn(initialSortBy),
+               sSortDir: initialSortOrder
             };
 
          // Update totalRecords with value from server
