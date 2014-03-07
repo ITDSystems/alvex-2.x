@@ -1,6 +1,6 @@
 <webscript>
 	<shortname>Case Workflows</shortname>
 	<description>Lists workflows related to current case</description>
-	<family>dashlet</family>
+	<family>site-dashlet</family>
 	<url>/components/dashlets/case-workflows</url>
 </webscript>
