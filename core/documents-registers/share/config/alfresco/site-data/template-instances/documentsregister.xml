@@ -28,7 +28,7 @@
       <!-- Datagrid -->
       <component>
          <region-id>datagrid</region-id>
-         <url>/alvex/datalists/datagrid</url>
+         <url>/components/data-lists/datagrid</url>
          <properties>
             <pagination>true</pagination>
          </properties>

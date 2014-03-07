@@ -126,31 +126,6 @@
 	font-weight: bold;
 }
 
-span.datagrid-search-button
-{ 
-	display:block; 
-	height:16px; 
-	width:16px; 
-	top:0; 
-	left: 3px; 
-	background-image: url(/share/res/components/images/search-16.png); 
-}
-
-span.delete-button
-{ 
-	display:block; 
-	height:16px; 
-	width:16px; 
-	top:0; 
-	left: 3px; 
-	background-image: url(/share/res/components/images/delete-16.png); 
-}
-
-.small-btn .yui-button button
-{
-	padding: 3px;
-}
-
 /* Fix for ALV-278
  * After Light Theme was introduced, other themes look bad.
  * The issue is that all sizes are set in 'em' and are affected by font-size change.

@@ -1,20 +1,21 @@
 /**
  * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2014 ITD Systems LLC.
  *
- * This file is part of Alfresco
+ * This file is part of Alvex
  *
- * Alfresco is free software: you can redistribute it and/or modify
+ * Alvex is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Alfresco is distributed in the hope that it will be useful,
+ * Alvex is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
+ * along with Alvex. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -228,6 +229,7 @@ function main()
       else
       {
          var formModel = eval('(' + json + ')');
+         var formFields = formConfig.getFields();
          
          // if we got a successful response attempt to render the form
          if (json.status == 200)
@@ -235,9 +237,12 @@ function main()
             columns = formModel.data.definition.fields;
             for each( var item in columns )
             {
-               var templ = formConfig.getFields()[item.name].getControl().getTemplate();
-               var type = (item.dataType ? item.dataType : item.endpointType);
-               item.renderer = (templ ? templ : ""/*defC[type].getTemplate()*/);
+               var templ = formFields[item.name].getControl().getTemplate();
+               var attrs = formFields[item.name].getAttributes();
+               item.renderer = (templ ? templ : "");
+               item.isSortKey = (attrs["isSortKey"] !== null ? true : false);
+               item.sortOrder = attrs["sortOrder"];
+               item.isItemName = (attrs["isSortKey"] !== null ? true : false);
             } 
          }
          else

@@ -354,3 +354,28 @@ span.search-cal-button
 	left: 3px; 
 	background-image: url(/share/res/components/form/images/calendar.png); 
 }
+
+span.datagrid-search-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/images/search-16.png); 
+}
+
+span.datagrid-clear-search-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/images/delete-16.png); 
+}
+
+.small-btn .yui-button button
+{
+	padding: 3px;
+}

@@ -165,3 +165,20 @@ Alvex.util.getSiteDisplayName = function Alvex_getSiteDisplayName()
 	var el = YAHOO.util.Selector.query(".alf-menu-title-text")[0];
 	return el.innerHTML;
 };
+
+Alvex.util.getFunctionByName = function Alvex_getFunctionByName(functionName)
+{
+	if( !functionName )
+		return null;
+	
+	var context = window;
+	var namespaces = functionName.split(".");
+	var func = namespaces.pop();
+	for(var i = 0; i < namespaces.length; i++) 
+	{
+		context = context[namespaces[i]];
+		if( !context )
+			return null;
+	}
+	return context[func];
+};

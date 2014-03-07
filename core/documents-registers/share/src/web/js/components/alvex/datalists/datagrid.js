@@ -1,20 +1,21 @@
 /**
  * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2012-2014 ITD Systems LLC.
  *
- * This file is part of Alfresco
+ * This file is part of Alvex
  *
- * Alfresco is free software: you can redistribute it and/or modify
+ * Alvex is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Alfresco is distributed in the hope that it will be useful,
+ * Alvex is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
+ * along with Alvex. If not, see <http://www.gnu.org/licenses/>.
  */
 
 // Ensure root object exists
@@ -26,7 +27,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 /**
  * Data Lists: DataGrid component.
  * 
- * @namespace Alfresco
+ * @namespace Alvex
  * @class Alvex.DataGrid
  */
 (function()
@@ -44,8 +45,9 @@ if (typeof Alvex == "undefined" || !Alvex)
     */
    var $html = Alfresco.util.encodeHTML,
       $links = Alfresco.util.activateLinks,
-      $combine = Alfresco.util.combinePaths,
-      $userProfile = Alfresco.util.userProfileLink;
+      $combine = Alfresco.util.combinePaths;
+
+   var $func = Alvex.util.getFunctionByName;
 
    /**
     * DataGrid constructor.
@@ -79,15 +81,15 @@ if (typeof Alvex == "undefined" || !Alvex)
       this.calOverlays = [];
 
 	  // Datagrid cell renderers
-	  this.defaultRenderers = {};
-	  this.defaultRenderers["default"] = "DatagridTextRenderer";
-	  this.defaultRenderers["text"] = "DatagridTextRenderer";
-	  this.defaultRenderers["mltext"] = "DatagridTextRenderer";
-	  this.defaultRenderers["date"] = "DatagridDateRenderer";
-	  this.defaultRenderers["datetime"] = "DatagridDateRenderer";
-	  this.defaultRenderers["boolean"] = "DatagridBoolRenderer";
-	  this.defaultRenderers["cm:person"] = "DatagridPersonRenderer";
-	  this.defaultRenderers["association"] = "DatagridAssocRenderer";
+	  this.defaultRenderersNames = {};
+	  this.defaultRenderersNames["default"] = "Alvex.DatagridTextRenderer";
+	  this.defaultRenderersNames["text"] = "Alvex.DatagridTextRenderer";
+	  this.defaultRenderersNames["mltext"] = "Alvex.DatagridTextRenderer";
+	  this.defaultRenderersNames["date"] = "Alvex.DatagridDateRenderer";
+	  this.defaultRenderersNames["datetime"] = "Alvex.DatagridDateRenderer";
+	  this.defaultRenderersNames["boolean"] = "Alvex.DatagridBoolRenderer";
+	  this.defaultRenderersNames["cm:person"] = "Alvex.DatagridPersonRenderer";
+	  this.defaultRenderersNames["association"] = "Alvex.DatagridAssocRenderer";
 
       /**
        * Decoupled event listeners
@@ -100,7 +102,6 @@ if (typeof Alvex == "undefined" || !Alvex)
       Bubbling.on("dataItemUpdated", this.onDataItemUpdated, this);
       Bubbling.on("dataItemsDeleted", this.onDataItemsDeleted, this);
       Bubbling.on("dataItemsDuplicated", this.onDataGridRefresh, this);
-
       Bubbling.on("resizeNotification", this.onDataGridResize, this);
 
       /* Deferred list population until DOM ready */
@@ -177,7 +178,7 @@ if (typeof Alvex == "undefined" || !Alvex)
           * @property pageSize
           * @type int
           */
-         pageSize: 50,
+         pageSize: 5,
 
          /**
           * Initial filter to show on load.
@@ -315,8 +316,7 @@ if (typeof Alvex == "undefined" || !Alvex)
        * @type Object
        */
       dataResponseFields: null,
-
-
+	  
       /**
        * DataTable Cell Renderers
        */
@@ -381,18 +381,18 @@ if (typeof Alvex == "undefined" || !Alvex)
        * @method getCellFormatter
        * @return {function} Function to render read-only value
        */
-      getCellFormatter: function DataGrid_getCellFormatter(type, datatype, renderer)
+      getCellFormatter: function DataGrid_getCellFormatter(type, datatype, rendererName)
       {
-         if(typeof Alvex[renderer] === "function")
-            return Alvex[renderer];
+         if(typeof $func(rendererName) === "function")
+            return $func(rendererName);
          
-         if(typeof Alvex[this.defaultRenderers[datatype]] === "function")
-            return Alvex[this.defaultRenderers[datatype]];
+         if(typeof $func(this.defaultRenderersNames[datatype]) === "function")
+            return $func(this.defaultRenderersNames[datatype]);
 
          if( type === "association" )
-            return Alvex[this.defaultRenderers["association"]];
+            return $func(this.defaultRenderersNames["association"]);
          else
-            return Alvex[this.defaultRenderers["default"]];
+            return $func(this.defaultRenderersNames["default"]);
       },
 
       onCalButtonClick: function f(ev, data)
@@ -589,7 +589,7 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       renderSearch: function DataGrid_renderSearch(response)
       {
-         if( ! document.getElementById(this.id + '-search') )
+         if( ! Dom.get(this.id + '-search') )
             return;
 
          var text = response.serverResponse.responseText;
@@ -601,7 +601,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Clear everything
          if( this.widgets.searchForm )
             delete this.widgets.searchForm;
-         document.getElementById(this.id + '-search').innerHTML = '';
+         Dom.get(this.id + '-search').innerHTML = '';
 
          var scope = this;
 
@@ -685,7 +685,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          var oSearchButton = new YAHOO.widget.Button({ type: "submit", label: '<span class="datagrid-search-button"></span>', 
                                                         container: scope.id + '-search-span-' + 'actions-search' });
 
-         var oClearButton = new YAHOO.widget.Button({ type: "push", label: '<span class="delete-button"></span>', 
+         var oClearButton = new YAHOO.widget.Button({ type: "push", label: '<span class="datagrid-clear-search-button"></span>', 
                                                         container: scope.id + '-search-span-' + 'actions-clear',
                                                         onclick: { fn: scope.clearSearch, scope: scope } });
 
@@ -1164,15 +1164,42 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Intercept data returned from data webscript to extract custom metadata
          this.widgets.dataSource.doBeforeCallback = function DataGrid_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
          {
-            for( var i in oParsedResponse.results )
+			 
+            // Convert numerical-only fields into Int for correct sorting
+            if( oParsedResponse.results.length > 0 )
             {
-               if( oParsedResponse.results[i].itemData['prop_alvexdt_id'] )
+               for( var field in oParsedResponse.results[0].itemData )
                {
-                  var value = oParsedResponse.results[i].itemData['prop_alvexdt_id'].value;
-                  if( value && value.match(/^[0-9]+$/g) )
-                     oParsedResponse.results[i].itemData['prop_alvexdt_id'].value = parseInt(value);
+                  if( ! oParsedResponse.results[0].itemData[field].value )
+                     continue;
+                  
+                  var type = typeof oParsedResponse.results[0].itemData[field].value;
+                  if( type !== "string" )
+                     continue;
+                  
+                  var convert = true;
+                  for( var i in oParsedResponse.results )
+                  {
+                     var value = oParsedResponse.results[i].itemData[field].value;
+                     if( value && ! value.match(/^[0-9]+$/g) )
+                     {
+                        convert = false;
+                        break;
+                     }
+                  }
+                  
+                  if(convert)
+                  {
+                     for( var i in oParsedResponse.results )
+                     {
+                        var value = oParsedResponse.results[i].itemData[field].value;
+                        if( value && value !== "" )
+                           oParsedResponse.results[i].itemData[field].value = parseInt(value);
+                     }
+                  }
                }
             }
+            
             // Container userAccess event
             var permissions = oFullResponse.metadata.parent.permissions;
             if (permissions && permissions.userAccess)
@@ -1187,10 +1214,6 @@ if (typeof Alvex == "undefined" || !Alvex)
          };
       },
 
-      // onGridResize: function f()
-      // {
-      // },
-
       /**
        * DataTable set-up and event registration
        *
@@ -1199,11 +1222,6 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       _setupDataTable: function DataGrid__setupDataTable(columns)
       {
-         // Commenting this out because #184
-         // This code looks dead anyway. If nothing breaks, just remove it on next refactoring
-         // var divEl = document.getElementById(this.id + '-grid');
-         // divEl.onresize = this.onGridResize();
-
          // YUI DataTable column definitions
          var columnDefinitions =
          [
@@ -1211,9 +1229,19 @@ if (typeof Alvex == "undefined" || !Alvex)
          ];
 
          var column;
+         var initialSortBy;
+         var initialSortOrder;
          for (var i = 0, ii = this.datalistColumns.length; i < ii; i++)
          {
             column = this.datalistColumns[i];
+            
+            // get initial sorting set in share config
+            if( column.isSortKey )
+               initialSortBy = column.formsName;
+            if( column.sortOrder )
+               initialSortOrder = ( column.sortOrder.toLowerCase() === "asc" 
+                               ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC );
+            
             columnDefinitions.push(
             {
                key: this.dataResponseFields[i],
@@ -1244,17 +1272,17 @@ if (typeof Alvex == "undefined" || !Alvex)
             "MSG_EMPTY": this.msg("message.empty"),
             "MSG_ERROR": this.msg("message.error"),
             sortedBy: {
-               "key": "prop_alvexdt_id",
-               "dir": YAHOO.widget.DataTable.CLASS_ASC
+               "key": initialSortBy,
+               "dir": initialSortOrder
             },
             paginator: this.widgets.paginator
          });
 
-         if( this.widgets.dataTable.getColumn("prop_alvexdt_id") != null )
+         if( this.widgets.dataTable.getColumn(initialSortBy) !== null )
             me.currentSort =
             {
-               oColumn: this.widgets.dataTable.getColumn("prop_alvexdt_id"),
-               sSortDir: YAHOO.widget.DataTable.CLASS_ASC
+               oColumn: this.widgets.dataTable.getColumn(initialSortBy),
+               sSortDir: initialSortOrder
             };
 
          // Update totalRecords with value from server
@@ -1307,7 +1335,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                sSortDir: sSortDir
             };
             return true;
-         }
+         };
 
          // File checked handler
          this.widgets.dataTable.subscribe("checkboxClickEvent", function(e)
@@ -2225,7 +2253,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // "&noCache=" + new Date().getTime();
          if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
          {
-            this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getParameter(), Alfresco.util.CSRFPolicy.getToken(), false);
+            this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken(), false);
          }
          this.widgets.dataSource.sendRequest(YAHOO.lang.JSON.stringify(requestParams),
          {
