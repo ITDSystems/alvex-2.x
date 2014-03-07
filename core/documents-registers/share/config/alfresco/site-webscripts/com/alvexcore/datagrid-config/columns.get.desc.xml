@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Alvex Data-Lists: Columns configuration</shortname>
+    <description>Alvex Data-Lists: Columns configuration webscript</description>
+    <url>/alvex/components/data-lists/config/columns</url>
+    <format default="json"></format>
+</webscript>

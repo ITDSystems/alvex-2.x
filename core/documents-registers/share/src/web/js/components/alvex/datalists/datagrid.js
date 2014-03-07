@@ -78,6 +78,17 @@ if (typeof Alvex == "undefined" || !Alvex)
       this.calSelectors = [];
       this.calOverlays = [];
 
+	  // Datagrid cell renderers
+	  this.defaultRenderers = {};
+	  this.defaultRenderers["default"] = "DatagridTextRenderer";
+	  this.defaultRenderers["text"] = "DatagridTextRenderer";
+	  this.defaultRenderers["mltext"] = "DatagridTextRenderer";
+	  this.defaultRenderers["date"] = "DatagridDateRenderer";
+	  this.defaultRenderers["datetime"] = "DatagridDateRenderer";
+	  this.defaultRenderers["boolean"] = "DatagridBoolRenderer";
+	  this.defaultRenderers["cm:person"] = "DatagridPersonRenderer";
+	  this.defaultRenderers["association"] = "DatagridAssocRenderer";
+
       /**
        * Decoupled event listeners
        */
@@ -370,111 +381,18 @@ if (typeof Alvex == "undefined" || !Alvex)
        * @method getCellFormatter
        * @return {function} Function to render read-only value
        */
-      getCellFormatter: function DataGrid_getCellFormatter()
+      getCellFormatter: function DataGrid_getCellFormatter(type, datatype, renderer)
       {
-         var scope = this;
+         if(typeof Alvex[renderer] === "function")
+            return Alvex[renderer];
          
-         /**
-          * Data Type custom formatter
-          *
-          * @method renderCellDataType
-          * @param elCell {object}
-          * @param oRecord {object}
-          * @param oColumn {object}
-          * @param oData {object|string}
-          */
-         return function DataGrid_renderCellDataType(elCell, oRecord, oColumn, oData)
-         {
-            var html = "";
+         if(typeof Alvex[this.defaultRenderers[datatype]] === "function")
+            return Alvex[this.defaultRenderers[datatype]];
 
-            // Populate potentially missing parameters
-            if (!oRecord)
-            {
-               oRecord = this.getRecord(elCell);
-            }
-            if (!oColumn)
-            {
-               oColumn = this.getColumn(elCell.parentNode.cellIndex);
-            }
-
-            if (oRecord && oColumn)
-            {
-               if (!oData)
-               {
-                  oData = oRecord.getData("itemData")[oColumn.field];
-               }
-            
-               if (oData)
-               {
-                  var datalistColumn = scope.datalistColumns[oColumn.key];
-                  if (datalistColumn)
-                  {
-                     oData = YAHOO.lang.isArray(oData) ? oData : [oData];
-                     for (var i = 0, ii = oData.length, data; i < ii; i++)
-                     {
-                        data = oData[i];
-
-                        switch (datalistColumn.dataType.toLowerCase())
-                        {
-                           case "cm:person":
-                              html += '<span class="person">' + $userProfile(data.metadata, data.displayValue) + '</span>';
-                              break;
-                        
-                           case "datetime":
-                              html += Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.value), "dd.mm.yyyy");
-                              break;
-                     
-                           case "date":
-                              html += Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.value), "dd.mm.yyyy");
-                              break;
-                     
-                           case "text":
-                           case "mltext":
-                              // WA for share site links
-                              var tokens = data.displayValue.split('|');
-                              if( tokens.length > 1 && tokens[0] == 'site:' )
-                              {
-                                 if( tokens[1] != '' )
-                                    html += '<a target="_blank" href="' + Alfresco.constants.URL_PAGECONTEXT + 'site/' + tokens[1] + '/dashboard' + '">' + tokens[2] + '</a>';
-                                 else
-                                    html += tokens[2];
-                                 break;
-							  }
-                              html += $links($html(data.displayValue));
-                              break;
-
-                           case "boolean":
-                              if(data.value)
-                                 html += scope.msg("label.yes");
-                              else
-                                 html += scope.msg("label.no");
-                              break;
-
-                           default:
-                              if (datalistColumn.type == "association")
-                              {
-                                 html += '<a href="' + Alfresco.util.siteURL((data.metadata == "container" ? 'folder' : 'document') + '-details?nodeRef=' + data.value) + '">';
-                                 html += '<img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/filetypes/' + Alfresco.util.getFileIcon(data.displayValue, (data.metadata == "container" ? 'cm:folder' : null), 16) + '" width="16" alt="' + $html(data.displayValue) + '" title="' + $html(data.displayValue) + '" />';
-                                 html += ' ' + $html(data.displayValue) + '</a>'
-                              }
-                              else
-                              {
-                                 html += $links($html(data.displayValue));
-                              }
-                              break;
-                        }
-
-                        if (i < ii - 1)
-                        {
-                           html += "<br />";
-                        }
-                     }
-                  }
-               }
-            }
-
-            elCell.innerHTML = html;
-         };
+         if( type === "association" )
+            return Alvex[this.defaultRenderers["association"]];
+         else
+            return Alvex[this.defaultRenderers["default"]];
       },
 
       onCalButtonClick: function f(ev, data)
@@ -1049,7 +967,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Query the visible columns for this list's item type
          Alfresco.util.Ajax.jsonGet(
          {
-            url: $combine(Alfresco.constants.URL_SERVICECONTEXT, "components/data-lists/config/columns?itemType=" + encodeURIComponent(this.datalistMeta.itemType)),
+            url: $combine(Alfresco.constants.URL_SERVICECONTEXT, "alvex/components/data-lists/config/columns?itemType=" + encodeURIComponent(this.datalistMeta.itemType)),
             successCallback:
             {
                fn: this.onDatalistColumns,
@@ -1306,7 +1224,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                   field: column.formsName,
                   sortFunction: this.getSortFunction()
                },
-               formatter: this.getCellFormatter(column.dataType),
+               formatter: this.getCellFormatter(column.type, column.dataType, column.renderer),
                minWidth: 80
             });
          }

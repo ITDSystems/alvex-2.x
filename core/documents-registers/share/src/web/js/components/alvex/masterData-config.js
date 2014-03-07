@@ -305,7 +305,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			var masterData = this.options.availableInternalMasterData[masterDataId];
 			Alfresco.util.Ajax.jsonGet(
 			{
-				url: Alfresco.constants.URL_SERVICECONTEXT + "components/data-lists/config/columns?itemType=" + masterData.itemType,
+				url: Alfresco.constants.URL_SERVICECONTEXT + "alvex/components/data-lists/config/columns?itemType=" + masterData.itemType,
 				successCallback:
 				{
 					fn: function (resp, obj)
