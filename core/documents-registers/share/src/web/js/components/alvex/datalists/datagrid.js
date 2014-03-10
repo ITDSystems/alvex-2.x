@@ -883,7 +883,6 @@ if (typeof Alvex == "undefined" || !Alvex)
          for (var i = 0, ii = this.datalistColumns.length; i < ii; i++)
          {
             column = this.datalistColumns[i];
-            
             // get initial sorting set in share config
             if( column.isSortKey )
                initialSortBy = column.formsName;
