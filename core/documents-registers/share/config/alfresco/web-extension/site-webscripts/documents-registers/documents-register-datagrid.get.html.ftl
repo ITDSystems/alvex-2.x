@@ -41,7 +41,7 @@
 
    <form action="/" method="POST" id="${id}-search-form" name="search">
       <div style="background-color: #C0C0C0;"><strong style="display: inline-block; margin-bottom: 4px; margin-left: 10px; margin-top: 4px;">${msg("label.search")}</strong></div>
-      <div id="${id}-search" class="grid" style="overflow: auto; border: 1px solid #C0C0C0; margin-bottom: 8px;"></div>
+      <table class="grid" style="border: 1px solid #C0C0C0; margin-bottom: 8px;"><tr id="${id}-search" ></tr></table>
       <div style="display:none">
          <button id="${id}-search-button">${msg("button.search")}</button>
       </div>

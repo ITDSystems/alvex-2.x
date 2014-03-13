@@ -337,6 +337,16 @@
 }
 
 /* Search form */
+
+span.datagrid-search-field
+{
+	float:left;
+	display:inline-block;
+	margin-left:4px;
+	margin-bottom:4px;
+	margin-top:4px;
+}
+
 .yui-skin-default .search-cal-button .yui-menu-button button {
 	background: url(/share/res/components/form/images/calendar.png) center center no-repeat; 
 	text-indent: -4em; 
@@ -353,4 +363,29 @@ span.search-cal-button
 	top:0; 
 	left: 3px; 
 	background-image: url(/share/res/components/form/images/calendar.png); 
+}
+
+span.datagrid-search-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/images/search-16.png); 
+}
+
+span.datagrid-clear-search-button
+{ 
+	display:block; 
+	height:16px; 
+	width:16px; 
+	top:0; 
+	left: 3px; 
+	background-image: url(/share/res/components/images/delete-16.png); 
+}
+
+.small-btn .yui-button button
+{
+	padding: 3px;
 }

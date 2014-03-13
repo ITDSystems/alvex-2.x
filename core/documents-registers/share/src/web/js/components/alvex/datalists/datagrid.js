@@ -1,20 +1,21 @@
 /**
  * Copyright (C) 2005-2010 Alfresco Software Limited.
+ * Copyright (C) 2012-2014 ITD Systems LLC.
  *
- * This file is part of Alfresco
+ * This file is part of Alvex
  *
- * Alfresco is free software: you can redistribute it and/or modify
+ * Alvex is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Alfresco is distributed in the hope that it will be useful,
+ * Alvex is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with Alfresco. If not, see <http://www.gnu.org/licenses/>.
+ * along with Alvex. If not, see <http://www.gnu.org/licenses/>.
  */
 
 // Ensure root object exists
@@ -26,7 +27,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 /**
  * Data Lists: DataGrid component.
  * 
- * @namespace Alfresco
+ * @namespace Alvex
  * @class Alvex.DataGrid
  */
 (function()
@@ -44,8 +45,7 @@ if (typeof Alvex == "undefined" || !Alvex)
     */
    var $html = Alfresco.util.encodeHTML,
       $links = Alfresco.util.activateLinks,
-      $combine = Alfresco.util.combinePaths,
-      $userProfile = Alfresco.util.userProfileLink;
+      $combine = Alfresco.util.combinePaths;
 
    var $func = Alvex.util.getFunctionByName;
 
@@ -77,8 +77,6 @@ if (typeof Alvex == "undefined" || !Alvex)
       this.selectedItems = {};
       this.afterDataGridUpdate = [];
       this.savedSearch = {};
-      this.calSelectors = [];
-      this.calOverlays = [];
 
 	  // Datagrid cell renderers
 	  this.defaultRenderersNames = {};
@@ -102,7 +100,7 @@ if (typeof Alvex == "undefined" || !Alvex)
       Bubbling.on("dataItemUpdated", this.onDataItemUpdated, this);
       Bubbling.on("dataItemsDeleted", this.onDataItemsDeleted, this);
       Bubbling.on("dataItemsDuplicated", this.onDataGridRefresh, this);
-
+      // Alvex specific listener
       Bubbling.on("resizeNotification", this.onDataGridResize, this);
 
       /* Deferred list population until DOM ready */
@@ -124,6 +122,7 @@ if (typeof Alvex == "undefined" || !Alvex)
     * Augment prototype with Common Actions module
     */
    YAHOO.lang.augmentProto(Alvex.DataGrid, Alfresco.service.DataListActions);
+   YAHOO.lang.augmentProto(Alvex.DataGrid, Alvex.DataGridSearch);
 
    /**
     * Augment prototype with main class implementation, ensuring overwrite is enabled
@@ -179,7 +178,7 @@ if (typeof Alvex == "undefined" || !Alvex)
           * @property pageSize
           * @type int
           */
-         pageSize: 50,
+         pageSize: 5,
 
          /**
           * Initial filter to show on load.
@@ -394,357 +393,6 @@ if (typeof Alvex == "undefined" || !Alvex)
             return $func(this.defaultRenderersNames["association"]);
          else
             return $func(this.defaultRenderersNames["default"]);
-      },
-
-      onCalButtonClick: function f(ev, data)
-      {
-         var button = this;
-
-         var oCalendar = new YAHOO.thirdparty.IntervalCalendar("buttoncalendar", data.overlay.body.id, { 
-            navigator: true,
-            minText: data.minText,
-            maxText: data.maxText,
-            okText: data.okText,
-            cancelText: data.cancelText
-         } );
-         Alfresco.util.calI18nParams(oCalendar);
-
-         if( (data.minDate != null) && (data.maxDate != null) )
-            oCalendar.setInterval( data.minDate, data.maxDate );
-
-         oCalendar.render();
-
-         oCalendar.selectEvent.subscribe(function (ev, args, data)
-         { 
-            if( !data.cal.submit )
-               return;
-
-            var interval = data.cal.getInterval();
-
-            data.overlay.hide();
-            //cvbutton.set("label", "Сменить");
-
-            if( interval.length != 2 ) {
-               document.getElementById(data.id).value = '';
-            } else {
-               var minVal = (interval[0] == "MIN") ? "MIN" 
-                                   : interval[0].getFullYear() + '\\-' + (interval[0].getMonth()+1) + '\\-' + interval[0].getDate() + 'T00:00:00';
-               var maxVal = (interval[1] == "MAX") ? "MAX" 
-                                   : interval[1].getFullYear() + '\\-' + (interval[1].getMonth()+1) + '\\-' + interval[1].getDate() + 'T23:59:59';
-               document.getElementById(data.id).value = '[' + minVal + ' TO ' + maxVal + ']';
-            }
-
-            var form = document.forms[data.formId];
-            Alfresco.util.submitForm( form );
-
-         }, {cal: oCalendar, overlay: data.overlay, button: button, id: data.id, formId: scope.id + "-search-form"} );
-
-         data.overlay.align();
-         this.unsubscribe("click", scope.onCalButtonClick); 
-      },
-
-      activateCalSelectors: function f()
-      {
-         scope = this;
-         for( var i in scope.calSelectors )
-         {
-            var key = scope.calSelectors[i];
-            var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-            var minVal = '';
-            var maxVal = '';
-            var minDate = null;
-            var maxDate = null;
-            var calButtonLabel = '<span class="search-cal-button"></span>';//"Выбрать";
-            if( value != '' )
-            {
-               var uiString = '';
-               minVal = value.replace(/\[/, '').replace(/ TO.*/,'').replace(/T.*/,'').split('\\-');
-               if( minVal[0] != "MIN" ) {
-                  minDate = new Date(minVal);
-                  uiString += minDate.getDate() + '.' + (minDate.getMonth() + 1) 
-                             + '.' + minDate.getFullYear() + ' - ';
-			   } else {
-                  minDate = "MIN";
-                  uiString += '... - ';
-			   }
-
-               maxVal = value.replace(/.*TO /, '').replace(/T.*/,'').replace(/\]/, '').split('\\-');
-               if( maxVal[0] != "MAX" ) {
-                  maxDate = new Date(maxVal);
-                  uiString += maxDate.getDate() + '.' + (maxDate.getMonth() + 1) 
-                             + '.' + maxDate.getFullYear();
-			   } else {
-                  maxDate = "MAX";
-                  uiString += '...';
-			   }
-
-               //calButtonLabel = '';//"Сменить";
-			   var el = Dom.get( scope.id + '-' + key + '-value' );
-			   el.innerHTML = uiString;
-            }
-
-            var index;
-            index = scope.calOverlays.length;
-
-            scope.calOverlays.push( new YAHOO.widget.Overlay(scope.id + '-' + key + '-overlay', { visible: false }) );
-            var calButton = new YAHOO.widget.Button({  
-                                    type: "menu",  
-                                    id: scope.id + '-' + key + '-btn-btn',  
-                                    label: calButtonLabel,  
-                                    menu: scope.calOverlays[index],
-                                    container: scope.id + '-' + key + '-btn' }); 
-
-            Dom.addClass(scope.id + '-' + key + '-btn', 'search-cal-button');
-//          if( (minVal != '') && (minVal != 'MIN') && (minVal != 'MAX') )
-//             calButton.set("label", (minDate[2] + "." + minDate[1] + "." + minDate[0].substring(2)));
-
-            calButton.on("appendTo", function (ev, data) { 
-               var contId = scope.id + '-' + data.key + '-cal-container';
-               scope.calOverlays[data.index].setBody('  '); 
-               scope.calOverlays[data.index].body.id = contId;
-            }, {index:index, key:key} );
-
-            calButton.on("click", scope.onCalButtonClick, 
-                                  { overlay: scope.calOverlays[index], id: scope.id + '-' + key, 
-                                    minDate: minDate, maxDate: maxDate, 
-                                    minText: this.msg("button.min"),
-                                    maxText: this.msg("button.max"),
-                                    okText: this.msg("button.ok"),
-                                    cancelText: this.msg("button.clear") } );
-         }
-      },
-
-      getSelectSearch: function f(key, options, width)
-      {
-         var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-         var html = '<span><select name="' + key + '" id="' + key + '-search" style="width:95%;">';
-         html += '<option></option>';
-         for( var o in options ) {
-            var option = options[o].split('|');
-            html += '<option ';
-            if( option[0] == value )
-               html += "selected";
-            html += ' value="' + option[0] + '">' + option[1] + '</option>';
-         }
-         html += '</select></span>';
-         return html;
-      },
-
-      getTextSearch: function f(key, width)
-      {
-         var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-         return '<span><input type="text" name="' + key + '" style="width:95%;" value="' + $html(value.replace('\\"','"')) + '"/></span>';
-      },
-
-      getDateSearch: function f(key, width)
-      {
-         var value = this.savedSearch[key] ? this.savedSearch[key] : '';
-
-         return '<div><input type="hidden" id="' + this.id + '-' + key + '" name="' + key + '" value="' + value + '"/>' 
-			+ '<div id="' + this.id + '-' + key + '-btn" style="float:left;"></div>'
-			+ '<div id="' + this.id + '-' + key + '-value"></div>'
-			+ '<div id="' + this.id + '-' + key + '-overlay" style="visibility:hidden"></div>'
-                        + '</div>';
-      },
-
-      getDateTimeSearch: function f(key, width)
-      {
-         return this.getDateSearch(key, width);
-      },
-
-      getPersonSearch: function f(key, width)
-      {
-         return this.getTextSearch(key, width);
-      },
-
-      getAssocSearch: function f(key, width)
-      {
-         return this.getTextSearch(key, width);
-      },
-
-      onDataGridResize: function f()
-      {
-         this.resizeSearch();
-      },
-
-      clearSearch: function f()
-      {
-         this.savedSearch = {};
-         this._updateDataGrid({ filter: { filterId: "all", filterData: "" } });
-      },
-
-      resizeSearch: function f()
-      {
-         for( var col = 0; col < this.datalistColumns.length; col++ )
-         {
-            var key = this.dataResponseFields[col];
-            var outerEl = this.widgets.dataTable.getColumn(key).getThEl();
-            var outerWidth = outerEl.offsetWidth;
-            var el = document.getElementById( this.id + '-search-span-' + key );
-            el.style.width = (Number(outerWidth)-4) + 'px';
-         }
-      },
-
-      /**
-       * Render search form
-       */
-      renderSearch: function DataGrid_renderSearch(response)
-      {
-         if( ! document.getElementById(this.id + '-search') )
-            return;
-
-         var text = response.serverResponse.responseText;
-         var constraints = text.replace(/[\s\S]*fieldConstraints:/, "").replace(/\}\)\.setMessages\([\s\S]*/, "");
-         var json = eval('(' + constraints + ')');
-         for(var i in json)
-            this.datalistColumnsConstraints[ json[i].fieldId.replace(/^tmp_/,"") ] = json[i];
-
-         // Clear everything
-         if( this.widgets.searchForm )
-            delete this.widgets.searchForm;
-         document.getElementById(this.id + '-search').innerHTML = '';
-
-         var scope = this;
-
-         if( !scope.datalistColumns.length || scope.datalistColumns.length == 0 )
-            return;
-
-         scope.calSelectors = [];
-
-         var outerEl = scope.widgets.dataTable.getColumn('nodeRef').getThEl();
-         var outerWidth = outerEl.offsetWidth;
-
-         var row = '<span id="' + this.id + '-search-span-' + 'nodeRef' + '" style="width:' + outerWidth + 'px; float:left; display:inline-block;">&nbsp;</span>';
-
-         for( var col = 0; col < scope.datalistColumns.length; col++ )
-         {
-            var key = this.dataResponseFields[col];
-
-            outerEl = scope.widgets.dataTable.getColumn(key).getThEl();
-            outerWidth = outerEl.offsetWidth;
-
-            row += '<span id="' + this.id + '-search-span-' + key + '" style="width:' + (Number(outerWidth)-4) + 'px; float:left; display:inline-block; margin-left:4px; margin-bottom:4px; margin-top:4px;">';
-
-            var datalistColumn = scope.datalistColumns[col];
-
-            // List constraint
-            if( scope.datalistColumnsConstraints[key] && ( scope.datalistColumnsConstraints[key].handler == Alfresco.forms.validation.inList ) )
-            {
-               var options = scope.datalistColumnsConstraints[key].params.allowedValues;
-               row += scope.getSelectSearch(key, options, outerWidth);
-            }
-            // No constraint
-            else
-            {
-
-               switch (datalistColumn.dataType.toLowerCase())
-               {
-                  case "cm:person":
-                     row += scope.getPersonSearch(key, outerWidth);
-                     break;
-
-                  case "datetime":
-                     row += scope.getDateTimeSearch(key, outerWidth);
-                     scope.calSelectors.push(key);
-                     break;
-
-                  case "date":
-                     row += scope.getDateSearch(key, outerWidth);
-                     scope.calSelectors.push(key);
-                     break;
-
-                  case "text":
-                  case "mltext":
-                     row += scope.getTextSearch(key, outerWidth);
-                     break;
-
-                  // TODO - handle numeric range search
-                  case "double":
-                  default:
-                     if (datalistColumn.type == "association")
-                     {
-                        row += scope.getAssocSearch(key, outerWidth);
-                     }
-                     else
-                     {
-                        //row += scope.getTextSearch(key, outerWidth);
-                     }
-                     break;
-               }
-
-            }
-            row += '</span>';
-         }
-
-         row += '<span id="' + this.id + '-search-span-' + 'actions' + '" style="width:72px; float:left; display: inline-block; margin: 4px;">' 
-                  + '<span class="small-btn" id="' + this.id + '-search-span-' + 'actions-search' + '"></span>'
-                  + '<span class="small-btn" id="' + this.id + '-search-span-' + 'actions-clear' + '"></span>'
-                  + '</span>';
-
-         document.getElementById(scope.id + "-search").innerHTML = row;
-
-         var oSearchButton = new YAHOO.widget.Button({ type: "submit", label: '<span class="datagrid-search-button"></span>', 
-                                                        container: scope.id + '-search-span-' + 'actions-search' });
-
-         var oClearButton = new YAHOO.widget.Button({ type: "push", label: '<span class="delete-button"></span>', 
-                                                        container: scope.id + '-search-span-' + 'actions-clear',
-                                                        onclick: { fn: scope.clearSearch, scope: scope } });
-
-         scope.activateCalSelectors();
-
-         for( var col = 0; col < scope.datalistColumns.length; col++ )
-         {
-            var key = this.dataResponseFields[col];
-            var el = Dom.get( key + '-search' );
-            if( el != null )
-               el.onchange = function()
-                  {
-                     scope.doSearch( { "dataObj": scope.widgets.searchForm._buildAjaxForSubmit( Dom.get(scope.id + "-search-form") ) } );
-                  };
-         }
-
-         scope.widgets.searchForm = new Alfresco.forms.Form(scope.id + "-search-form");
-         scope.widgets.searchForm.doBeforeAjaxRequest = 
-            {
-               fn: scope.doSearch,
-               scope: scope
-            };
-         scope.widgets.searchForm.setSubmitElements(scope.widgets.searchButton);
-         scope.widgets.searchForm.setAJAXSubmit(true,
-         {
-            successCallback:
-            {
-               fn: scope.onSuccess,
-               scope: scope
-            },
-            failureCallback:
-            {
-               fn: scope.onFailure,
-               scope: scope
-            }
-         });
-         scope.widgets.searchForm.setSubmitAsJSON(true);
-         scope.widgets.searchForm.init();
-      },
-
-      doSearch: function f(config, object)
-      {
-         config.url = Alfresco.constants.PROXY_URI
-                 + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
-         config.dataObj.fields = this.dataRequestFields;
-         config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
-         for(var i in config.dataObj) {
-            if( i.match(/^prop_/) ) {
-               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
-               config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
-            } else if( i.match(/^assoc_/) ) {
-               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
-               config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
-            }
-         }
-         this._updateDataGrid(config.dataObj);
-         // Prevent extra submission - everything should be handled by dataSource in _updateDataGrid call
-         return false;
       },
 
       /**
@@ -1165,15 +813,42 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Intercept data returned from data webscript to extract custom metadata
          this.widgets.dataSource.doBeforeCallback = function DataGrid_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
          {
-            for( var i in oParsedResponse.results )
+			 
+            // Convert numerical-only fields into Int for correct sorting
+            if( oParsedResponse.results.length > 0 )
             {
-               if( oParsedResponse.results[i].itemData['prop_alvexdt_id'] )
+               for( var field in oParsedResponse.results[0].itemData )
                {
-                  var value = oParsedResponse.results[i].itemData['prop_alvexdt_id'].value;
-                  if( value && value.match(/^[0-9]+$/g) )
-                     oParsedResponse.results[i].itemData['prop_alvexdt_id'].value = parseInt(value);
+                  if( ! oParsedResponse.results[0].itemData[field].value )
+                     continue;
+                  
+                  var type = typeof oParsedResponse.results[0].itemData[field].value;
+                  if( type !== "string" )
+                     continue;
+                  
+                  var convert = true;
+                  for( var i in oParsedResponse.results )
+                  {
+                     var value = oParsedResponse.results[i].itemData[field].value;
+                     if( value && ! value.match(/^[0-9]+$/g) )
+                     {
+                        convert = false;
+                        break;
+                     }
+                  }
+                  
+                  if(convert)
+                  {
+                     for( var i in oParsedResponse.results )
+                     {
+                        var value = oParsedResponse.results[i].itemData[field].value;
+                        if( value && value !== "" )
+                           oParsedResponse.results[i].itemData[field].value = parseInt(value);
+                     }
+                  }
                }
             }
+            
             // Container userAccess event
             var permissions = oFullResponse.metadata.parent.permissions;
             if (permissions && permissions.userAccess)
@@ -1208,11 +883,13 @@ if (typeof Alvex == "undefined" || !Alvex)
          for (var i = 0, ii = this.datalistColumns.length; i < ii; i++)
          {
             column = this.datalistColumns[i];
+            // get initial sorting set in share config
             if( column.isSortKey )
                initialSortBy = column.formsName;
             if( column.sortOrder )
                initialSortOrder = ( column.sortOrder.toLowerCase() === "asc" 
                                ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC );
+            
             columnDefinitions.push(
             {
                key: this.dataResponseFields[i],
@@ -1306,7 +983,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                sSortDir: sSortDir
             };
             return true;
-         }
+         };
 
          // File checked handler
          this.widgets.dataTable.subscribe("checkboxClickEvent", function(e)
@@ -2224,7 +1901,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // "&noCache=" + new Date().getTime();
          if (Alfresco.util.CSRFPolicy && Alfresco.util.CSRFPolicy.isFilterEnabled())
          {
-            this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getParameter(), Alfresco.util.CSRFPolicy.getToken(), false);
+            this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken(), false);
          }
          this.widgets.dataSource.sendRequest(YAHOO.lang.JSON.stringify(requestParams),
          {
