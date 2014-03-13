@@ -17,30 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alvexcore.repo;
+package com.alvexcore.repo.registries;
 
 import java.util.List;
 import java.util.Map;
-import org.alfresco.service.namespace.QName;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.ServiceRegistry;
-import org.alfresco.service.cmr.dictionary.DictionaryService;
-import org.alfresco.service.cmr.dictionary.TypeDefinition;
 import org.alfresco.service.cmr.dictionary.PropertyDefinition;
 
-public interface AlvexDictionaryService {
+public interface AlvexRegistriesService {
 
-	public abstract TypeDefinition getDataType(String shortName);
-	public abstract List<TypeDefinition> getParentHierarchy(TypeDefinition type);
-	public abstract List<TypeDefinition> getParentHierarchy(NodeRef ref);
-	public abstract boolean isContent(NodeRef ref);
-	public abstract boolean isRegistry(NodeRef ref);
-	public abstract boolean isRegistryItem(NodeRef ref);
-	
-	public abstract Map<QName, PropertyDefinition> getCompleteTypeDescription(String shortName);
-	public abstract Map<QName, PropertyDefinition> getCompleteTypeDescription(NodeRef ref);
-	public abstract Map<QName, PropertyDefinition> getCompleteTypeDescription(TypeDefinition type);
+	public abstract Map<String,String> getParentRegistryDetails(NodeRef recordRef);
+	public abstract String suggestNextNumber(NodeRef registryRef);
+	public abstract boolean commitNextNumber(NodeRef registryRef, String number, PropertyDefinition prop);
+	public abstract List<NodeRef> getParentRegistryItems(NodeRef fileRef);
 	
 	public abstract ServiceRegistry getServiceRegistry();
-	public abstract DictionaryService getDictionaryService();
 }

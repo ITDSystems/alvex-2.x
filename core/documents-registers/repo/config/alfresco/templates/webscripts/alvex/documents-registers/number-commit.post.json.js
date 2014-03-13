@@ -5,20 +5,7 @@
 		var prop = json.get('prop').replace('_',':');
 		
 		var dl = search.findNode(dlRef);
-		
-		var correct = true;
-		
-		for each (item in dl.children)
-			if(item.properties[prop] == number)
-				correct = false;
-			
-		model.correct = correct.toString();
-		
-		if(correct)
-		{
-			dl.properties["alvexdr:inc"]++;
-			dl.save();
-		}
+		model.correct = alvexRegistriesService.commitNextNumber(dl, number, prop).toString();
 		
 		status.code = 200;
 	} catch (e) {

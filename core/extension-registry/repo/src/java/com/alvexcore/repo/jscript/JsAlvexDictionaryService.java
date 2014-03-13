@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.dictionary.TypeDefinition;
+import org.alfresco.service.cmr.dictionary.PropertyDefinition;
 
 import org.alfresco.repo.jscript.ScriptNode;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -35,6 +36,9 @@ import org.mozilla.javascript.Scriptable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.alfresco.repo.jscript.ScriptableHashMap;
+import java.util.Map;
+import org.alfresco.service.namespace.QName;
 
 public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 	
@@ -79,16 +83,28 @@ public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 		return alvexDictionaryService.isRegistryItem(node.getNodeRef());
 	}
 	
-	public Scriptable getParentRegistryItems(ScriptNode node)
+	public Scriptable getCompleteTypeDescription(String shortName)
 	{
-		ArrayList<Serializable> jsRes = new ArrayList<Serializable>();
-		List<NodeRef> parents = alvexDictionaryService.getParentRegistryItems(node.getNodeRef());
-		for (NodeRef ref : parents)
+		ScriptableHashMap<String, Object> jsType = new ScriptableHashMap<String, Object>();
+		ArrayList<ScriptableHashMap<String,String>> fields = new ArrayList<ScriptableHashMap<String,String>>();
+		
+		TypeDefinition typeDef = alvexDictionaryService.getDataType(shortName);
+		Map<QName, PropertyDefinition> typeDesc = alvexDictionaryService.getCompleteTypeDescription(typeDef);
+		
+		jsType.put("title", typeDef.getTitle(dictionaryService));
+		jsType.put("type", typeDef.getName().getPrefixString());
+		for (Map.Entry<QName, PropertyDefinition> entry : typeDesc.entrySet())
 		{
-			jsRes.add( ref.toString() );
+			PropertyDefinition def = entry.getValue();
+			ScriptableHashMap<String, String> pr = new ScriptableHashMap<String, String>();
+			pr.put("type", def.getName().getPrefixString());
+			pr.put("title", def.getTitle(dictionaryService));
+			fields.add(pr);
 		}
+		jsType.put("fields", fields);
+		
 		return (Scriptable)converter.convertValueForScript(
 								alvexDictionaryService.getServiceRegistry(), 
-								getScope(), null, jsRes);
+								getScope(), null, jsType);
 	}
 }

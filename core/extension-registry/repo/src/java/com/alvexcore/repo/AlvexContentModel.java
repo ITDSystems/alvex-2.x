@@ -85,7 +85,7 @@ public interface AlvexContentModel {
 	final static QName PROP_GROUP_NAME= QName.createQName(ALVEXOC_MODEL_URI, "groupName");
 	final static QName PROP_ROLE_GROUP_NAME= QName.createQName(ALVEXOC_MODEL_URI, "roleGroupName");
 	final static QName PROP_OUT_OF_OFFICE = QName.createQName(ALVEXOC_MODEL_URI, "outOfOffice");
-	final static QName PROP_PARENT_REGISTER_NAME = QName.createQName(ALVEXDT_MODEL_URI, "parentRegisterName");
+	final static QName PROP_REGISTRY_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "inc");
 	final static QName PROP_DOCUMENT_STATUS = QName.createQName(ALVEXDT_MODEL_URI, "status");
 	final static QName PROP_DOCUMENT_ID = QName.createQName(ALVEXDT_MODEL_URI, "id");
 	final static QName PROP_RELATED_WORKFLOWS = QName.createQName(ALVEXRWF_MODEL_URI, "relatedWorkflows");

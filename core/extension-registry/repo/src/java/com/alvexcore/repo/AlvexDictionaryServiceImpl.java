@@ -20,16 +20,15 @@
 package com.alvexcore.repo;
 
 import org.alfresco.model.ContentModel;
-import org.alfresco.service.namespace.QName;
 import org.alfresco.service.cmr.repository.AssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.namespace.QName;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.dictionary.TypeDefinition;
-//import org.alfresco.service.cmr.dictionary.ConstraintDefinition;
-//import org.alfresco.service.cmr.dictionary.PropertyDefinition;
-//import org.alfresco.service.cmr.dictionary.AspectDefinition;
+import org.alfresco.service.cmr.dictionary.PropertyDefinition;
+import org.alfresco.service.cmr.dictionary.AspectDefinition;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -40,6 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import java.util.List;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class AlvexDictionaryServiceImpl implements InitializingBean, AlvexDictionaryService
 {
@@ -139,14 +140,46 @@ public class AlvexDictionaryServiceImpl implements InitializingBean, AlvexDictio
 	}
 	
 	@Override
-	public List<NodeRef> getParentRegistryItems(NodeRef fileRef)
+	public Map<QName, PropertyDefinition> getCompleteTypeDescription(String shortName)
 	{
-		List<NodeRef> results = new ArrayList<NodeRef>();
-		List<AssociationRef> assocs = nodeService.getTargetAssocs(fileRef, AlvexContentModel.ASSOC_PARENT_REGISTRY);
-		for(AssociationRef assoc : assocs)
-			results.add(assoc.getTargetRef());
-		return results;
+		TypeDefinition type = getDataType(shortName);
+		return getCompleteTypeDescription(type);
 	}
+	
+	@Override
+	public Map<QName, PropertyDefinition> getCompleteTypeDescription(NodeRef ref)
+	{
+		QName typeName = nodeService.getType(ref);
+		TypeDefinition type = dictionaryService.getType(typeName);
+		return getCompleteTypeDescription(type);
+	}
+	
+	@Override
+	public Map<QName, PropertyDefinition> getCompleteTypeDescription(TypeDefinition type)
+	{
+		Map<QName, PropertyDefinition> results = new HashMap<QName, PropertyDefinition>();
+		
+		Map<QName, PropertyDefinition> properties = type.getProperties();
+		for (Map.Entry<QName, PropertyDefinition> entry : properties.entrySet())
+		{
+			PropertyDefinition prop = entry.getValue();
+			QName name = entry.getKey();
+			results.put(name, prop);
+		}
+		
+		List<AspectDefinition> aspects = type.getDefaultAspects(true);
+		for (AspectDefinition def : aspects)
+		{
+			properties = def.getProperties();
+			for (Map.Entry<QName, PropertyDefinition> entry : properties.entrySet())
+			{
+				PropertyDefinition prop = entry.getValue();
+				QName name = entry.getKey();
+				results.put(name, prop);
+			}
+		}
+		return results;
+	};
 	
 	protected boolean checkToBeOfType(NodeRef ref, QName targetType)
 	{

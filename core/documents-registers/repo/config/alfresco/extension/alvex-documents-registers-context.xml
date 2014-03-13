@@ -37,6 +37,48 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- AlvexRegistriesService -->
+	<bean id="alvex-registries-service-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexRegistriesService" class="com.alvexcore.repo.registries.AlvexRegistriesServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexRegistriesService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexRegistriesService" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.registries.AlvexRegistriesService</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-registries-service-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexRegistriesService" alias="alvex-registries-service" />
+	<bean id="alvex-registries-service-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.registries.JsAlvexRegistriesService">
+		<property name="extensionName">
+			<value>alvexRegistriesService</value>
+		</property>
+		<property name="alvexRegistriesService" ref="alvex-registries-service" />
+		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+	</bean>
 
 	<bean id="alvex-template-service-transaction"
 		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">

@@ -39,6 +39,7 @@
 	
 		<type name="alvexdt:object">
 			<parent>dl:dataListItem</parent>
+			<!-- Obsoleted. We do not use it anymore. Is it safe to remove? -->
 			<properties>
 				<property name="alvexdt:parentRegisterName">
 					<type>d:text</type>
@@ -61,6 +62,7 @@
 						<many>true</many>
 					</target>
 				</association>
+				<!-- We do not use it now. Do we really need it? Is it safe to remove? -->
 				<association name="alvexdt:autoRelatedDocuments">
 					<source>
 						<mandatory>false</mandatory>

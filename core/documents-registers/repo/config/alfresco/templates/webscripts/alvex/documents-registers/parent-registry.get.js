@@ -2,8 +2,9 @@
 	try {
 		var itemRef = args['itemRef'];
 		var item = search.findNode(itemRef);
-		model.registryName = item.parent.name;
-		model.siteName = item.parent.parent.parent.name;
+		var desc = alvexRegistriesService.getParentRegistryDetails(item);
+		model.registryName = desc.registryName;
+		model.siteName = desc.siteName;
 		status.code = 200;
 	} catch (e) {
 		status.code = 500;
