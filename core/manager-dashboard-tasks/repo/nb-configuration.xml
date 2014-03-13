@@ -8,8 +8,8 @@ Without this configuration present, some functionality in the IDE may be limited
 -->
     <config-data xmlns="http://www.netbeans.org/ns/maven-config-data/1">
         <configurations>
-            <configuration id="4.2.d" profiles="compat-be">
-                <property name="alfresco.version">4.2.d</property>
+            <configuration id="4.2.e" profiles="compat-be">
+                <property name="alfresco.version">4.2.e</property>
             </configuration>
         </configurations>
     </config-data>
