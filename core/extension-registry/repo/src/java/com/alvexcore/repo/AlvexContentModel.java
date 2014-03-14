@@ -27,7 +27,7 @@ public interface AlvexContentModel {
 	final static String ALVEXWF_MODEL_URI = "http://alvexcore.com/prefix/alvexwf";
 	final static String ALVEXOC_MODEL_URI = "http://alvexcore.com/prefix/alvexoc";	
 	final static String ALVEXRWF_MODEL_URI = "http://alvexcore.com/prefix/alvexrwf";
-	final static String ALVEXDOCREG_MODEL_URI = "http://alvexcore.com/prefix/alvexdocreg";
+	final static String ALVEXDOCREG_MODEL_URI = "http://alvexcore.com/prefix/alvexdocreg20";
 	final static String ALVEXDR_MODEL_URI = "http://alvexcore.com/prefix/alvexdr";
 	final static String ALVEXDT_MODEL_URI = "http://alvexcore.com/prefix/alvexdt";
 	
@@ -35,7 +35,7 @@ public interface AlvexContentModel {
 	final static String ALVEXWF_MODEL_PREFIX = "alvexwf";
 	final static String ALVEXOC_MODEL_PREFIX = "alvexoc";
 	final static String ALVEXRWF_MODEL_PREFIX = "alvexrwf";
-	final static String ALVEXDOCREG_MODEL_PREFIX = "alvexdocreg";
+	final static String ALVEXDOCREG_MODEL_PREFIX = "alvexdocreg20";
 	final static String ALVEXDR_MODEL_PREFIX = "alvexdr";
 	final static String ALVEXDT_MODEL_PREFIX = "alvexdt";
 	
@@ -86,6 +86,11 @@ public interface AlvexContentModel {
 	final static QName PROP_ROLE_GROUP_NAME= QName.createQName(ALVEXOC_MODEL_URI, "roleGroupName");
 	final static QName PROP_OUT_OF_OFFICE = QName.createQName(ALVEXOC_MODEL_URI, "outOfOffice");
 	final static QName PROP_REGISTRY_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "inc");
+	final static QName PROP_REGISTRY_DAY_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "dayInc");
+	final static QName PROP_REGISTRY_MONTH_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "monthInc");
+	final static QName PROP_REGISTRY_QUARTER_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "quarterInc");
+	final static QName PROP_REGISTRY_YEAR_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "yearInc");
+	final static QName PROP_REGISTRY_ID_FORMAT = QName.createQName(ALVEXDR_MODEL_URI, "idFormat");
 	final static QName PROP_DOCUMENT_STATUS = QName.createQName(ALVEXDT_MODEL_URI, "status");
 	final static QName PROP_DOCUMENT_ID = QName.createQName(ALVEXDT_MODEL_URI, "id");
 	final static QName PROP_RELATED_WORKFLOWS = QName.createQName(ALVEXRWF_MODEL_URI, "relatedWorkflows");
