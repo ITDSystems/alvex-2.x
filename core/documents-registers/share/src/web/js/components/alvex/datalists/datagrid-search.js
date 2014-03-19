@@ -34,9 +34,6 @@ if (typeof Alvex === "undefined" || !Alvex)
    var $html = Alfresco.util.encodeHTML;
    var $func = Alvex.util.getFunctionByName;
    
-   /**
-    * Alfresco.service.DataListActions implementation
-    */
    Alvex.DataGridSearch = {};
    Alvex.DataGridSearch.prototype =
    {

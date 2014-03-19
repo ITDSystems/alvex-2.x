@@ -448,6 +448,24 @@ if (typeof Alvex == "undefined" || !Alvex)
             return YAHOO.util.Sort.compare(valA, valB, desc);
          };
       },
+      
+      onActionClick: function(linkElement, item)
+      {
+         var me = this;
+         var owner = Bubbling.getOwnerByTagName(linkElement, "div");
+         if (owner !== null)
+         {
+            var handler = $func(owner.title);
+            if (typeof handler === "function")
+            {
+               handler.call(me, item, owner);
+            }
+            else
+            {
+               window.location = linkElement.href;
+            }
+         }
+      },
 
       /**
        * Fired by YUI when parent element is available for scripting
@@ -475,16 +493,10 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Hook action events
          var fnActionHandler = function DataGrid_fnActionHandler(layer, args)
          {
-            var owner = Bubbling.getOwnerByTagName(args[1].anchor, "div");
-            if (owner !== null)
-            {
-               if (typeof me[owner.className] == "function")
-               {
-                  args[1].stop = true;
-                  var asset = me.widgets.dataTable.getRecord(args[1].target.offsetParent).getData();
-                  me[owner.className].call(me, asset, owner);
-               }
-            }
+            var linkElement = args[1].anchor;
+			var item = me.widgets.dataTable.getRecord(args[1].target.offsetParent).getData();
+			args[1].stop = true;
+            me.onActionClick(linkElement, item);
             return true;
          };
          Bubbling.addDefaultAction("action-link", fnActionHandler);
@@ -1072,7 +1084,13 @@ if (typeof Alvex == "undefined" || !Alvex)
          this.widgets.dataTable.on('rowDblclickEvent',function(aArgs) {
             var theTarget = aArgs.target;
             var theRecord = this.getRecord(theTarget);
-            me.onActionView(theRecord.getData());
+            var actionSetEl = theTarget.childNodes[theTarget.childNodes.length-1];
+            var viewLinkDivs = YAHOO.util.Selector.query("div.onActionView", actionSetEl);
+            if( viewLinkDivs.length > 0 )
+            {
+               var viewLinkEl = YAHOO.util.Selector.query("a", viewLinkDivs[0])[0];
+               me.onActionClick(viewLinkEl, theRecord.getData());
+            }
          });
       },
 
@@ -1116,9 +1134,6 @@ if (typeof Alvex == "undefined" || !Alvex)
             var record = this.widgets.dataTable.getRecord(oArgs.target.id),
                clone = Dom.get(this.id + "-actionSet").cloneNode(true);
             
-            // Token replacement
-            clone.innerHTML = YAHOO.lang.substitute(window.unescape(clone.innerHTML), this.getActionUrls(record));
-
             // Generate an id
             clone.id = elActions.id + "_a";
 
@@ -1225,25 +1240,6 @@ if (typeof Alvex == "undefined" || !Alvex)
       },
 
       /**
-       * The urls to be used when creating links in the action cell
-       *
-       * @method getActionUrls
-       * @param record {YAHOO.widget.Record | Object} A data record, or object literal describing the item in the list
-       * @return {object} Object literal containing URLs to be substituted in action placeholders
-       */
-      getActionUrls: function DataGrid_getActionUrls(record)
-      {
-         var recordData = YAHOO.lang.isFunction(record.getData) ? record.getData() : record,
-            nodeRef = recordData.nodeRef;
-
-         return (
-         {
-            editMetadataUrl: "edit-dataitem?nodeRef=" + nodeRef
-         });
-      },
-
-
-      /**
        * Public functions
        *
        * Functions designed to be called form external sources
@@ -1333,167 +1329,6 @@ if (typeof Alvex == "undefined" || !Alvex)
          }
          
          Bubbling.fire("selectedItemsChanged");
-      },
-
-
-      /**
-       * ACTIONS WHICH ARE LOCAL TO THE DATAGRID COMPONENT
-       */
-
-      /**
-       * Edit Data Item pop-up
-       *
-       * @method onActionEdit
-       * @param item {object} Object literal representing one data item
-       */
-      onActionEdit: function DataGrid_onActionEdit(item)
-      {
-         window.location = Alfresco.constants.URL_PAGECONTEXT +
-                                   "edit-metadata?nodeRef=" + item.nodeRef;
-         
-         var scope = this;
-         
-         // Intercept before dialog show
-         var doBeforeDialogShow = function DataGrid_onActionEdit_doBeforeDialogShow(p_form, p_dialog)
-         {
-            Alfresco.util.populateHTML(
-               [ p_dialog.id + "-dialogTitle", this.msg("label.edit-row.title") ]
-            );
-
-            /**
-             * No full-page edit view for v3.3
-             *
-            // Data Item Edit Page link button
-            Alfresco.util.createYUIButton(p_dialog, "editDataItem", null, 
-            {
-               type: "link",
-               label: scope.msg("label.edit-row.edit-dataitem"),
-               href: scope.getActionUrls(item).editMetadataUrl
-            });
-             */
-         };
-
-         var templateUrl = YAHOO.lang.substitute(Alfresco.constants.URL_SERVICECONTEXT + "components/form?itemKind={itemKind}&itemId={itemId}&mode={mode}&submitType={submitType}&showCancelButton=true",
-         {
-            itemKind: "node",
-            itemId: item.nodeRef,
-            mode: "edit",
-            submitType: "json"
-         });
-
-         // Using Forms Service, so always create new instance
-         var editDetails = new Alvex.SimpleDialog(this.id + "-editDetails");
-         editDetails.setOptions(
-         {
-            width: "50em",
-            templateUrl: templateUrl,
-            actionUrl: null,
-            destroyOnHide: true,
-            doBeforeDialogShow:
-            {
-               fn: doBeforeDialogShow,
-               scope: this
-            },
-            onSuccess:
-            {
-               fn: function DataGrid_onActionEdit_success(response)
-               {
-                  // Reload the node's metadata
-                  Alfresco.util.Ajax.jsonPost(
-                  {
-                     url: Alfresco.constants.PROXY_URI + "slingshot/datalists/item/node/" + new Alfresco.util.NodeRef(item.nodeRef).uri,
-                     dataObj: this._buildDataGridParams(),
-                     successCallback:
-                     {
-                        fn: function DataGrid_onActionEdit_refreshSuccess(response)
-                        {
-                           // Fire "itemUpdated" event
-                           Bubbling.fire("dataItemUpdated",
-                           {
-                              item: response.json.item
-                           });
-                           // Display success message
-                           Alfresco.util.PopupManager.displayMessage(
-                           {
-                              text: this.msg("message.details.success")
-                           });
-                        },
-                        scope: this
-                     },
-                     failureCallback:
-                     {
-                        fn: function DataGrid_onActionEdit_refreshFailure(response)
-                        {
-                           Alfresco.util.PopupManager.displayMessage(
-                           {
-                              text: this.msg("message.details.failure")
-                           });
-                        },
-                        scope: this
-                     }
-                  });
-               },
-               scope: this
-            },
-            onFailure:
-            {
-               fn: function DataGrid_onActionEdit_failure(response)
-               {
-                  Alfresco.util.PopupManager.displayMessage(
-                  {
-                     text: this.msg("message.details.failure")
-                  });
-               },
-               scope: this
-            }
-         }).show();
-      },
-
-
-      /**
-       * View Data Item pop-up
-       *
-       * @method onActionView
-       * @param item {object} Object literal representing one data item
-       */
-      onActionView: function DataGrid_onActionView(item)
-      {
-         window.location = Alfresco.constants.URL_PAGECONTEXT +
-                                   "view-metadata?nodeRef=" + item.nodeRef;
-         
-         var scope = this;
-         
-         // Intercept before dialog show
-         var doBeforeDialogShow = function DataGrid_onActionView_doBeforeDialogShow(p_form, p_dialog)
-         {
-            Alfresco.util.populateHTML(
-               [ p_dialog.id + "-dialogTitle", this.msg("label.view-row.title") ]
-            );
-         };
-
-         var templateUrl = YAHOO.lang.substitute(Alfresco.constants.URL_SERVICECONTEXT + "components/form?itemKind={itemKind}&itemId={itemId}&mode={mode}&submitType={submitType}&showCancelButton=true",
-         {
-            itemKind: "node",
-            itemId: item.nodeRef,
-            mode: "view",
-            submitType: "json"
-         });
-
-         // Using Forms Service, so always create new instance
-         var viewDetails = new Alvex.SimpleDialog(this.id + "-viewDetails");
-         viewDetails.setOptions(
-         {
-            width: "50em",
-            templateUrl: templateUrl,
-            actionUrl: null,
-            destroyOnHide: true,
-            formsServiceAvailable: false,
-            doBeforeDialogShow:
-            {
-               fn: doBeforeDialogShow,
-               scope: this
-            }
-         }).show();
       },
 
 

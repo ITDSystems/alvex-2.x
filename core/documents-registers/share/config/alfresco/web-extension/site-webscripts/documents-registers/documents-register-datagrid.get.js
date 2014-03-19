@@ -33,10 +33,11 @@ function main()
    {
       actionSet.push(
       {
-         id: xmlAction.@id.toString(),
+         className: xmlAction.@className.toString(),
          type: xmlAction.@type.toString(),
          permission: xmlAction.@permission.toString(),
          href: xmlAction.@href.toString(),
+		 func: xmlAction.@func.toString(),
          label: xmlAction.@label.toString()
       });
    }
