@@ -38,7 +38,6 @@ if (typeof Alvex == "undefined" || !Alvex)
    
    Alvex.SimpleDialog = function(htmlId, components)
    {
-      me = this;
       components = YAHOO.lang.isArray(components) ? components : [];
       
       this.isFormOwner = false;
@@ -481,6 +480,7 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       hide: function AmSD_hide()
       {
+         this.widgets.escapeListener.disable();
          if (this.dialog)
          {
             this.dialog.hide();
@@ -537,7 +537,7 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onHideEvent: function AmSD_onHideEvent(e, obj)
       {
-         YAHOO.lang.later(0, this, this._hideDialog);
+         //YAHOO.lang.later(0, this, this._hideDialog);
       },
       
       /**
@@ -638,6 +638,8 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onBeforeFormRuntimeInit: function AmSD_onBeforeFormRuntimeInit(layer, args)
       {
+		  if (!this.options.formsServiceAvailable)
+			  return;
          var formUI = args[1].component,
             formsRuntime = args[1].runtime;
 

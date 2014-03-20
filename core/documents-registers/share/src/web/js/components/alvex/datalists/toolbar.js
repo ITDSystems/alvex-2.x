@@ -112,7 +112,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          this.widgets.newRowButton = Alfresco.util.createYUIButton(this, "newRowButton", this.onNewRow,
          {
             disabled: true,
-            value: "edit"
+            value: "create"
          });
 
          if( Dom.get( this.id + '-excelButton' ) )

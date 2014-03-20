@@ -68,7 +68,7 @@
       <!-- Action Set Templates -->
       <div id="${args.htmlid}-actionSet" class="action-set simple">
       <#list actionSet as action>
-         <div class="${action.id}"><a rel="${action.permission!""}" href="${action.href}" class="${action.type}" title="${msg(action.label)}"><span>${msg(action.label)}</span></a></div>
+         <div title="${action.func}" class="${action.className}"><a rel="${action.permission!""}" href="${action.href}" class="${action.type}" title="${msg(action.label)}"><span>${msg(action.label)}</span></a></div>
       </#list>
       </div>
    </div>

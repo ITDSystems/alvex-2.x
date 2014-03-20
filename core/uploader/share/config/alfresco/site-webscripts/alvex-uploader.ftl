@@ -352,7 +352,11 @@ new Alvex.Uploader( "${fieldHtmlId}" ).setOptions({
 	contentType: '${(field.control.params.contentType!"cm:content")?string}'
 }).setMessages( ${messages} );
 
+<#if form.mode == "view" || field.disabled >
+	// TODO
+<#else>
 new Alfresco.DNDUpload( "${el}-dnd" ).setOptions( {} ).setMessages( ${messages} );
 new Alfresco.FlashUpload( "${el}-flash" ).setOptions( {} ).setMessages( ${messages} );
+</#if>
 
 </script>

@@ -40,8 +40,29 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.io.Serializable;
-import org.alfresco.service.namespace.QName;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
+import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
+
+class incCounterWork implements RunAsWork<Void>
+{
+	private NodeService nodeService;
+	private NodeRef registryRef;
+	private Integer counter;
+	
+	public incCounterWork(NodeService nodeService, NodeRef registryRef, Integer counter)
+	{
+		this.nodeService = nodeService;
+		this.registryRef = registryRef;
+		this.counter = counter;
+	}
+	
+	@Override
+	public Void doWork() throws Exception {
+		nodeService.setProperty(
+				registryRef, AlvexContentModel.PROP_REGISTRY_INC_COUNTER, counter);
+		return null;
+	}
+}
 
 public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegistriesService
 {
@@ -110,7 +131,8 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 		
 		Integer counter = (Integer) nodeService.getProperty(registryRef, 
 												AlvexContentModel.PROP_REGISTRY_INC_COUNTER);
-		nodeService.setProperty(registryRef, AlvexContentModel.PROP_REGISTRY_INC_COUNTER, counter + 1);
+		RunAsWork<Void> work = new incCounterWork(nodeService, registryRef, counter + 1);
+		AuthenticationUtil.runAsSystem(work);
 		
 		return true;
 	}
