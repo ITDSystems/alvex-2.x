@@ -252,7 +252,7 @@
 .datagrid div.simple div.more-actions
 {
    margin-left: -122px;
-   margin-top: 3em;
+   margin-top: 1.5em;
 }
 
 .datagrid div.simple div.more-actions div
@@ -281,6 +281,11 @@
 .datagrid .onActionView a
 {
    background-image: url(/share/res/components/images/list-16.png);
+}
+
+.datagrid .onActionStartWorkflow a
+{
+   background-image: url(/share/res/components/images/workflow-16.png);
 }
 
 .datagrid .onActionEdit a

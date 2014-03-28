@@ -8,6 +8,7 @@
    {
       siteId: "${page.url.templateArgs.site!""}",
       containerId: "${template.properties.container!"dataLists"}",
+      workflowsAvailable: "${(workflowsAvailable!false)?string}",
       usePagination: ${(args.pagination!false)?string}
    }).setMessages(${messages});
 //]]></script>
@@ -61,7 +62,7 @@
    <div style="display:none">
       <!-- Action Set "More..." container -->
       <div id="${args.htmlid}-moreActions">
-         <div class="onActionShowMore"><a href="#" class="show-more" title="${msg("actions.more")}"><span>${msg("actions.more")}</span></a></div>
+         <div title="onActionShowMore" class="onActionShowMore"><a href="#" class="show-more" title="${msg("actions.more")}"><span></span></a></div>
          <div class="more-actions hidden"></div>
       </div>
 

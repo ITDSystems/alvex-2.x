@@ -69,6 +69,8 @@ if (typeof Alvex == "undefined" || !Alvex)
       this.currentPage = 1;
       this.totalRecords = 0;
       this.showingMoreActions = false;
+      this.hideMoreActionsFn = null;
+      this.workflowsAvailable = false;
       this.currentFilter =
       {
          filterId: "all",
@@ -211,9 +213,9 @@ if (typeof Alvex == "undefined" || !Alvex)
           *
           * @property splitActionsAt
           * @type int
-          * @default 3
+          * @default 2
           */
-         splitActionsAt: 3
+         splitActionsAt: 2
       },
 
       /**
@@ -455,6 +457,11 @@ if (typeof Alvex == "undefined" || !Alvex)
          var owner = Bubbling.getOwnerByTagName(linkElement, "div");
          if (owner !== null)
          {
+            if(owner.title === "onActionShowMore")
+            {
+               me.onActionShowMore(item, owner);
+               return;
+            }
             var handler = $func(owner.title);
             if (typeof handler === "function")
             {
@@ -1146,6 +1153,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             
             // Inject the current filterId to allow filter-scoped actions
             userAccess["filter-" + this.currentFilter.filterId] = true;
+            userAccess["start-workflow"] = (this.options.workflowsAvailable == "true");
             
             // Remove any actions the user doesn't have permission for
             var actions = YAHOO.util.Selector.query("div", clone),
@@ -1233,10 +1241,38 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Don't hide unless the More Actions drop-down is showing, or a dialog mask is present
          if (!this.showingMoreActions || Dom.hasClass(document.body, "masked"))
          {
+            if (this.hideMoreActionsFn)
+            {
+               this.hideMoreActionsFn.call(this);
+            }
             // Just hide the action links, rather than removing them from the DOM
             Dom.addClass(elActions, "hidden");
             this.deferredActionsMenu = null;
          }
+      },
+
+      /**
+       * Show more actions pop-up.
+       *
+       * @method onActionShowMore
+       * @param record {object} Object literal representing DL item to be actioned
+       * @param elMore {element} DOM Element of "More Actions" link
+       */
+      onActionShowMore: function DataGrid_onActionShowMore(record, elMore)
+      {
+         // Fix "More Actions" hover style
+         Dom.addClass(elMore.firstChild, "highlighted");
+
+         // Get the pop-up div, sibling of the "More Actions" link
+         var elMoreActions = Dom.getNextSibling(elMore);
+         Dom.removeClass(elMoreActions, "hidden");
+         this.hideMoreActionsFn = function()
+         {
+            this.hideMoreActionsFn = null;
+
+            Dom.removeClass(elMore.firstChild, "highlighted");
+            Dom.addClass(elMoreActions, "hidden");
+         };
       },
 
       /**

@@ -26,7 +26,6 @@ if (typeof Alvex === "undefined" || !Alvex)
 /**
  * Edit Data Item pop-up
  *
- * @method onActionEdit
  * @param item {object} Object literal representing one data item
  */
 Alvex.DatagridItemEditAction = function(item)
@@ -119,7 +118,6 @@ Alvex.DatagridItemEditAction = function(item)
 
 /**
  * View Data Item pop-up
- * @method onActionView
  * @param item {object} Object literal representing one data item
  */
 Alvex.DatagridItemViewAction = function(item)
@@ -157,6 +155,19 @@ Alvex.DatagridItemViewAction = function(item)
 			scope: this
 		}
 	}).show();
+};
+
+/**
+ * Start workflow for registry item
+ * @param item {object} Object literal representing one data item
+ */
+Alvex.DatagridItemStartWorkflowAction = function(item)
+{
+	var postBody =
+	{
+		selectedItems: item.nodeRef
+	};
+	Alfresco.util.navigateTo(Alfresco.util.siteURL("start-workflow"), "POST", postBody);
 };
 
 // Just aliases for default actions for convenience

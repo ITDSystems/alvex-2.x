@@ -43,6 +43,7 @@ function main()
    }
 
    model.actionSet = actionSet;
+   model.workflowsAvailable = (extensionRegistry.getEdition() == "Enterprise");
 }
 
 main();
