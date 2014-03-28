@@ -1180,7 +1180,7 @@ function generateAppItems() {
          }
       }
    ];
-   if (user.isAdmin || showRepositoryLink == "true")
+   if (user.isAdmin /*|| showRepositoryLink == "true"*/)
    {
       appItems.push({
          id: "HEADER_REPOSITORY",
