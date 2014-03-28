@@ -105,4 +105,9 @@ public class JsAlvexRegistriesService extends BaseScopableProcessorExtension {
 								alvexRegistriesService.getServiceRegistry(), 
 								getScope(), null, jsRes);
 	}
+	
+	public boolean workflowsAvailableForRegistryItem()
+	{
+		return alvexRegistriesService.workflowsAvailableForRegistryItem();
+	}
 }

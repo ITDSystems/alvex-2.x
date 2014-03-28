@@ -56,6 +56,7 @@
 	</bean>
 	<bean id="alvexRegistriesService" class="com.alvexcore.repo.registries.AlvexRegistriesServiceImpl">
 		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="alvexExtensionRegistry" ref="alvex-repo-extension-registry" />
 	</bean>
 	<bean id="AlvexRegistriesService" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="alvexRegistriesService" />

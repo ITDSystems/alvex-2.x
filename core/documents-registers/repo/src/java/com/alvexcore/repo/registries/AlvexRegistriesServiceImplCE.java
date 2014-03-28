@@ -20,6 +20,7 @@
 package com.alvexcore.repo.registries;
 
 import com.alvexcore.repo.AlvexContentModel;
+import com.alvexcore.repo.RepositoryExtensionRegistry;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.service.cmr.repository.AssociationRef;
@@ -66,8 +67,12 @@ class incCounterWork implements RunAsWork<Void>
 
 public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegistriesService
 {
+	private static final String EDITION_CE = "Community";
+	private static final String EDITION_EE = "Enterprise";
+	
 	private static Log logger = LogFactory.getLog(AlvexRegistriesServiceImplCE.class);
 
+	protected RepositoryExtensionRegistry extensionRegistry;
 	protected ServiceRegistry serviceRegistry;
 	protected NodeService nodeService;
 	
@@ -83,6 +88,11 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 	@Required
 	public void setServiceRegistry(ServiceRegistry serviceRegistry) {
 		this.serviceRegistry = serviceRegistry;
+	}
+	
+	@Required
+	public void setAlvexExtensionRegistry(RepositoryExtensionRegistry extensionRegistry) {
+		this.extensionRegistry = extensionRegistry;
 	}
 	
 	/*
@@ -145,5 +155,12 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 		for(AssociationRef assoc : assocs)
 			results.add(assoc.getTargetRef());
 		return results;
+	}
+	
+	@Override
+	public boolean workflowsAvailableForRegistryItem()
+	{
+		String edition = extensionRegistry.getEdition();
+		return EDITION_EE.equals(edition);
 	}
 }

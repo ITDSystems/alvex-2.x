@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Documents Registers - System Wide Metadata</shortname>
+  <description>Documents Registers - System Wide Metadata</description>
+  <url>/api/alvex/documents-registers/meta</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

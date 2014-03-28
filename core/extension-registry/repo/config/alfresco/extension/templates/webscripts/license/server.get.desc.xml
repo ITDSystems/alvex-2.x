@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>server</shortname>
+	<description>Returns basic server information</description>
+	<url>/api/alvex/server</url>
+	<transaction>none</transaction>
+	<authentication>none</authentication>
+	<format default="json">any</format>
+</webscript>
