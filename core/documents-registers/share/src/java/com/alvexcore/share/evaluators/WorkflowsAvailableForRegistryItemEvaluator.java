@@ -22,40 +22,23 @@ import org.alfresco.error.AlfrescoRuntimeException;
 import org.alfresco.web.evaluator.BaseEvaluator;
 import org.json.simple.JSONObject;
 
-import org.springframework.extensions.surf.support.ThreadLocalRequestContext;
-import org.springframework.extensions.surf.RequestContext;
-import org.springframework.extensions.surf.ServletUtil;
-import org.springframework.extensions.webscripts.connector.Connector;
-import org.springframework.extensions.webscripts.Status;
-import org.springframework.extensions.webscripts.connector.Response;
+import com.alvexcore.share.ShareExtensionRegistry;
 
 public class WorkflowsAvailableForRegistryItemEvaluator extends BaseEvaluator
 {
-	private static final String JSON_PROP_EDITION = "edition";
-	private static final String EDITION_CE = "Community";
-	private static final String EDITION_EE = "Enterprise";
+	protected ShareExtensionRegistry extensionRegistry;
+	
+	public void setAlvexExtensionRegistry(ShareExtensionRegistry extensionRegistry) {
+		this.extensionRegistry = extensionRegistry;
+	}
 	
 	@Override
 	public boolean evaluate(JSONObject jsonObject)
 	{
 		try
 		{
-			// Get connector
-			RequestContext rc = ThreadLocalRequestContext.getRequestContext();
-			String userId = rc.getUserId();
- 			Connector conn = rc.getServiceRegistry().getConnectorService().getConnector(
-											"alfresco", userId, ServletUtil.getSession());
-			
-			String result = EDITION_CE;
-			String url = "/api/alvex/license";
- 			Response response = conn.call(url);
- 			if (Status.STATUS_OK == response.getStatus().getCode())
-			{
-				org.json.JSONObject scriptResponse = new org.json.JSONObject(response.getResponse());
-				result = (String) scriptResponse.get(JSON_PROP_EDITION);
-			}
-			
-			return EDITION_EE.equals(result);
+			String edition = extensionRegistry.getEdition();
+			return ShareExtensionRegistry.EDITION_EE.equals(edition);
 		}
 		catch (Exception e)
 		{

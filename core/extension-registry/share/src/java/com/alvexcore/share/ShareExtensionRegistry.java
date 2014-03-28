@@ -47,16 +47,29 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import org.springframework.extensions.surf.support.ThreadLocalRequestContext;
+import org.springframework.extensions.surf.RequestContext;
+import org.springframework.extensions.webscripts.connector.Connector;
+import org.springframework.extensions.webscripts.Status;
+import org.springframework.extensions.webscripts.connector.Response;
+
 /**
  * Share extension registry implementation
  * 
  * 
  */
 
-public class ShareExtensionRegistry implements InitializingBean {
+public class ShareExtensionRegistry implements InitializingBean
+{
+	public static final String EDITION_CE = "Community";
+	public static final String EDITION_EE = "Enterprise";
+	
+	private static final String JSON_PROP_EDITION = "edition";
+	
 	private DocumentBuilder xmlBuilder;
 	// list of extensions
 	protected List<ShareExtension> extensions = new ArrayList<ShareExtension>();
+	protected String edition = null;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -209,5 +222,31 @@ public class ShareExtensionRegistry implements InitializingBean {
 	// returns a list of installed extensions
 	public List<ShareExtension> getInstalledExtensions() {
 		return extensions;
+	}
+	
+	public String getEdition() {
+		if( edition == null )
+			getEditionFromRepo();
+		return edition;
+	}
+	
+	protected void getEditionFromRepo()
+	{
+		try {
+			// Get connector
+			RequestContext rc = ThreadLocalRequestContext.getRequestContext();
+			String userId = rc.getUserId();
+			Connector conn = rc.getServiceRegistry().getConnectorService().getConnector("alfresco");
+
+			String url = "/api/alvex/server";
+			Response response = conn.call(url);
+			if (Status.STATUS_OK == response.getStatus().getCode())
+			{
+				org.json.JSONObject scriptResponse = new org.json.JSONObject(response.getResponse());
+				edition = (String) scriptResponse.get(JSON_PROP_EDITION);
+			}
+		} catch (Exception e) {
+			edition = EDITION_CE;
+		}
 	}
 }
