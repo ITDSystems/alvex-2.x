@@ -26,12 +26,14 @@ import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 import org.alfresco.repo.security.permissions.impl.model.Permission;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.cmr.repository.MLText;
 import org.alfresco.service.cmr.security.AuthorityType;
 import org.alfresco.service.cmr.security.PermissionService;
 import org.alfresco.service.namespace.QName;
 
 import org.alfresco.repo.node.NodeServicePolicies;
 import org.alfresco.repo.node.NodeServicePolicies.OnCreateNodePolicy;
+import org.alfresco.repo.node.NodeServicePolicies.OnUpdatePropertiesPolicy;
 import org.alfresco.repo.node.NodeServicePolicies.OnCreateAssociationPolicy;
 import org.alfresco.repo.node.NodeServicePolicies.OnDeleteAssociationPolicy;
 import org.alfresco.repo.policy.Behaviour;
@@ -43,6 +45,8 @@ import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.AssociationRef;
 
 import java.util.List;
+import java.util.Map;
+import java.io.Serializable;
 
 /**
  * DocumentsRegisters extension implementation
@@ -51,6 +55,8 @@ import java.util.List;
 public class DocumentsRegistersExtension extends RepositoryExtension {
 	
 	protected JavaBehaviour onUpdateRegistryItemPropertiesBehaviour;
+	protected JavaBehaviour onUpdateRegistryPropertiesBehaviour;
+	
 	protected PolicyComponent policyComponent;
 	protected AlvexDictionaryService alvexDictionaryService;
 	
@@ -75,23 +81,42 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 	public void init(boolean failIfInitialized) throws Exception {
 		super.init(failIfInitialized);
 		initializeStorage();
+		
 		// Bind content policies
+		
 		this.policyComponent.bindClassBehaviour(
 			OnCreateNodePolicy.QNAME,
 			AlvexContentModel.TYPE_DOCUMENT_REGISTER,
 			new JavaBehaviour(this, "onCreateRegister", Behaviour.NotificationFrequency.TRANSACTION_COMMIT));
+		
 		this.policyComponent.bindClassBehaviour(
 			OnCreateNodePolicy.QNAME,
 			AlvexContentModel.TYPE_DOCUMENT_REGISTER_ITEM,
 			new JavaBehaviour(this, "onCreateRegisterItem", Behaviour.NotificationFrequency.TRANSACTION_COMMIT));
+		
 		this.policyComponent.bindAssociationBehaviour(
 			OnCreateAssociationPolicy.QNAME,
 			AlvexContentModel.TYPE_DOCUMENT_REGISTER_ITEM,
 			new JavaBehaviour(this, "onCreateAssociation", Behaviour.NotificationFrequency.TRANSACTION_COMMIT));
+		
 		this.policyComponent.bindAssociationBehaviour(
 			OnDeleteAssociationPolicy.QNAME,
 			AlvexContentModel.TYPE_DOCUMENT_REGISTER_ITEM,
 			new JavaBehaviour(this, "onDeleteAssociation", Behaviour.NotificationFrequency.TRANSACTION_COMMIT));
+		
+		onUpdateRegistryItemPropertiesBehaviour = new JavaBehaviour(this,
+				"onUpdateRegistryItemProperties", Behaviour.NotificationFrequency.TRANSACTION_COMMIT);
+		this.policyComponent.bindClassBehaviour(
+				OnUpdatePropertiesPolicy.QNAME,
+				AlvexContentModel.TYPE_DOCUMENT_REGISTER_ITEM,
+				onUpdateRegistryItemPropertiesBehaviour);
+		
+		onUpdateRegistryPropertiesBehaviour = new JavaBehaviour(this,
+				"onUpdateRegistryProperties", Behaviour.NotificationFrequency.TRANSACTION_COMMIT);
+		this.policyComponent.bindClassBehaviour(
+				OnUpdatePropertiesPolicy.QNAME,
+				AlvexContentModel.TYPE_DOCUMENT_REGISTER,
+				onUpdateRegistryPropertiesBehaviour);
 	}
 
 	public void onCreateRegister(ChildAssociationRef childAssocRef)
@@ -99,8 +124,8 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 		NodeService nodeService = extensionRegistry
 				.getServiceRegistry().getNodeService();
 		NodeRef nodeRef = childAssocRef.getChildRef();
-		String title = (String) nodeService.getProperty(nodeRef, ContentModel.PROP_TITLE);
-		nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, title.replace('/','_'));
+		Serializable title = nodeService.getProperty(nodeRef, ContentModel.PROP_TITLE);
+		setNodeNameFromProperty(nodeRef, title);
 	}
 	
 	public void onCreateRegisterItem(ChildAssociationRef childAssocRef)
@@ -108,8 +133,44 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 		NodeService nodeService = extensionRegistry
 				.getServiceRegistry().getNodeService();
 		NodeRef nodeRef = childAssocRef.getChildRef();
-		String title = (String) nodeService.getProperty(nodeRef, AlvexContentModel.PROP_DOCUMENT_ID);
-		nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, title.replace('/','_'));
+		Serializable title = nodeService.getProperty(nodeRef, AlvexContentModel.PROP_DOCUMENT_ID);
+		setNodeNameFromProperty(nodeRef, title);
+	}
+	
+	public void onUpdateRegistryProperties(NodeRef nodeRef,
+			Map<QName, Serializable> before, Map<QName, Serializable> after)
+	{
+		Serializable newName = after.get(ContentModel.PROP_TITLE);
+		setNodeNameFromProperty(nodeRef, newName);
+	}
+	
+	public void onUpdateRegistryItemProperties(NodeRef nodeRef,
+			Map<QName, Serializable> before, Map<QName, Serializable> after)
+	{
+		Serializable newName = after.get(AlvexContentModel.PROP_DOCUMENT_ID);
+		setNodeNameFromProperty(nodeRef, newName);
+	}
+	
+	protected void setNodeNameFromProperty(NodeRef nodeRef, Serializable title)
+	{
+		NodeService nodeService = extensionRegistry
+				.getServiceRegistry().getNodeService();
+		String currentName = (String) nodeService.getProperty(nodeRef, ContentModel.PROP_NAME);
+		
+		String newName = null;
+		if( title instanceof java.lang.String )
+		{
+			newName = (String)title;
+		}
+		else if( title instanceof org.alfresco.service.cmr.repository.MLText )
+		{
+			newName = ((MLText)title).getDefaultValue();
+		}
+		
+		if( newName != null && ! newName.equals(currentName) )
+		{
+			nodeService.setProperty(nodeRef, ContentModel.PROP_NAME, newName.replace('/','_'));
+		}
 	}
 	
 	public void onCreateAssociation(AssociationRef nodeAssocRef)
