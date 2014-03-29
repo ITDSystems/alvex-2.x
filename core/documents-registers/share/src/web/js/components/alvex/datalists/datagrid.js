@@ -614,6 +614,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          
          Alfresco.util.populateHTML(
             [ this.id + "-title", $html(this.datalistMeta.title) ],
+            [ this.id + "-listType", $links($html("("+this.datalistMeta.itemTypeTitle+")", true)) ],
             [ this.id + "-description", $links($html(this.datalistMeta.description, true)) ]
          );
       },

@@ -283,7 +283,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          
          Alfresco.util.Ajax.jsonGet(
          {
-            url: $combine(Alfresco.constants.PROXY_URI, "slingshot/datalists/lists/site", this.options.siteId, this.options.containerId),
+            url: $combine(Alfresco.constants.PROXY_URI, "api/alvex/datalists/lists/site", this.options.siteId, this.options.containerId),
             successCallback:
             {
                fn: fnSuccess,

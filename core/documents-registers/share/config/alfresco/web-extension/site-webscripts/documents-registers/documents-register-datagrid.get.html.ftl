@@ -15,6 +15,7 @@
 <div id="${id}-body" class="datagrid">
    <div class="datagrid-meta">
       <h2 id="${id}-title"></h2>
+      <div id="${id}-listType" class="datagrid-description"></div>
       <div id="${id}-description" class="datagrid-description"></div>
    </div>
    <div id="${id}-datagridBar" class="yui-ge datagrid-bar flat-button">
