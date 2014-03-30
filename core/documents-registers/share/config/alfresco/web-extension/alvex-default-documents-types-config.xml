@@ -39,6 +39,7 @@
 					label="actions.document.assign-workflow" icon="document-assign-workflow">
 				<param name="function">onActionAssignWorkflow</param>
 				<evaluator>evaluator.alvex.workflowsAvailableForRegistryItem</evaluator>
+				<evaluator negate="true">evaluator.alvex.isContentNode</evaluator>
 			</action>
 		</actions>
 		<actionGroups>
