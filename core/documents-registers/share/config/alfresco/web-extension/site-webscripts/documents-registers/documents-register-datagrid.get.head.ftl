@@ -9,3 +9,4 @@
 <@script type="text/javascript" src="${page.url.context}/res/components/alvex/simple-dialog.js" />
 <@script type="text/javascript" src="${page.url.context}/res/components/alvex/simple-view-dialog.js" />
 <@script type="text/javascript" src="${page.url.context}/res/components/alvex/interval-calendar.js" />
+<@script type="text/javascript" src="${page.url.context}/res/js/alfresco-dnd.js" />

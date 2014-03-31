@@ -18,6 +18,9 @@
       <div id="${id}-listType" class="datagrid-description"></div>
       <div id="${id}-description" class="datagrid-description"></div>
    </div>
+   <div class="datagrid-actions">
+      <span class="configure-page"><button id="${id}-configurePage-button" name="configurePage">${msg("button.configurePage")}</button></span>
+   </div>
    <div id="${id}-datagridBar" class="yui-ge datagrid-bar flat-button">
       <div class="yui-u first align-center">
          <div class="item-select">
@@ -73,5 +76,37 @@
          <div title="${action.func}" class="${action.className}"><a rel="${action.permission!""}" href="${action.href}" class="${action.type}" title="${msg(action.label)}"><span>${msg(action.label)}</span></a></div>
       </#list>
       </div>
+   </div>
+</div>
+
+<#assign pickerId = id + "-conf-dialog">
+
+<div id="${pickerId}" class="picker yui-panel hidden">
+   <div id="${pickerId}-head" class="hd">${msg("title.configurePage")}</div>
+   <div id="${pickerId}-body" class="bd column-config-dialog-body">
+
+      <div class="used">
+         <h3 class="padded">${msg("title.usedColumns")}</h3>
+         <ul id="${pickerId}-column-ul-1" class="usedList">
+         </ul>
+      </div>
+
+      <div class="available">
+         <h3 class="padded">${msg("title.availableColumns")}</h3>
+         <ul id="${pickerId}-column-ul-0" class="availableList">
+         </ul>
+      </div>
+
+      <div style="display: none;">
+         <ul>
+            <!-- The shadow dashlet that is used during drag n drop to "make space" for the dragged dashlet -->
+            <li class="usedDashlet dnd-shadow" id="${pickerId}-dashlet-li-shadow"></li>
+         </ul>
+      </div>
+
+   </div>
+   <div class="ft">
+      <input id="${pickerId}-ok" name="-" type="button" value="${msg("button.ok")}" />
+      <input id="${pickerId}-cancel" name="-" type="button" value="${msg("button.cancel")}" />
    </div>
 </div>

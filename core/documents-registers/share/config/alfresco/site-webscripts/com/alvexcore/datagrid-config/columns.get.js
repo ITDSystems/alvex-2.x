@@ -203,14 +203,15 @@ function main()
    
    if (itemType !== null && itemType.length > 0)
    {
-      // get the config for the form
-      var formConfig = getFormConfig(itemType, "datagrid");
+      // get the configs for the forms of interest
+      var viewFormConfig = getFormConfig(itemType, "view");
+      var datagridFormConfig = getFormConfig(itemType, "datagrid");
       
-      // get the configured visible fields
-      var visibleFields = getVisibleFields("view", formConfig);
+      // get all possible visible fields (from view form)
+      var allPossibleFields = getVisibleFields("view", viewFormConfig);
       
       // build the JSON object to send to the server
-      var postBody = createPostBody("type", itemType, visibleFields, formConfig);
+      var postBody = createPostBody("type", itemType, allPossibleFields, viewFormConfig);
          
       // make remote call to service
       var connector = remote.connect("alfresco");
@@ -228,8 +229,9 @@ function main()
       }
       else
       {
+         // we requested model for all possible fields, but will use Share config from datagrid only
          var formModel = eval('(' + json + ')');
-         var formFields = formConfig.getFields();
+         var formFields = datagridFormConfig.getFields();
          
          // if we got a successful response attempt to render the form
          if (json.status == 200)
@@ -237,12 +239,17 @@ function main()
             columns = formModel.data.definition.fields;
             for each( var item in columns )
             {
-               var templ = formFields[item.name].getControl().getTemplate();
-               var attrs = formFields[item.name].getAttributes();
+               // if there is a datagrid config for the field
+               if( formFields[item.name] )
+               {
+                  item.showByDefault = true;
+                  var templ = formFields[item.name].getControl().getTemplate();
+                  var attrs = formFields[item.name].getAttributes();
+                  item.isSortKey = (attrs["isSortKey"] !== null ? true : false);
+                  item.sortOrder = attrs["sortOrder"];
+                  item.isItemName = (attrs["isSortKey"] !== null ? true : false);
+               }
                item.renderer = (templ ? templ : "");
-               item.isSortKey = (attrs["isSortKey"] !== null ? true : false);
-               item.sortOrder = attrs["sortOrder"];
-               item.isItemName = (attrs["isSortKey"] !== null ? true : false);
             } 
          }
          else

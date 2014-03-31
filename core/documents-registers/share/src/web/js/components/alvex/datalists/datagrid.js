@@ -37,6 +37,7 @@ if (typeof Alvex == "undefined" || !Alvex)
    */
    var Dom = YAHOO.util.Dom,
        Event = YAHOO.util.Event,
+       KeyListener = YAHOO.util.KeyListener,
        Selector = YAHOO.util.Selector,
        Bubbling = YAHOO.Bubbling;
 
@@ -180,7 +181,7 @@ if (typeof Alvex == "undefined" || !Alvex)
           * @property pageSize
           * @type int
           */
-         pageSize: 5,
+         pageSize: 25,
 
          /**
           * Initial filter to show on load.
@@ -496,7 +497,9 @@ if (typeof Alvex == "undefined" || !Alvex)
          {
             type: "submit"
          });
-
+		 
+         this.createConfigurePageWidgets();
+         
          // Hook action events
          var fnActionHandler = function DataGrid_fnActionHandler(layer, args)
          {
@@ -551,7 +554,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // Finally show the component body here to prevent UI artifacts on YUI button decoration
          Dom.setStyle(this.id + "-body", "visibility", "visible");
       },
-
+	  
       /**
        * Fired by YUI when History Manager is initialised and available for scripting.
        * Component initialisation, including instantiation of YUI widgets and event listener binding.
@@ -664,7 +667,60 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onDatalistColumns: function DataGrid_onDatalistColumns(response)
       {
-         this.datalistColumns = response.json.columns;
+			this.allAvailableColumns = response.json.columns;
+			
+			this.services.preferences = new Alfresco.service.Preferences();
+			this.services.preferences.request("test.datagrid." + this.datalistMeta.nodeRef,
+			{
+				successCallback:
+				{
+					fn: this.onDatalistColumnsPartTwo,
+					scope: this
+				}
+			});
+	  },
+	  
+	  // TODO: rework asap
+	  
+	  onDatalistColumnsPartTwo: function(p_response)
+	  {
+		  var data = Alfresco.util.findValueByDotNotation(p_response.json, "test.datagrid." + this.datalistMeta.nodeRef, "");
+		  var savedColumnsStr = (data !== null ? data.split(',') : []);
+		  
+         this.datalistColumns = [];
+		 
+		 if( savedColumnsStr.length > 0 )
+		 {
+			// ?
+			savedColumnsStr = savedColumnsStr.sort();
+			var savedColumns = [];
+			for(var c in savedColumnsStr)
+			{
+				var col = savedColumnsStr[c].split('$');
+				savedColumns.push(col[1]);
+			}
+			for(var sc = 0; sc < savedColumns.length; sc++)
+			{
+			   for(var c = 0; c < this.allAvailableColumns.length; c++)
+			   {
+				  var col = this.allAvailableColumns[c];
+				  if(col.name === savedColumns[sc])
+				     this.datalistColumns.push(col);
+			   }
+			}
+		 }
+		 else
+		 {
+			for(var c = 0; c < this.allAvailableColumns.length; c++)
+			{
+			   var col = this.allAvailableColumns[c];
+			   if(col.showByDefault)
+				  this.datalistColumns.push(col);
+			}
+		 }
+		 
+		 this.onPreferencesLoaded();
+		 
          // Set-up YUI History Managers and Paginator
          this._setupHistoryManagers();
          // DataSource set-up and event registration
@@ -1826,6 +1882,202 @@ if (typeof Alvex == "undefined" || !Alvex)
            }
         }
         return null;
-      }
+      },
+	  
+		// TODO: move this code out of datagrid
+		
+		createConfigurePageWidgets: function()
+		{
+			this.widgets.configurePageButton = Alfresco.util.createYUIButton(this, "configurePage-button", this.onConfigurePageButtonClick, {});
+			
+			var dialogId = this.id + '-conf-dialog';
+			
+			this.widgets.configurePageDialogOk = new YAHOO.widget.Button(dialogId + '-ok',
+						{ onclick: { fn: this.onConfigureOk, obj: null, scope: this } });
+			this.widgets.configurePageDialogCancel = new YAHOO.widget.Button(dialogId + '-cancel',
+						{ onclick: { fn: this.onConfigureCancel, obj: null, scope: this } });
+			
+			this.widgets.configurePageDialog = Alfresco.util.createYUIPanel(dialogId, { width: "800px" });
+			this.widgets.configurePageDialog.hideEvent.subscribe(this.onConfigureCancel, null, this);
+		},
+		
+		onConfigurePageButtonClick: function(event, p_obj)
+		{
+			Event.preventDefault(event);
+			var me = this;
+			
+			if( ! this.widgets.configurePageDialog )
+				return;
+			
+			// Enable esc listener
+			if (!this.widgets.configurePageDialogEscapeListener)
+			{
+				this.widgets.configurePageDialogEscapeListener = new KeyListener(
+					this.id + "-conf-dialog",
+					{
+						keys: KeyListener.KEY.ESCAPE
+					},
+					{
+						fn: function(eventName, keyEvent)
+						{
+							this.onConfigureCancel();
+							Event.stopEvent(keyEvent[1]);
+						},
+						scope: this,
+						correctScope: true
+					});
+			}
+			this.widgets.configurePageDialogEscapeListener.enable();
+
+			// Show the dialog
+			this.widgets.configurePageDialog.show();
+			Dom.removeClass(this.id + "-conf-dialog", "hidden");
+			this.widgets.configurePageDialog.center();
+		},
+		
+		onPreferencesLoaded: function(p_response)
+		{
+			//var data = p_response.json
+			
+			this.widgets.availListEl = Dom.get(this.id + "-conf-dialog-column-ul-0");
+			this.widgets.usedListEl = Dom.get(this.id + "-conf-dialog-column-ul-1");
+
+			this.widgets.availListEl.innerHTML = '';
+			this.widgets.usedListEl.innerHTML = '';
+			
+			for(var k in this.datalistColumns )
+			{
+				for(var c in this.allAvailableColumns)
+				{
+					if(this.allAvailableColumns[c].name !== this.datalistColumns[k].name)
+						continue;
+					var el = this.createColumnDND(this.allAvailableColumns[c]);
+					this.widgets.usedListEl.appendChild(el);
+				}
+			}
+			for(var c in this.allAvailableColumns)
+			{
+				var used = false;
+				for(var k in this.datalistColumns )
+					if(this.allAvailableColumns[c].name === this.datalistColumns[k].name)
+						used = true;
+				if( !used )
+				{
+					var el = this.createColumnDND(this.allAvailableColumns[c]);
+					this.widgets.availListEl.appendChild(el);
+				}
+			}
+			
+			this.createDNDArea();
+		},
+		
+		createDNDArea: function()
+		{
+			this.widgets.availListEl = Dom.get(this.id + "-conf-dialog-column-ul-0");
+			this.widgets.usedListEl = Dom.get(this.id + "-conf-dialog-column-ul-1");
+			this.widgets.shadowEl = Dom.get(this.id + "-conf-dialog-dashlet-li-shadow");
+
+			var dndConfig =
+			{
+				shadow: this.widgets.shadowEl,
+				draggables: [
+					{
+						container: this.widgets.availListEl,
+						groups: [Alfresco.util.DragAndDrop.GROUP_MOVE],
+						cssClass: "availableDashlet",
+					},
+					{
+						container: this.widgets.usedListEl,
+						groups: [Alfresco.util.DragAndDrop.GROUP_MOVE],
+						cssClass: "usedDashlet",
+					}
+				],
+				targets: [
+					{
+						container: this.widgets.availListEl,
+						group: Alfresco.util.DragAndDrop.GROUP_MOVE
+					},
+					{
+						container: this.widgets.usedListEl,
+						group: Alfresco.util.DragAndDrop.GROUP_MOVE
+					}
+				]
+			};
+			var dnd = new Alfresco.util.DragAndDrop(dndConfig);
+		},
+		
+		createColumnDND: function(column)
+		{
+			var li= document.createElement("li");
+			li.className = 'tableColumn';
+			var a = document.createElement('a');
+			a.href = "#";
+			var img = document.createElement('img');
+			img.className = "dnd-draggable";
+			img.src = Alfresco.constants.URL_CONTEXT + "res/yui/assets/skins/default/transparent.gif";
+			img.alt = '';
+			var span = document.createElement('span');
+			span.innerHTML = column.label;
+			var div = document.createElement('div');
+			div.className = "dnd-draggable";
+			div.title = this.msg("dnd.help.message");
+			var hidden = document.createElement('input');
+			hidden.type = "hidden";
+			hidden.name = "columnid";
+			hidden.value = column.name;
+
+			a.appendChild(img);
+			li.appendChild(a);
+			li.appendChild(span);
+			li.appendChild(div);
+			li.appendChild(hidden);
+			return li;
+		},
+
+		onConfigureCancel: function(e, p_obj)
+		{
+			this.widgets.configurePageDialogEscapeListener.disable();
+			this.widgets.configurePageDialog.hide();
+			if (e) {
+				Event.preventDefault(e);
+			}
+		},
+				
+		onConfigureOk: function(e, p_obj)
+		{
+			var result = [];
+			
+			var ul = Dom.get(this.id + "-conf-dialog-column-ul-1");
+			var lis = Dom.getElementsByClassName("tableColumn", "li", ul);
+			for (var j = 0; j < lis.length; j++)
+			{
+				var li = lis[j];
+				if(Dom.hasClass(li, "dnd-shadow"))
+					continue;
+				var id = Selector.query("input[type=hidden][name=columnid]", li, true).value
+				result.push(j + '$' + id);
+			}
+			
+			this.services.preferences.set("test.datagrid." + this.datalistMeta.nodeRef, result.join(','), 
+				{
+					successCallback: {
+						fn: this.onPreferencesSaved,
+						scope: this
+					}
+				});
+			
+			this.widgets.configurePageDialogEscapeListener.disable();
+			this.widgets.configurePageDialog.hide();
+			if (e) {
+				Event.preventDefault(e);
+			}
+		},
+				
+		onPreferencesSaved: function()
+		{
+			YAHOO.Bubbling.fire("datagridPrefsUpdated");
+			this.populateDataGrid();
+		}
+	  
    }, true);
 })();

@@ -8,13 +8,16 @@
    <#list columns as col>
       {
          "renderer": "${col.renderer}",
-      <#if col.isSortKey>
+      <#if col.showByDefault?? && col.showByDefault>
+         "showByDefault": true,
+      </#if>
+      <#if col.isSortKey?? && col.isSortKey>
          "isSortKey": true,
       </#if>
       <#if col.sortOrder??>
          "sortOrder": "${col.sortOrder}",
       </#if>
-      <#if col.isItemName>
+      <#if col.isItemName?? && col.isItemName>
          "isItemName": true,
       </#if>
          "type": "${col.type}",
