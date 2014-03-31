@@ -44,7 +44,7 @@
 
 <div id="${pickerId}" class="picker yui-panel hidden">
    <div id="${pickerId}-head" class="hd">${msg("title.configurePage")}</div>
-   <div id="${pickerId}-body" class="bd">
+   <div id="${pickerId}-body" class="bd column-config-dialog-body">
 
       <div class="used">
          <h3 class="padded">${msg("title.usedColumns")}</h3>

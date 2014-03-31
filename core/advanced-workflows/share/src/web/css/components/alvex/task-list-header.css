@@ -54,11 +54,27 @@
 	padding: 0.5em;
 }
 
-div.available,
+div.column-config-dialog-body
+{
+	height: 275px;
+}
+
 div.used
 {
-	padding-bottom: 1em;
-	padding-top: 1em;
+	padding-bottom: 20px;
+	padding-top: 20px;
+	padding-left: 20px;
+	width: 350px;
+	float: left;
+}
+
+div.available
+{
+	padding-bottom: 20px;
+	padding-top: 20px;
+	padding-right: 20px;
+	width: 350px;
+	float: right;
 }
 
 h3.padded
@@ -78,14 +94,12 @@ ul.availableList
 
 ul.usedList
 {
-	width: 780px;
-	height: 7em;
+	height: 180px;
 }
 
 ul.availableList
 {
-	width: 520px;
-	height: 12em;
+	height: 180px;
 }
 
 .tableColumn
@@ -93,9 +107,10 @@ ul.availableList
 	margin: 0.5em;
 	background-color: #F7F7F7;
 	border: 1px dashed #C3C3C3;
-	width: 8em;
+	width: 300px;
 	float: left;
-	height: 1.5em;
+	height: 30px;
+	line-height: 30px;
 	text-align: left;
 	border-style: none;
 	border-width: 0;
