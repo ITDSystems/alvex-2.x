@@ -187,6 +187,15 @@ if (typeof Alvex == "undefined" || !Alvex)
       onReady: function DataLists_onReady()
       {
 
+         if(this.options.component === "docReg")
+         {
+            this.options.activityStreamId = "com.alvexcore.document-registers.register-";
+         }
+         else
+         {
+            this.options.activityStreamId = "org.alfresco.datalists.list-";
+         }
+
          if( this.options.showActions === "none" )
             document.getElementById(this.id + '-newListButton').parentNode.style.display = "none";
 
@@ -626,9 +635,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                      text: this.msg("message.new-list.success", listTitle)
                   });
                   // Activity post
-                  Alfresco.Share.postActivity(this.options.siteId, "com.alvexcore.document-registers.register-created", listTitle + " (" + listTypeTitle + ")", "documentsregister?register={cm:name}",
+                  Alfresco.Share.postActivity(this.options.siteId, this.options.activityStreamId + "created", listTitle + " (" + listTypeTitle + ")", this.options.dlUrlTemplate + "{cm:name}",
                   {
-                     appTool: "docReg",
+                     appTool: this.options.component,
                      nodeRef: nodeRef.toString()
                   });
                },
@@ -713,9 +722,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                      text: this.msg("message.edit-list.success", p_obj.title)
                   });
                   // Activity post
-                  Alfresco.Share.postActivity(this.options.siteId, "com.alvexcore.document-registers.register-updated", p_obj.title + " (" + listTypeTitle + ")", "documentsregister?register={cm:name}",
+                  Alfresco.Share.postActivity(this.options.siteId, this.options.activityStreamId + "updated", p_obj.title + " (" + listTypeTitle + ")", this.options.dlUrlTemplate + "{cm:name}",
                   {
-                     appTool: "docReg",
+                     appTool: this.options.component,
                      nodeRef: nodeRef.toString()
                   });
                },
@@ -761,9 +770,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                   fn: function DataLists_onDeleteList_confirm_success(response, p_obj)
                   {
                      // Activity post
-                     Alfresco.Share.postActivity(this.options.siteId, "com.alvexcore.document-registers.register-deleted", datalist.title + " (" + listTypeTitle + ")", "documentsregister",
+                     Alfresco.Share.postActivity(this.options.siteId, this.options.activityStreamId + "deleted", datalist.title + " (" + listTypeTitle + ")", this.options.dlUrlTemplate,
                      {
-                        appTool: "docReg",
+                        appTool: this.options.component,
                         nodeRef: nodeRef.toString()
                      });
                      // If we deleted the current list, then redirect to "data-lists"

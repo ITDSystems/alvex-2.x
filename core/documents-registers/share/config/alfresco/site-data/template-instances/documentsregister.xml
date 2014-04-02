@@ -42,10 +42,17 @@
          <region-id>register-list</region-id>
          <url>/components/data-lists/datalists</url>
          <properties>
+            <component>docReg</component>
             <listTypesToShow>(alvexdr|alvexdt|document)</listTypesToShow>
             <listContainerType>alvexdr:documentRegister</listContainerType>
-            <dlUrlTemplate>documentsregister?register=</dlUrlTemplate>
+            <dlUrlTemplate>documentsregister?active=</dlUrlTemplate>
          </properties>
+      </component>
+
+      <!-- Filter -->
+      <component>
+         <region-id>filter</region-id>
+         <url>/components/data-lists/filter</url>
       </component>
 
       <!-- Actions Common -->
