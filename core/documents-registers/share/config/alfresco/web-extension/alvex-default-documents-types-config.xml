@@ -63,17 +63,22 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:agreementType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:contractor" />
-               <show id="alvexdt:signingDate" />
+               <show id="alvexdt:ifsigned"/>
                <show id="alvexdt:expiryDate" />
+               <show id="alvexdt:renew"/>
+               <show id="alvexdt:files" />
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:agreementType" />
                <show id="alvexdt:agreementSummary" />
                <show id="alvexdt:contractor" />
@@ -82,19 +87,21 @@
                <show id="alvexdt:signingDate" />
                <show id="alvexdt:expiryDate" />
                <show id="alvexdt:signatory" />
+               <show id="alvexdt:ifsigned"/>
                <show id="alvexdt:renew" />
                <show id="alvexdt:location" />
                <show id="alvexdt:files" />
             </field-visibility>
-	        <create-form template="/alvex-form.ftl" />
+           <create-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="date" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="renew"/>
+               <set id="booleans" appearance="" label="" template="/alvex-2-column-set-wide-right.ftl"/>
                <set id="summary" appearance="" label="" />
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+               <set id="location" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
@@ -104,11 +111,10 @@
                <field set="id" id="alvexdt:agreementType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
-               <field set="company" id="alvexdt:company">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
                <field set="company" id="alvexdt:contractor">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                    <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
@@ -118,7 +124,8 @@
                <field set="date" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="renew" id="alvexdt:renew"/>
+               <field set="booleans" id="alvexdt:ifsigned"/>
+               <field set="booleans" id="alvexdt:renew"/>
                <field set="summary" id="alvexdt:agreementSummary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -129,17 +136,13 @@
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                     <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
                <field set="related" id="alvexdt:relatedDocuments">
-				   <control template="/alvex-docreg-picker.ftl"/>
-			   </field>
-               <field set="related" id="alvexdt:location">
-                  <control>
-                     <control-param name="style">width: 98%</control-param>
-                  </control>
+                 <control template="/alvex-docreg-picker.ftl"/>
                </field>
+               <field set="location" id="alvexdt:location"/>
             </appearance>
          </form>
       </forms>
@@ -151,7 +154,6 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:agreementType" />
                <show id="alvexdt:agreementSummary" />
                <show id="alvexdt:contractor" />
@@ -168,12 +170,13 @@
             <edit-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="date" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="renew"/>
+               <set id="booleans" appearance="" label="" template="/alvex-2-column-set-wide-right.ftl"/>
                <set id="summary" appearance="" label="" />
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label="" template="/org/alfresco/components/form/2-column-set.ftl"/>
+               <set id="location" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
@@ -183,11 +186,10 @@
                <field set="id" id="alvexdt:agreementType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
-               <field set="company" id="alvexdt:company">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
                <field set="company" id="alvexdt:contractor">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                    <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
@@ -197,7 +199,8 @@
                <field set="date" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="renew" id="alvexdt:renew"/>
+               <field set="booleans" id="alvexdt:ifsigned"/>
+               <field set="booleans" id="alvexdt:renew"/>
                <field set="summary" id="alvexdt:agreementSummary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -208,17 +211,13 @@
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                     <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
                <field set="related" id="alvexdt:relatedDocuments">
-				   <control template="/alvex-docreg-picker.ftl"/>
-			   </field>
-               <field set="related" id="alvexdt:location">
-                  <control>
-                     <control-param name="style">width: 98%</control-param>
-                  </control>
+                 <control template="/alvex-docreg-picker.ftl"/>
                </field>
+               <field set="location" id="alvexdt:location"/>
             </appearance>
          </form>
       </forms>
@@ -231,53 +230,68 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:correspondent" />
-               <show id="alvexdt:receivedType" />
+               <show id="alvexdt:outgoingnumber" />
                <show id="alvexdt:assignee" />
                <show id="alvexdt:status" />
                <show id="alvexdt:dueDate" />
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+               <field id="alvexdt:relatedSent">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
-               <show id="alvexdt:receivedType" />
+               <show id="alvexdt:addressee" />
+               <show id="alvexdt:outgoingnumber" />
                <show id="alvexdt:correspondent" />
+               <show id="alvexdt:receivedType" />
+               <show id="alvexdt:deliveryType" />
+               <show id="alvexdt:summary" />
                <show id="alvexdt:assignee" />
                <show id="alvexdt:status" />
                <show id="alvexdt:dueDate" />
                <show id="alvexdt:completeDate" />
-               <show id="alvexdt:relatedSent"/>
-               <show id="alvexdt:summary" />
-               <show id="alvexdt:addressee" />
-               <show id="alvexdt:deliveryType" />
                <show id="alvexdt:files" />
+               <show id="alvexdt:relatedSent" />
+               <show id="alvexdt:relatedDocuments" />
             </field-visibility>
-	        <create-form template="/alvex-form.ftl" />
+	         <create-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="outgoing" appearance="" label="" template="/alvex-2-column-set-wide-right.ftl"/>
+               <set id="additional"  appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl" />
                <set id="summary" appearance="" label="" />
                <set id="assignee" appearance="" label="" />
                <set id="execution" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="files" appearance="" label=""/>
-               <set id="related" appearance="" label=""/>
+               <set id="related1" appearance="" label=""/>
+               <set id="related2" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
                </field>
-               <field set="id" id="alvexdt:receivedType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:correspondent">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:addressee">
+               <field set="id" id="alvexdt:addressee">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="company" id="alvexdt:deliveryType">
+               <field set="outgoing" id="alvexdt:outgoingnumber"/>
+               <field set="outgoing" id="alvexdt:correspondent">
+                  <control template="/alvex-masterData-select.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
+               </field>
+               <field set="additional" id="alvexdt:receivedType">
+                  <control template="/alvex-masterData-select.ftl"/>
+               </field>
+               <field set="additional" id="alvexdt:deliveryType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="summary" id="alvexdt:summary">
@@ -296,10 +310,13 @@
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                     <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedSent">
+               <field set="related1" id="alvexdt:relatedSent">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
+               <field set="related2" id="alvexdt:relatedDocuments">
                      <control template="/alvex-docreg-picker.ftl"/>
                </field>
             </appearance>
@@ -315,6 +332,7 @@
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:receivedType" />
                <show id="alvexdt:correspondent" />
+               <show id="alvexdt:deliveryType" />
                <show id="alvexdt:assignee" />
                <show id="alvexdt:status" />
                <show id="alvexdt:dueDate" />
@@ -329,28 +347,33 @@
             <edit-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="outgoing" appearance="" label="" template="/alvex-2-column-set-wide-right.ftl"/>
+               <set id="additional"  appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl" />
                <set id="summary" appearance="" label="" />
                <set id="assignee" appearance="" label="" />
                <set id="execution" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="files" appearance="" label=""/>
-               <set id="related" appearance="" label=""/>
+               <set id="related1" appearance="" label=""/>
+               <set id="related2" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
                </field>
-               <field set="id" id="alvexdt:receivedType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:correspondent">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:addressee">
+               <field set="id" id="alvexdt:addressee">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="company" id="alvexdt:deliveryType">
+               <field set="outgoing" id="alvexdt:outgoingnumber"/>
+               <field set="outgoing" id="alvexdt:correspondent">
+                  <control template="/alvex-masterData-select.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
+               </field>
+               <field set="additional" id="alvexdt:receivedType">
+                  <control template="/alvex-masterData-select.ftl"/>
+               </field>
+               <field set="additional" id="alvexdt:deliveryType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="summary" id="alvexdt:summary">
@@ -369,10 +392,13 @@
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                     <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedSent">
+               <field set="related1" id="alvexdt:relatedSent">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
+               <field set="related2" id="alvexdt:relatedDocuments">
                      <control template="/alvex-docreg-picker.ftl"/>
                </field>
             </appearance>
@@ -387,11 +413,17 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:correspondent" />
-               <show id="alvexdt:sentType"/>
+               <show id="alvexdt:relatedReceived" />
                <show id="alvexdt:assignee" />
-               <show id="alvexdt:status" />
-               <show id="alvexdt:dueDate" />
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+               <field id="alvexdt:relatedReceived">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
@@ -400,22 +432,23 @@
                <show id="alvexdt:correspondent" />
                <show id="alvexdt:relatedReceived" />
                <show id="alvexdt:summary" />
-               <show id="alvexdt:addresser" />
-               <show id="alvexdt:signingDate" />
+               <show id="alvexdt:assignee" />
                <show id="alvexdt:signatory"/>
                <show id="alvexdt:contactName" />
                <show id="alvexdt:deliveryType" />
                <show id="alvexdt:sentType" />
                <show id="alvexdt:files" />
+               <show id="alvexdt:relatedDocuments" />
             </field-visibility>
 	        <create-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="summary" appearance="" label="" />
                <set id="execution" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="files" appearance="" label=""/>
-               <set id="related" appearance="" label=""/>
+               <set id="related1" appearance="" label=""/>
+               <set id="related2" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
@@ -426,12 +459,11 @@
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="company" id="alvexdt:correspondent">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="company" id="alvexdt:contactName">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:deliveryType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="summary" id="alvexdt:summary">
@@ -439,22 +471,27 @@
                      <control-param name="style">width: 98%</control-param>
                   </control>
                </field>
-               <field set="execution" id="alvexdt:addresser">
+               <field set="execution" id="alvexdt:assignee">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="execution" id="alvexdt:signingDate"/>
                <field set="execution" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="execution" id="alvexdt:deliveryType">
+                  <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                     <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedReceived">
+               <field set="related1" id="alvexdt:relatedReceived">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
+               <field set="related2" id="alvexdt:relatedDocuments">
                      <control template="/alvex-docreg-picker.ftl"/>
                </field>
             </appearance>
@@ -471,23 +508,24 @@
                <show id="alvexdt:correspondent" />
                <show id="alvexdt:relatedReceived" />
                <show id="alvexdt:summary" />
-               <show id="alvexdt:addresser" />
-               <show id="alvexdt:signingDate" />
+               <show id="alvexdt:assignee" />
                <show id="alvexdt:signatory"/>
                <show id="alvexdt:contactName" />
                <show id="alvexdt:deliveryType" />
                <show id="alvexdt:sentType" />
                <show id="alvexdt:files" />
+               <show id="alvexdt:relatedDocuments" />
             </field-visibility>
             <view-form template="/alvex-form.ftl" />
             <edit-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="summary" appearance="" label="" />
                <set id="execution" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="files" appearance="" label=""/>
-               <set id="related" appearance="" label=""/>
+               <set id="related1" appearance="" label=""/>
+               <set id="related2" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
                   <control template="/alvex-auto-numberer.ftl"/>
                </field>
@@ -498,12 +536,11 @@
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="company" id="alvexdt:correspondent">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="company" id="alvexdt:contactName">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:deliveryType">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="summary" id="alvexdt:summary">
@@ -511,22 +548,27 @@
                      <control-param name="style">width: 98%</control-param>
                   </control>
                </field>
-               <field set="execution" id="alvexdt:addresser">
+               <field set="execution" id="alvexdt:assignee">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="execution" id="alvexdt:signingDate"/>
                <field set="execution" id="alvexdt:signatory">
                   <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="execution" id="alvexdt:deliveryType">
+                  <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                     <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
-               <field set="related" id="alvexdt:relatedReceived">
+               <field set="related1" id="alvexdt:relatedReceived">
+                     <control template="/alvex-docreg-picker.ftl"/>
+               </field>
+               <field set="related2" id="alvexdt:relatedDocuments">
                      <control template="/alvex-docreg-picker.ftl"/>
                </field>
             </appearance>
@@ -544,6 +586,11 @@
                <show id="alvexdt:primaryDocument" />
                <show id="alvexdt:summary" />
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:primaryDocument">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
@@ -646,9 +693,13 @@
                <show id="alvexdt:registerDate"/>
                <show id="alvexdt:expiryDate"/>
                <show id="alvexdt:recipient"/>
-               <show id="alvexdt:contractor"/>
                <show id="alvexdt:relatedDocuments"/>
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
@@ -657,7 +708,6 @@
                <show id="alvexdt:expiryDate"/>
                <show id="alvexdt:recipient"/>
                <show id="alvexdt:recipientPosition"/>
-               <show id="alvexdt:contractor"/>
                <show id="alvexdt:relatedDocuments"/>
                <show id="alvexdt:mark"/>
                <show id="alvexdt:files"/>
@@ -665,7 +715,7 @@
 	        <create-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="recipient" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="recipient" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label=""/>
                <set id="mark" appearance="" label=""/>
@@ -677,12 +727,11 @@
                </field>
                <field set="id" id="alvexdt:expiryDate" />
                <field set="recipient" id="alvexdt:recipient">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                        <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="recipient" id="alvexdt:recipientPosition">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="recipient" id="alvexdt:contractor">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="files" id="alvexdt:files">
@@ -715,7 +764,6 @@
                <show id="alvexdt:expiryDate"/>
                <show id="alvexdt:recipient"/>
                <show id="alvexdt:recipientPosition"/>
-               <show id="alvexdt:contractor"/>
                <show id="alvexdt:relatedDocuments"/>
                <show id="alvexdt:mark"/>
                <show id="alvexdt:files"/>
@@ -724,7 +772,7 @@
             <edit-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="recipient" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="recipient" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label=""/>
                <set id="mark" appearance="" label=""/>
@@ -736,12 +784,11 @@
                </field>
                <field set="id" id="alvexdt:expiryDate" />
                <field set="recipient" id="alvexdt:recipient">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                        <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="recipient" id="alvexdt:recipientPosition">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="recipient" id="alvexdt:contractor">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="files" id="alvexdt:files">
@@ -749,12 +796,12 @@
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
                <field set="related" id="alvexdt:relatedDocuments">
-				   <control template="/alvex-docreg-picker.ftl"/>
-			   </field>
+                  <control template="/alvex-docreg-picker.ftl"/>
+               </field>
                <field set="mark" id="alvexdt:mark">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
@@ -773,37 +820,40 @@
                <show id="alvexdt:contractor" />
                <show id="alvexdt:invoiceDate" />
                <show id="alvexdt:paymentDate" />
-               <show id="alvexdt:amount" />
-               <show id="alvexdt:currency" />
                <show id="alvexdt:documentManager" />
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+               <field id="alvexdt:primaryDocument">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
-               <show id="alvexdt:invoiceType" />
                <show id="alvexdt:invoiceDate" />
                <show id="alvexdt:paymentDate" />
                <show id="alvexdt:amount" />
                <show id="alvexdt:currency" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:contractor" />
                <show id="alvexdt:primaryDocument" />
                <show id="alvexdt:relatedDocuments" />
                <show id="alvexdt:documentManager" />
                <show id="alvexdt:expiryDate" />
-               <show id="alvexdt:location" />
                <show id="alvexdt:auditor" />
                <show id="alvexdt:files" />
             </field-visibility>
 	        <create-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="dates" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="amount" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="internal" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="primary"/>
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
@@ -812,14 +862,10 @@
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
                </field>
-               <field set="id" id="alvexdt:invoiceType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:company">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
                <field set="company" id="alvexdt:contractor">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
@@ -831,14 +877,11 @@
                <field set="amount" id="alvexdt:currency">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
-               <field set="internal" id="alvexdt:primaryDocument">
-                     <control template="/alvex-docreg-picker.ftl"/>
-               </field>
-               <field set="internal" id="alvexdt:auditor">
+               <field set="amount" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="internal" id="alvexdt:location">
-                  <control template="/alvex-masterData-select.ftl"/>
+               <field set="primary" id="alvexdt:primaryDocument">
+                    <control template="/alvex-docreg-picker.ftl"/>
                </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
@@ -862,18 +905,15 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
-               <show id="alvexdt:invoiceType" />
                <show id="alvexdt:invoiceDate" />
                <show id="alvexdt:paymentDate" />
                <show id="alvexdt:amount" />
                <show id="alvexdt:currency" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:contractor" />
                <show id="alvexdt:primaryDocument" />
                <show id="alvexdt:relatedDocuments" />
                <show id="alvexdt:documentManager" />
                <show id="alvexdt:expiryDate" />
-               <show id="alvexdt:location" />
                <show id="alvexdt:auditor" />
                <show id="alvexdt:files" />
             </field-visibility>
@@ -881,10 +921,10 @@
             <edit-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="company" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="dates" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="amount" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="internal" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="primary"/>
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label=""/>
                <field set="id" id="alvexdt:id">
@@ -893,14 +933,10 @@
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
                </field>
-               <field set="id" id="alvexdt:invoiceType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="company" id="alvexdt:company">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
                <field set="company" id="alvexdt:contractor">
-                  <control template="/alvex-masterData-select.ftl"/>
+                  <control template="/alvex-masterData-select.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
                </field>
                <field set="company" id="alvexdt:documentManager">
                   <control template="/orgchart-picker.ftl" />
@@ -912,26 +948,23 @@
                <field set="amount" id="alvexdt:currency">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
-               <field set="internal" id="alvexdt:primaryDocument">
-                     <control template="/alvex-docreg-picker.ftl"/>
-               </field>
-               <field set="internal" id="alvexdt:auditor">
+               <field set="amount" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="internal" id="alvexdt:location">
-                  <control template="/alvex-masterData-select.ftl"/>
+               <field set="primary" id="alvexdt:primaryDocument">
+                    <control template="/alvex-docreg-picker.ftl"/>
                </field>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
                <field set="related" id="alvexdt:relatedDocuments">
-				   <control template="/alvex-docreg-picker.ftl"/>
-			   </field>
+               <control template="/alvex-docreg-picker.ftl"/>
+            </field>
             </appearance>
          </form>
       </forms>
@@ -943,24 +976,25 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate"/>
-               <show id="alvexdt:administrativeType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:signingDate" />
-               <show id="alvexdt:assignee" />
+               <show id="alvexdt:assignees" />
                <show id="alvexdt:status"/>
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate"/>
-               <show id="alvexdt:administrativeType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:summary" />
                <show id="alvexdt:relatedDocuments" />
-               <show id="alvexdt:signingDate" />
+               <show id="alvexdt:creator" />
                <show id="alvexdt:signatory" />
-               <show id="alvexdt:assignee" />
+               <show id="alvexdt:assignees" />
                <show id="alvexdt:status"/>
                <show id="alvexdt:dueDate" />
                <show id="alvexdt:completeDate" />
@@ -970,9 +1004,9 @@
 	        <create-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="signatory" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="summary" appearance="" label=""/>
-               <set id="assignee" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="signatory" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="status" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="audit" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label=""/>
@@ -982,30 +1016,26 @@
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
                </field>
-               <field set="id" id="alvexdt:administrativeType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="signatory" id="alvexdt:company">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="signatory" id="alvexdt:signatory">
+               <field set="id" id="alvexdt:creator">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="signatory" id="alvexdt:signingDate"/>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
                   </control>
                </field>
-               <field set="assignee" id="alvexdt:assignee">
+               <field set="signatory" id="alvexdt:signatory">
+                  <control template="/alvex-masterData-select.ftl"/>
+               </field>
+               <field set="signatory" id="alvexdt:assignees">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="assignee" id="alvexdt:status"/>
-               <field set="assignee" id="alvexdt:dueDate"/>
-               <field set="audit" id="alvexdt:completeDate"/>
-               <field set="audit" id="alvexdt:auditor">
+               <field set="signatory" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
+               <field set="status" id="alvexdt:status"/>
+               <field set="status" id="alvexdt:dueDate"/>
+               <field set="status" id="alvexdt:completeDate"/>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
@@ -1028,13 +1058,11 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate"/>
-               <show id="alvexdt:administrativeType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:summary" />
                <show id="alvexdt:relatedDocuments" />
-               <show id="alvexdt:signingDate" />
+               <show id="alvexdt:creator" />
                <show id="alvexdt:signatory" />
-               <show id="alvexdt:assignee" />
+               <show id="alvexdt:assignees" />
                <show id="alvexdt:status"/>
                <show id="alvexdt:dueDate" />
                <show id="alvexdt:completeDate" />
@@ -1045,9 +1073,9 @@
             <edit-form template="/alvex-form.ftl" />
             <appearance>
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
-               <set id="signatory" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="summary" appearance="" label=""/>
-               <set id="assignee" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="signatory" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="status" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="audit" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="files" appearance="" label=""/>
                <set id="related" appearance="" label=""/>
@@ -1057,41 +1085,37 @@
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
                </field>
-               <field set="id" id="alvexdt:administrativeType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="signatory" id="alvexdt:company">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="signatory" id="alvexdt:signatory">
+               <field set="id" id="alvexdt:creator">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="signatory" id="alvexdt:signingDate"/>
                <field set="summary" id="alvexdt:summary">
                   <control template="/alvex-mltext.ftl">
                      <control-param name="style">width: 98%</control-param>
                   </control>
                </field>
-               <field set="assignee" id="alvexdt:assignee">
+               <field set="signatory" id="alvexdt:signatory">
+                  <control template="/alvex-masterData-select.ftl"/>
+               </field>
+               <field set="signatory" id="alvexdt:assignees">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="assignee" id="alvexdt:status"/>
-               <field set="assignee" id="alvexdt:dueDate"/>
-               <field set="audit" id="alvexdt:completeDate"/>
-               <field set="audit" id="alvexdt:auditor">
+               <field set="signatory" id="alvexdt:auditor">
                   <control template="/orgchart-picker.ftl" />
                </field>
+               <field set="status" id="alvexdt:status"/>
+               <field set="status" id="alvexdt:dueDate"/>
+               <field set="status" id="alvexdt:completeDate"/>
                <field set="files" id="alvexdt:files">
                   <control template="/alvex-uploader.ftl">
                      <control-param name="uploadDirectory">uploads</control-param>
                      <control-param name="createUploadDirectory">true</control-param>
                      <control-param name="viewType">mini</control-param>
-					 <control-param name="withoutRegistries">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
                   </control>
                </field>
                <field set="related" id="alvexdt:relatedDocuments">
-				   <control template="/alvex-docreg-picker.ftl"/>
-			   </field>>
+               <control template="/alvex-docreg-picker.ftl"/>
+            </field>
             </appearance>
          </form>
       </forms>
@@ -1104,17 +1128,20 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:backgroundType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:summary" />
                <show id="alvexdt:signingDate" />
             </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
          </form>
          <form>
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:backgroundType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:relatedDocuments" />
                <show id="alvexdt:summary" />
                <show id="alvexdt:signingDate" />
@@ -1135,9 +1162,6 @@
                   <control template="/alvex-autodate.ftl"/>
                </field>
                <field set="id" id="alvexdt:backgroundType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="signatory" id="alvexdt:company">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="signatory" id="alvexdt:signatory">
@@ -1171,7 +1195,6 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:backgroundType" />
-               <show id="alvexdt:company" />
                <show id="alvexdt:relatedDocuments" />
                <show id="alvexdt:summary" />
                <show id="alvexdt:signingDate" />
@@ -1193,9 +1216,6 @@
                   <control template="/alvex-autodate.ftl"/>
                </field>
                <field set="id" id="alvexdt:backgroundType">
-                  <control template="/alvex-masterData-select.ftl"/>
-               </field>
-               <field set="signatory" id="alvexdt:company">
                   <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="signatory" id="alvexdt:signatory">
@@ -1222,14 +1242,260 @@
       </forms>
    </config>
 
-   <config evaluator="node-type" condition="alvexdt:content">
+   <config evaluator="model-type" condition="alvexdt:official-note">
+      <forms>
+         <form id="datagrid">
+            <field-visibility>
+               <show id="alvexdt:id" />
+               <show id="alvexdt:registerDate" />
+               <show id="alvexdt:summary" />
+               <show id="alvexdt:contactName" />
+               <show id="alvexdt:assignees" />
+            </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
+         </form>
+         <form>
+            <field-visibility>
+               <show id="alvexdt:id" />
+               <show id="alvexdt:registerDate" />
+               <show id="alvexdt:summary" />
+               <show id="alvexdt:contactName" />
+               <show id="alvexdt:creator"/>
+               <show id="alvexdt:assignees" />
+               <show id="alvexdt:dueDate"/>
+               <show id="alvexdt:files"/>
+               <show id="alvexdt:relatedDocuments"/>
+            </field-visibility>
+           <create-form template="/alvex-form.ftl" />
+            <appearance>
+               <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="summary" appearance="" label=""/>
+               <set id="people" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="files" appearance="" label=""/>
+               <set id="related" appearance="" label=""/>
+               <field set="id" id="alvexdt:id">
+                  <control template="/alvex-auto-numberer.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:dueDate"/>
+               <field set="summary" id="alvexdt:summary">
+                  <control template="/alvex-mltext.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
+               </field>
+               <field set="people" id="alvexdt:creator">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:contactName">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:assignees">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="files" id="alvexdt:files">
+                  <control template="/alvex-uploader.ftl">
+                     <control-param name="uploadDirectory">uploads</control-param>
+                     <control-param name="createUploadDirectory">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
+                  </control>
+               </field>
+               <field set="related" id="alvexdt:relatedDocuments">
+               <control template="/alvex-docreg-picker.ftl"/>
+            </field>
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="node-type" condition="alvexdt:official-note">
       <forms>
          <form>
             <field-visibility>
-               <show id="cm:name" />
-               <show id="cm:description" />
-               <show id="alvexdt:registries" />
+               <show id="alvexdt:id" />
+               <show id="alvexdt:registerDate" />
+               <show id="alvexdt:summary" />
+               <show id="alvexdt:contactName" />
+               <show id="alvexdt:creator"/>
+               <show id="alvexdt:assignees" />
+               <show id="alvexdt:dueDate"/>
+               <show id="alvexdt:files"/>
+               <show id="alvexdt:relatedDocuments"/>
             </field-visibility>
+            <view-form template="/alvex-form.ftl" />
+            <edit-form template="/alvex-form.ftl" />
+            <appearance>
+               <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="summary" appearance="" label=""/>
+               <set id="people" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="files" appearance="" label=""/>
+               <set id="related" appearance="" label=""/>
+               <field set="id" id="alvexdt:id">
+                  <control template="/alvex-auto-numberer.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:dueDate"/>
+               <field set="summary" id="alvexdt:summary">
+                  <control template="/alvex-mltext.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
+               </field>
+               <field set="people" id="alvexdt:creator">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:contactName">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:assignees">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="files" id="alvexdt:files">
+                  <control template="/alvex-uploader.ftl">
+                     <control-param name="uploadDirectory">uploads</control-param>
+                     <control-param name="createUploadDirectory">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
+                  </control>
+               </field>
+               <field set="related" id="alvexdt:relatedDocuments">
+               <control template="/alvex-docreg-picker.ftl"/>
+            </field>
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="model-type" condition="alvexdt:orders">
+      <forms>
+         <form id="datagrid">
+            <field-visibility>
+               <show id="alvexdt:id" />
+               <show id="alvexdt:registerDate" />
+               <show id="alvexdt:summary" />
+               <show id="alvexdt:signatory" />
+               <show id="alvexdt:assignees" />
+            </field-visibility>
+            <appearance>
+               <field id="alvexdt:relatedDocuments">
+                  <control template="Alvex.DatagridRecordRenderer"/>
+               </field>
+            </appearance>
+         </form>
+         <form>
+            <field-visibility>
+               <show id="alvexdt:id" />
+               <show id="alvexdt:registerDate" />
+               <show id="alvexdt:summary" />
+               <show id="alvexdt:signatory" />
+               <show id="alvexdt:creator"/>
+               <show id="alvexdt:assignees" />
+               <show id="alvexdt:dueDate"/>
+               <show id="alvexdt:files"/>
+               <show id="alvexdt:relatedDocuments"/>
+            </field-visibility>
+           <create-form template="/alvex-form.ftl" />
+            <appearance>
+               <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="summary" appearance="" label=""/>
+               <set id="people" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="files" appearance="" label=""/>
+               <set id="related" appearance="" label=""/>
+               <field set="id" id="alvexdt:id">
+                  <control template="/alvex-auto-numberer.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:dueDate"/>
+               <field set="summary" id="alvexdt:summary">
+                  <control template="/alvex-mltext.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
+               </field>
+               <field set="people" id="alvexdt:creator">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:signatory">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:assignees">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="files" id="alvexdt:files">
+                  <control template="/alvex-uploader.ftl">
+                     <control-param name="uploadDirectory">uploads</control-param>
+                     <control-param name="createUploadDirectory">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
+                  </control>
+               </field>
+               <field set="related" id="alvexdt:relatedDocuments">
+               <control template="/alvex-docreg-picker.ftl"/>
+            </field>
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="node-type" condition="alvexdt:orders">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="alvexdt:id" />
+               <show id="alvexdt:registerDate" />
+               <show id="alvexdt:summary" />
+               <show id="alvexdt:signatory" />
+               <show id="alvexdt:creator"/>
+               <show id="alvexdt:assignees" />
+               <show id="alvexdt:dueDate"/>
+               <show id="alvexdt:files"/>
+               <show id="alvexdt:relatedDocuments"/>
+            </field-visibility>
+            <view-form template="/alvex-form.ftl" />
+            <edit-form template="/alvex-form.ftl" />
+            <appearance>
+               <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="summary" appearance="" label=""/>
+               <set id="people" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="files" appearance="" label=""/>
+               <set id="related" appearance="" label=""/>
+               <field set="id" id="alvexdt:id">
+                  <control template="/alvex-auto-numberer.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:registerDate">
+                  <control template="/alvex-autodate.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:dueDate"/>
+               <field set="summary" id="alvexdt:summary">
+                  <control template="/alvex-mltext.ftl">
+                     <control-param name="style">width: 98%</control-param>
+                  </control>
+               </field>
+               <field set="people" id="alvexdt:creator">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:signatory">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="people" id="alvexdt:assignees">
+                  <control template="/orgchart-picker.ftl" />
+               </field>
+               <field set="files" id="alvexdt:files">
+                  <control template="/alvex-uploader.ftl">
+                     <control-param name="uploadDirectory">uploads</control-param>
+                     <control-param name="createUploadDirectory">true</control-param>
+                <control-param name="withoutRegistries">true</control-param>
+                  </control>
+               </field>
+               <field set="related" id="alvexdt:relatedDocuments">
+               <control template="/alvex-docreg-picker.ftl"/>
+            </field>
+            </appearance>
          </form>
       </forms>
    </config>

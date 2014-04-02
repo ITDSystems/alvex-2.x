@@ -8,8 +8,8 @@
 
 	<description>Alvex Default Company Documents Model</description>
 	<author>ITD Systems</author>
-	<published>2012-09-27</published>
-	<version>1.1</version>
+	<published>2014-04-01</published>
+	<version>1.2</version>
 
 	<imports>
 		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
@@ -145,6 +145,14 @@
 						<tokenised>both</tokenised>
 					</index>
 				</property>
+				<property name="alvexdt:outgoingnumber">
+					<type>d:text</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>both</tokenised>
+					</index>
+				</property>
 			</properties>
 
 			<mandatory-aspects>
@@ -155,6 +163,7 @@
 				<aspect>alvexdt:addressable</aspect>
 				<aspect>alvexdt:withContactName</aspect>
 				<aspect>alvexdt:withDeliveryType</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
 			</mandatory-aspects>
 		</type>	
 
@@ -175,10 +184,12 @@
 				<aspect>alvexdt:correspondentable</aspect>
 				<aspect>alvexdt:signed</aspect>
 				<aspect>alvexdt:withRelatedReceived</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:summarizable</aspect>
 				<aspect>alvexdt:withContactName</aspect>
 				<aspect>alvexdt:withDeliveryType</aspect>
 				<aspect>alvexdt:withAddresser</aspect>
+				<aspect>alvexdt:executable</aspect>
 			</mandatory-aspects>
 		</type>	
 
@@ -280,6 +291,7 @@
 				<aspect>alvexdt:signed</aspect>
 				<aspect>alvexdt:executable</aspect>
 				<aspect>alvexdt:audited</aspect>
+				<aspect>alvexdt:withcreator</aspect>
 			</mandatory-aspects>
 		</type>	
 
@@ -336,10 +348,35 @@
 
 			<mandatory-aspects>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
-				<aspect>alvexdt:contractorable</aspect>
+				<aspect>alvexdt:contractorable_not_mandatory</aspect>
 				<aspect>alvexdt:expiring</aspect>
 			</mandatory-aspects>
 		</type>	
+
+		<type name="alvexdt:official-note">
+			<parent>alvexdt:object</parent>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:withcreator</aspect>
+				<aspect>alvexdt:executable</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:withContactName</aspect>
+			</mandatory-aspects>
+		</type>	
+
+		<type name="alvexdt:orders">
+			<parent>alvexdt:object</parent>
+
+			<mandatory-aspects>
+				<aspect>alvexdt:withcreator</aspect>
+				<aspect>alvexdt:executable</aspect>
+				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:withRelatedDocuments</aspect>
+				<aspect>alvexdt:signed</aspect>
+			</mandatory-aspects>
+		</type>	
+
 	</types>
 
 	<aspects>
@@ -393,6 +430,15 @@
 				</property>
 			</properties>
 		</aspect>
+
+		<aspect name="alvexdt:contractorable_not_mandatory">
+			<parent>alvexdt:contractorable</parent>
+            <overrides>
+            	<property name="alvexdt:contractor">
+					<default></default>
+				</property>
+            </overrides>
+	    </aspect>
 
 		<aspect name="alvexdt:correspondentable">
 			<properties>
@@ -503,6 +549,14 @@
 
 		<aspect name="alvexdt:signed">
 			<properties>
+				<property name="alvexdt:ifsigned">
+					<type>d:boolean</type>
+					<index enabled="true">
+						<atomic>true</atomic>
+						<stored>true</stored> 
+						<tokenised>false</tokenised>
+					</index>
+				</property>
 				<property name="alvexdt:signingDate">
 					<type>d:date</type>
 					<index enabled="true">
@@ -604,6 +658,17 @@
 						<many>false</many>
 					</target>
 				</association>
+				<association name="alvexdt:assignees">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
 			</associations>
 		</aspect>
 
@@ -617,7 +682,7 @@
 					<target>
 						<class>cm:person</class>
 						<mandatory>false</mandatory>
-						<many>false</many>
+						<many>true</many>
 					</target>
 				</association>
 			</associations>
@@ -633,7 +698,7 @@
 					<target>
 						<class>cm:person</class>
 						<mandatory>false</mandatory>
-						<many>false</many>
+						<many>true</many>
 					</target>
 				</association>
 			</associations>
@@ -675,11 +740,27 @@
 					<target>
 						<class>cm:person</class>
 						<mandatory>false</mandatory>
-						<many>false</many>
+						<many>true</many>
 					</target>
 				</association>
 			</associations>
 		</aspect>
+
+        <aspect name="alvexdt:withcreator">
+        	<associations>
+				<association name="alvexdt:creator">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:person</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+        </aspect>
 
 	</aspects>
 
