@@ -23,6 +23,9 @@
       <component>
          <region-id>toolbar</region-id>
          <url>/components/data-lists/toolbar</url>
+         <properties>
+            <registryConfig>true</registryConfig>
+         </properties>
       </component>
 
       <!-- Datagrid -->

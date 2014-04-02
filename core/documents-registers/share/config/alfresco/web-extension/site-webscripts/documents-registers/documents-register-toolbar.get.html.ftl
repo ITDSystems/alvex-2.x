@@ -1,4 +1,6 @@
 <#assign id = args.htmlid>
+<#assign showRegistryConfig = (args.registryConfig?? && args.registryConfig == "true")>
+
 <script type="text/javascript">//<![CDATA[
    new Alvex.DataListsToolbar("${id}").setOptions(
    {
@@ -25,7 +27,7 @@
                </span>
             </span>
          </div>
-         <div class="counters-config">
+         <div class="counters-config <#if showRegistryConfig?? && !showRegistryConfig>hidden</#if>">
             <span id="${id}-countersConfig" class="yui-button yui-push-button">
                <span class="first-child">
                   <button type="button">${msg('label.register-edit.title')}</button>
