@@ -38,6 +38,9 @@
 				<value>process-start@alvex-arbitrary-task</value>
 			</list>
 		</property>
+		<property name="filePermission">
+			<value>read-write</value>
+		</property>
 	</bean>
 	<bean id="alvex-custom-workflows-default-variables-setter"
 		class="com.alvexcore.repo.workflow.activiti.WorkflowDefaultVariablesSetter"
