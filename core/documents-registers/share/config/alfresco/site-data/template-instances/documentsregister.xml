@@ -40,7 +40,12 @@
       <!-- Datalist -->
       <component>
          <region-id>register-list</region-id>
-         <url>/alvex/datalists/selector</url>
+         <url>/components/data-lists/datalists</url>
+         <properties>
+            <listTypesToShow>(alvexdr|alvexdt|document)</listTypesToShow>
+            <listContainerType>alvexdr:documentRegister</listContainerType>
+            <dlUrlTemplate>documentsregister?register=</dlUrlTemplate>
+         </properties>
       </component>
 
       <!-- Actions Common -->

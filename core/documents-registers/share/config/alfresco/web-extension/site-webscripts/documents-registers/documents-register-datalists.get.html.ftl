@@ -11,9 +11,9 @@
          title: "${type.title?js_string}",
          description: "${type.description?js_string}"
       }<#if type_has_next>,</#if></#list>],
-      listTypesToShow: "(alvexdr|alvexdt|document)",
-      listContainerType: "alvexdr:documentRegister",
-      dlUrlTemplate: "documentsregister?register="
+      listTypesToShow: "${(args.listTypesToShow!"")?js_string}",
+      listContainerType: "${(args.listContainerType!"dl:dataList")?js_string}",
+      dlUrlTemplate: "${(args.dlUrlTemplate!"data-lists?list=")?js_string}"
    }).setMessages(${messages});
 //]]></script>
 <div id="${id}-body" class="datalists">
