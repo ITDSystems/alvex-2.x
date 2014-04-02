@@ -22,7 +22,7 @@
       <!-- Toolbar -->
       <component>
          <region-id>toolbar</region-id>
-         <url>/alvex/datalists/toolbar</url>
+         <url>/components/data-lists/toolbar</url>
       </component>
 
       <!-- Datagrid -->
