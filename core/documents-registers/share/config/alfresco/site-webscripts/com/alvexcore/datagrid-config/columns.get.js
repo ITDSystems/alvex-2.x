@@ -209,6 +209,8 @@ function main()
       
       // get all possible visible fields (from view form)
       var allPossibleFields = getVisibleFields("view", viewFormConfig);
+      // get default visible fields for datagrid
+      var datagridDefaultFields = getVisibleFields("view", datagridFormConfig);
       
       // build the JSON object to send to the server
       var postBody = createPostBody("type", itemType, allPossibleFields, viewFormConfig);
@@ -239,10 +241,13 @@ function main()
             columns = formModel.data.definition.fields;
             for each( var item in columns )
             {
+               // check if this item is in default datagrid config or not
+               for each( var datagridField in datagridDefaultFields )
+                  if( datagridField == item.name )
+                     item.showByDefault = true;
                // if there is a datagrid config for the field
                if( formFields[item.name] )
                {
-                  item.showByDefault = true;
                   var templ = formFields[item.name].getControl().getTemplate();
                   var attrs = formFields[item.name].getAttributes();
                   item.isSortKey = (attrs["isSortKey"] !== null ? true : false);
@@ -258,9 +263,21 @@ function main()
          }
       }
    }
+
+   // sort results - datagrid default fields go first
+   var sortedColumns = [];
+   for each( var datagridField in datagridDefaultFields )
+      for each( var item in columns )
+         if( item.name == datagridField )
+         {
+            sortedColumns.push(item);
+            columns.splice(columns.indexOf(item), 1);
+            break;
+         }
+   sortedColumns.push.apply(sortedColumns, columns);
    
    // pass form ui model to FTL
-   model.columns = columns;
+   model.columns = sortedColumns;
 }
 
 main();
