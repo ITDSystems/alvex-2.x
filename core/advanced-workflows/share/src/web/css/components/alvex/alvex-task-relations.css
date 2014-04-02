@@ -89,7 +89,6 @@
 {
    cursor: pointer;
    padding: 0em 0.75em;
-   visibility: hidden;
 }
 
 .task-relations .action div
@@ -164,7 +163,7 @@ div.cancelWorkflow a.alvex-related-workflow-action {
 	background-image: none;
 }
 
-/*
+
 .action div{
 	float: left;
 	line-height: 1em;
@@ -196,7 +195,7 @@ div.cancelWorkflow a.related-workflows-action-link {
 }
 
 div.retrieveDocuments a.related-workflows-action-link {
-	background-image: url(/share/res/components/alvex/images/retrieve-documents-16.png);
+	background-image: url(/share/res/components/images/retrieve-documents-16.png);
 }
 
 div.cancelWorkflowDisabled a.related-workflows-action-link {
@@ -204,11 +203,10 @@ div.cancelWorkflowDisabled a.related-workflows-action-link {
 }
 
 div.retrieveDocumentsDisabled a.related-workflows-action-link {
-	background-image: url(/share/res/components/alvex/images/retrieve-documents-disabled-16.png);
+	background-image: url(/share/res/components/images/retrieve-documents-disabled-16.png);
 }
 
 .alfresco-share .yui-panel .bd .yui-u.first
 {
 	text-align: left;
 }
-*/

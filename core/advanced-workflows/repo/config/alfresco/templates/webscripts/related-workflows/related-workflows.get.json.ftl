@@ -20,9 +20,9 @@
 				[
 					<#list node.workflowInstance.assignees as person>
 					{
-						"firstName": "${person.firstName}",
-						"lastName": "${person.lastName}",
-						"userName": "${person.userName}"
+						"firstName": "${person.properties.firstName}",
+						"lastName": "${person.properties.lastName}",
+						"userName": "${person.properties.userName}"
 					}<#if person_has_next>,</#if>
 					</#list>
 				]
@@ -39,9 +39,9 @@
 				[
 					<#list node.relatedWorkflow.assignees as person>
 					{
-						"firstName": "${person.firstName}",
-						"lastName": "${person.lastName}",
-						"userName": "${person.userName}"
+						"firstName": "${person.properties.firstName}",
+						"lastName": "${person.properties.lastName}",
+						"userName": "${person.properties.userName}"
 					}<#if person_has_next>,</#if>
 					</#list>
 				]
