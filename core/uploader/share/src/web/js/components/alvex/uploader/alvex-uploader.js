@@ -429,6 +429,17 @@ if (typeof Alvex == "undefined" || !Alvex)
 						for( var i = 0; i < resp.json.data.items.length; i++ )
 						{
 							var file = resp.json.data.items[i];
+							
+							// Check for duplicates
+							var existing = false;
+							for( var j = 0; j < this.options.files.length; j++ )
+							{
+								if(this.options.files[j].nodeRef === file.nodeRef)
+									existing = true;
+							}
+							if(existing)
+								continue;
+							
 							this.options.files.push({
 								name: file.name,
 								nodeRef: file.nodeRef,
