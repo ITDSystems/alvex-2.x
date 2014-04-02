@@ -32,6 +32,7 @@
 				<override>document-edit-online</override>
 				<override>document-edit-offline</override>
 				<override>document-publish</override>
+				<override>document-change-type</override>
 			</action>
 			<!-- Custom start workflow action -->
 			<!-- We use them as triggers to remove actions when necessary. -->
