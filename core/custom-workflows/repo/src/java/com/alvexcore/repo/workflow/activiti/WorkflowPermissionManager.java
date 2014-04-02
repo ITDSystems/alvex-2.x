@@ -154,7 +154,7 @@ public class WorkflowPermissionManager extends AlvexActivitiListener implements
 	private static final String PACKAGE_VARIABLE = "bpm_package";
 	private static final String DISCUSSION_VARIABLE = "alvexwfd_discussion";
 	
-	private String filePermission;
+	private String filePermission = PermissionService.CONSUMER;
 	
 	public void setFilePermission(String permission)
 	{
