@@ -1,0 +1,11 @@
+.set .yui-gc div.first {
+	margin-left: 0;
+	width: 65%;
+	float: left;
+}
+
+.set .yui-gc .yui-u {
+	margin-left: 1%;
+	width: 32%;
+	float: left;
+}

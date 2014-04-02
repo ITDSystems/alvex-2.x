@@ -3,6 +3,7 @@
 		<forms>      
 			<dependencies>
 				<js  src="/components/alvex.js" />
+				<css  src="/components/alvex.css" />
 			</dependencies>
 		</forms>
 	</config>
