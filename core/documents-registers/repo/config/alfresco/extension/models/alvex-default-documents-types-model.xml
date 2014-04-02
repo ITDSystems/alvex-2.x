@@ -219,7 +219,7 @@
                                         <index enabled="true">
                                                 <atomic>true</atomic>
                                                 <stored>true</stored>
-                                                <tokenised>false</tokenised>
+                                                <tokenised>both</tokenised>
                                         </index>
                                 </property>
                                 <property name="alvexdt:paymentDate">
@@ -227,7 +227,7 @@
                                         <index enabled="true">
                                                 <atomic>true</atomic>
                                                 <stored>true</stored>
-                                                <tokenised>false</tokenised>
+                                                <tokenised>both</tokenised>
                                         </index>
                                 </property>
                                 <property name="alvexdt:amount">
@@ -235,7 +235,7 @@
                                         <index enabled="true">
                                                 <atomic>true</atomic>
                                                 <stored>true</stored>
-                                                <tokenised>false</tokenised>
+                                                <tokenised>both</tokenised>
                                         </index>
                                 </property>
                                 <property name="alvexdt:currency">
@@ -243,7 +243,7 @@
                                         <index enabled="true">
                                                 <atomic>true</atomic>
                                                 <stored>true</stored>
-                                                <tokenised>false</tokenised>
+                                                <tokenised>both</tokenised>
                                         </index>
                                 </property>
 			</properties>
@@ -508,7 +508,7 @@
 					<index enabled="true">
 						<atomic>true</atomic>
 						<stored>true</stored> 
-						<tokenised>false</tokenised>
+						<tokenised>both</tokenised>
 					</index>
 				</property>
 			</properties>
@@ -534,7 +534,7 @@
 					<index enabled="true">
 						<atomic>true</atomic>
 						<stored>true</stored> 
-						<tokenised>false</tokenised>
+						<tokenised>both</tokenised>
 					</index>
 				</property>
 			</properties>
@@ -547,7 +547,7 @@
 					<index enabled="true">
 						<atomic>true</atomic>
 						<stored>true</stored> 
-						<tokenised>false</tokenised>
+						<tokenised>both</tokenised>
 					</index>
 				</property>
 			</properties>
@@ -560,7 +560,7 @@
 					<index enabled="true">
 						<atomic>true</atomic>
 						<stored>true</stored> 
-						<tokenised>false</tokenised>
+						<tokenised>both</tokenised>
 					</index>
 				</property>
 			</properties>
@@ -580,7 +580,7 @@
 					<index enabled="true">
 						<atomic>true</atomic>
 						<stored>true</stored> 
-						<tokenised>false</tokenised>
+						<tokenised>both</tokenised>
 					</index>
 				</property>
 				<property name="alvexdt:completeDate">
@@ -588,7 +588,7 @@
 					<index enabled="true">
 						<atomic>true</atomic>
 						<stored>true</stored> 
-						<tokenised>false</tokenised>
+						<tokenised>both</tokenised>
 					</index>
 				</property>
 			</properties>
