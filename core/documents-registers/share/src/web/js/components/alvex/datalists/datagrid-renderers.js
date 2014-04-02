@@ -105,3 +105,30 @@ Alvex.DatagridAssocRenderer = function (elCell, oRecord, oColumn, oData)
 	}
 	elCell.innerHTML = html;
 };
+
+Alvex.DatagridRecordRenderer = function (elCell, oRecord, oColumn, oData)
+{
+	oData = oRecord.getData("itemData")[oColumn.field];
+	if( !oData )
+		return;
+	oData = YAHOO.lang.isArray(oData) ? oData : [oData];
+	
+	var html = '';
+	for (var i = 0, ii = oData.length, data; i < ii; i++)
+	{
+		data = oData[i];
+		html += '<a href="' 
+				+ Alfresco.constants.URL_PAGECONTEXT
+				+ 'view-metadata?nodeRef=' + data.value + '">';
+		html += '<img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/filetypes/' 
+				+ 'generic-file-16.png' 
+				+ '" width="16" alt="' + Alfresco.util.encodeHTML(data.displayValue) + '" title="' 
+				+ Alfresco.util.encodeHTML(data.displayValue) + '" />';
+		html += ' ' + Alfresco.util.encodeHTML(data.displayValue) + '</a>'
+		if (i < ii - 1)
+		{
+			html += "<br />";
+		}
+	}
+	elCell.innerHTML = html;
+};

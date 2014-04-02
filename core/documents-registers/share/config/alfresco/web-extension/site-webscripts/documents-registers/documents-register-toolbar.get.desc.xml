@@ -1,5 +1,5 @@
 <webscript>
   <shortname>Alvex: Data-lists Toolbar</shortname>
   <description>Alvex: Data-lists Toolbar</description>
-  <url>/alvex/datalists/toolbar</url>
+  <url>/components/data-lists/toolbar</url>
 </webscript>

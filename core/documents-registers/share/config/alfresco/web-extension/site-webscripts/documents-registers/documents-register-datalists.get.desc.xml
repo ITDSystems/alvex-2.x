@@ -1,5 +1,5 @@
 <webscript>
   <shortname>Alvex: Data Lists</shortname>
   <description>Alvex: Data Lists, "list-of-lists" component</description>
-  <url>/alvex/datalists/selector</url>
+  <url>/components/data-lists/datalists</url>
 </webscript>

@@ -4,16 +4,17 @@
    {
       siteId: "${page.url.templateArgs.site!""}",
       containerId: "${template.properties.container!"dataLists"}",
-      listId: "${(page.url.args.register!"")?js_string}",
+      listId: "${(page.url.args.active!"")?js_string}",
       listTypes: [<#list listTypes as type>
       {
          name: "${type.name?js_string}",
          title: "${type.title?js_string}",
          description: "${type.description?js_string}"
       }<#if type_has_next>,</#if></#list>],
-      listTypesToShow: "(alvexdr|alvexdt|document)",
-      listContainerType: "alvexdr:documentRegister",
-      dlUrlTemplate: "documentsregister?register="
+      component: "${(args.component!"datalists")?js_string}",
+      listTypesToShow: "${(args.listTypesToShow!"^dl:")?js_string}",
+      listContainerType: "${(args.listContainerType!"dl:dataList")?js_string}",
+      dlUrlTemplate: "${(args.dlUrlTemplate!"data-lists?active=")?js_string}"
    }).setMessages(${messages});
 //]]></script>
 <div id="${id}-body" class="datalists">

@@ -94,14 +94,15 @@ class CreateGroupWork implements RunAsWork<Void> {
 
 class SetPermissionsWork implements RunAsWork<Void> {
 
-	final static String PERMISSION = PermissionService.CONSUMER;
+	private String permission;
 
 	private NodeRef pkg;
 	private String groupId;
 	private ServiceRegistry serviceRegistry;
 
 	public SetPermissionsWork(ServiceRegistry serviceRegistry, NodeRef pkg,
-			String groupId) {
+			String groupId, String permission) {
+		this.permission = permission;
 		this.serviceRegistry = serviceRegistry;
 		this.pkg = pkg;
 		this.groupId = serviceRegistry.getAuthorityService().getName(
@@ -114,7 +115,7 @@ class SetPermissionsWork implements RunAsWork<Void> {
 				.getChildAssocs(pkg);
 		for (ChildAssociationRef assoc : assocs) {
 			serviceRegistry.getPermissionService().setPermission(
-					assoc.getChildRef(), groupId, PERMISSION, true);
+					assoc.getChildRef(), groupId, permission, true);
 		}
 		return null;
 	}
@@ -152,7 +153,27 @@ public class WorkflowPermissionManager extends AlvexActivitiListener implements
 	public static final String ZONE_ALVEX = "ZONE.ALVEX";
 	private static final String PACKAGE_VARIABLE = "bpm_package";
 	private static final String DISCUSSION_VARIABLE = "alvexwfd_discussion";
-
+	
+	private String filePermission = PermissionService.CONSUMER;
+	
+	public void setFilePermission(String permission)
+	{
+		String perm = permission.toLowerCase();
+		if( perm.equals("ro") || perm.equals("read") )
+			filePermission = PermissionService.CONSUMER;
+		if( perm.equals("rw") || perm.equals("read-write") )
+			filePermission = PermissionService.EDITOR;
+		
+		if( perm.equals("consumer") )
+			filePermission = PermissionService.CONSUMER;
+		if( perm.equals("contributor") )
+			filePermission = PermissionService.CONTRIBUTOR;
+		if( perm.equals("editor") )
+			filePermission = PermissionService.EDITOR;
+		if( perm.equals("coordinator") )
+			filePermission = PermissionService.COORDINATOR;
+	}
+	
 	public void grantPermissions(String assignee, String groupId) {
 		// run work to grant permissions to user
 		RunAsWork<Void> work = new GrantPermissionsWork(serviceRegistry,
@@ -167,7 +188,7 @@ public class WorkflowPermissionManager extends AlvexActivitiListener implements
 				.getNodeRef();
 		// run work to set permissions on all documents in package
 		RunAsWork<Void> work = new SetPermissionsWork(serviceRegistry, pkg,
-				groupId);
+				groupId, filePermission);
 		AuthenticationUtil.runAsSystem(work);
 	}
 

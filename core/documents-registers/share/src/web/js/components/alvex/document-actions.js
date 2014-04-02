@@ -62,7 +62,7 @@
 					fn: function (resp)
 					{
 						window.location = Alfresco.constants.URL_PAGECONTEXT +
-											"site/" + resp.json.siteName + "/documentsregister?register=" + resp.json.registryName;
+											"site/" + resp.json.siteName + "/documentsregister?active=" + resp.json.registryName;
 					},
 					scope:this
 				},

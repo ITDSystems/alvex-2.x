@@ -22,7 +22,10 @@
       <!-- Toolbar -->
       <component>
          <region-id>toolbar</region-id>
-         <url>/alvex/datalists/toolbar</url>
+         <url>/components/data-lists/toolbar</url>
+         <properties>
+            <registryConfig>true</registryConfig>
+         </properties>
       </component>
 
       <!-- Datagrid -->
@@ -37,7 +40,19 @@
       <!-- Datalist -->
       <component>
          <region-id>register-list</region-id>
-         <url>/alvex/datalists/selector</url>
+         <url>/components/data-lists/datalists</url>
+         <properties>
+            <component>docReg</component>
+            <listTypesToShow>(alvexdr|alvexdt|document)</listTypesToShow>
+            <listContainerType>alvexdr:documentRegister</listContainerType>
+            <dlUrlTemplate>documentsregister?active=</dlUrlTemplate>
+         </properties>
+      </component>
+
+      <!-- Filter -->
+      <component>
+         <region-id>filter</region-id>
+         <url>/components/data-lists/filter</url>
       </component>
 
       <!-- Actions Common -->
