@@ -35,6 +35,22 @@ var getNodes = function(folder)
 		{
 			var workflowInstance = workflow.getInstance(node.properties["alvexcm:workflowInstance"]);
 			var relatedWorkflow = workflow.getInstance(node.properties["alvexcm:relatedObject"]);
+			if( workflowInstance === null || relatedWorkflow === null )
+				continue;
+			
+			var assignees = [];
+			for each(var path in relatedWorkflow.getPaths())
+			{
+				if(!path.isActive())
+					continue;
+				for each(var task in path.getTasks())
+				{
+					var userName = task.getProperties()["cm:owner"];
+					var user = people.getPerson(userName);
+					assignees.push(user);
+				}
+			}
+			
 			model.nodes.push(
 					{
 						"workflowInstance": {
@@ -53,7 +69,7 @@ var getNodes = function(folder)
 							"startDate": relatedWorkflow.startDate ? utils.toISO8601(relatedWorkflow.startDate) : "null",
 							"endDate": relatedWorkflow.endDate ? utils.toISO8601(relatedWorkflow.endDate) : "null",
 							"dueDate": "null",
-							"assignees": []
+							"assignees": assignees
 						}
 					});
 		}

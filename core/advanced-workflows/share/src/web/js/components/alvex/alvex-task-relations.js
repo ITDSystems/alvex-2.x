@@ -686,7 +686,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					"<br/>" + this.relatedWorkflows.msg("alvex.related_workflows.dueDate") + " " 
 				+ Alfresco.util.formatDate( Alfresco.util.fromISO8601(oRecord._oData["relatedWorkflow.dueDate"]) , "mediumDate") : "" ),
 				'complete': this.relatedWorkflows.msg("alvex.related_workflows.complete")
-				+ " (" + Alfresco.util.formatDate( Alfresco.util.fromISO8601(oRecord._oData["relatedWorkflow.completeDate"]) , "mediumDate") + ")"
+				+ "<br/>(" + Alfresco.util.formatDate( Alfresco.util.fromISO8601(oRecord._oData["relatedWorkflow.completeDate"]) , "mediumDate") + ")"
 			}[oRecord._oData["relatedWorkflow.status"]];
 		},
 
@@ -835,6 +835,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		cancelWorkflow: function (obj)
 		{
+			var me = this;
 			Alfresco.util.PopupManager.displayPrompt(
 			{
 				title: this.msg("alvex.related_workflows.cancel_title"),
@@ -842,7 +843,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				buttons:
 				[
 					{
-						text: this.msg("alvex.related_workflows.yes"),
+						text: this.msg("button.yes"),
 						handler: (function(rw, obj){
 							return function()
 							{
@@ -850,7 +851,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 									'{proxy}/api/workflow-instances/{id}',
 									{
 										proxy:Alfresco.constants.PROXY_URI,
-										id:obj.id
+										id:obj["relatedWorkflow.id"]
 									}
 								);
 								Alfresco.util.Ajax.jsonRequest({
@@ -860,7 +861,10 @@ if (typeof Alvex == "undefined" || !Alvex)
 									{
 										fn:function()
 										{
-											rw.update();
+											me.options.dataTable.getDataSource().sendRequest('', 
+												{ success: me.options.dataTable.onDataReturnInitializeTable, 
+													scope: me.options.dataTable }
+											);
 										}
 									}
 								});
@@ -869,7 +873,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 						})(this,obj)
 					},
 					{
-						text:this.msg("alvex.related_workflows.no"),
+						text:this.msg("button.no"),
 						handler:function()
 						{
 							this.destroy();
@@ -885,7 +889,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			Alvex.util.processAjaxQueue({
 				queue: [
 					{
-						url: Alfresco.constants.PROXY_URI+'api/workflow-instances/'+obj.id,
+						url: Alfresco.constants.PROXY_URI+'api/workflow-instances/'+obj["relatedWorkflow.id"],
 						responseContentType: Alfresco.util.Ajax.JSON,
 						successCallback: {
 							fn: function (response)
@@ -915,7 +919,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 								}
 								YAHOO.Bubbling.fire('uploaderAddFilesReq', 
 									{
-										uploader: this.options.parentUploaderId,
+										uploader: (this.options.parentUploaderId ? this.options.parentUploaderId : "*"),
 										files: nodes.join(',')
 									});
 							},
