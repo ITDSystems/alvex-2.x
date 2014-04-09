@@ -425,7 +425,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                      elLink = document.createElement("a");
                      elLink.className = "filter-link";
                      elLink.title = list.description;
-                     elLink.href = this.options.dlUrlTemplate + $html(list.name);
+                     elLink.href = this.options.dlUrlTemplate + encodeURIComponent(list.name);
                      elText = document.createTextNode(list.title);
 
                      // Build the DOM structure with the new elements

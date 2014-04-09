@@ -29,7 +29,7 @@
       <div class="detail-list-item <#if list_index = 0>first-item<#elseif !list_has_next>last-item</#if>">
          <div>
             <div id="list">
-               <a id="${args.htmlid}-details-span-${list_index}" href="${url.context}/page/site/${site}/documentsregister?active=${list.name?html}" class="theme-color-1" title="${(list.title!"")?html}">${(list.title!"")?html}</a>
+               <a id="${args.htmlid}-details-span-${list_index}" href="${url.context}/page/site/${site}/documentsregister?active=${list.name?url}" class="theme-color-1" title="${(list.title!"")?html}">${(list.title!"")?html}</a>
                <div class="description">${(list.description!"")?html}</div>
             </div>
          </div>
