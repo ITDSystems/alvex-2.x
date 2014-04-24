@@ -1,0 +1,13 @@
+<extension>
+  <modules>
+    <module>
+      <id>Alvex Header Menu</id>
+      <customizations>
+        <customization>
+          <targetPackageRoot>org.alfresco.share.header</targetPackageRoot>
+          <sourcePackageRoot>alvex.header-menu</sourcePackageRoot>
+        </customization>
+      </customizations>
+    </module>
+  </modules>
+</extension>
