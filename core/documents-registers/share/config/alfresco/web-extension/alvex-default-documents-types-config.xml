@@ -162,6 +162,7 @@
                <show id="alvexdt:signingDate" />
                <show id="alvexdt:expiryDate" />
                <show id="alvexdt:signatory" />
+               <show id="alvexdt:ifsigned"/>
                <show id="alvexdt:renew" />
                <show id="alvexdt:location" />
                <show id="alvexdt:files" />
@@ -330,18 +331,19 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
-               <show id="alvexdt:receivedType" />
+               <show id="alvexdt:addressee" />
+               <show id="alvexdt:outgoingnumber" />
                <show id="alvexdt:correspondent" />
+               <show id="alvexdt:receivedType" />
                <show id="alvexdt:deliveryType" />
+               <show id="alvexdt:summary" />
                <show id="alvexdt:assignee" />
                <show id="alvexdt:status" />
                <show id="alvexdt:dueDate" />
                <show id="alvexdt:completeDate" />
-               <show id="alvexdt:relatedSent"/>
-               <show id="alvexdt:summary" />
-               <show id="alvexdt:addressee" />
-               <show id="alvexdt:deliveryType" />
                <show id="alvexdt:files" />
+               <show id="alvexdt:relatedSent" />
+               <show id="alvexdt:relatedDocuments" />
             </field-visibility>
             <view-form template="/alvex-form.ftl" />
             <edit-form template="/alvex-form.ftl" />
@@ -819,6 +821,7 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:contractor" />
                <show id="alvexdt:invoiceDate" />
+               <show id="alvexdt:ispaid" />
                <show id="alvexdt:paymentDate" />
                <show id="alvexdt:documentManager" />
             </field-visibility>
@@ -835,7 +838,9 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
+               <show id="alvexdt:invoiceType" />
                <show id="alvexdt:invoiceDate" />
+               <show id="alvexdt:ispaid" />
                <show id="alvexdt:paymentDate" />
                <show id="alvexdt:amount" />
                <show id="alvexdt:currency" />
@@ -852,6 +857,7 @@
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="dates" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="ispaid" />
                <set id="amount" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="primary"/>
                <set id="files" appearance="" label=""/>
@@ -861,6 +867,9 @@
                </field>
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:invoiceType">
+                  <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="company" id="alvexdt:contractor">
                   <control template="/alvex-masterData-select.ftl">
@@ -873,6 +882,7 @@
                <field set="dates" id="alvexdt:invoiceDate"/>
                <field set="dates" id="alvexdt:expiryDate"/>
                <field set="dates" id="alvexdt:paymentDate"/>
+               <field set="ispaid" id="alvexdt:ispaid" />
                <field set="amount" id="alvexdt:amount"/>
                <field set="amount" id="alvexdt:currency">
                   <control template="/alvex-masterData-select.ftl"/>
@@ -905,7 +915,9 @@
             <field-visibility>
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
+               <show id="alvexdt:invoiceType" />
                <show id="alvexdt:invoiceDate" />
+               <show id="alvexdt:ispaid" />
                <show id="alvexdt:paymentDate" />
                <show id="alvexdt:amount" />
                <show id="alvexdt:currency" />
@@ -923,6 +935,7 @@
                <set id="id" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="company" appearance="" label="" template="/alvex-2-column-set-wide-left.ftl"/>
                <set id="dates" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
+               <set id="ispaid" />
                <set id="amount" appearance="" label="" template="/org/alfresco/components/form/3-column-set.ftl"/>
                <set id="primary"/>
                <set id="files" appearance="" label=""/>
@@ -932,6 +945,9 @@
                </field>
                <field set="id" id="alvexdt:registerDate">
                   <control template="/alvex-autodate.ftl"/>
+               </field>
+               <field set="id" id="alvexdt:invoiceType">
+                  <control template="/alvex-masterData-select.ftl"/>
                </field>
                <field set="company" id="alvexdt:contractor">
                   <control template="/alvex-masterData-select.ftl">
@@ -944,6 +960,7 @@
                <field set="dates" id="alvexdt:invoiceDate"/>
                <field set="dates" id="alvexdt:expiryDate"/>
                <field set="dates" id="alvexdt:paymentDate"/>
+               <field set="ispaid" id="alvexdt:ispaid" />
                <field set="amount" id="alvexdt:amount"/>
                <field set="amount" id="alvexdt:currency">
                   <control template="/alvex-masterData-select.ftl"/>
