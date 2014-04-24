@@ -44,14 +44,8 @@ function updateRecentSites() {
    if (page.url.templateArgs.site)
    {
       // Get the preferences for the current user...
-      var result = remote.call("/api/people/" + encodeURIComponent(user.name) + "/preferences"),
-          prefs,
-          recentSites;
-      if (result.status == 200 && result != "{}")
-      {
-         prefs = eval('(' + result + ')');
-         recentSites = eval('try{(prefs.org.alfresco.share.sites.recent)}catch(e){}');
-      }
+      var prefs = jsonUtils.toObject(preferences.value);
+      var recentSites = eval('try{(prefs.org.alfresco.share.sites.recent)}catch(e){}');
       // Check that recentSites and favourites have been initialised by the successful
       // response of requesting preferences. If not then just make them a new object and
       // this will be reflected in the UI as there being no recent sites or favourites.
@@ -255,8 +249,8 @@ function getPages(includeUnusedPages)
             try
             {
                // Parse json using Java to a org.json.simple.JSONArray (wrap in an object to keep toObject happy)
-               sitePages = jsonUtils.toObject('{"tmp":' + dashboardPageData.properties.sitePages + '}').tmp;
-
+               sitePages = jsonUtils.toObject('{"tmp":' + sitePages + '}').tmp;
+               
                // Print array as json and use eval so we get a Rhino javascript array to execute as usual
                sitePages = eval("(" + sitePages.toString() + ")");
             }
@@ -273,13 +267,14 @@ function getPages(includeUnusedPages)
          {
             try
             {
-               // Parse json using Java to a org.json.simple.JSONObject with an Array
-               pageMetadata = jsonUtils.toObject('{"tmp":[' + pageMetadata + ']}').tmp;
-
+               // Parse json using Java to a org.json.simple.JSONObject
+               pageMetadata = jsonUtils.toObject(pageMetadata);
+               
                // Print object as json and use eval so we get a Rhino javascript object to execute as usual
                pageMetadata = eval("(" + pageMetadata.toString() + ")")[0];
             }
-            catch(e){
+            catch(e)
+            {
                pageMetadata = {};
             }
          }
@@ -408,6 +403,7 @@ function getSiteNavigationWidgets() {
 
       // Construct an array of all the pages in the site...
       navigationWidgets.push({
+         id: "HEADER_SITE_DASHBOARD",
          name: "alfresco/menus/AlfMenuBarItem",
          config: {
             id: "HEADER_SITE_DASHBOARD",
@@ -420,6 +416,7 @@ function getSiteNavigationWidgets() {
       {
          var targetUrl = "site/" + page.url.templateArgs.site + "/" + pages[i].pageUrl;
          navigationWidgets.push({
+            id: "HEADER_SITE_" + pages[i].pageId.toUpperCase(),
             name: "alfresco/menus/AlfMenuBarItem",
             config: {
                id: "HEADER_SITE_" + pages[i].pageId.toUpperCase(),
@@ -435,6 +432,7 @@ function getSiteNavigationWidgets() {
          });
       }
       navigationWidgets.push({
+         id: "HEADER_SITE_MEMBERS",
          name: "alfresco/menus/AlfMenuBarItem",
          config: {
             id: "HEADER_SITE_MEMBERS",
@@ -467,8 +465,10 @@ function getSiteNavigationWidgets() {
          // Move the appropriate number of items into the More menu...
          var forMoreMenu = navigationWidgets.splice(maxDisplayedSitePages -1, navigationWidgets.length - maxDisplayedSitePages + 1);
          navigationWidgets.push({
+            id: "HEADER_SITE_MORE_PAGES",
             name: "alfresco/menus/AlfMenuBarPopup",
             config: {
+               id: "HEADER_SITE_MORE_PAGES",
                label: "page.navigation.more.label",
                widgets: [
                   {
@@ -514,6 +514,7 @@ function getSubNavigationWidgets() {
          // Make sure the site data is loaded so that we can get the title...
          var siteData = getSiteData();
          navigationWidgets.push({
+            id: "HEADER_SEARCH_BACK_TO_SITE_DASHBOARD",
             name: "alfresco/menus/AlfMenuBarItem",
             config: {
                id: "HEADER_SEARCH_BACK_TO_SITE_DASHBOARD",
@@ -529,9 +530,10 @@ function getSubNavigationWidgets() {
       
       // Add the advanced search link...
       navigationWidgets.push({
+         id: "HEADER_ADVANCED_SEARCH",
          name: "alfresco/menus/AlfMenuBarItem",
          config: {
-            id: "HEADER_SITE_DASHBOARD",
+            id: "HEADER_ADVANCED_SEARCH",
             label: msg.get("header.advanced"),
             iconClass: "alf-forward-icon",
             targetUrl: advancedSearchUrl,
@@ -553,7 +555,7 @@ function getSubNavigationWidgets() {
                      "&q=" + (args["sq"] != null ? encodeURIComponent(args["sq"]) : "");
          model.backlink = query;
          
-         var searchUrl = "search? " + query;
+         var searchUrl = "search?" + query;
          if (page.url.templateArgs.site == null)
          {
             // No update if not a site...
@@ -564,9 +566,10 @@ function getSubNavigationWidgets() {
          }
          
          navigationWidgets.push({
+            id: "HEADER_SEARCH_BACK_TO_RESULTS",
             name: "alfresco/menus/AlfMenuBarItem",
             config: {
-               id: "HEADER_SITE_DASHBOARD",
+               id: "HEADER_SEARCH_BACK_TO_RESULTS",
                label: msg.get("header.results"),
                iconClass: "alf-back-icon",
                targetUrl: searchUrl,
@@ -586,6 +589,7 @@ function getSubNavigationWidgets() {
          // Make sure the site data is loaded so that we can get the title...
          var siteData = getSiteData();
          navigationWidgets.push({
+            id: "HEADER_SEARCH_BACK_TO_SITE_DASHBOARD",
             name: "alfresco/menus/AlfMenuBarItem",
             config: {
                id: "HEADER_SEARCH_BACK_TO_SITE_DASHBOARD",
@@ -638,7 +642,7 @@ function getUserStatusWidget()
    }
 
    return {
-      id: "UserStatus",
+      id: "HEADER_USER_STATUS",
       name: "alfresco/header/CurrentUserStatus",
       config: {
          id: "HEADER_USER_STATUS",
@@ -926,8 +930,8 @@ function generateWidgetDef(item, nestingIndex)
 {
    // Get the localized form of the label...
    var labelTokens = labelTokens = [ user.name || "", user.firstName || "", user.lastName || "", user.fullName || ""],
-       label = encodeURIComponent(msg.get(item.label, labelTokens)),
-       description = encodeURIComponent(msg.get(item.description, labelTokens));
+       label = msg.get(item.label, labelTokens),
+       description = msg.get(item.description, labelTokens);
 
    var widgetDef = null;
    if (!satisfiesPermissions(item))
@@ -1231,72 +1235,89 @@ function generateUserItems() {
                   name: "alfresco/menus/AlfMenuGroup",
                   config: {
                      id: "HEADER_USER_MENU",
-                     widgets: [
-                         getUserStatusWidget(),
-                         {
-                            id: "HEADER_USER_MENU_SET_STATUS",
-                            name: "alfresco/header/AlfMenuItem",
-                            config:
-                            {
-                               id: "HEADER_USER_MENU_SET_STATUS",
-                               label: "set_status.label",
-                               iconClass: "alf-user-status-icon",
-                               publishTopic: "ALF_SET_USER_STATUS"
-                            }
-                         },
-                         {
-                            id: "HEADER_USER_MENU_PROFILE",
-                            name: "alfresco/header/AlfMenuItem",
-                            config:
-                            {
-                               id: "HEADER_USER_MENU_PROFILE",
-                               label: "my_profile.label",
-                               iconClass: "alf-user-profile-icon",
-                               targetUrl: "user/" + encodeURIComponent(user.name) + "/profile"
-                            }
-                         },
-                         {
-                            id: "HEADER_USER_MENU_PASSWORD",
-                            name: "alfresco/header/AlfMenuItem",
-                            config:
-                            {
-                               id: "HEADER_USER_MENU_CHANGE_PASSWORD",
-                               label: "change_password.label",
-                               iconClass: "alf-user-password-icon",
-                               targetUrl: "user/" + encodeURIComponent(user.name) + "/change-password"
-                            }
-                         },
-                         {
-                            id: "HEADER_USER_MENU_HELP",
-                            name: "alfresco/header/AlfMenuItem",
-                            config:
-                            {
-                               id: "HEADER_USER_MENU_HELP",
-                               label: "help.label",
-                               iconClass: "alf-user-help-icon",
-                               targetUrl: getHelpLink(),
-                               targetUrlType: "FULL_PATH",
-                               targetUrlLocation: "NEW"
-                            }
-                         },
-                         {
-                            id: "HEADER_USER_MENU_LOGOUT",
-                            name: "alfresco/header/AlfMenuItem",
-                            config:
-                            {
-                               id: "HEADER_USER_MENU_LOGOUT",
-                               label: "logout.label",
-                               iconClass: "alf-user-logout-icon",
-                               targetUrl: "dologout"
-                            }
-                         }
-                      ]
+                     widgets: getUserMenuWidgets()
                   }
                }
             ]
          }
       }
    ];
+}
+
+/* *********************************************************************************
+ *                                                                                 *
+ * USER MENU WIDGETS                                                               *
+ *                                                                                 *
+ ***********************************************************************************/
+function getUserMenuWidgets()
+{
+   var userMenuWidgets = [
+      getUserStatusWidget(),
+      {
+         id: "HEADER_USER_MENU_SET_STATUS",
+         name: "alfresco/header/AlfMenuItem",
+         config:
+         {
+            id: "HEADER_USER_MENU_SET_STATUS",
+            label: "set_status.label",
+            iconClass: "alf-user-status-icon",
+            publishTopic: "ALF_SET_USER_STATUS"
+         }
+      },
+      {
+         id: "HEADER_USER_MENU_PROFILE",
+         name: "alfresco/header/AlfMenuItem",
+         config:
+         {
+            id: "HEADER_USER_MENU_PROFILE",
+            label: "my_profile.label",
+            iconClass: "alf-user-profile-icon",
+            targetUrl: "user/" + encodeURIComponent(user.name) + "/profile"
+         }
+      }
+   ];
+   if (user.capabilities.isMutable)
+   {
+      userMenuWidgets.push({
+         id: "HEADER_USER_MENU_PASSWORD",
+         name: "alfresco/header/AlfMenuItem",
+         config:
+         {
+            id: "HEADER_USER_MENU_CHANGE_PASSWORD",
+            label: "change_password.label",
+            iconClass: "alf-user-password-icon",
+            targetUrl: "user/" + encodeURIComponent(user.name) + "/change-password"
+         }
+      });
+   }
+   userMenuWidgets.push({
+         id: "HEADER_USER_MENU_HELP",
+         name: "alfresco/header/AlfMenuItem",
+         config:
+         {
+            id: "HEADER_USER_MENU_HELP",
+            label: "help.label",
+            iconClass: "alf-user-help-icon",
+            targetUrl: getHelpLink(),
+            targetUrlType: "FULL_PATH",
+            targetUrlLocation: "NEW"
+         }
+      });
+   if (!context.externalAuthentication)
+   {
+      userMenuWidgets.push({
+         id: "HEADER_USER_MENU_LOGOUT",
+         name: "alfresco/header/AlfMenuItem",
+         config:
+         {
+            id: "HEADER_USER_MENU_LOGOUT",
+            label: "logout.label",
+            iconClass: "alf-user-logout-icon",
+            targetUrl: "dologout"
+         }
+      });
+   }
+   return userMenuWidgets;
 }
 
 /* *********************************************************************************
@@ -1461,12 +1482,13 @@ function getTitleBarModel() {
       // NOTE: At the moment this is just a single menu item and not the child of a popup?
       // NOTE: Should this still be shown if the user is not the dashboard owner?
       var userDashboardConfiguration = {
-         id: "UserDashBoardCustomization",
+         id: "HEADER_CUSTOMIZE_USER_DASHBOARD",
          name: "alfresco/menus/AlfMenuBarItem",
          config: {
             id: "HEADER_CUSTOMIZE_USER_DASHBOARD",
             label: "",
             title: msg.get("customize_dashboard.label"),
+            iconAltText: msg.get("customize_dashboard.label"),
             iconClass: "alf-configure-icon",
             targetUrl: "customise-user-dashboard"
          }
@@ -1477,13 +1499,14 @@ function getTitleBarModel() {
    {
       // Create the basic site configuration menu...
       var siteConfig = {
-         id: "SiteConfigurationPopup",
+         id: "HEADER_SITE_CONFIGURATION_DROPDOWN",
          name: "alfresco/menus/AlfMenuBarPopup",
          config: {
             id: "HEADER_SITE_CONFIGURATION_DROPDOWN",
             label: "",
             iconClass: "alf-configure-icon",
             iconAltText: msg.get("header.menu.siteConfig.altText"),
+            title: msg.get("header.menu.siteConfig.altText"),
             widgets: []
          }
       };
@@ -1496,6 +1519,7 @@ function getTitleBarModel() {
             // If the user is an admin, and a site member, but NOT the site manager then
             // add the menu item to let them become a site manager...
             siteConfig.config.widgets.push({
+               id: "HEADER_BECOME_SITE_MANAGER",
                name: "alfresco/menus/AlfMenuItem",
                config: {
                   id: "HEADER_BECOME_SITE_MANAGER",
@@ -1505,7 +1529,7 @@ function getTitleBarModel() {
                   publishPayload: {
                      site: page.url.templateArgs.site,
                      siteTitle: siteData.profile.title,
-                     user: encodeURIComponent(user.name),
+                     user: user.name,
                      userFullName: user.fullName
                   }
                }
@@ -1516,12 +1540,14 @@ function getTitleBarModel() {
             // If the user is a site manager then let them make custmomizations...
             // Add the invite option...
             titleConfig.push({
+               id: "HEADER_SITE_INVITE",
                name: "alfresco/menus/AlfMenuBarItem",
                config: {
                   id: "HEADER_SITE_INVITE",
                   label: "",
                   iconClass: "alf-user-icon",
                   iconAltText: msg.get("header.menu.invite.altText"),
+                  title: msg.get("header.menu.invite.altText"),
                   targetUrl: "site/" + page.url.templateArgs.site + "/invite"
                }
             });
@@ -1531,6 +1557,7 @@ function getTitleBarModel() {
             {
                // Add Customize Dashboard
                siteConfig.config.widgets.push({
+                  id: "HEADER_CUSTOMIZE_SITE_DASHBOARD",
                   name: "alfresco/menus/AlfMenuItem",
                   config: {
                      id: "HEADER_CUSTOMIZE_SITE_DASHBOARD",
@@ -1544,6 +1571,7 @@ function getTitleBarModel() {
             // Add the regular site manager options (edit site, customize site, leave site)
             siteConfig.config.widgets.push(
                {
+                  id: "HEADER_EDIT_SITE_DETAILS",
                   name: "alfresco/menus/AlfMenuItem",
                   config: {
                      id: "HEADER_EDIT_SITE_DETAILS",
@@ -1553,12 +1581,13 @@ function getTitleBarModel() {
                      publishPayload: {
                         site: page.url.templateArgs.site,
                         siteTitle: siteData.profile.title,
-                        user: encodeURIComponent(user.name),
+                        user: user.name,
                         userFullName: user.fullName
                      }
                   }
                },
                {
+                  id: "HEADER_CUSTOMIZE_SITE",
                   name: "alfresco/menus/AlfMenuItem",
                   config: {
                      id: "HEADER_CUSTOMIZE_SITE",
@@ -1568,6 +1597,7 @@ function getTitleBarModel() {
                   }
                },
                {
+                  id: "HEADER_LEAVE_SITE",
                   name: "alfresco/menus/AlfMenuItem",
                   config: {
                      id: "HEADER_LEAVE_SITE",
@@ -1577,7 +1607,7 @@ function getTitleBarModel() {
                      publishPayload: {
                         site: page.url.templateArgs.site,
                         siteTitle: siteData.profile.title,
-                        user: encodeURIComponent(user.name),
+                        user: user.name,
                         userFullName: user.fullName
                      }
                   }
@@ -1588,6 +1618,7 @@ function getTitleBarModel() {
          {
             // If the user is a member of a site then give them the option to leave...
             siteConfig.config.widgets.push({
+               id: "HEADER_LEAVE_SITE",
                name: "alfresco/menus/AlfMenuItem",
                config: {
                   id: "HEADER_LEAVE_SITE",
@@ -1597,7 +1628,7 @@ function getTitleBarModel() {
                   publishPayload: {
                      site: page.url.templateArgs.site,
                      siteTitle: siteData.profile.title,
-                     user: encodeURIComponent(user.name),
+                     user: user.name,
                      userFullName: user.fullName
                   }
                }
@@ -1607,16 +1638,17 @@ function getTitleBarModel() {
          {
             // If the member is not a member of a site then give them the option to join...
             siteConfig.config.widgets.push({
+               id: "HEADER_JOIN_SITE",
                name: "alfresco/menus/AlfMenuItem",
                config: {
                   id: "HEADER_JOIN_SITE",
                   label: "join_site.label",
                   iconClass: "alf-leave-icon",
-                  publishTopic: "ALF_JOIN_SITE",
+                  publishTopic: (siteData.profile.visibility == "MODERATED" ? "ALF_REQUEST_SITE_MEMBERSHIP" : "ALF_JOIN_SITE"),
                   publishPayload: {
                      site: page.url.templateArgs.site,
                      siteTitle: siteData.profile.title,
-                     user: encodeURIComponent(user.name),
+                     user: user.name,
                      userFullName: user.fullName
                   }
                }
@@ -1677,7 +1709,7 @@ function getHeaderLogoUrl() {
 
 function getUserPreferences() {
    var userPreferences = {};
-   var prefs = eval('(' + preferences.value + ')');
+   var prefs = jsonUtils.toObject(preferences.value);
    return prefs
 }
 var userPreferences = getUserPreferences();
@@ -1775,8 +1807,7 @@ function getHeaderModel() {
                               publishTopic: "ALF_LOGGING_STATUS_CHANGE",
                               checked: errorEnabled
                            }
-                        },
-
+                        }
                      ]
                   }
                },
