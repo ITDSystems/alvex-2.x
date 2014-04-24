@@ -1,16 +1,1 @@
-<import resource="classpath:alfresco/web-extension/site-webscripts/header/share-header.lib.js">
-
-model.jsonModel = {
-   rootNodeId: "share-header",
-   services: getHeaderServices(),
-   widgets: [
-      {
-         id: "SHARE_VERTICAL_LAYOUT",
-         name: "alfresco/layout/VerticalWidgets",
-         config: 
-         {
-            widgets: getHeaderModel()
-         }
-      }
-   ]
-};
+// Placeholder. Not implemented, waiting for ALF-19930 to become available in production releases
