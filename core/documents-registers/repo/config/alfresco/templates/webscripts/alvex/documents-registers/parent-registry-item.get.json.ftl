@@ -1,5 +1,12 @@
 <#escape x as jsonUtils.encodeJSONString(x)>
 {
-	"itemRef": "${itemRef}"
+	"parents": 	[
+		<#list parentItems as item>
+		{
+			"itemRef": "${item.itemRef}",
+			"siteName": "${item.siteName}"
+		}<#if item_has_next>,</#if>
+		</#list>
+	]
 }
 </#escape>

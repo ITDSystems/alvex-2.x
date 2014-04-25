@@ -118,8 +118,7 @@ Alvex.DatagridRecordRenderer = function (elCell, oRecord, oColumn, oData)
 	{
 		data = oData[i];
 		html += '<a href="' 
-				+ Alfresco.constants.URL_PAGECONTEXT
-				+ 'view-metadata?nodeRef=' + data.value + '">';
+				+ Alfresco.util.siteURL('view-metadata?nodeRef=' + data.value) + '">';
 		html += '<img src="' + Alfresco.constants.URL_RESCONTEXT + 'components/images/filetypes/' 
 				+ 'generic-file-16.png' 
 				+ '" width="16" alt="' + Alfresco.util.encodeHTML(data.displayValue) + '" title="' 

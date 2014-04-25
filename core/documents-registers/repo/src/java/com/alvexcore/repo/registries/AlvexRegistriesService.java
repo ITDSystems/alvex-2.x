@@ -30,7 +30,7 @@ public interface AlvexRegistriesService {
 	public abstract Map<String,String> getParentRegistryDetails(NodeRef recordRef);
 	public abstract String suggestNextNumber(NodeRef registryRef);
 	public abstract boolean commitNextNumber(NodeRef registryRef, String number, PropertyDefinition prop);
-	public abstract List<NodeRef> getParentRegistryItems(NodeRef fileRef);
+	public abstract List<Map<String,String>> getParentRegistryItems(NodeRef fileRef);
 	public abstract boolean workflowsAvailableForRegistryItem();
 	
 	public abstract ServiceRegistry getServiceRegistry();

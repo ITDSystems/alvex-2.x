@@ -96,10 +96,15 @@ public class JsAlvexRegistriesService extends BaseScopableProcessorExtension {
 	public Scriptable getParentRegistryItems(ScriptNode node)
 	{
 		ArrayList<Serializable> jsRes = new ArrayList<Serializable>();
-		List<NodeRef> parents = alvexRegistriesService.getParentRegistryItems(node.getNodeRef());
-		for (NodeRef ref : parents)
+		List<Map<String,String>> parents = alvexRegistriesService.getParentRegistryItems(node.getNodeRef());
+		for (Map<String,String> parent : parents)
 		{
-			jsRes.add( ref.toString() );
+			ScriptableHashMap<String,String> props = new ScriptableHashMap<String,String>();
+			for (Map.Entry<String, String> entry : parent.entrySet())
+			{
+				props.put(entry.getKey(), entry.getValue());
+			}
+			jsRes.add( props );
 		}
 		return (Scriptable)converter.convertValueForScript(
 								alvexRegistriesService.getServiceRegistry(), 

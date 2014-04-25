@@ -31,8 +31,12 @@
 				{
 					fn: function (resp)
 					{
-						window.location = Alfresco.constants.URL_PAGECONTEXT +
-											"view-metadata?nodeRef=" + resp.json.itemRef;
+						if( resp.json.parents && resp.json.parents.length > 0 )
+						{
+							window.location = Alfresco.constants.URL_PAGECONTEXT 
+								+ "site/" + encodeURIComponent(resp.json.parents[0].siteName) 
+								+ "/view-metadata?nodeRef=" + encodeURIComponent(resp.json.parents[0].itemRef);
+						}
 					},
 					scope:this
 				},
@@ -61,8 +65,9 @@
 				{
 					fn: function (resp)
 					{
-						window.location = Alfresco.constants.URL_PAGECONTEXT +
-											"site/" + resp.json.siteName + "/documentsregister?active=" + resp.json.registryName;
+						window.location = Alfresco.constants.URL_PAGECONTEXT 
+							+ "site/" + encodeURIComponent(resp.json.siteName) 
+							+ "/documentsregister?active=" + encodeURIComponent(resp.json.registryName);
 					},
 					scope:this
 				},

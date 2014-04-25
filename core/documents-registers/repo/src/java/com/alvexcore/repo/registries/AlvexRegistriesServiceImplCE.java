@@ -148,12 +148,22 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 	}
 	
 	@Override
-	public List<NodeRef> getParentRegistryItems(NodeRef fileRef)
+	public List<Map<String,String>> getParentRegistryItems(NodeRef fileRef)
 	{
-		List<NodeRef> results = new ArrayList<NodeRef>();
+		List<Map<String,String>> results = new ArrayList<Map<String,String>>();
 		List<AssociationRef> assocs = nodeService.getTargetAssocs(fileRef, AlvexContentModel.ASSOC_PARENT_REGISTRY);
 		for(AssociationRef assoc : assocs)
-			results.add(assoc.getTargetRef());
+		{
+			NodeRef recordRef = assoc.getTargetRef();
+			NodeRef registryRef = nodeService.getPrimaryParent(recordRef).getParentRef();
+			NodeRef containerRef = nodeService.getPrimaryParent(registryRef).getParentRef();
+			NodeRef siteRef = nodeService.getPrimaryParent(containerRef).getParentRef();
+			
+			Map<String,String> parent = new HashMap<String,String>();
+			parent.put("itemRef", recordRef.toString());
+			parent.put("siteName", (String)nodeService.getProperty(siteRef, ContentModel.PROP_NAME));
+			results.add(parent);
+		}
 		return results;
 	}
 	
