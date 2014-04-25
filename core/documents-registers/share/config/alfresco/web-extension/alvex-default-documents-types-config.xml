@@ -70,6 +70,7 @@
                <show id="alvexdt:files" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -237,6 +238,7 @@
                <show id="alvexdt:dueDate" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -419,6 +421,7 @@
                <show id="alvexdt:assignee" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -589,6 +592,7 @@
                <show id="alvexdt:summary" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:primaryDocument">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -698,6 +702,7 @@
                <show id="alvexdt:relatedDocuments"/>
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -826,6 +831,7 @@
                <show id="alvexdt:documentManager" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -998,6 +1004,7 @@
                <show id="alvexdt:status"/>
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -1149,6 +1156,7 @@
                <show id="alvexdt:signingDate" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -1270,6 +1278,7 @@
                <show id="alvexdt:assignees" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>
@@ -1399,6 +1408,7 @@
                <show id="alvexdt:assignees" />
             </field-visibility>
             <appearance>
+               <field id="alvexdt:id" isSortKey="true" />
                <field id="alvexdt:relatedDocuments">
                   <control template="Alvex.DatagridRecordRenderer"/>
                </field>

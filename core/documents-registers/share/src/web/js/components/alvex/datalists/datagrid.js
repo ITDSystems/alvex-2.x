@@ -906,7 +906,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                   for( var i in oParsedResponse.results )
                   {
                      var value = oParsedResponse.results[i].itemData[field].value;
-                     if( value && ! value.match(/^[0-9]+$/g) )
+                     if( value && ! value.match(/^[0-9]+/g) )
                      {
                         convert = false;
                         break;
@@ -917,9 +917,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                   {
                      for( var i in oParsedResponse.results )
                      {
-                        var value = oParsedResponse.results[i].itemData[field].value;
+                        var value = oParsedResponse.results[i].itemData[field].value.replace(/[^0-9]/g,'.');
                         if( value && value !== "" )
-                           oParsedResponse.results[i].itemData[field].value = parseInt(value);
+                           oParsedResponse.results[i].itemData[field].value = parseFloat(value);
                      }
                   }
                }
@@ -954,17 +954,21 @@ if (typeof Alvex == "undefined" || !Alvex)
          ];
 
          var column;
-         var initialSortBy;
-         var initialSortOrder;
+         var initialSortBy = "prop_alvexdt_id";
+         var initialSortOrder = YAHOO.widget.DataTable.CLASS_ASC;
          for (var i = 0, ii = this.datalistColumns.length; i < ii; i++)
          {
             column = this.datalistColumns[i];
             // get initial sorting set in share config
             if( column.isSortKey )
+            {
                initialSortBy = column.formsName;
-            if( column.sortOrder )
-               initialSortOrder = ( column.sortOrder.toLowerCase() === "asc" 
+               if( column.sortOrder )
+               {
+                  initialSortOrder = ( column.sortOrder.toLowerCase() === "asc" 
                                ? YAHOO.widget.DataTable.CLASS_ASC : YAHOO.widget.DataTable.CLASS_DESC );
+			   }
+			}
             
             columnDefinitions.push(
             {
