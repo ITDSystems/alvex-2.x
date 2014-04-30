@@ -5,7 +5,7 @@
       <customizations>
         <customization>
           <targetPackageRoot>org.alfresco.components.document-details</targetPackageRoot>
-          <sourcePackageRoot>alvex.extensions.document-versions</sourcePackageRoot>
+          <sourcePackageRoot>alvex.extensions.document-details</sourcePackageRoot>
         </customization>
       </customizations>
 	  <auto-deploy>true</auto-deploy>

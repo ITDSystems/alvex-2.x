@@ -1,0 +1,14 @@
+<extension>
+  <modules>
+    <module>
+      <id>Alvex Node Header</id>
+      <customizations>
+        <customization>
+          <targetPackageRoot>org.alfresco.components.node-details</targetPackageRoot>
+          <sourcePackageRoot>alvex.extensions.node-details</sourcePackageRoot>
+        </customization>
+      </customizations>
+	  <auto-deploy>true</auto-deploy>
+    </module>
+  </modules>
+</extension>
