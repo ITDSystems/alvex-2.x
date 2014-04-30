@@ -9,15 +9,20 @@
 	
 	<bean id="webscript.workflow-instances-detailed.workflow-instances-detailed.get"
 		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"
-		parent="abstractWorkflowWebScript" />
+		parent="abstractWorkflowWebScript">
+			<property name="workflowHelper"><ref bean="alvexWorkflowHelper" /></property>
+	</bean>
 	
 	<bean id="webscript.workflows-discussions.container.get" 
 			  parent="webscript" 
 			  class="com.alvexcore.repo.web.scripts.WorkflowDiscussionContainerGet" />
 	
-	<!-- Workaround - need to create orgchart-aware WorkflowPermissionInterceptor anchestor -->
-	<bean id="WorkflowService_security" 
-		  class="org.alfresco.repo.security.permissions.impl.AlwaysProceedMethodInterceptor" />
+	<!-- Orgchart-aware WorkflowPermissionInterceptor -->
+	<bean id="WorkflowService_security" class="com.alvexcore.repo.security.AlvexWorkflowPermissionInterceptor" >
+		<property name="workflowService"><ref bean="workflowServiceImpl" /></property>
+		<property name="authorityService"><ref bean="authorityService"/></property>
+		<property name="workflowHelper"><ref bean="alvexWorkflowHelper" /></property>
+	</bean>	
 	
 	<!-- Workflow helper -->
 	<bean id="alvex-workflow-helper-transaction"
@@ -37,6 +42,9 @@
 	</bean>
 	<bean id="alvexWorkflowHelper" class="com.alvexcore.repo.tools.WorkflowHelperImpl">
 		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="personService"><ref bean="personService"/></property>
+		<property name="authorityService"><ref bean="authorityService"/></property>
+		<property name="orgchartService"><ref bean="alvexOrgchartService" /></property>
 	</bean>
 	<bean id="AlvexWorkflowHelper" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="alvexWorkflowHelper" />

@@ -34,6 +34,11 @@
       <groupId>${alfresco.groupId}</groupId>
       <artifactId>alfresco-remote-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>${alvex.repo.groupId}</groupId>
+      <artifactId>orgchart</artifactId>
+      <version>1.18</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

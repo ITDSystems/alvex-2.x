@@ -48,6 +48,7 @@ import org.alfresco.service.cmr.workflow.WorkflowTask;
 import org.alfresco.service.namespace.QName;
 
 import com.alvexcore.repo.AlvexContentModel;
+import com.alvexcore.repo.tools.WorkflowHelper;
 
 /**
  * Patched java backed implementation for REST API to retrieve workflow instances.
@@ -67,6 +68,7 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
 	public static final String TASK_OWNER_LAST_NAME = "lastName";
 	public static final String TASK_RELATED = "relatedWorkflows";
 	
+	public static final String PARAM_AUTHORITY = "authority";
     public static final String PARAM_STATE = "state";
     public static final String PARAM_INITIATOR = "initiator";
     public static final String PARAM_PRIORITY = "priority";
@@ -90,10 +92,14 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
     private WorkflowInstanceDueAscComparator workflowDueComparator = new WorkflowInstanceDueAscComparator();
     private WorkflowInstanceStartAscComparator workflowStartComparator = new WorkflowInstanceStartAscComparator();
 	private WorkflowInstanceCompleteAscComparator workflowCompleteComparator = new WorkflowInstanceCompleteAscComparator();
+	
+	private WorkflowHelper workflowHelper;
 
     @Override
     protected Map<String, Object> buildModel(WorkflowModelBuilder modelBuilder, WebScriptRequest req, Status status, Cache cache)
     {
+		String authority = req.getParameter(PARAM_AUTHORITY);
+		
         Map<String, String> params = req.getServiceMatch().getTemplateVars();
 
         // state is not included into filters list as it will be taken into account before filtering
@@ -188,7 +194,7 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
         int pos = 0;
         for (WorkflowInstance workflow : workflows)
         {
-            if (matches(workflow, filters, modelBuilder))
+            if (matches(workflow, filters, authority, modelBuilder))
             {
                 //results.add(modelBuilder.buildDetailed(workflow, true));
                 Map<String, Object> model = modelBuilder.buildSimple(workflow);
@@ -258,9 +264,10 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
      * 
      * @param workflowInstance The workflow instance to check
      * @param filters The list of filters the task must match to be included
+	 * @param authority Current user
      * @return true if the workflow matches and should therefore be returned
      */
-    private boolean matches(WorkflowInstance workflowInstance, Map<String, Object> filters, WorkflowModelBuilder modelBuilder)
+    private boolean matches(WorkflowInstance workflowInstance, Map<String, Object> filters, String authority, WorkflowModelBuilder modelBuilder)
     {
         // by default we assume that workflow instance should be included
         boolean result = true;
@@ -397,6 +404,9 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
 				}
             }
         }
+		
+		if( !workflowHelper.isUserPartOfProcess(workflowInstance.getId(), authority) )
+			result = false;
 
         return result;
     }
@@ -536,5 +546,10 @@ public class WorkflowInstancesDetailedGet extends AbstractWorkflowWebscript
         }
         
     }
+	
+	public void setWorkflowHelper(WorkflowHelper workflowHelper)
+	{
+		this.workflowHelper = workflowHelper;
+	}
 	
 }
