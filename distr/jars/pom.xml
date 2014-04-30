@@ -124,22 +124,22 @@
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
-          <version>1.4</version>
+          <version>1.5</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
-          <version>1.4</version>
+          <version>1.5</version>
         </dependency>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>share-4.2.c-generic-ui</artifactId>
-          <version>1.10</version>
+          <version>1.11</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>share-4.2.c-generic-ui</artifactId>
-          <version>1.10</version>
+          <version>1.11</version>
         </dependency>
       </dependencies>
     </profile>
@@ -152,22 +152,22 @@
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
-          <version>1.4</version>
+          <version>1.5</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
-          <version>1.4</version>
+          <version>1.5</version>
         </dependency>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>share-4.2.d-generic-ui</artifactId>
-          <version>1.10</version>
+          <version>1.11</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>share-4.2.d-generic-ui</artifactId>
-          <version>1.10</version>
+          <version>1.11</version>
         </dependency>
       </dependencies>
     </profile>
