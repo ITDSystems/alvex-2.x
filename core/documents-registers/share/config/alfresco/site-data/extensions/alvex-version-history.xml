@@ -1,0 +1,14 @@
+<extension>
+  <modules>
+    <module>
+      <id>Alvex Version History</id>
+      <customizations>
+        <customization>
+          <targetPackageRoot>org.alfresco.components.document-details</targetPackageRoot>
+          <sourcePackageRoot>alvex.extensions.document-versions</sourcePackageRoot>
+        </customization>
+      </customizations>
+	  <auto-deploy>true</auto-deploy>
+    </module>
+  </modules>
+</extension>
