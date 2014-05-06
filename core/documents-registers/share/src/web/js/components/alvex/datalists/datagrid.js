@@ -905,7 +905,8 @@ if (typeof Alvex == "undefined" || !Alvex)
                   var convert = true;
                   for( var i in oParsedResponse.results )
                   {
-                     var value = oParsedResponse.results[i].itemData[field].value;
+                     var value = ( oParsedResponse.results[i].itemData[field] 
+                                       ? oParsedResponse.results[i].itemData[field].value : undefined );
                      if( value && ! value.match(/^[0-9]+/g) )
                      {
                         convert = false;
@@ -917,7 +918,8 @@ if (typeof Alvex == "undefined" || !Alvex)
                   {
                      for( var i in oParsedResponse.results )
                      {
-                        var value = oParsedResponse.results[i].itemData[field].value.replace(/[^0-9]/g,'.');
+                        var value = ( oParsedResponse.results[i].itemData[field] 
+                                       ? oParsedResponse.results[i].itemData[field].value.replace(/[^0-9]/g,'.') : undefined );
                         if( value && value !== "" )
                            oParsedResponse.results[i].itemData[field].value = parseFloat(value);
                      }
