@@ -41,7 +41,7 @@ Alvex.DatagridDateRenderer = function (elCell, oRecord, oColumn, oData)
 		return;
 	
 	elCell.innerHTML = Alfresco.util.formatDate(
-			Alfresco.util.fromISO8601(oData.value), "dd.mm.yyyy"
+			Alfresco.util.fromISO8601(oData.displayValue), "dd.mm.yyyy"
 		);
 };
 
