@@ -124,7 +124,8 @@ if (typeof Alvex == "undefined" || !Alvex)
    /**
     * Augment prototype with Common Actions module
     */
-   YAHOO.lang.augmentProto(Alvex.DataGrid, Alfresco.service.DataListActions);
+   // TODO: do not use this augment, see comments in datagrid-actions.js for details
+   //YAHOO.lang.augmentProto(Alvex.DataGrid, Alfresco.service.DataListActions);
    YAHOO.lang.augmentProto(Alvex.DataGrid, Alvex.DataGridSearch);
 
    /**

@@ -171,7 +171,137 @@ Alvex.DatagridItemStartWorkflowAction = function(item)
 };
 
 // Just aliases for default actions for convenience
+// TODO: it's a pity, but we ended up with copy-pasted implementation (see below).
+// TODO: including default implementation caused issues when using in form control *.ftl.
+// TODO: we should rethink it later and find appropriate solution.
+//Alvex.DatagridItemDeleteAction = Alfresco.service.DataListActions.prototype.onActionDelete;
+//Alvex.DatagridItemDuplicateAction = Alfresco.service.DataListActions.prototype.onActionDuplicate;
 
-Alvex.DatagridItemDeleteAction = Alfresco.service.DataListActions.prototype.onActionDelete;
+/**
+ * Delete item(s).
+ * 
+ * @method onActionDelete
+ * @param items {Object | Array} Object literal representing the Data Item to be actioned, or an Array thereof
+ */
+Alvex.DatagridItemDeleteAction = function (p_items)
+{
+	var me = this,
+		items = YAHOO.lang.isArray(p_items) ? p_items : [p_items];
+	
+	var fnActionDeleteConfirm = function DataListActions__onActionDelete_confirm(items)
+	{
+		var nodeRefs = [];
+		for (var i = 0, ii = items.length; i < ii; i++)
+		{
+			nodeRefs.push(items[i].nodeRef);
+		}
 
-Alvex.DatagridItemDuplicateAction = Alfresco.service.DataListActions.prototype.onActionDuplicate;
+		this.modules.actions.genericAction(
+		{
+			success:
+			{
+				event:
+				{
+					name: "dataItemsDeleted",
+					obj:
+					{
+						items: items
+					}
+				},
+				message: this.msg("message.delete.success", items.length)
+			},
+			failure:
+			{
+				message: this.msg("message.delete.failure")
+			},
+			webscript:
+			{
+				method: Alfresco.util.Ajax.DELETE,
+				name: "items"
+			},
+			config:
+			{
+				requestContentType: Alfresco.util.Ajax.JSON,
+				dataObj:
+				{
+					nodeRefs: nodeRefs
+				}
+			}
+		});
+	};
+
+	Alfresco.util.PopupManager.displayPrompt(
+	{
+		title: this.msg("message.confirm.delete.title", items.length),
+		text: this.msg("message.confirm.delete.description", items.length),
+		buttons: [
+		{
+			text: this.msg("button.delete"),
+			handler: function DataListActions__onActionDelete_delete()
+			{
+				this.destroy();
+				fnActionDeleteConfirm.call(me, items);
+			}
+		},
+		{
+			text: this.msg("button.cancel"),
+			handler: function DataListActions__onActionDelete_cancel()
+			{
+				this.destroy();
+			},
+			isDefault: true
+		}]
+	});
+};
+
+/**
+ * Duplicate item(s).
+ * 
+ * @method onActionDuplicate
+ * @param items {Object | Array} Object literal representing the Data Item to be actioned, or an Array thereof
+ */
+Alvex.DatagridItemDuplicateAction = function(p_items)
+{
+	var me = this,
+		items = YAHOO.lang.isArray(p_items) ? p_items : [p_items],
+		destinationNodeRef = new Alfresco.util.NodeRef(this.modules.dataGrid.datalistMeta.nodeRef),
+		nodeRefs = [];
+
+	for (var i = 0, ii = items.length; i < ii; i++)
+	{
+		nodeRefs.push(items[i].nodeRef);
+	}
+
+	this.modules.actions.genericAction(
+	{
+		success:
+		{
+			event:
+			{
+				name: "dataItemsDuplicated",
+				obj:
+				{
+					items: items
+				}
+			},
+			message: this.msg("message.duplicate.success", items.length)
+		},
+		failure:
+		{
+			message: this.msg("message.duplicate.failure")
+		},
+		webscript:
+		{
+			method: Alfresco.util.Ajax.POST,
+			name: "duplicate/node/" + destinationNodeRef.uri
+		},
+		config:
+		{
+			requestContentType: Alfresco.util.Ajax.JSON,
+			dataObj:
+			{
+				nodeRefs: nodeRefs
+			}
+		}
+	});
+};
