@@ -72,7 +72,7 @@
    <div style="display:none">
       <!-- Action Set "More..." container -->
       <div id="${id}-moreActions">
-         <div title="onActionShowMore" class="onActionShowMore"><a href="#" class="show-more" title="${msg("actions.more")}"><span></span></a></div>
+         <div title="onActionShowMore" class="onActionShowMore"><a href="#" class="show-more ${id}-show-more" title="${msg("actions.more")}"><span></span></a></div>
          <div class="more-actions hidden"></div>
       </div>
 
@@ -80,7 +80,7 @@
       <div id="${id}-actionSet" class="action-set simple">
       <#if actionSet??>
       <#list actionSet as action>
-         <div title="${action.func}" class="${action.className}"><a rel="${action.permission!""}" href="${action.href}" class="${action.type}" title="${msg(action.label)}"><span>${msg(action.label)}</span></a></div>
+         <div title="${action.func}" class="${action.className}"><a rel="${action.permission!""}" href="${action.href}" class="${action.type} ${id}-${action.type}" title="${msg(action.label)}"><span>${msg(action.label)}</span></a></div>
       </#list>
       </#if>
       </div>

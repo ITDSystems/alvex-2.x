@@ -521,8 +521,8 @@ if (typeof Alvex == "undefined" || !Alvex)
             me.onActionClick(linkElement, item);
             return true;
          };
-         Bubbling.addDefaultAction("action-link", fnActionHandler);
-         Bubbling.addDefaultAction("show-more", fnActionHandler);
+         Bubbling.addDefaultAction(this.id + "-action-link", fnActionHandler);
+         Bubbling.addDefaultAction(this.id + "-show-more", fnActionHandler);
 
          // Hook filter change events
          var fnChangeFilterHandler = function DataGrid_fnChangeFilterHandler(layer, args)
