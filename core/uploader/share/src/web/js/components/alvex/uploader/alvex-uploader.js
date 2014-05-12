@@ -287,7 +287,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				//    (c) in form.mode == 'view' picker does not trigger event.
 				// In this case we should cover it, process existing files and set 'started' state manually.
 				// Otherwise 'onExistingItemAttach' will go crazy on the first run because 'started' state is not set.
-				if( !(this.options.picker || this.options.regPicker ) || (Dom.get(this.id).value == '') || (this.options.disabled) )
+				if( !(this.options.picker) || (Dom.get(this.id).value == '') || (this.options.disabled) )
 					this.attachOldItems();
 
 				// Remember initial value
