@@ -14,6 +14,18 @@
 				<css src="/components/alvex/uploader/alvex-uploader.css" />
 				<js  src="/components/alvex/uploader/alvex-uploader-dialog.js" />
 				<js  src="/components/alvex/uploader/alvex-docreg-object-finder.js" />
+				<!-- TODO: remove it after we have a WA for start-workflow page -->
+				<css src="/components/alvex/datalists/datagrid.css" />
+				<js src="/js/alfresco-dnd.js" />
+				<js src="/modules/data-lists/datalist-actions.js" />
+				<js src="/components/alvex.js" />
+				<js src="/components/alvex/datalists/datagrid-renderers.js" />
+				<js src="/components/alvex/datalists/datagrid-search.js" />
+				<js src="/components/alvex/datalists/datagrid-search-renderers.js" />
+				<js src="/components/alvex/datalists/datagrid.js" />
+				<js src="/components/alvex/datalists/datagrid-actions.js" />
+				<js src="/components/alvex/simple-dialog.js" />
+				<js src="/components/alvex/interval-calendar.js" />
 				<!-- Copied from 4.2.c. WA for 4.1.x where HTML5 uploader is not good -->
 				<css src="/components/alvex/uploader/dnd-upload.css" />
 				<js  src="/components/alvex/uploader/dnd-upload.js" />
