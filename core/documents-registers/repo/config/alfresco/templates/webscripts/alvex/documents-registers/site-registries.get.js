@@ -17,6 +17,7 @@
 			if( alvexDictionaryService.isRegistry( dlCont.children[i] ) )
 			{
 				model.regs.push( {
+					"type": dlCont.children[i].properties["dl:dataListItemType"],
 					"ref": dlCont.children[i].nodeRef.toString(),
 					"name": dlCont.children[i].name
 				} );

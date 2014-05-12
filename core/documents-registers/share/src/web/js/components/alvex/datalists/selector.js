@@ -215,6 +215,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                {
                   Bubbling.fire("activeDataListChanged",
                   {
+                     eventGroup: "*",
                      dataList: this.dataLists[this.options.listId],
                      scrollTo: true
                   });

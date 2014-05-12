@@ -1,5 +1,7 @@
 <#include "/org/alfresco/components/component.head.inc">
 <#include "org/alfresco/components/form/controls/common/picker.inc.ftl">
+<#include "/alvex-datagrid.inc.ftl">
+
 <#assign controlId = fieldHtmlId + "-cntrl">
 <#assign regHtmlId = fieldHtmlId + "-reg">
 <#assign regPickerId = regHtmlId + "-cntrl">
@@ -38,7 +40,6 @@
 		<!-- This input is just an ugly hack to prevent system uploader from failing in view mode -->
 		<input type="hidden" id="${controlId}-currentValueDisplay" name="-" value="" />
 		<#if showRegistries>
-		<input type="hidden" id="${regPickerId}-currentValueDisplay" name="-" value="" />
 		<input type="hidden" id="${regHtmlId}" name="-" value="" />
 		</#if>
 		<input type="hidden" id="${controlId}-initial" name="-" value="" />
@@ -66,7 +67,13 @@
 			<#if showRegistries>
 			<td>
 				<#if "${packageActionGroup}" == "add_package_item_actions">
-					<div id="${regPickerId}-itemGroupActions" class="show-picker"></div>
+					<div id="${regPickerId}-itemGroupActions" class="show-picker">
+						<span id="${regPickerId}-addFilesButton" class="yui-button yui-push-button">
+							<span class="first-child">
+								<button type="button" tabindex="0">${msg("alvex.uploader.associateRegItems")}</button>
+							</span>
+						</span>
+					</div>
 				</#if>
 			</td>
 			</#if>
@@ -82,7 +89,63 @@
 		<#if showRegistries>
 		<div id="${controlId}-reg-picker" class="object-finder">
 		<#if "${packageActionGroup}" == "add_package_item_actions">
-			<@renderPickerHTML regPickerId />
+			<#assign actionSet = [ {
+				"type": "action-link", 
+				"func": "Alvex.DatagridItemAttachAction",
+				"href": "",
+				"className": "onActionAttach",
+				"permission": "",
+				"label": "alvex.uploader.associateRegItems"
+			} ]>
+
+			<div id="${regPickerId}" class="picker yui-panel">
+
+				<div id="${pickerId}-head" class="hd">${msg("alvex.uploader.associateRegItems")}</div>
+				<div id="${pickerId}-body" class="bd">
+					<div id="${regPickerId}-container">
+
+						<div id="doc4">
+
+							<div class="docreg-picker-menu">
+								<span id="${regPickerId}-site-selector-c">
+									<span id="${regPickerId}-site-selector" class="yui-button yui-push-button">
+										<span class="first-child">
+											<button type="button" tabindex="0"></button>
+										</span>
+									</span>
+								</span>
+								<span id="${regPickerId}-reg-selector-c">
+									<span id="${regPickerId}-reg-selector" class="yui-button yui-push-button hidden">
+										<span class="first-child">
+											<button type="button" tabindex="0"></button>
+										</span>
+									</span>
+								</span>
+							</div>
+							<div id="${regPickerId}-site-selector-menu" class="yuimenu">
+								<div class="bd">
+									<ul>
+									</ul>
+								</div>
+							</div>
+							<div id="${regPickerId}-reg-selector-menu" class="yuimenu">
+								<div class="bd">
+									<ul>
+									</ul>
+								</div>
+							</div>
+
+							<@renderAlvexDatagridHTML regPickerId true true true true true />
+
+							<div class="bdft">
+								<input id="${regPickerId}-ok" name="-" type="button" value="${msg("button.ok")}" />
+								<input id="${regPickerId}-cancel" name="-" type="button" value="${msg("button.cancel")}" />
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
 		</#if>
 		</div>
 		</#if>
@@ -275,51 +338,28 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 	regPicker = new Alvex.DocRegObjectFinder("${regPickerId}", "${regHtmlId}").setOptions(
 	{
 		<#if form.mode == "view" || (field.disabled && !(field.control.params.forceEditable?? && field.control.params.forceEditable == "true"))>disabled: true,</#if>
-		field: "${field.name}",
-		compactMode: ${compactMode?string},
 	<#if field.mandatory??>
 		mandatory: ${field.mandatory?string},
 	<#elseif field.endpointMandatory??>
-		mandatory: ${field.endpointMandatory?string},
+		mandatory: ${field.endpointMandatory?string}
 	</#if>
-	<#if field.control.params.startLocation??>
-		startLocation: "${field.control.params.startLocation}",
-		<#if form.mode == "edit" && args.itemId??>currentItem: "${args.itemId?js_string}",</#if>
-		<#if form.mode == "create" && form.destination?? && form.destination?length &gt; 0>currentItem: "${form.destination?js_string}",</#if>
-	</#if>
-	<#if field.control.params.startLocationParams??>
-		startLocationParams: "${field.control.params.startLocationParams?js_string}",
-	</#if>
-		currentValue: "${field.value}",
-		<#if field.control.params.valueType??>valueType: "${field.control.params.valueType}",</#if>
-		<#if renderPickerJSSelectedValue??>selectedValue: "${renderPickerJSSelectedValue}",</#if>
-		<#if field.control.params.selectActionLabelId??>selectActionLabelId: "${field.control.params.selectActionLabelId}",</#if>
-		selectActionLabel: "${field.control.params.selectActionLabel!msg("button.select")}",
-		minSearchTermLength: ${field.control.params.minSearchTermLength!'1'},
-		maxSearchResults: ${field.control.params.maxSearchResults!'1000'}
 	}).setMessages(
 		${messages}
 	);
 	
 	regPicker.setOptions(
 	{
-		maintainAddedRemovedItems: false,
-		itemFamily: "node",
 		itemType: '${(field.control.params.pickerContentType!"alvexdt:object")?string}',
-		multipleSelectMode: true,
-                startLocation: '${(field.control.params.pickerRoot!"alfresco://sites/home")?string}',
-		displayMode: "items",
-		compactMode: '${(field.control.params.pickerCompactMode!false)?string}' == 'true',
-		showLinkToTarget: false,
-		allowRemoveAction: false,
-		allowRemoveAllAction: false,
-		allowSelectAction: true,
-		selectActionLabel: '${msg("alvex.uploader.associateRegItems")?js_string}'
+		multipleSelectMode: true
 	});
 
-	<#if form.mode == "view" || field.disabled >
-	YAHOO.Bubbling.unsubscribe("renderCurrentValue", regPicker.onRenderCurrentValue, regPicker);
-	</#if>
+
+	new Alvex.DataGrid('${regPickerId}').setOptions(
+	{
+		pageMode: false,
+		workflowsAvailable: "false",
+		usePagination: false
+	}).setMessages(${messages});
 
 	</#if>
 }

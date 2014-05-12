@@ -1,29 +1,30 @@
-<#macro renderAlvexDatagridHTML id>
+<#macro renderAlvexDatagridHTML id hideMeta=false hideConfig=false hidePanel=false hideSelect=false hidePaginator=false>
 
 <!-- Data Grid -->
-<@link rel="stylesheet" type="text/css" href="${page.url.context}/res/components/alvex/datalists/datagrid.css" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/datalists/datagrid-renderers.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/datalists/datagrid-search.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/datalists/datagrid-search-renderers.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/datalists/datagrid.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/datalists/datagrid-actions.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/simple-dialog.js" />
-<@script type="text/javascript" src="${page.url.context}/res/components/alvex/interval-calendar.js" />
-<@script type="text/javascript" src="${page.url.context}/res/js/alfresco-dnd.js" />
+<@link rel="stylesheet" type="text/css" href="${url.context}/res/components/alvex/datalists/datagrid.css" />
+<@script type="text/javascript" src="${url.context}/res/modules/data-lists/datalist-actions.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/datalists/datagrid-renderers.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/datalists/datagrid-search.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/datalists/datagrid-search-renderers.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/datalists/datagrid.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/datalists/datagrid-actions.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/simple-dialog.js" />
+<@script type="text/javascript" src="${url.context}/res/components/alvex/interval-calendar.js" />
+<@script type="text/javascript" src="${url.context}/res/js/alfresco-dnd.js" />
 
 <div id="${id}-body" class="datagrid">
-   <div class="datagrid-meta">
+   <div class="datagrid-meta" <#if hideMeta>style="display:none"</#if>>
       <h2 id="${id}-title"></h2>
       <div id="${id}-listType" class="datagrid-description"></div>
       <div id="${id}-description" class="datagrid-description"></div>
    </div>
-   <div class="datagrid-actions">
+   <div class="datagrid-actions" <#if hideConfig>style="display:none"</#if>>
       <span class="configure-page"><button id="${id}-configurePage-button" name="configurePage">${msg("button.configurePage")}</button></span>
    </div>
-   <div id="${id}-datagridBar" class="yui-ge datagrid-bar flat-button">
+   <div id="${id}-datagridBar" class="yui-ge datagrid-bar flat-button" <#if hidePanel>style="display:none"</#if>>
       <div class="yui-u first align-center">
-         <div class="item-select">
+         <div class="item-select" <#if hideSelect>style="display:none"</#if>>
             <button id="${id}-itemSelect-button" name="datagrid-itemSelect-button">${msg("menu.select")}</button>
             <div id="${id}-itemSelect-menu" class="yuimenu">
                <div class="bd">
@@ -35,7 +36,7 @@
                </div>
             </div>
          </div>
-         <div id="${id}-paginator" class="paginator"></div>
+         <div id="${id}-paginator" class="paginator" <#if hidePaginator>style="display:none"</#if>></div>
       </div>
       <div class="yui-u align-right">
          <div class="items-per-page" style="visibility: hidden;">
@@ -44,13 +45,18 @@
       </div>
    </div>
 
-   <form action="/" method="POST" id="${id}-search-form" name="search">
-      <div style="background-color: #C0C0C0;"><strong style="display: inline-block; margin-bottom: 4px; margin-left: 10px; margin-top: 4px;">${msg("label.search")}</strong></div>
-      <table class="grid" style="border: 1px solid #C0C0C0; margin-bottom: 8px;"><tr id="${id}-search" ></tr></table>
-      <div style="display:none">
-         <button id="${id}-search-button">${msg("button.search")}</button>
+   <div id="${id}-search-form" name="search">
+      <div id="${id}-search-container" class="hidden">
+         <div style="background-color: #C0C0C0;">
+            <strong style="display: inline-block; margin-bottom: 4px; margin-left: 10px; margin-top: 4px;">${msg("page.search.title")}</strong>
+         </div>
+         <table class="grid" style="border: 1px solid #C0C0C0; margin-bottom: 8px;"><tr id="${id}-search" ></tr></table>
+         <div style="display:none">
+            <button id="${id}-search-button">${msg("button.search")}</button>
+         </div>
       </div>
-   </form>
+   </div>
+
    <div id="${id}-grid" class="grid"></div>
 
    <div id="${id}-selectListMessage" class="hidden select-list-message">${msg("message.select-list")}</div>
@@ -72,9 +78,11 @@
 
       <!-- Action Set Templates -->
       <div id="${id}-actionSet" class="action-set simple">
+      <#if actionSet??>
       <#list actionSet as action>
          <div title="${action.func}" class="${action.className}"><a rel="${action.permission!""}" href="${action.href}" class="${action.type}" title="${msg(action.label)}"><span>${msg(action.label)}</span></a></div>
       </#list>
+      </#if>
       </div>
    </div>
 </div>

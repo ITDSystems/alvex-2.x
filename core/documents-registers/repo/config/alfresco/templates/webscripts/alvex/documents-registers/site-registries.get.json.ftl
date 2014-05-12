@@ -8,7 +8,7 @@
 			{
 				"name": "${item.name}",
 				"isContainer": true,
-				"type": "alvexdr:documentRegister",
+				"type": "${item.type}",
 				"parentType": "dl:dataList",
 				"nodeRef": "${item.ref}"
 			}<#if item_has_next>,</#if>

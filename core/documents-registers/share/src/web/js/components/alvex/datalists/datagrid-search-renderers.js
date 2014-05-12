@@ -25,14 +25,14 @@ if (typeof Alvex === "undefined" || !Alvex)
 
 Alvex.DatagridTextSearchRenderer = function (searchFieldHtmlId, key, curValue, availableOptions)
 {
-	YAHOO.util.Dom.get(searchFieldHtmlId).innerHTML = 
-			'<span><input type="text" name="' + key + '" style="width:95%;" ' 
+	YAHOO.util.Dom.get(searchFieldHtmlId + "-c").innerHTML = 
+			'<span><input type="text" name="' + key + '" id="' + searchFieldHtmlId + '" style="width:95%;" ' 
 			+ 'value="' + Alfresco.util.encodeHTML(curValue.replace('\\"','"')) + '"/></span>';
 };
 
 Alvex.DatagridSelectSearchRenderer = function (searchFieldHtmlId, key, curValue, availableOptions)
 {
-	var html = '<select name="' + key + '" id="' + key + '-search" style="width:95%;">';
+	var html = '<select name="' + key + '" id="' + searchFieldHtmlId + '" style="width:95%;">';
 	html += '<option></option>';
 	for( var o in availableOptions )
 	{
@@ -43,18 +43,18 @@ Alvex.DatagridSelectSearchRenderer = function (searchFieldHtmlId, key, curValue,
 		html += ' value="' + option[0] + '">' + option[1] + '</option>';
 	}
 	html += '</select></span>';
-	YAHOO.util.Dom.get(searchFieldHtmlId).innerHTML =  html;
+	YAHOO.util.Dom.get(searchFieldHtmlId + "-c").innerHTML =  html;
 };
 
 Alvex.DatagridDateRangeSearchRenderer = function (searchFieldHtmlId, key, curValue, availableOptions)
 {
 	// Inject basic layout
-	var html = '<div><input type="hidden" id="' + searchFieldHtmlId + '-' + key + '" name="' + key + '" value="' + curValue + '"/>' 
-			+ '<div id="' + searchFieldHtmlId + '-' + key + '-btn" style="float:left;"></div>'
-			+ '<div id="' + searchFieldHtmlId + '-' + key + '-value"></div>'
-			+ '<div id="' + searchFieldHtmlId + '-' + key + '-overlay" style="visibility:hidden"></div>'
+	var html = '<div><input type="hidden" name="' + key + '" id="' + searchFieldHtmlId + '" value="' + curValue + '"/>' 
+			+ '<div id="' + searchFieldHtmlId + '-btn" style="float:left;"></div>'
+			+ '<div id="' + searchFieldHtmlId + '-value"></div>'
+			+ '<div id="' + searchFieldHtmlId + '-overlay" style="visibility:hidden"></div>'
 			+ '</div>';
-	YAHOO.util.Dom.get(searchFieldHtmlId).innerHTML =  html;
+	YAHOO.util.Dom.get(searchFieldHtmlId + "-c").innerHTML =  html;
 	
 	// Show current value in UI
 	var minVal = '';
@@ -84,25 +84,25 @@ Alvex.DatagridDateRangeSearchRenderer = function (searchFieldHtmlId, key, curVal
 			uiString += '...';
 		}
 		
-		var el = Dom.get( searchFieldHtmlId + '-' + key + '-value' );
+		var el = Dom.get( searchFieldHtmlId + '-value' );
 		el.innerHTML = uiString;
 	}
 	
 	// Create overlay
 	
-	var overlay = new YAHOO.widget.Overlay(searchFieldHtmlId + '-' + key + '-overlay', { visible: false });
+	var overlay = new YAHOO.widget.Overlay(searchFieldHtmlId + '-overlay', { visible: false });
 	var calButton = new YAHOO.widget.Button({  
 		type: "menu",  
-		id: searchFieldHtmlId + '-' + key + '-btn-btn',  
+		id: searchFieldHtmlId + '-btn-btn',  
 		label: '<span class="search-cal-button"></span>',  
 		menu: overlay,
-		container: searchFieldHtmlId + '-' + key + '-btn' }); 
+		container: searchFieldHtmlId + '-btn' }); 
 	
-	Dom.addClass(searchFieldHtmlId + '-' + key + '-btn', 'search-cal-button');
+	Dom.addClass(searchFieldHtmlId + '-btn', 'search-cal-button');
 
 	calButton.on("appendTo", function (ev, data)
 			{ 
-				var contId = searchFieldHtmlId + '-' + data.key + '-cal-container';
+				var contId = searchFieldHtmlId + '-cal-container';
 				data.overlay.setBody('  '); 
 				data.overlay.body.id = contId;
 			}, {overlay:overlay, key:key} );
@@ -144,12 +144,13 @@ Alvex.DatagridDateRangeSearchRenderer = function (searchFieldHtmlId, key, curVal
 					var maxVal = (interval[1] === "MAX") ? "MAX" 
 									: interval[1].getFullYear() + '\\-' + (interval[1].getMonth()+1) + '\\-' + interval[1].getDate() + 'T23:59:59';
 					Dom.get(data.id).value = '[' + minVal + ' TO ' + maxVal + ']';
+					Dom.get(data.id).onchange.call();
 				}
 
-				var form = document.forms[data.formId];
-				Alfresco.util.submitForm( form );
+				//var form = document.forms[data.formId];
+				//Alfresco.util.submitForm( form );
 
-			}, {cal: oCalendar, overlay: data.overlay, button: button, id: data.id, formId: data.formId} );
+			}, {cal: oCalendar, overlay: data.overlay, button: button, id: data.id/*, formId: data.formId*/} );
 
 			data.overlay.align();
 			this.unsubscribe("click", data.scope.onCalButtonClick); 
@@ -160,8 +161,8 @@ Alvex.DatagridDateRangeSearchRenderer = function (searchFieldHtmlId, key, curVal
 			{
 				scope: me,
 				overlay: overlay, 
-				id: searchFieldHtmlId + '-' + key, 
-				formId: this.id + "-search-form",
+				id: searchFieldHtmlId, 
+				//formId: this.id + "-search-form",
 				minDate: minDate, 
 				maxDate: maxDate, 
 				minText: this.msg("button.min"),

@@ -170,6 +170,16 @@ Alvex.DatagridItemStartWorkflowAction = function(item)
 	Alfresco.util.navigateTo(Alfresco.util.siteURL("start-workflow"), "POST", postBody);
 };
 
+Alvex.DatagridItemAttachAction = function(item)
+{
+	var ref = item.nodeRef;
+	YAHOO.Bubbling.fire("newRegItemAttached",
+	{
+		eventGroup: this,
+		item: ref
+	});
+};
+
 // Just aliases for default actions for convenience
 // TODO: it's a pity, but we ended up with copy-pasted implementation (see below).
 // TODO: including default implementation caused issues when using in form control *.ftl.
