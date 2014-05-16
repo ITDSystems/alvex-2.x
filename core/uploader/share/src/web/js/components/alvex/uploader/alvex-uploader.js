@@ -287,7 +287,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				//    (c) in form.mode == 'view' picker does not trigger event.
 				// In this case we should cover it, process existing files and set 'started' state manually.
 				// Otherwise 'onExistingItemAttach' will go crazy on the first run because 'started' state is not set.
-				if( !(this.options.picker || this.options.regPicker ) || (Dom.get(this.id).value == '') || (this.options.disabled) )
+				if( !(this.options.picker) || (Dom.get(this.id).value == '') || (this.options.disabled) )
 					this.attachOldItems();
 
 				// Remember initial value
@@ -299,18 +299,24 @@ if (typeof Alvex == "undefined" || !Alvex)
 		onExistingItemAttach: function Uploader_onExistingItemAttach(layer, args)
 		{
 			// Skip 'formValueChanged' from all form components except our 'embedded' picker
+			// TODO: rewrite with $hasEventInterest
 			var pickerId = args[1].eventGroup.pickerId;
-			if( !(pickerId) || (pickerId != this.id + '-cntrl-picker' && pickerId != this.id + '-reg-cntrl-picker') )
+			if( !(pickerId) || (pickerId != this.id + '-cntrl-picker' && pickerId != this.id + '-reg-cntrl-picker' 
+								&& pickerId != this.id + '-cntrl' && pickerId != this.id + '-reg-cntrl') )
 				return;
 
 			var picker = null;
 			var el = null;
-			if( pickerId === this.id + '-cntrl-picker' )
+			// TODO: rewrite with $hasEventInterest
+			if( pickerId === this.id + '-cntrl-picker'
+					|| pickerId === this.id + '-cntrl')
 			{
 				picker = this.options.picker;
 				el = Dom.get( this.id );
 			}
-			else if( pickerId === this.id + '-reg-cntrl-picker' )
+			// TODO: rewrite with $hasEventInterest
+			else if( pickerId === this.id + '-reg-cntrl-picker' 
+					|| pickerId === this.id + '-reg-cntrl')
 			{
 				picker = this.options.regPicker;
 				el = Dom.get( this.id + '-reg' );
@@ -344,7 +350,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			// Process newly attached files
 			var items = el.value.split(',');
 			var curItems = Dom.get( this.id + "-cntrl-current" ).value.split(',');
-			var newItems = []
+			var newItems = [];
 			for( var i in items )
 			{
 				var isNew = true;
@@ -701,18 +707,18 @@ if (typeof Alvex == "undefined" || !Alvex)
 				{
 					if( this.addFilesButton )
 						this.addFilesButton.set("disabled", true);
-					if( this.options.picker )
+					if( this.options.picker && this.options.picker.widgets.addButton )
 						this.options.picker.widgets.addButton.set("disabled", true);
-					if( this.options.regPicker )
+					if( this.options.regPicker && this.options.regPicker.widgets.addButton )
 						this.options.regPicker.widgets.addButton.set("disabled", true);
 				}
 				else
 				{
 					if( this.addFilesButton )
 						this.addFilesButton.set("disabled", false);
-					if( this.options.picker )
+					if( this.options.picker && this.options.picker.widgets.addButton )
 						this.options.picker.widgets.addButton.set("disabled", false);
-					if( this.options.regPicker )
+					if( this.options.regPicker && this.options.regPicker.widgets.addButton )
 						this.options.regPicker.widgets.addButton.set("disabled", false);
 				}
 			}

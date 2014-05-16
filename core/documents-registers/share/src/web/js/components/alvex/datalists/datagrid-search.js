@@ -59,6 +59,8 @@ if (typeof Alvex === "undefined" || !Alvex)
 
          if( !this.datalistColumns.length || this.datalistColumns.length === 0 )
             return;
+		
+         Dom.removeClass(this.id + "-search-container", "hidden");
 
          // Get constraints for fields in question
          // WA: very-very long form description to parse
@@ -76,7 +78,7 @@ if (typeof Alvex === "undefined" || !Alvex)
          // Render table to hold search field
          var outerEl = this.widgets.dataTable.getColumn('nodeRef').getThEl();
          var width = Number(outerEl.offsetWidth) - 4;
-         var row = '<td id="' + this.id + '-search-span-' + 'nodeRef' + '" class="datagrid-search-field" ' 
+         var row = '<td id="' + this.id + '-search-span-' + 'nodeRef' + '-c" class="datagrid-search-field" ' 
                    + 'style="min-width:' + width + 'px;">&nbsp;</td>';
 
          for( var col = 0; col < this.datalistColumns.length; col++ )
@@ -84,10 +86,10 @@ if (typeof Alvex === "undefined" || !Alvex)
             var key = this.dataResponseFields[col];
             outerEl = this.widgets.dataTable.getColumn(key).getThEl();
             width = Number(outerEl.offsetWidth) - 4;
-            row += '<td id="' + this.id + '-search-span-' + key + '" class="datagrid-search-field" ' 
+            row += '<td id="' + this.id + '-search-span-' + key + '-c" class="datagrid-search-field" ' 
                    + ' style="min-width:' + width + 'px;"></td>';
          }
-         row += '<td id="' + this.id + '-search-span-' + 'actions' + '" style="min-width:90px;" class="datagrid-search-field">' 
+         row += '<td id="' + this.id + '-search-span-' + 'actions' + '-c" style="min-width:90px;" class="datagrid-search-field">' 
                   + '<span class="small-btn" id="' + this.id + '-search-span-' + 'actions-search' + '"></span>'
                   + '<span class="small-btn" id="' + this.id + '-search-span-' + 'actions-clear' + '"></span>'
                   + '</td>';
@@ -132,8 +134,9 @@ if (typeof Alvex === "undefined" || !Alvex)
 
          var me = this;
          // Create search form inlined buttons
-         var oSearchButton = new YAHOO.widget.Button({ type: "submit", label: '<span class="datagrid-search-button"></span>', 
-                                                        container: this.id + '-search-span-' + 'actions-search' });
+         var oSearchButton = new YAHOO.widget.Button({ type: "push", label: '<span class="datagrid-search-button"></span>', 
+                                                        container: this.id + '-search-span-' + 'actions-search', 
+														onclick: { fn: me.doSearch, scope: me } });
 
          var oClearButton = new YAHOO.widget.Button({ type: "push", label: '<span class="datagrid-clear-search-button"></span>', 
                                                         container: this.id + '-search-span-' + 'actions-clear',
@@ -143,45 +146,22 @@ if (typeof Alvex === "undefined" || !Alvex)
          for( var col = 0; col < this.datalistColumns.length; col++ )
          {
             var key = this.dataResponseFields[col];
-            var el = Dom.get( key + '-search' );
+			var searchFieldHtmlId = this.id + '-search-span-' + key; 
+            var el = Dom.get( searchFieldHtmlId );
             if( el !== null )
             {
                el.onchange = function()
                   {
-                     me.doSearch( { "dataObj": me.widgets.searchForm._buildAjaxForSubmit( Dom.get(me.id + "-search-form") ) } );
+                     me.doSearch();
                   };
             }
          }
-
-         // Create search form on the fly to handle search submissions with 'native' tools
-         this.widgets.searchForm = new Alfresco.forms.Form(this.id + "-search-form");
-         this.widgets.searchForm.doBeforeAjaxRequest = 
-            {
-               fn: me.doSearch,
-               scope: me
-            };
-         this.widgets.searchForm.setSubmitElements(me.widgets.searchButton);
-         this.widgets.searchForm.setAJAXSubmit(true,
-         {
-            successCallback:
-            {
-               fn: me.onSuccess,
-               scope: me
-            },
-            failureCallback:
-            {
-               fn: me.onFailure,
-               scope: me
-            }
-         });
-         this.widgets.searchForm.setSubmitAsJSON(true);
-         this.widgets.searchForm.init();
       },
 
       clearSearch: function()
       {
          this.savedSearch = {};
-         this._updateDataGrid({ filter: { filterId: "all", filterData: "" } });
+         this._updateDataGrid({ filter: { eventGroup: this, filterId: "all", filterData: "" } });
       },
 
       onDataGridResize: function()
@@ -201,19 +181,26 @@ if (typeof Alvex === "undefined" || !Alvex)
          }
       },
 
-      doSearch: function(config, object)
+      doSearch: function(layer, args)
       {
+         var config = {};
+         config.dataObj = {};
          config.url = Alfresco.constants.PROXY_URI
                  + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
          config.dataObj.fields = this.dataRequestFields;
-         config.dataObj.filter = {filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
-         for(var i in config.dataObj) {
-            if( i.match(/^prop_/) ) {
-               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
-               config.dataObj.filter.searchFields.props[i.replace(/^prop_/, '')] = config.dataObj[i];
-            } else if( i.match(/^assoc_/) ) {
-               this.savedSearch[i] = config.dataObj[i].replace('"','\\"');
-               config.dataObj.filter.searchFields.assocs[i.replace(/^assoc_/, '')] = config.dataObj[i];
+         config.dataObj.filter = {eventGroup: this, filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
+         //for(var i in config.dataObj) {
+         for( var col = 0; col < this.datalistColumns.length; col++ )
+         {
+            var key = this.dataResponseFields[col];
+			var searchFieldHtmlId = this.id + '-search-span-' + key; 
+            var val = Dom.get(searchFieldHtmlId).value;
+            if( key.match(/^prop_/) ) {
+               this.savedSearch[key] = val.replace('"','\\"');
+               config.dataObj.filter.searchFields.props[key.replace(/^prop_/, '')] = val;
+            } else if( key.match(/^assoc_/) ) {
+               this.savedSearch[key] = val.replace('"','\\"');
+               config.dataObj.filter.searchFields.assocs[key.replace(/^assoc_/, '')] = val;
             }
          }
          this._updateDataGrid(config.dataObj);

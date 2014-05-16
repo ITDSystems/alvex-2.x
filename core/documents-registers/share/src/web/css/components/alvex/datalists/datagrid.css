@@ -1,7 +1,7 @@
 .datagrid
 {
    padding-top: 0.5em;
-   visibility: hidden;
+   //visibility: hidden;
 }
 
 .datagrid .datagrid-description
@@ -303,6 +303,11 @@
 .datagrid .onActionDelete a
 {
    background-image: url(/share/res/components/images/delete-row-16.png);
+}
+
+.datagrid .onActionAttach a
+{
+   background-image: url(/share/res/components/images/add-icon-16.png);
 }
 
 /* Forms */

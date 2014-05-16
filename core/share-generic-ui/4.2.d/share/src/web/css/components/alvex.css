@@ -9,3 +9,19 @@
 	width: 32%;
 	float: left;
 }
+
+.set .yui-gd div.first {
+	margin-left: 0;
+	width: 32%;
+	float: left;
+}
+
+.set .yui-gd .yui-u {
+	margin-left: 1%;
+	width: 65%;
+	float: left;
+}
+
+.set .yui-u input {
+	width: 98%;
+}
