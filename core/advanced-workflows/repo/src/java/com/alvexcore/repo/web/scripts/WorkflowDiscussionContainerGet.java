@@ -32,7 +32,8 @@ public class WorkflowDiscussionContainerGet extends DeclarativeWebScript impleme
 		return result;
 	}
 
-	@Required
+	// We remove required annotation for the moment - see comments in ExtensionAware.
+	//@Required
 	public void setExtension(RepositoryExtension extension) {
 		this.extension = extension;
 	}

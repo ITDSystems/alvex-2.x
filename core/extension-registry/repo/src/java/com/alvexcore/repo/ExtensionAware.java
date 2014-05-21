@@ -21,6 +21,15 @@ package com.alvexcore.repo;
 import org.springframework.beans.factory.annotation.Required;
 
 public interface ExtensionAware {
-	@Required
+	// We remove required annotation for the moment.
+	// We do it to solve circular deps problems (ALV-749 and similar).
+	// See OrgchartExtension and OrgchartService for example of the problem:
+	// - extension aware service needs extension to set up (typically to create nodes in repo)
+	// - repo ops may be called only after bootstrap (RepositoryExtensionRegistry takes care of it)
+	// - so, extension needs a ref to service to call it during init()
+	// - however, service needs a ref to extension too to call it during setUp()
+	// Making this setExtension() not required allows simple unified solution - 
+	//    extension just should call setExtension(this) during init()
+	// @Required
 	public void setExtension(RepositoryExtension extension);
 }
