@@ -190,7 +190,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 						var curLabel = "";
 
 						var path = this.options.root.split('.');
-						var opts = resp.json;
+						var opts = (resp.json ? resp.json 
+									: Alfresco.util.parseJSON(resp.serverResponse.responseText));
 						for( var p in path )
 							if( path[p] != '' )
 								opts = opts[path[p]];
