@@ -315,7 +315,7 @@ function getData()
       items = [],
       query = '';
 
-   if (filter == null || filter.filterId == "all")
+   /*if (filter == null || filter.filterId == "all")
    {
       // Use non-query method
       var parentNode = parsedArgs.listNode;
@@ -346,8 +346,16 @@ function getData()
             namespace: (filterParams.namespace ? filterParams.namespace : null)
          });
       }
-   }
+   }*/
 
+   // WA: use non-query method
+   var parentNode = parsedArgs.listNode;
+   if (parentNode != null)
+   {
+      var pagedResult = parentNode.childFileFolders(true, false, Filters.IGNORED_TYPES, -1, -1, REQUEST_MAX, "cm:name", true, null);
+      allNodes = pagedResult.page;
+   }
+   
    if (allNodes.length > 0)
    {
       // TODO - rework this slow filtering somehow
