@@ -503,6 +503,7 @@
 			</associations>
 		</aspect>
 
+		<!-- Depricated. We do not use it anymore. Is it safe to remove? -->
 		<aspect name="alvexdt:withRelatedDocuments">
 			<associations>
 				<child-association name="alvexdt:relatedDocuments">
@@ -519,6 +520,7 @@
 			</associations>
 		</aspect>
 
+		<!-- Depricated. We do not use it anymore. Is it safe to remove? -->
 		<aspect name="alvexdt:withRelatedSent">
 			<associations>
 				<child-association name="alvexdt:relatedSent">
@@ -535,6 +537,7 @@
 			</associations>
 		</aspect>
 
+		<!-- Depricated. We do not use it anymore. Is it safe to remove? -->
 		<aspect name="alvexdt:withRelatedReceived">
 			<associations>
 				<child-association name="alvexdt:relatedReceived">
