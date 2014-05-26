@@ -1,3 +1,4 @@
 <#assign withoutLocalDrive = true>
 <#assign withoutRepo = true>
-<#include "/alvex-uploader.ftl">
+<#assign withoutRegistries = false>
+<#include "/alvex-uploader.inc.ftl">

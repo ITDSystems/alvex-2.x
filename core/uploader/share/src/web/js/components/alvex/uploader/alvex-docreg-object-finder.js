@@ -146,6 +146,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             this.widgets.cancel = Alfresco.util.createYUIButton(this, "cancel", this.onCancel);
             
             this.widgets.dialog = Alfresco.util.createYUIPanel(this.pickerId, { });
+			Dom.removeClass(this.pickerId, "hidden");
             this.widgets.dialog.hideEvent.subscribe(this.onCancel, null, this);
 		 }
        },
@@ -197,7 +198,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		   };
 		   
             Alfresco.util.Ajax.jsonRequest({
-               url: Alfresco.constants.PROXY_URI + "/api/people/" + encodeURIComponent(Alfresco.constants.USERNAME) + "/sites?roles=user",
+               url: Alfresco.constants.PROXY_URI + "api/people/" + encodeURIComponent(Alfresco.constants.USERNAME) + "/sites?roles=user",
                method:Alfresco.util.Ajax.GET,
                successCallback:
                {
