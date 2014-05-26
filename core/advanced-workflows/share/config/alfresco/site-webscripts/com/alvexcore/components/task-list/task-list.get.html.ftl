@@ -2,8 +2,8 @@
 <#import "/org/alfresco/components/workflow/filter/filter.lib.ftl" as filter/>
 <#assign el=args.htmlid?html>
 <div id="${el}-body" class="task-list">
-   <div class="yui-g task-list-bar flat-button theme-bg-color-1 hidden">
-      <div class="yui-u first">
+   <div class="yui-g task-list-bar flat-button theme-bg-color-1">
+      <div class="yui-u first hidden">
          <h2 id="${el}-filterTitle" class="thin" style="float:left">
             &nbsp;
          </h2>
