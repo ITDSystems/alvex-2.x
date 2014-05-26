@@ -125,6 +125,7 @@
 			<mandatory-aspects>
 				<aspect>alvexdt:companyable</aspect>
 				<aspect>alvexdt:contractorable</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:withManager</aspect>
 				<aspect>alvexdt:signed</aspect>
@@ -163,6 +164,7 @@
 				<aspect>alvexdt:addressable</aspect>
 				<aspect>alvexdt:withContactName</aspect>
 				<aspect>alvexdt:withDeliveryType</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 			</mandatory-aspects>
 		</type>	
@@ -184,6 +186,7 @@
 				<aspect>alvexdt:correspondentable</aspect>
 				<aspect>alvexdt:signed</aspect>
 				<aspect>alvexdt:withRelatedReceived</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:summarizable</aspect>
 				<aspect>alvexdt:withContactName</aspect>
@@ -271,6 +274,7 @@
 				<aspect>alvexdt:companyable</aspect>
 				<aspect>alvexdt:contractorable</aspect>
 				<aspect>alvexdt:withPrimaryDocument</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:withManager</aspect>
 				<aspect>alvexdt:expiring</aspect>
@@ -294,6 +298,7 @@
 
 			<mandatory-aspects>
 				<aspect>alvexdt:companyable</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:summarizable</aspect>
 				<aspect>alvexdt:signed</aspect>
@@ -318,6 +323,7 @@
 
 			<mandatory-aspects>
 				<aspect>alvexdt:companyable</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:summarizable</aspect>
 				<aspect>alvexdt:signed</aspect>
@@ -355,6 +361,7 @@
 			</properties>
 
 			<mandatory-aspects>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:contractorable_not_mandatory</aspect>
 				<aspect>alvexdt:expiring</aspect>
@@ -368,6 +375,7 @@
 				<aspect>alvexdt:withcreator</aspect>
 				<aspect>alvexdt:executable</aspect>
 				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:withContactName</aspect>
 			</mandatory-aspects>
@@ -380,6 +388,7 @@
 				<aspect>alvexdt:withcreator</aspect>
 				<aspect>alvexdt:executable</aspect>
 				<aspect>alvexdt:summarizable</aspect>
+				<aspect>alvexdt:withLinkedDocuments</aspect>
 				<aspect>alvexdt:withRelatedDocuments</aspect>
 				<aspect>alvexdt:signed</aspect>
 			</mandatory-aspects>
@@ -471,6 +480,22 @@
 					</source>
 					<target>
 						<class>alvexdt:agreement</class>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</target>
+				</association>
+			</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withLinkedDocuments">
+			<associations>
+				<association name="alvexdt:linkedDocuments">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>alvexdt:object</class>
 						<mandatory>false</mandatory>
 						<many>true</many>
 					</target>
