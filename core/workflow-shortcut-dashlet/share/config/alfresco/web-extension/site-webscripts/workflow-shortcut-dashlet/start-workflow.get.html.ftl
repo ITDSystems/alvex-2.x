@@ -1,4 +1,6 @@
 <#include "/org/alfresco/include/alfresco-macros.lib.ftl" />
+<#include "/org/alfresco/components/form/form.js.ftl"/>
+
 <#assign el=args.htmlid?js_string>
 <script type="text/javascript">//<![CDATA[
 
