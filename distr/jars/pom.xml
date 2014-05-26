@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.distr.jars</groupId>
   <artifactId>alvex</artifactId>
-  <version>2014.04</version>
+  <version>2014.05</version>
   <modelVersion>4.0.0</modelVersion>
   <name>Alvex JARs [distr]</name>
   <packaging>pom</packaging>
@@ -124,22 +124,22 @@
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
-          <version>1.5</version>
+          <version>1.6</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
-          <version>1.5</version>
+          <version>1.6</version>
         </dependency>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>share-4.2.c-generic-ui</artifactId>
-          <version>1.11</version>
+          <version>1.12</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>share-4.2.c-generic-ui</artifactId>
-          <version>1.11</version>
+          <version>1.12</version>
         </dependency>
       </dependencies>
     </profile>
@@ -152,22 +152,22 @@
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
-          <version>1.5</version>
+          <version>1.6</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
-          <version>1.5</version>
+          <version>1.6</version>
         </dependency>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>share-4.2.d-generic-ui</artifactId>
-          <version>1.11</version>
+          <version>1.12</version>
         </dependency>
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>share-4.2.d-generic-ui</artifactId>
-          <version>1.11</version>
+          <version>1.12</version>
         </dependency>
       </dependencies>
     </profile>

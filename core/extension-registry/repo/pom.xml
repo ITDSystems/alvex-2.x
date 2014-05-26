@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.repo</groupId>
   <artifactId>extension-registry</artifactId>
-  <version>1.11</version>
+  <version>1.12</version>
   <parent>
     <groupId>com.alvexcore.ce.repo</groupId>
     <artifactId>master-pom</artifactId>
