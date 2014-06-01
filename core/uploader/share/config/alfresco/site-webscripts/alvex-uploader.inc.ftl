@@ -7,11 +7,11 @@
 <#assign regPickerId = regHtmlId + "-cntrl">
 
 <#assign showLocalDrive = ! ( (withoutLocalDrive?? && withoutLocalDrive)
-		|| (field.control.params.withoutLocalDrive?? && field.control.params.withoutLocalDrive) )>
+		|| (field.control.params.withoutLocalDrive?? && (field.control.params.withoutLocalDrive == "true")) )>
 <#assign showRepo = ! ( (withoutRepo?? && withoutRepo) 
-		|| (field.control.params.withoutRepo?? && field.control.params.withoutRepo) )>
+		|| (field.control.params.withoutRepo?? && (field.control.params.withoutRepo == "true")) )>
 <#assign showRegistries = ! ( (withoutRegistries?? && withoutRegistries)
-		|| (field.control.params.withoutRegistries?? && field.control.params.withoutRegistries) )>
+		|| (field.control.params.withoutRegistries?? && (field.control.params.withoutRegistries == "true")) )>
 
 <#assign fileUploadConfig = config.scoped["DocumentLibrary"]["file-upload"]!>
 <#if fileUploadConfig.getChildValue??>
