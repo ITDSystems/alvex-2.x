@@ -201,7 +201,9 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 			nodeService.removeAssociation(target, source, AlvexContentModel.ASSOC_PARENT_REGISTRY);
 		}
 		// Remove aspect if necessary
-		if( nodeService.exists(target) )
+		if( nodeService.exists(target) 
+				&& alvexDictionaryService.isContent(target) 
+				&& nodeService.hasAspect(target, AlvexContentModel.ASPECT_ATTACHED_TO_REGISTRY_ITEM) )
 		{
 			List<AssociationRef> assocs = nodeService.getTargetAssocs(target, AlvexContentModel.ASSOC_PARENT_REGISTRY);
 			if(assocs.isEmpty())

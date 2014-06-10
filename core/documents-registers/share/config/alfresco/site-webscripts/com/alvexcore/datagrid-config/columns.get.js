@@ -241,6 +241,10 @@ function main()
             columns = formModel.data.definition.fields;
             for each( var item in columns )
             {
+               if (logger.isLoggingEnabled())
+               {
+                  logger.log("Processing field: " + item.name);
+               }
                // check if this item is in default datagrid config or not
                for each( var datagridField in datagridDefaultFields )
                   if( datagridField == item.name )
@@ -248,13 +252,29 @@ function main()
                // if there is a datagrid config for the field
                if( formFields[item.name] )
                {
+                  if (logger.isLoggingEnabled())
+                  {
+                     logger.log("Field " + item.name + " is present in datagrid config");
+                  }
                   var templ = formFields[item.name].getControl().getTemplate();
+                  if (logger.isLoggingEnabled())
+                  {
+                     logger.log("Template for " + item.name + " is " + templ);
+                  }
                   var attrs = formFields[item.name].getAttributes();
+                  if (logger.isLoggingEnabled())
+                  {
+                     logger.log("Attrs for " + item.name + " are " + attrs);
+                  }
                   item.isSortKey = (attrs["isSortKey"] !== null ? true : false);
                   item.sortOrder = attrs["sortOrder"];
-                  item.isItemName = (attrs["isSortKey"] !== null ? true : false);
+                  item.isItemName = (attrs["isItemName"] !== null ? true : false);
+                  item.renderer = (templ ? templ : "");
                }
-               item.renderer = (templ ? templ : "");
+               else
+               {
+                  item.renderer = "";
+               }
             } 
          }
          else
@@ -264,17 +284,40 @@ function main()
       }
    }
 
+   if (logger.isLoggingEnabled())
+   {
+      logger.log("Preparing response");
+   }
+
    // sort results - datagrid default fields go first
    var sortedColumns = [];
    for each( var datagridField in datagridDefaultFields )
+   {
+      if (logger.isLoggingEnabled())
+      {
+         logger.log("Looking for field: " + datagridField);
+      }
       for each( var item in columns )
+      {
          if( item.name == datagridField )
          {
+            if (logger.isLoggingEnabled())
+            {
+               logger.log("Field found. Renderer: " + item.renderer);
+            }
             sortedColumns.push(item);
             columns.splice(columns.indexOf(item), 1);
             break;
          }
+	  }
+   }
    sortedColumns.push.apply(sortedColumns, columns);
+
+   if (logger.isLoggingEnabled())
+   {
+      for each( var item in columns )
+         logger.log("Sorted Columns. Item '" + item.name + "'. Renderer '" + item.renderer + "'.");
+   }
    
    // pass form ui model to FTL
    model.columns = sortedColumns;
