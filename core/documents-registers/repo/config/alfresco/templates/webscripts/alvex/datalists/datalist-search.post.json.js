@@ -48,8 +48,10 @@ var Filters =
          {
             var filterMatch = true;
             var pattern = filter.searchFields.props[prop];
+            var isDate = pattern.match("[(.*)T(.*) TO (.*)T(.*)]");
+           
             prop = prop.replace("_",":");
-            if( pattern != "" && pattern[0] != '[' )
+            if( pattern != "" && !isDate )
             {
                filterMatch = false;
                var value = node.properties[prop];
@@ -59,6 +61,27 @@ var Filters =
                else
                   if( value == pattern )
                      filterMatch = true;
+            }
+            else if( pattern != "" && isDate )
+            {
+               var startTokens = pattern.replace(/T.*/,"").replace(/\[/,"").split('-');
+               var endTokens = pattern.replace(/.* TO /,"").replace(/T.*/,"").split('-');
+               var startDate = new Date();
+               var endDate = new Date();
+               startDate.setYear( startTokens[0] );
+               startDate.setMonth( startTokens[1]-1 );
+               startDate.setDate( startTokens[2] );
+               startDate.setHours( 0.0 );
+               startDate.setMinutes( 0.0 );
+               startDate.setSeconds( 0.0 );
+               endDate.setYear( endTokens[0] );
+               endDate.setMonth( endTokens[1]-1 );
+               endDate.setDate( endTokens[2] );
+               endDate.setHours( 23.0 );
+               endDate.setMinutes( 59.0 );
+               endDate.setSeconds( 59.0 );
+               var value = node.properties[prop];
+               filterMatch = ( value.getTime() >= startDate.getTime() ) && ( value.getTime() <= endDate.getTime() );
             }
             totalMatch = (totalMatch && filterMatch);
          }
