@@ -64,8 +64,8 @@ var Filters =
             }
             else if( pattern != "" && isDate )
             {
-               var startTokens = pattern.replace(/T.*/,"").replace(/\[/,"").split('-');
-               var endTokens = pattern.replace(/.* TO /,"").replace(/T.*/,"").split('-');
+               var startTokens = pattern.replace(/T.*/,"").replace(/\[/,"").split('\\-');
+               var endTokens = pattern.replace(/.* TO /,"").replace(/T.*/,"").split('\\-');
                var startDate = new Date();
                var endDate = new Date();
                startDate.setYear( startTokens[0] );
@@ -74,12 +74,14 @@ var Filters =
                startDate.setHours( 0.0 );
                startDate.setMinutes( 0.0 );
                startDate.setSeconds( 0.0 );
+               startDate.setMilliseconds( 0.0 );
                endDate.setYear( endTokens[0] );
                endDate.setMonth( endTokens[1]-1 );
                endDate.setDate( endTokens[2] );
                endDate.setHours( 23.0 );
                endDate.setMinutes( 59.0 );
                endDate.setSeconds( 59.0 );
+               endDate.setMilliseconds( 999.0 );
                var value = node.properties[prop];
                filterMatch = ( value.getTime() >= startDate.getTime() ) && ( value.getTime() <= endDate.getTime() );
             }
