@@ -31,14 +31,14 @@ def importUnits() :
 					'data': {'name': unitJSON['name'], 'displayName': unitJSON['displayName'], 'weight': unitJSON['weight'] }
 				})
 			r = requests.put(url, data, headers=headers, auth=(USER, PASSWORD))
-			imported[ unitJSON['name'] ] = unitId = r.json['data']['id']
+			imported[ unitJSON['name'] ] = unitId = r.json()['data']['id']
 		else :
 			url = SERVICE_URL+"/api/alvex/orgchart/branches/default"
 			data = json.dumps({ 
 					'data': {'name': unitJSON['name'], 'displayName': unitJSON['displayName'], 'weight': unitJSON['weight'] } 
 				})
 			r = requests.put(url, data, headers=headers, auth=(USER, PASSWORD))
-			imported[ unitJSON['name'] ] = unitId = r.json['data']['id']
+			imported[ unitJSON['name'] ] = unitId = r.json()['data']['id']
 		for roleInst in unitJSON['roleInst'] :
 			url = SERVICE_URL+"/api/alvex/orgchart/units/"+unitId+"/roles/"+roleInst['name']
 			data = json.dumps( {} )
