@@ -20,7 +20,7 @@ def processUnit(json, parent) :
 	# Get unit details
 	url = SERVICE_URL+"/api/alvex/orgchart/units/"+json['id']
 	r = requests.get(url, auth=(USER, PASSWORD))
-	content = r.json
+	content = r.json()
 	resp = content['data']
 	unit = {"name": resp['name'], "displayName": resp['displayName'], "weight": resp['weight'], "id": json['id'], "parent": parent, 
 				"roles": [], "admins": [], "supervisors": [], "roleInst": []}
@@ -30,7 +30,7 @@ def processUnit(json, parent) :
 	# Get roles attached to unit
 	url = SERVICE_URL+"/api/alvex/orgchart/units/"+json['id']+"/roles"
 	r = requests.get(url, auth=(USER, PASSWORD))
-	content = r.json
+	content = r.json()
 	resp = content['roles']
 	for roleInst in resp :
 		ri = {"name": roleInst['name']}
@@ -38,14 +38,14 @@ def processUnit(json, parent) :
 	# Get unit permissions
 	url = SERVICE_URL+"/api/alvex/orgchart/units/"+json['id']+"/admins"
 	r = requests.get(url, auth=(USER, PASSWORD))
-	content = r.json
+	content = r.json()
 	resp = content['admins']
 	for admin in resp :
 		user = {"user": admin['userName']}
 		unit['admins'].append(user)
 	url = SERVICE_URL+"/api/alvex/orgchart/units/"+json['id']+"/supervisors"
 	r = requests.get(url, auth=(USER, PASSWORD))
-	content = r.json
+	content = r.json()
 	for sup in content['supervisors'] :
 		user = {"user": sup['userName']}
 		unit['supervisors'].append(user)
@@ -57,7 +57,7 @@ def processUnit(json, parent) :
 def exportUnits() :
 	url = SERVICE_URL+"/api/alvex/orgchart/tree/default"
 	r = requests.get(url, auth=(USER, PASSWORD))
-	content = r.json
+	content = r.json()
 	tree = content['data']
 	processUnit(tree[0], '')
 
@@ -74,7 +74,7 @@ def exportRoles() :
 	print("Exporting roles")
 	url = SERVICE_URL+"/api/alvex/orgchart/role-definitions"
 	r = requests.get(url, auth=(USER, PASSWORD))
-	content = r.json
+	content = r.json()
 	for role in content['roles']:
 		roles.append(role)
 
