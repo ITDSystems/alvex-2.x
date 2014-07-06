@@ -208,17 +208,25 @@ if (typeof Alvex == "undefined" || !Alvex)
             return;
 
          var resp = eval('(' + xmlHttp_req.responseText + ')');
+	 var downloadUrl =  Alfresco.constants.PROXY_URI + "api/node/content/"
+                  + Alfresco.util.NodeRef(resp.nodeRef).uri + "/" + resp.name;
 
          Alfresco.util.PopupManager.displayPrompt(
          {
             title: this.msg("message.report_ready.title"),
-            text: this.msg("message.report_ready.body", 
-                  Alfresco.constants.PROXY_URI + "api/node/content/"
-                  + Alfresco.util.NodeRef(resp.nodeRef).uri + "/" + resp.name),
+            text: this.msg("message.report_ready.body", downloadUrl),
             noEscape: true,
             buttons:
             [ {
-               text: this.msg("button.ok"),
+               text: this.msg("button.download"),
+               handler: function DocumentActions_oAEO_success_download()
+                     {
+                        window.location = downloadUrl;
+                        this.destroy();
+                     },
+            },
+            {
+               text: this.msg("button.close"),
                handler: function DataListActions__onActionDelete_delete()
                {
                   this.destroy();
