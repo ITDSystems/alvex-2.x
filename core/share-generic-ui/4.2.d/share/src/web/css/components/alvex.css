@@ -25,3 +25,23 @@
 .set .yui-u input {
 	width: 98%;
 }
+
+.set .yui-u input[type="checkbox"] {
+	width: 10%;
+}
+
+.form-field input[type="text"].date-entry,
+.form-fields .form-field input[type="text"].date-entry,
+.form-container .form-fields .form-field input[type="text"].date-entry
+{
+   width: 80%;
+}
+
+.form-field input[type="text"],
+.form-fields .form-field input[type="text"],
+.form-container .form-fields .form-field input[type="text"]
+{
+   margin-top: 4px;
+   height: 1.6em;
+}
+

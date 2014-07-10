@@ -328,16 +328,19 @@
 .alfresco-share .yui-panel .bd .form-container .yui-gd .yui-u
 {
 	width: 62%;
+	padding-left: 2px;
 }
 
 .alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u.first
 {
 	width: 62%;
+	padding-left: 2px;
 }
 
 .alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u
 {
 	width: 32%;
+	padding-left: 10px;
 }
 
 /* Details Form */
