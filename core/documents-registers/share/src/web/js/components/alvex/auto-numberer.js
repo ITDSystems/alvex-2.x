@@ -40,6 +40,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		options:
 		{
 			initialized: false,
+			autoIdOnly: false,
 			disabled: false
 		},
 
@@ -83,6 +84,9 @@ if (typeof Alvex == "undefined" || !Alvex)
 					fn: function (resp)
 					{
 						Dom.get( this.id ).value = $html(resp.json.number);
+						// Special case - read-only field is rendered completely differently (see .ftl)
+						if( this.options.autoIdOnly )
+							Dom.get( this.id + "-display" ).innerHTML = $html(resp.json.number);
 					},
 					scope:this
 				},

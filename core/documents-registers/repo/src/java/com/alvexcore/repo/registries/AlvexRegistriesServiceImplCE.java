@@ -135,7 +135,9 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 		for(ChildAssociationRef item : children)
 		{
 			String itemId = (String)nodeService.getProperty(item.getChildRef(), prop.getName());
-			if( itemId.equals(number) )
+			// (itemId == null) means somebody is changing it not using our services.
+			// It's not good, but we are to handle this case without crashing.
+			if( itemId !=  null && itemId.equals(number) )
 				return false;
 		}
 		
