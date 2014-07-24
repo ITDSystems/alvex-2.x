@@ -1,5 +1,4 @@
 <#include "/org/alfresco/include/alfresco-template.ftl" />
-<#include "/alvex-meta.lib.ftl" />
 
 <@templateHeader>
    <@markup id="resizer">
@@ -12,11 +11,7 @@
 <@templateBody>
    <@markup id="alf-hd">
    <div id="alf-hd">
-      <#if useNewUI >
-         <@region id="share-header" scope="global" chromeless="true"/>
-      <#else>
-         <@region id="header" scope="global"/>
-      </#if>
+      <@region id="share-header" scope="global" chromeless="true"/>
    </div>
    </@>
    <@markup id="bd">

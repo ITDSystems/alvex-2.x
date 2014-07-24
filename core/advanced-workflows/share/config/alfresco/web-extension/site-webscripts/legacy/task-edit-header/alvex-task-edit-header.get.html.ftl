@@ -1,5 +1,4 @@
 <#include "/org/alfresco/include/alfresco-macros.lib.ftl" />
-<#include "/alvex-meta.lib.ftl" />
 
 <!--[if IE]>
 	<script type="text/javascript" src="${url.context}/res/excanvas/excanvas.compiled.js"></script>
@@ -32,7 +31,7 @@ new Alvex.TaskEditHeader("${el}").setOptions(
          <span class="release hidden">      
             <button id="${el}-release">${msg("button.release")}</button>
          </span>
-	<#if alvexEditionID == 'enterprise' >
+	<#if alvexEdition == 'Enterprise' >
          <span class="tree-view hidden">
             <button id="${el}-tree-view"></button>
          </span>

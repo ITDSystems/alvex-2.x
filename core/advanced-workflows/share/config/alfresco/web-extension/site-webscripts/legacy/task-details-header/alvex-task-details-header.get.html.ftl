@@ -1,5 +1,4 @@
 <#assign el=args.htmlid?js_string>
-<#include "/alvex-meta.lib.ftl" />
 
 <!--[if IE]>
 	<script type="text/javascript" src="${url.context}/res/excanvas/excanvas.compiled.js"></script>
@@ -23,7 +22,7 @@ new Alvex.TaskDetailsHeader("${el}").setOptions(
          <span class="edit hidden">
             <button id="${el}-edit">${msg("button.edit")}</button>
          </span>
-	<#if alvexEditionID == 'enterprise' >
+	<#if alvexEdition == 'Enterprise' >
          <span class="tree-view hidden">
             <button id="${el}-tree-view"></button>
          </span>

@@ -1,4 +1,3 @@
-<#include "../alvex-meta.lib.ftl" />
 <#assign fc=config.scoped["Edition"]["footer"]>
 <div class="footer ${fc.getChildValue("css-class")!"footer-com"}">
    <span class="copyright">

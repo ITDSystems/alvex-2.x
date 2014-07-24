@@ -17,6 +17,13 @@ function main()
       model.serverVersion = json.data.version;
       model.serverSchema = json.data.schema;
    }
+
+   var resp = eval('(' + conn.get("/api/alvex/license") + ')');
+
+   model.alvexVersion = resp.version;
+   model.alvexEdition = resp.edition;
+   model.alvexCodename = resp.codename;
+
 }
 
 main();

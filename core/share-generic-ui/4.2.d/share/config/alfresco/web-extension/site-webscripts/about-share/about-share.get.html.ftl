@@ -1,4 +1,3 @@
-<#include "../alvex-meta.lib.ftl" />
 <#assign el=args.htmlid?html>
 <#assign aboutConfig=config.scoped["Edition"]["about"]>
 <div id="${el}-dialog" class="about-share">

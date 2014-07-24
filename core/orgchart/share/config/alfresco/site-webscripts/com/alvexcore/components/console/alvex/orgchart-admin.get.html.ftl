@@ -3,7 +3,6 @@
 <![endif]-->
 <input id="yui-history-field" type="hidden" />
 
-<#include "/alvex-meta.lib.ftl" />
 <#assign htmlId=args.htmlid?js_string>
 
 <script type="text/javascript">
@@ -46,7 +45,7 @@
 				</span>
 			</div>
 		</div>
-		<#if alvexEditionID == 'enterprise' >
+		<#if alvexEdition == 'Enterprise' >
 		<div style="padding-bottom: 1em;">
 			<div class="label" style="float: left;">${msg("alvex.orgchart.syncParameters")}:</div>
 			<div style="padding-left: 15em;">
