@@ -220,6 +220,15 @@ if (typeof Alvex == "undefined" || !Alvex)
                      scrollTo: true
                   });
                }
+               else
+               {
+                  YAHOO.Bubbling.fire("hideFilter");
+               }
+               
+               if (this.dataListsLength === 0 || window.location.hash === "#new")
+               {
+                  this.widgets.newList.fireEvent("click");
+               }
             },
             scope: this
          });
