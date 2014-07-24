@@ -19,6 +19,7 @@
     </repository>
   </repositories>
   <modules>
+    <module>core/activiti-connector/repo</module>
     <module>core/advanced-workflows/repo</module>
     <module>core/project-management/repo</module>
     <module>core/custom-workflows/repo</module>
@@ -26,8 +27,10 @@
     <module>core/extension-registry/repo</module>
     <module>core/manager-dashboard-tasks/repo</module>
     <module>core/orgchart/repo</module>
+    <module>core/share-generic-ui/repo</module>
     <module>core/uploader/repo</module>
     <module>core/workflow-shortcut-dashlet/repo</module>
+    <module>core/activiti-connector/share</module>
     <module>core/advanced-workflows/share</module>
     <module>core/project-management/share</module>
     <module>core/custom-workflows/share</module>
@@ -35,6 +38,7 @@
     <module>core/extension-registry/share</module>
     <module>core/manager-dashboard-tasks/share</module>
     <module>core/orgchart/share</module>
+    <module>core/share-generic-ui/share</module>
     <module>core/uploader/share</module>
     <module>core/workflow-shortcut-dashlet/share</module>
     <module>distr/jars</module>
@@ -44,24 +48,24 @@
   <profiles>
     <profile>
       <id>compat-4.2.c</id>
-      <modules>
+      <!--modules>
         <module>core/activiti-connector/4.2.c/repo</module>
         <module>core/activiti-connector/4.2.c/share</module>
         <module>core/share-generic-ui/4.2.c/repo</module>
         <module>core/share-generic-ui/4.2.c/share</module>
-      </modules>
+      </modules-->
     </profile>
     <profile>
       <id>compat-be</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <modules>
+      <!--modules>
         <module>core/activiti-connector/${alvex.compat.be}/repo</module>
         <module>core/activiti-connector/${alvex.compat.be}/share</module>
         <module>core/share-generic-ui/${alvex.compat.be}/repo</module>
         <module>core/share-generic-ui/${alvex.compat.be}/share</module>
-      </modules>
+      </modules-->
     </profile>
   </profiles>
 </project>

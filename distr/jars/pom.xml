@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.distr.jars</groupId>
   <artifactId>alvex</artifactId>
-  <version>2014.05.1</version>
+  <version>2014.08</version>
   <modelVersion>4.0.0</modelVersion>
   <name>Alvex JARs [distr]</name>
   <packaging>pom</packaging>
@@ -28,6 +28,16 @@
   <dependencies>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
+      <artifactId>activiti-5.13-connector</artifactId>
+      <version>${activiti-5.13-connector.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${alvex.share.groupId}</groupId>
+      <artifactId>activiti-5.13-connector</artifactId>
+      <version>${activiti-5.13-connector.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${alvex.repo.groupId}</groupId>
       <artifactId>advanced-workflows</artifactId>
       <version>${advanced_workflows.version}</version>
     </dependency>
@@ -95,6 +105,16 @@
       <groupId>${alvex.share.groupId}</groupId>
       <artifactId>orgchart</artifactId>
       <version>${orgchart.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${alvex.repo.groupId}</groupId>
+      <artifactId>share-4.2.d-generic-ui</artifactId>
+      <version>${share-4.2.d-generic-ui.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${alvex.share.groupId}</groupId>
+      <artifactId>share-4.2.d-generic-ui</artifactId>
+      <version>${share-4.2.d-generic-ui.version}</version>
     </dependency>
     <dependency>
       <groupId>${alvex.repo.groupId}</groupId>
@@ -120,7 +140,7 @@
   <profiles>
     <profile>
       <id>compat-4.2.c</id>
-      <dependencies>
+      <!--dependencies>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
@@ -141,14 +161,14 @@
           <artifactId>share-4.2.c-generic-ui</artifactId>
           <version>1.12</version>
         </dependency>
-      </dependencies>
+      </dependencies-->
     </profile>
     <profile>
       <id>compat-be</id>
-      <!--activation>
+      <activation>
         <activeByDefault>true</activeByDefault>
-      </activation-->
-      <dependencies>
+      </activation>
+      <!--dependencies>
         <dependency>
           <groupId>${alvex.repo.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
@@ -169,7 +189,7 @@
           <artifactId>share-4.2.d-generic-ui</artifactId>
           <version>1.12</version>
         </dependency>
-      </dependencies>
+      </dependencies-->
     </profile>
   </profiles>
   <build>
