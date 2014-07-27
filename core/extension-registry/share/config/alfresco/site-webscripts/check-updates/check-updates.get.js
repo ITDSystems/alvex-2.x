@@ -1,4 +1,8 @@
 (function(){
+	/* This script is intended to perform actual updates check.
+	 * It's NOT about UI for updates, UI part calls this script.
+	 * It works on Share side since it should gather and return info for both Repo and Share tiers.
+	 * */
 	model.json = null;
 	try{
 		/*

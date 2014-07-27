@@ -1,1 +1,0 @@
-model.edition = extensionRegistry.releaseEdition;
