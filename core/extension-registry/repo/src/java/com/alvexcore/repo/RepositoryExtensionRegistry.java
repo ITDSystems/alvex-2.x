@@ -40,6 +40,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.extensions.surf.util.AbstractLifecycleBean;
 
 import com.alvexcore.license.LicenseInfo;
+import com.alvexcore.license.LicenseStatus;
 
 /*
  * Repository extension registry implementation
@@ -201,7 +202,11 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	public LicenseInfo getLicenseInfo() {
 		return new LicenseInfo("CE", null, "Alvex", EDITION_CE, -1, null, null, false);
 	}
-
+	
+	public LicenseStatus getLicenseStatus() {
+		return new LicenseStatus(true, "");
+	}
+	
 	// registers new extension
 	public void registerExtension(RepositoryExtension extension)
 			throws Exception {

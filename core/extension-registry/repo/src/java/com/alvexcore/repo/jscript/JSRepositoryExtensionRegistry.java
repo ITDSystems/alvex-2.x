@@ -27,6 +27,7 @@ import org.mozilla.javascript.Scriptable;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.alvexcore.license.LicenseInfo;
+import com.alvexcore.license.LicenseStatus;
 import com.alvexcore.repo.RepositoryExtension;
 import com.alvexcore.repo.RepositoryExtensionRegistry;
 
@@ -60,6 +61,10 @@ public class JSRepositoryExtensionRegistry extends BaseScopableProcessorExtensio
 
 	public LicenseInfo getLicense() {
 		return registry.getLicenseInfo();
+	}
+	
+	public LicenseStatus checkLicense() {
+		return registry.getLicenseStatus();
 	}
 	
 	public String getReleaseVersion() {
