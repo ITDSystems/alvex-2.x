@@ -1,19 +1,18 @@
- <#escape x as jsonUtils.encodeJSONString(x)>
- {
- 	"version": "${version}",
- 	"edition": "${edition}",
- 	"codename": "${codename}",
-  	"license":
- 	{
- 		"id": "${license.id}",
- 		"owner": "${license.owner}",
- 		"cores": ${license.cores},
- 		"edition": ${license.edition},
- 		"product": "${license.product}",
- 		"issued": <#if license.issued??>"${license.issued?datetime?iso("UTC")}"<#else>''</#if>,
- 		"validThru": "${license.validThru?datetime?iso("UTC")}",
- 		"valid": ${license.valid?string},
- 		"trial": ${license.trial?string}
- 	}
- }
- </#escape>
+<#escape x as jsonUtils.encodeJSONString(x)>
+{
+	"version": "${version}",
+	"edition": "${edition}",
+	"codename": "${codename}",
+ 	"license":
+	{
+		"id": <#if license.id??>"${license.id}"<#else>''</#if>,
+		"owner": <#if license.owner??>"${license.owner}"<#else>''</#if>,
+		"product": "<#if license.product??>${license.product}"<#else>''</#if>,
+		"edition": <#if license.edition??>${license.edition}<#else>''</#if>,
+		"cores": <#if license.cores??>${license.cores}<#else>''</#if>,
+		"issued": <#if license.issued??>"${license.issued?datetime?iso("UTC")}"<#else>''</#if>,
+		"validThru": <#if license.validThru??>"${license.validThru?datetime?iso("UTC")}"<#else>''</#if>,
+		"trial": <#if license.trial??>${license.trial?string}<#else>''</#if>
+	}
+}
+</#escape>

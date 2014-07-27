@@ -47,7 +47,10 @@ import com.alvexcore.license.LicenseInfo;
  */
 
 public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
-
+	
+	public static final String EDITION_CE = "Community";
+	public static final String EDITION_EE = "Enterprise";
+	
 	final static QName[] ALVEX_PATH = { AlvexContentModel.ASSOC_NAME_SYSTEM,
 			AlvexContentModel.ASSOC_NAME_ALVEX };
 
@@ -196,8 +199,7 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	}
 
 	public LicenseInfo getLicenseInfo() {
-		return new LicenseInfo("CE", new String(), new String(), 0, 0,
-				new Date(), new Date(), true, false);
+		return new LicenseInfo("CE", null, "Alvex", EDITION_CE, -1, null, null, false);
 	}
 
 	// registers new extension

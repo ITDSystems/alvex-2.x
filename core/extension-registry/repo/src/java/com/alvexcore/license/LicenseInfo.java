@@ -23,7 +23,7 @@ import java.util.Date;
 public class LicenseInfo {
 
 	public static final LicenseInfo INVALID_LICENSE = new LicenseInfo("INVALID",
-			null, null, 0, 0, /*0,*/ null, null, false, false);
+			null, null, null, -1, /*0,*/ null, null, false);
 
 	private String id;
 	private String owner;
@@ -31,13 +31,12 @@ public class LicenseInfo {
 	private Date issued;
 	private int cores;
 	//private long users;
-	private int edition;
+	private String edition;
 	private String product;
-	private boolean valid;
 	private boolean trial;
 
-	public LicenseInfo(String id, String owner, String product, int edition,
-			int cores, /*long users,*/ Date issued, Date validThru, boolean valid, boolean trial) {
+	public LicenseInfo(String id, String owner, String product, String edition,
+			int cores, /*long users,*/ Date issued, Date validThru, boolean trial) {
 		this.owner = owner;
 		this.product = product;
 		this.edition = edition;
@@ -45,7 +44,6 @@ public class LicenseInfo {
 		//this.users = users;
 		this.issued = issued;
 		this.validThru = validThru;
-		this.valid = valid;
 		this.trial = trial;
 		this.id = id;
 	}
@@ -66,16 +64,12 @@ public class LicenseInfo {
 	//	return users;
 	//}
 
-	public int getEdition() {
+	public String getEdition() {
 		return edition;
 	}
 
 	public String getProduct() {
 		return product;
-	}
-
-	public boolean isValid() {
-		return valid;
 	}
 
 	public Date getIssued() {
@@ -86,7 +80,7 @@ public class LicenseInfo {
 		return INVALID_LICENSE;
 	}
 
-	public boolean isTrial() {
+	public boolean getTrial() {
 		return trial;
 	}
 
