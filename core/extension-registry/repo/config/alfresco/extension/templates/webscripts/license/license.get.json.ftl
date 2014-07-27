@@ -9,6 +9,7 @@
 		"owner": <#if license.owner??>"${license.owner}"<#else>''</#if>,
 		"product": <#if license.product??>"${license.product}"<#else>''</#if>,
 		"edition": <#if license.edition??>"${license.edition}"<#else>''</#if>,
+		"version": <#if license.version??>"${license.version}"<#else>''</#if>,
 		"cores": <#if license.cores??>${license.cores}<#else>''</#if>,
 		"issued": <#if license.issued??>"${license.issued?datetime?iso("UTC")}"<#else>''</#if>,
 		"validThru": <#if license.validThru??>"${license.validThru?datetime?iso("UTC")}"<#else>''</#if>,
