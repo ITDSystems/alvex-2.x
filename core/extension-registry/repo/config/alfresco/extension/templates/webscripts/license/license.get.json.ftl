@@ -11,6 +11,7 @@
 		"edition": <#if license.edition??>"${license.edition}"<#else>''</#if>,
 		"version": <#if license.version??>"${license.version}"<#else>''</#if>,
 		"cores": <#if license.cores??>${license.cores}<#else>''</#if>,
+		"users": <#if license.users??>${license.users}<#else>''</#if>,
 		"issued": <#if license.issued??>"${license.issued?datetime?iso("UTC")}"<#else>''</#if>,
 		"validThru": <#if license.validThru??>"${license.validThru?datetime?iso("UTC")}"<#else>''</#if>,
 		"trial": <#if license.trial??>${license.trial?string}<#else>''</#if>

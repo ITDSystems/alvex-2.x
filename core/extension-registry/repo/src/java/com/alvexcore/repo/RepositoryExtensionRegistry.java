@@ -200,7 +200,7 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 	}
 
 	public LicenseInfo getLicenseInfo() {
-		return new LicenseInfo("CE", null, "Alvex", EDITION_CE, null, -1, null, null, false);
+		return new LicenseInfo("CE", null, "Alvex", EDITION_CE, null, -1, -1, null, null, false);
 	}
 	
 	public LicenseStatus getLicenseStatus() {
