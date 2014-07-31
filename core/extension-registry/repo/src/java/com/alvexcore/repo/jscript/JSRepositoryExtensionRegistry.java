@@ -63,6 +63,10 @@ public class JSRepositoryExtensionRegistry extends BaseScopableProcessorExtensio
 		return registry.getServerCores();
 	}
 
+	public long getRegisteredUsers() {
+		return registry.getRegisteredUsers();
+	}
+
 	public LicenseInfo getLicense() {
 		return registry.getLicenseInfo();
 	}

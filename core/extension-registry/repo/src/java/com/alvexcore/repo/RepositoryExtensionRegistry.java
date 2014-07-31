@@ -203,6 +203,10 @@ public class RepositoryExtensionRegistry extends AbstractLifecycleBean {
 		return Runtime.getRuntime().availableProcessors();
 	}
 
+	public long getRegisteredUsers() {
+		return serviceRegistry.getAuthorityService().countUsers();
+	}
+
 	public LicenseInfo getLicenseInfo() {
 		return new LicenseInfo("CE", null, "Alvex", EDITION_CE, null, -1, -1, null, null, false);
 	}
