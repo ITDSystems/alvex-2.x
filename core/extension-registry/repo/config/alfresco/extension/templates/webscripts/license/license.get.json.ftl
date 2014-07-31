@@ -20,6 +20,10 @@
 	{
 		"valid": ${licenseStatus.valid?string},
 		"reason": "${licenseStatus.reason}"
+	},
+	"serverStats": {
+		"serverCores": "${serverCores}",
+		"registeredUsers": "${registeredUsers}"
 	}
 }
 </#escape>

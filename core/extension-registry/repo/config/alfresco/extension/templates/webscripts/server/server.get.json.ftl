@@ -2,6 +2,10 @@
 {
 	"version": "${version}",
 	"edition": "${edition}",
-	"codename": "${codename}"
+	"codename": "${codename}",
+	"stats": {
+		"serverCores": "${serverCores}",
+		"registeredUsers": "${registeredUsers}"
+	}
 }
 </#escape>
