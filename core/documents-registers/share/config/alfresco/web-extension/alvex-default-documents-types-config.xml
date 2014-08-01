@@ -12,6 +12,7 @@
 			<action id="alvex.document-view-metadata" type="pagelink"
 					label="actions.alvex.document-view-metadata" icon="document-view-details">
 				<param name="page">view-metadata?nodeRef={node.nodeRef}</param>
+				<evaluator negate="true">evaluator.alvex.isContentNode</evaluator>
 			</action>
 			<!-- View parent registry item (if exists) -->
 			<action id="alvex.document-view-registry-item" type="javascript"
