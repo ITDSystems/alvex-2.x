@@ -316,13 +316,27 @@ if (typeof Alvex == "undefined" || !Alvex)
                      return false;
 
                   var resp = eval('(' + xmlHttp_req.responseText + ')');
-                  if(resp.correct == "true")
+                  if(resp.success)
+                  {
+                     config.dataObj["prop_" + prop] = resp.id;
+                     delete config.dataObj["description"];
+                     delete config.dataObj["majorVersion"];
+                     delete config.dataObj["alf_destination"];
+                     config.url = config.url.replace(/type\/.*\/formprocessor/,"");
+                     config.url += "node/" + resp.ref.replace(":/","") + "/formprocessor";
                      return true;
+                  }
 
                   Alfresco.util.PopupManager.displayMessage(
                   {
-                     text: this.msg("message.duplicate-number.failure")
+                     text: this.msg("message.duplicate-number.failure") + this.msg("message.duplicate-number.nextIdHelp"),
+                     noEscape: true,
+                     displayTime: 7
                   });
+				  
+                  Dom.get(this.options.autoNumbererField).value = resp.id;
+                  Dom.get(this.options.autoNumbererField + "-edit").value = resp.id;
+                  Dom.get(this.options.autoNumbererField + "-display").value = resp.id;
 
                   YAHOO.lang.later( 2500, createRow, createRow.show );
 

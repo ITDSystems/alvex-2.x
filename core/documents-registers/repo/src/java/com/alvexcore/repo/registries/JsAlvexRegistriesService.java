@@ -64,7 +64,7 @@ public class JsAlvexRegistriesService extends BaseScopableProcessorExtension {
 		return alvexRegistriesService.suggestNextNumber(registry.getNodeRef());
 	}
 	
-	public boolean commitNextNumber(ScriptNode registry, String number, String propShortName)
+	public CommitNumberResult commitNextNumber(ScriptNode registry, String number, String propShortName)
 	{
 		PropertyDefinition targetProp = null;
 		String itemTypeShortName 

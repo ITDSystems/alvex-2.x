@@ -19,6 +19,7 @@
 				<field-visibility>
 					<show id="cm:title" force="true" />
 					<show id="cm:description" force="true" />
+					<show id="alvexdr:allowIdEdit" />
 				</field-visibility>
 				<create-form template="/org/alfresco/components/data-lists/forms/datalist-new.ftl" />
 				<appearance>
@@ -29,11 +30,12 @@
 							<control-param name="style">width: 98%</control-param>
 						</control>
 					</field>
-					<field set="info" id="cm:description" >
-						<control template="/org/alfresco/components/form/controls/textarea.ftl">
-							<control-param name="style">width: 98%</control-param>
+					<field set="format" id="alvexdr:idFormat" help-id="alvex.docreg.numberingFormatHelp">
+						<control template="/org/alfresco/components/form/controls/textfield.ftl">
+							<control-param name="style">width: 90%</control-param>
 						</control>
 					</field>
+					<field set="format" id="alvexdr:allowIdEdit" />
 				</appearance>
 			</form>
 		</forms>
@@ -46,12 +48,16 @@
 				<field-visibility>
 					<show id="cm:title" force="true" />
 					<show id="cm:description" force="true" />
+					<show id="alvexdr:allowIdEdit" />
+					<show id="alvexdr:inc" />
 					<show id="alvexdr:attachedMasterData" />
 				</field-visibility>
 				<view-form template="/alvex-form.ftl" />
 				<edit-form template="/alvex-form.ftl" />
 				<appearance>
 					<set id="info" appearance="title" label-id="alvex.docreg.title" />
+					<set id="format" appearance="spoiler-collapsed" label-id="alvex.docreg.idFormat" />
+					<set id="counters" appearance="spoiler-collapsed" label-id="alvex.docreg.counters" template="/org/alfresco/components/form/3-column-set.ftl"/>
 					<set id="masterData" appearance="spoiler-collapsed" label-id="alvex.docreg.masterData" />
 					<field set="info" id="cm:title" mandatory="true">
 						<control template="/org/alfresco/components/form/controls/textfield.ftl">
@@ -63,6 +69,8 @@
 							<control-param name="style">width: 98%</control-param>
 						</control>
 					</field>
+					<field set="format" id="alvexdr:allowIdEdit" />
+					<field set="counters" id="alvexdr:inc" help="" />
 					<field set="masterData" id="alvexdr:attachedMasterData">
 						<control template="/alvex-masterData-config.ftl" />
 					</field>

@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012 ITD Systems
+ * Copyright © 2012-2014 ITD Systems
  *
  * This file is part of Alvex
  *
@@ -30,6 +30,7 @@ public interface AlvexContentModel {
 	final static String ALVEXDOCREG_MODEL_URI = "http://alvexcore.com/prefix/alvexdocreg20";
 	final static String ALVEXDR_MODEL_URI = "http://alvexcore.com/prefix/alvexdr";
 	final static String ALVEXDT_MODEL_URI = "http://alvexcore.com/prefix/alvexdt";
+	final static String ALVEXEM_MODEL_URI = "http://alvexcore.com/prefix/alvexem";
 	
 	final static String ALVEX_MODEL_PREFIX = "alvex";
 	final static String ALVEXWF_MODEL_PREFIX = "alvexwf";
@@ -38,6 +39,7 @@ public interface AlvexContentModel {
 	final static String ALVEXDOCREG_MODEL_PREFIX = "alvexdocreg20";
 	final static String ALVEXDR_MODEL_PREFIX = "alvexdr";
 	final static String ALVEXDT_MODEL_PREFIX = "alvexdt";
+	final static String ALVEXEM_MODEL_PREFIX = "alvexem";
 	
 	final static QName TYPE_EXTENSION_CONFIG = QName.createQName(ALVEX_MODEL_URI, "extensionConfig");
 	final static QName TYPE_ORGCHART_UNIT = QName.createQName(ALVEXOC_MODEL_URI, "unit");
@@ -49,8 +51,13 @@ public interface AlvexContentModel {
 	final static QName TYPE_DOCUMENT_REGISTER = QName.createQName(ALVEXDR_MODEL_URI, "documentRegister");
 	final static QName TYPE_DOCUMENT_REGISTER_ITEM = QName.createQName(ALVEXDT_MODEL_URI, "object");
 
+	final static QName TYPE_EMAIL_CONTAINER = QName.createQName(ALVEXEM_MODEL_URI, "container");
+	final static QName TYPE_EMAIL_FOLDER = QName.createQName(ALVEXEM_MODEL_URI, "folder");
+	final static QName TYPE_EMAIL_MESSAGE = QName.createQName(ALVEXEM_MODEL_URI, "message");
+	final static QName TYPE_EMAIL_ATTACHMENT = QName.createQName(ALVEXEM_MODEL_URI, "attachment");
+	final static QName TYPE_EMAIL_PROVIDER = QName.createQName(ALVEXEM_MODEL_URI, "emailProvider");
+
 	final static QName ASPECT_ATTACHED_TO_REGISTRY_ITEM = QName.createQName(ALVEXDR_MODEL_URI, "attachedToRegistryItem");
-	
 	final static QName ASPECT_ORGCHART_MEMBER = QName.createQName(ALVEXOC_MODEL_URI, "orgchartMember");
 	
 	final static QName ASSOC_ROLE = QName.createQName(ALVEXOC_MODEL_URI, "role");
@@ -68,11 +75,14 @@ public interface AlvexContentModel {
 	final static QName ASSOC_FILES = QName.createQName(ALVEXDT_MODEL_URI, "files");
 	final static QName ASSOC_DOCUMENT_ASSIGNEE = QName.createQName(ALVEXDT_MODEL_URI, "assignee");
 	final static QName ASSOC_PARENT_REGISTRY = QName.createQName(ALVEXDR_MODEL_URI, "parentRegister");
+	final static QName ASSOC_EMAIL_ATTACHMENTS = QName.createQName(ALVEXEM_MODEL_URI, "attachments");
+	final static QName ASSOC_EMAIL_PROVIDER = QName.createQName(ALVEXEM_MODEL_URI, "provider");
 	
 	final static QName ASSOC_NAME_SYSTEM = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "system");
 	final static QName ASSOC_NAME_ALVEX = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "alvex");
 	final static QName ASSOC_NAME_CONFIG = QName.createQName(ALVEX_MODEL_URI, "config");
 	final static QName ASSOC_NAME_DATA = QName.createQName(ALVEX_MODEL_URI, "data");
+	final static QName ASSOC_NAME_EMAILS = QName.createQName(ALVEXEM_MODEL_URI, "emails");
 	
 	final static QName PROP_EXTENSION_VERSION = QName.createQName(ALVEX_MODEL_URI, "version");
 	final static QName PROP_EXTENSION_EDITION = QName.createQName(ALVEX_MODEL_URI, "edition");
@@ -91,9 +101,32 @@ public interface AlvexContentModel {
 	final static QName PROP_REGISTRY_QUARTER_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "quarterInc");
 	final static QName PROP_REGISTRY_YEAR_INC_COUNTER = QName.createQName(ALVEXDR_MODEL_URI, "yearInc");
 	final static QName PROP_REGISTRY_ID_FORMAT = QName.createQName(ALVEXDR_MODEL_URI, "idFormat");
+	final static QName PROP_REGISTRY_CREATE_ID_MODE = QName.createQName(ALVEXDR_MODEL_URI, "createIdMode");
+	final static QName PROP_REGISTRY_ALLOW_ID_EDIT = QName.createQName(ALVEXDR_MODEL_URI, "allowIdEdit");
 	final static QName PROP_DOCUMENT_STATUS = QName.createQName(ALVEXDT_MODEL_URI, "status");
 	final static QName PROP_DOCUMENT_ID = QName.createQName(ALVEXDT_MODEL_URI, "id");
 	final static QName PROP_RELATED_WORKFLOWS = QName.createQName(ALVEXRWF_MODEL_URI, "relatedWorkflows");
+	final static QName PROP_EMAIL_FROM = QName.createQName(ALVEXEM_MODEL_URI, "from");
+	final static QName PROP_EMAIL_TO = QName.createQName(ALVEXEM_MODEL_URI, "to");
+	final static QName PROP_EMAIL_CC = QName.createQName(ALVEXEM_MODEL_URI, "cc");
+	final static QName PROP_EMAIL_SUBJECT = QName.createQName(ALVEXEM_MODEL_URI, "subject");
+	final static QName PROP_EMAIL_SENT_DATE = QName.createQName(ALVEXEM_MODEL_URI, "sentDate");
+	final static QName PROP_EMAIL_ENCODING = QName.createQName(ALVEXEM_MODEL_URI, "encoding");
+	final static QName PROP_EMAIL_IN_REPLY_TO = QName.createQName(ALVEXEM_MODEL_URI, "inReplyTo");
+	final static QName PROP_EMAIL_ID = QName.createQName(ALVEXEM_MODEL_URI, "id");
+	final static QName PROP_EMAIL_UID = QName.createQName(ALVEXEM_MODEL_URI, "uid");
+	final static QName PROP_EMAIL_CONFIG_USERNAME = QName.createQName(ALVEXEM_MODEL_URI, "username");
+	final static QName PROP_EMAIL_CONFIG_PASSWORD = QName.createQName(ALVEXEM_MODEL_URI, "password");
+	final static QName PROP_EMAIL_FOLDER_FETCH_ACTIVE = QName.createQName(ALVEXEM_MODEL_URI, "fetchActive");
+	final static QName PROP_EMAIL_REAL_NAME = QName.createQName(ALVEXEM_MODEL_URI, "realName");
+	final static QName PROP_EMAIL_CONFIG_REAL_NAME = QName.createQName(ALVEXEM_MODEL_URI, "userRealName");
+	final static QName PROP_EMAIL_CONFIG_ADDRESS = QName.createQName(ALVEXEM_MODEL_URI, "address");
+	final static QName PROP_EMAIL_PROVIDER_INCOMING_PROTO = QName.createQName(ALVEXEM_MODEL_URI, "incomingProto");
+	final static QName PROP_EMAIL_PROVIDER_INCOMING_SERVER = QName.createQName(ALVEXEM_MODEL_URI, "incomingServer");
+	final static QName PROP_EMAIL_PROVIDER_INCOMING_PORT = QName.createQName(ALVEXEM_MODEL_URI, "incomingPort");
+	final static QName PROP_EMAIL_PROVIDER_OUTGOING_PROTO = QName.createQName(ALVEXEM_MODEL_URI, "outgoingProto");
+	final static QName PROP_EMAIL_PROVIDER_OUTGOING_SERVER = QName.createQName(ALVEXEM_MODEL_URI, "outgoingServer");
+	final static QName PROP_EMAIL_PROVIDER_OUTGOING_PORT = QName.createQName(ALVEXEM_MODEL_URI, "outgoingPort");
 	
 	final static String DOCUMENT_STATUS_NOT_STARTED = "notStarted";
 	final static String DOCUMENT_STATUS_IN_PROGRESS = "inProgress";

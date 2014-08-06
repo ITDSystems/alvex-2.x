@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>Documents Registers - Set Auto Numbering Mode</shortname>
+  <description>Documents Registers - Set Auto Numbering Mode</description>
+  <url>/api/alvex/documents-registers/numbering-mode</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

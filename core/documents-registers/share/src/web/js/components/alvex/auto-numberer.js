@@ -41,7 +41,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			initialized: false,
 			autoIdOnly: false,
-			disabled: false
+			mode: ""
 		},
 
 		onReady: function _onReady()
@@ -64,8 +64,25 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 		fillNumber: function _fillNumber()
 		{
-			if(this.options.disabled)
+			if(this.options.mode === "view")
+			{
+				Dom.removeClass(this.id + "-display", "hidden");
 				return;
+			}
+			if(this.options.mode === "create")
+			{
+				this.fillNumberOnCreate();
+				return;
+			}
+			if(this.options.mode === "edit")
+			{
+				this.fillNumberOnEdit();
+				return;
+			}
+		},
+		
+		fillNumberOnCreate: function()
+		{
 			// If we are here - we need auto-numbering for document without number
 			
 			// We inform about our presence if there is a chance a value will be changed by user
@@ -83,10 +100,76 @@ if (typeof Alvex == "undefined" || !Alvex)
 				{
 					fn: function (resp)
 					{
-						Dom.get( this.id ).value = $html(resp.json.number);
-						// Special case - read-only field is rendered completely differently (see .ftl)
-						if( this.options.autoIdOnly )
-							Dom.get( this.id + "-display" ).innerHTML = $html(resp.json.number);
+						var num = $html(resp.json.number)
+						Dom.get( this.id ).value = num;
+						// Server-side auto-numbering (per registry defined)
+						if( num === "AUTO" )
+						{
+							Dom.get( this.id + "-display" ).innerHTML = this.msg("message.alvex.autoIdOnly");
+							Dom.removeClass(this.id + "-display", "hidden");
+						}
+						// Client-side auto-numbering (per type defined)
+						else if( this.options.autoIdOnly )
+						{
+							Dom.get( this.id + "-display" ).innerHTML = num;
+							Dom.removeClass(this.id + "-display", "hidden");
+						}
+						// Manual numbering
+						else
+						{
+							var editEl = Dom.get(this.id + "-edit");
+							editEl.value = num;
+							Dom.removeClass(editEl, "hidden");
+							var me = this;
+							editEl.onchange = function()
+							{
+								Dom.get( me.id ).value = Dom.get( me.id + "-edit").value
+								YAHOO.Bubbling.fire("mandatoryControlValueUpdated", me);
+							};
+						}
+					},
+					scope:this
+				},
+				failureCallback:
+				{
+					fn: function (resp)
+					{
+						if (resp.serverResponse.statusText)
+							Alfresco.util.PopupManager.displayMessage({ text: resp.serverResponse.statusText });
+					},
+					scope:this
+				}
+			});
+		},
+		
+		fillNumberOnEdit: function()
+		{
+			var itemRef = window.location.href.replace(/.*nodeRef=/,"");
+			
+			Alfresco.util.Ajax.jsonRequest({
+				url: Alfresco.constants.PROXY_URI + "api/alvex/documents-registers/numbering-mode"
+						+ "?item=" + itemRef,
+				method: Alfresco.util.Ajax.GET,
+				dataObj: null,
+				successCallback:
+				{
+					fn: function (resp)
+					{
+						if( ! resp.json.allowEdit )
+						{
+							Dom.removeClass(this.id + "-display", "hidden");
+						}
+						else
+						{
+							var editEl = Dom.get(this.id + "-edit");
+							Dom.removeClass(editEl, "hidden");
+							var me = this;
+							editEl.onchange = function()
+							{
+								Dom.get( me.id ).value = Dom.get( me.id + "-edit").value
+								YAHOO.Bubbling.fire("mandatoryControlValueUpdated", me);
+							};
+						}
 					},
 					scope:this
 				},

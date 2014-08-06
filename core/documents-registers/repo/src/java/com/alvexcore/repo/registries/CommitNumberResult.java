@@ -19,19 +19,37 @@
 
 package com.alvexcore.repo.registries;
 
-import java.util.List;
-import java.util.Map;
-import org.alfresco.service.cmr.repository.NodeRef;
-import org.alfresco.service.ServiceRegistry;
-import org.alfresco.service.cmr.dictionary.PropertyDefinition;
+public class CommitNumberResult {
 
-public interface AlvexRegistriesService {
+	private boolean success;
+	private String reason;
+	private String id;
+	private String nodeRef;
+			
+	public CommitNumberResult(boolean success, String reason, String id, String nodeRef) {
+		this.success = success;
+		this.reason = reason;
+		this.id = id;
+		this.nodeRef = nodeRef;
+	}
 
-	public abstract Map<String,String> getParentRegistryDetails(NodeRef recordRef);
-	public abstract String suggestNextNumber(NodeRef registryRef);
-	public abstract CommitNumberResult commitNextNumber(NodeRef registryRef, String number, PropertyDefinition prop);
-	public abstract List<Map<String,String>> getParentRegistryItems(NodeRef fileRef);
-	public abstract boolean workflowsAvailableForRegistryItem();
+	public boolean getSuccess()
+	{
+		return success;
+	}
 	
-	public abstract ServiceRegistry getServiceRegistry();
+	public String getReason()
+	{
+		return reason;
+	}
+	
+	public String getId()
+	{
+		return id;
+	}
+	
+	public String getNodeRef()
+	{
+		return nodeRef;
+	}
 }

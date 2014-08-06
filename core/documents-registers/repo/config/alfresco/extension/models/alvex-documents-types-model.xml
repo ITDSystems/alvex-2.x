@@ -60,6 +60,25 @@
 					<type>d:datetime</type>
 					<mandatory>false</mandatory>
 				</property>
+				<property name="alvexdr:createIdMode">
+					<type>d:text</type>
+					<default>combined</default>
+					<constraints>
+					<constraint name="alvexdr:createIdAllowedModes" type="LIST">
+						<parameter name="allowedValues">
+							<list>
+								<value>combined</value>
+								<value>auto</value>
+								<value>manual</value>
+							</list>
+						</parameter>
+					</constraint>
+				</constraints>
+				</property>
+				<property name="alvexdr:allowIdEdit">
+					<type>d:boolean</type>
+					<default>false</default>
+				</property>
 			</properties>
 			<associations>
 				<association name="alvexdr:attachedMasterData">

@@ -20,6 +20,8 @@
 package com.alvexcore.repo.registries;
 
 import com.alvexcore.repo.AlvexContentModel;
+import org.alfresco.model.ContentModel;
+import org.alfresco.model.DataListModel;
 import com.alvexcore.repo.RepositoryExtensionRegistry;
 
 import org.alfresco.model.ContentModel;
@@ -28,7 +30,12 @@ import org.alfresco.service.cmr.repository.ChildAssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.NodeService;
+import org.alfresco.service.namespace.QName;
 import org.alfresco.service.cmr.dictionary.PropertyDefinition;
+import org.alfresco.service.cmr.dictionary.TypeDefinition;
+import org.alfresco.service.namespace.NamespaceService;
+
+import com.alvexcore.repo.AlvexDictionaryService;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -40,6 +47,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.io.Serializable;
 
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
@@ -67,6 +75,8 @@ class incCounterWork implements RunAsWork<Void>
 
 public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegistriesService
 {
+	private AlvexDictionaryService alvexDictionaryService;
+	
 	private static final String EDITION_CE = "Community";
 	private static final String EDITION_EE = "Enterprise";
 	
@@ -93,6 +103,12 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 	@Required
 	public void setAlvexExtensionRegistry(RepositoryExtensionRegistry extensionRegistry) {
 		this.extensionRegistry = extensionRegistry;
+	}
+	
+	@Required
+	public void setAlvexDictionaryService(AlvexDictionaryService alvexDictionaryService)
+	{
+		this.alvexDictionaryService = alvexDictionaryService;
 	}
 	
 	/*
@@ -129,7 +145,7 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 	}
 	
 	@Override
-	public boolean commitNextNumber(NodeRef registryRef, String number, PropertyDefinition prop)
+	public CommitNumberResult commitNextNumber(NodeRef registryRef, String number, PropertyDefinition prop)
 	{
 		List<ChildAssociationRef> children = nodeService.getChildAssocs(registryRef);
 		for(ChildAssociationRef item : children)
@@ -138,7 +154,7 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 			// (itemId == null) means somebody is changing it not using our services.
 			// It's not good, but we are to handle this case without crashing.
 			if( itemId !=  null && itemId.equals(number) )
-				return false;
+				return new CommitNumberResult(false, "Duplicate ID", suggestNextNumber(registryRef), "");
 		}
 		
 		Integer counter = (Integer) nodeService.getProperty(registryRef, 
@@ -146,7 +162,21 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 		RunAsWork<Void> work = new incCounterWork(nodeService, registryRef, counter + 1);
 		AuthenticationUtil.runAsSystem(work);
 		
-		return true;
+		String itemTypeShortName 
+				= (String) nodeService.getProperty(registryRef, DataListModel.PROP_DATALIST_ITEM_TYPE);
+		TypeDefinition typeDef = alvexDictionaryService.getDataType(itemTypeShortName);
+		
+		Map<QName, Serializable> nodeProps = new HashMap<QName, Serializable>(2);
+		nodeProps.put(AlvexContentModel.PROP_DOCUMENT_ID, number);
+		nodeProps.put(ContentModel.PROP_NAME, number.replace('/','_'));
+		NodeRef ref = nodeService.createNode(registryRef, 
+						ContentModel.ASSOC_CONTAINS, 
+						QName.createQName(NamespaceService.CONTENT_MODEL_1_0_URI, 
+								QName.createValidLocalName(number.replace('/','_'))), 
+						typeDef.getName(), 
+						nodeProps).getChildRef();
+		
+		return new CommitNumberResult(true, "", number, ref.toString());
 	}
 	
 	@Override

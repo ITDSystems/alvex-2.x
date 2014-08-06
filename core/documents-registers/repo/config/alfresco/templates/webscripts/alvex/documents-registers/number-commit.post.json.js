@@ -5,7 +5,11 @@
 		var prop = json.get('prop').replace('_',':');
 		
 		var dl = search.findNode(dlRef);
-		model.correct = alvexRegistriesService.commitNextNumber(dl, number, prop).toString();
+		var result = alvexRegistriesService.commitNextNumber(dl, number, prop);
+		model.success = result.success;
+		model.reason = result.reason;
+		model.id = result.id;
+		model.ref = result.nodeRef;
 		
 		status.code = 200;
 	} catch (e) {
