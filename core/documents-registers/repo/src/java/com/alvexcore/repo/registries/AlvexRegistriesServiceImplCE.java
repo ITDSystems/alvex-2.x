@@ -52,6 +52,28 @@ import java.io.Serializable;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 
+class getRegistryDetailsWork implements RunAsWork<Map<String,String>>
+{
+	private NodeService nodeService;
+	private NodeRef registryRef;
+	
+	public getRegistryDetailsWork(NodeService nodeService, NodeRef registryRef)
+	{
+		this.nodeService = nodeService;
+		this.registryRef = registryRef;
+	}
+	
+	@Override
+	public Map<String,String> doWork() throws Exception {
+		Map<String,String> results = new HashMap<String,String>();
+		NodeRef containerRef = nodeService.getPrimaryParent(registryRef).getParentRef();
+		NodeRef siteRef = nodeService.getPrimaryParent(containerRef).getParentRef();
+		results.put("registryName", (String)nodeService.getProperty(registryRef, ContentModel.PROP_NAME));
+		results.put("siteName", (String)nodeService.getProperty(siteRef, ContentModel.PROP_NAME));
+		return results;
+	}
+}
+
 class incCounterWork implements RunAsWork<Void>
 {
 	private NodeService nodeService;
@@ -127,12 +149,10 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 	@Override
 	public Map<String,String> getParentRegistryDetails(NodeRef recordRef)
 	{
-		Map<String,String> results = new HashMap<String,String>();
 		NodeRef registryRef = nodeService.getPrimaryParent(recordRef).getParentRef();
-		NodeRef containerRef = nodeService.getPrimaryParent(registryRef).getParentRef();
-		NodeRef siteRef = nodeService.getPrimaryParent(containerRef).getParentRef();
-		results.put("registryName", (String)nodeService.getProperty(registryRef, ContentModel.PROP_NAME));
-		results.put("siteName", (String)nodeService.getProperty(siteRef, ContentModel.PROP_NAME));
+		
+		RunAsWork<Map<String,String>> work = new getRegistryDetailsWork(nodeService, registryRef);
+		Map<String,String> results = AuthenticationUtil.runAsSystem(work);
 		return results;
 	}
 	
