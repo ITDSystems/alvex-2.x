@@ -180,6 +180,8 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 		NodeRef source = nodeAssocRef.getSourceRef();
 		NodeRef target = nodeAssocRef.getTargetRef();
 		if( alvexDictionaryService.isContent(target)
+				&& ! alvexDictionaryService.isRegistry(target)
+				&& ! alvexDictionaryService.isRegistryItem(target)
 				&& ! nodeAssocRef.getTypeQName().equals( AlvexContentModel.ASSOC_PARENT_REGISTRY ) )
 		{
 			nodeService.addAspect(target, AlvexContentModel.ASPECT_ATTACHED_TO_REGISTRY_ITEM, null);
@@ -196,6 +198,8 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 		// Delete assoc if necessary
 		if( nodeService.exists(source) && nodeService.exists(target)
 				&& alvexDictionaryService.isContent(target)
+				&& ! alvexDictionaryService.isRegistry(target)
+				&& ! alvexDictionaryService.isRegistryItem(target)
 				&& nodeService.hasAspect(target, AlvexContentModel.ASPECT_ATTACHED_TO_REGISTRY_ITEM) )
 		{
 			nodeService.removeAssociation(target, source, AlvexContentModel.ASSOC_PARENT_REGISTRY);
@@ -203,6 +207,8 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 		// Remove aspect if necessary
 		if( nodeService.exists(target) 
 				&& alvexDictionaryService.isContent(target) 
+				&& ! alvexDictionaryService.isRegistry(target)
+				&& ! alvexDictionaryService.isRegistryItem(target)
 				&& nodeService.hasAspect(target, AlvexContentModel.ASPECT_ATTACHED_TO_REGISTRY_ITEM) )
 		{
 			List<AssociationRef> assocs = nodeService.getTargetAssocs(target, AlvexContentModel.ASSOC_PARENT_REGISTRY);
