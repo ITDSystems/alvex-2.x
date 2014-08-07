@@ -175,6 +175,8 @@ public class WorkflowPermissionManager extends AlvexActivitiListener implements
 	}
 	
 	public void grantPermissions(String assignee, String groupId) {
+		if( assignee == null )
+			return;
 		// run work to grant permissions to user
 		RunAsWork<Void> work = new GrantPermissionsWork(serviceRegistry,
 				assignee, groupId);
