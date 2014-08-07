@@ -176,7 +176,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                var key = headers[i].formsName;
                if( data.itemData[key] )
                   if( (headers[i].dataType.toLowerCase() == "datetime") || (headers[i].dataType.toLowerCase() == "date") )
-                     row.push( Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.itemData[key].value), "dd.mm.yyyy") );
+                     row.push( Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.itemData[key].displayValue), "dd.mm.yyyy") );
                   else
                      row.push( data.itemData[key].displayValue );
                else
