@@ -1,0 +1,36 @@
+<import resource="classpath:/alfresco/templates/org/alfresco/import/alfresco-util.js">
+
+function main()
+{
+   AlfrescoUtil.param('nodeRef');
+   AlfrescoUtil.param('site', null);
+   AlfrescoUtil.param('container', 'documentLibrary');
+   var documentDetails = AlfrescoUtil.getNodeDetails(model.nodeRef, model.site);
+   if (documentDetails)
+   {
+      var userPermissions = documentDetails.item.node.permissions.user;
+      model.allowNewVersionUpload = (!documentDetails.item.node.isLocked 
+            && documentDetails.item.node.permissions.user["Write"]) || false;
+      model.hasContent = (documentDetails.item.node.contentURL !== undefined);
+      model.isWorkingCopy = (documentDetails.item && documentDetails.item.workingCopy && documentDetails.item.workingCopy.isWorkingCopy) ? true : false;
+   }
+   
+   // Widget instantiation metadata...
+   var documentVersions = {
+      id : "DocumentVersions", 
+      name : "Alvex.DocumentVersions",
+      options : {
+         nodeRef : model.nodeRef,
+         siteId : model.site,
+         containerId : model.container,
+         workingCopyVersion : model.workingCopyVersion,
+         allowNewVersionUpload : model.allowNewVersionUpload,
+         hasContent : model.hasContent
+      }
+   };
+   
+   model.widgets = [documentVersions];
+}
+
+main();
+

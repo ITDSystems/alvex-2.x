@@ -163,7 +163,105 @@
 		</property>
 		<property name="xmlService" ref="alvex-xml-service" />
 	</bean>
-
+	
+	<!-- Version helper -->
+	<bean id="alvex-version-helper-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexVersionHelper" class="com.alvexcore.repo.tools.VersionHelperImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexVersionHelper" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexVersionHelper" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.tools.VersionHelper</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-version-helper-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexVersionHelper" alias="alvex-version-helper" />
+	<bean id="alvex-version-helper-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.tools.JscriptVersionHelper">
+		<property name="extensionName">
+			<value>versionHelper</value>
+		</property>
+		<property name="versionHelper" ref="alvex-version-helper" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	
+	<!-- Custom versionable aspect impl -->
+	<bean id="versionableAspect" class="com.alvexcore.repo.AlvexVersionableAspect" init-method="init">
+		<property name="policyComponent">
+			<ref bean="policyComponent" />
+		</property>
+		<property name="versionService">
+			<ref bean="versionService"/>
+		</property>
+		<property name="nodeService">
+			<ref bean="nodeService"/>
+		</property>
+		<property name="lockService" ref="lockService" />
+		<property name="dictionaryDAO">
+			<ref bean="dictionaryDAO"/>
+		</property>
+		<property name="namespacePrefixResolver">
+			<ref bean="namespaceService"/>
+		</property>
+		<property name="excludedOnUpdateProps">
+			<list>
+				<value>webdav:opaquelocktoken</value>
+				<value>webdav:sharedLockTokens</value>
+				<value>webdav:lockDepth</value>
+				<value>webdav:lockScope</value>
+				<value>webdav:deadproperties</value>
+				<value>cm:likesRatingSchemeTotal</value>
+				<value>cm:likesRatingSchemeCount</value>
+				<value>cm:fiveStarRatingSchemeCount</value>
+				<value>cm:fiveStarRatingSchemeTotal</value>
+				<!-- ALF-12205 - do not version on comments -->
+				<value>fm:commentCount</value>
+				<value>cm:expiryDate</value>
+				<!-- MNT-181 -->
+				<value>sys:clientVisibilityMask</value>
+				<value>cm:lastThumbnailModification</value>
+				<!-- MNT-9688 -->
+				<value>cm:storeName</value>
+			</list>
+		</property>
+		<property name="enableAutoVersioning" value="${version.store.enableAutoVersioning}" />
+	</bean>
+	
+	<!-- Max version policy based on https://github.com/jottley/alfresco-maxversion-policy -->
+	<bean id="alvexMaxVersion" class="com.alvexcore.repo.AlvexMaxVersionPolicy" init-method="init">
+		<property name="policyComponent">
+			<ref bean="policyComponent" />
+		</property>
+		<property name="versionService">
+			<ref bean="VersionService" />
+		</property>
+		<!-- The max number of versions per versioned node -->
+		<property name="maxVersions">
+			<value>${alvex.maxVersions}</value>
+		</property>
+	</bean>
+	
 	<bean id="alvex-documents-registers" class="com.alvexcore.repo.DocumentsRegistersExtension"
 										depends-on="alvex-custom-workflows" parent="alvex-extension">
 		<property name="policyComponent" ref="policyComponent" />

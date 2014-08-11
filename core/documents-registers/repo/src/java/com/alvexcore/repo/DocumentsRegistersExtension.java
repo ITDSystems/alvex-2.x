@@ -30,6 +30,7 @@ import org.alfresco.service.cmr.repository.MLText;
 import org.alfresco.service.cmr.security.AuthorityType;
 import org.alfresco.service.cmr.security.PermissionService;
 import org.alfresco.service.namespace.QName;
+import org.alfresco.service.cmr.version.VersionType;
 
 import org.alfresco.repo.node.NodeServicePolicies;
 import org.alfresco.repo.node.NodeServicePolicies.OnCreateNodePolicy;
@@ -46,6 +47,7 @@ import org.alfresco.service.cmr.repository.AssociationRef;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.io.Serializable;
 
 /**
@@ -133,8 +135,11 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 		NodeService nodeService = extensionRegistry
 				.getServiceRegistry().getNodeService();
 		NodeRef nodeRef = childAssocRef.getChildRef();
-		Serializable title = nodeService.getProperty(nodeRef, AlvexContentModel.PROP_DOCUMENT_ID);
-		setNodeNameFromProperty(nodeRef, title);
+		if( nodeService.exists(nodeRef) )
+		{
+			Serializable title = nodeService.getProperty(nodeRef, AlvexContentModel.PROP_DOCUMENT_ID);
+			setNodeNameFromProperty(nodeRef, title);
+		}
 	}
 	
 	public void onUpdateRegistryProperties(NodeRef nodeRef,
@@ -147,8 +152,26 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 	public void onUpdateRegistryItemProperties(NodeRef nodeRef,
 			Map<QName, Serializable> before, Map<QName, Serializable> after)
 	{
+		NodeService nodeService = extensionRegistry
+				.getServiceRegistry().getNodeService();
 		Serializable newName = after.get(AlvexContentModel.PROP_DOCUMENT_ID);
-		setNodeNameFromProperty(nodeRef, newName);
+		if( nodeService.exists(nodeRef) )
+		{
+			setNodeNameFromProperty(nodeRef, newName);
+
+			// Handle auto versioning.
+			// We do it here because of "two phase commit" of initial document.
+			// If we assign aspect on create, we have bad 'initial version' that is actually empty.
+			if( ! before.isEmpty()
+					&& ! nodeService.hasAspect(nodeRef, ContentModel.ASPECT_VERSIONABLE) )
+			{
+				HashMap<QName, Serializable> aspectProps = new HashMap<QName, Serializable>();
+				aspectProps.put(ContentModel.PROP_VERSION_TYPE, VersionType.MAJOR);
+				//aspectProps.put(ContentModel.PROP_AUTO_VERSION, true);
+				//aspectProps.put(ContentModel.PROP_AUTO_VERSION_PROPS, true);
+				nodeService.addAspect(nodeRef, ContentModel.ASPECT_VERSIONABLE, aspectProps);
+			}
+		}
 	}
 	
 	protected void setNodeNameFromProperty(NodeRef nodeRef, Serializable title)
@@ -179,7 +202,8 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 				.getServiceRegistry().getNodeService();
 		NodeRef source = nodeAssocRef.getSourceRef();
 		NodeRef target = nodeAssocRef.getTargetRef();
-		if( alvexDictionaryService.isContent(target)
+		if( nodeService.exists(source) && nodeService.exists(target)
+				&& alvexDictionaryService.isContent(target)
 				&& ! alvexDictionaryService.isRegistry(target)
 				&& ! alvexDictionaryService.isRegistryItem(target)
 				&& ! nodeAssocRef.getTypeQName().equals( AlvexContentModel.ASSOC_PARENT_REGISTRY ) )
