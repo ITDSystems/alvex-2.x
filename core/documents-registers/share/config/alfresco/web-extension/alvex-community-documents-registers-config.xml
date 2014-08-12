@@ -8,6 +8,7 @@
 				<js  src="/components/alvex/auto-numberer.js" />
 				<js  src="/components/alvex/simple-dialog.js" />
 				<js  src="/components/alvex/share-site-picker.js" />
+                                <css  src="/components/alvex.css" />
 			</dependencies>
 		</forms>
 	</config>

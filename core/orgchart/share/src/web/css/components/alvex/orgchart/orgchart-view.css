@@ -11,6 +11,10 @@ div.picker-part {
 	margin-left: 1%;
 }
 
+.yui-gd .yui-u.last {
+	margin-left: 1%;
+}
+
 div.group-selector td { text-align: left; }
 div.people-table thead { display: none; }
 div.people-table table { border: none; width: 100% }
