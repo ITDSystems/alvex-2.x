@@ -3,7 +3,7 @@
       <#if (item_index % 2) == 0>
       <div class="yui-gc"><div class="yui-u first">
       <#else>
-      <div class="yui-u">
+      <div class="yui-u last">
       </#if>
       <@formLib.renderField field=form.fields[item.id] />
       </div>

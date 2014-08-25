@@ -45,3 +45,14 @@
    height: 1.6em;
 }
 
+.form-container .set .form-field .datepicker-icon
+{
+  margin: 0 0;
+}
+
+.set .yui-gc .yui-u
+{
+  margin-left: 1%;
+  float: left;
+}
+

@@ -325,10 +325,11 @@
 	width: 31%;
 }
 
-.alfresco-share .yui-panel .bd .form-container .yui-gd .yui-u
+.alfresco-share .yui-panel .bd .form-container .yui-gd .yui-u.last
 {
 	width: 62%;
 	padding-left: 2px;
+	margin-left: 1%;
 }
 
 .alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u.first
@@ -337,8 +338,9 @@
 	padding-left: 2px;
 }
 
-.alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u
+.alfresco-share .yui-panel .bd .form-container .yui-gc .yui-u.last 
 {
+	margin-left: 1%;
 	width: 32%;
 	padding-left: 10px;
 }
