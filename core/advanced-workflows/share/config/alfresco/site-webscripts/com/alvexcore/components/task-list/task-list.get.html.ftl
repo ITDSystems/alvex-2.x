@@ -154,4 +154,86 @@
       return Alfresco.util.combinePaths(Alfresco.constants.PROXY_URI, "api/alvex/dictionary/bpm");
    }; 
 
+   dg.onChangeFilterInterceptor = function(layer, args)
+   {
+      if(layer != "changeFilter")
+         return;
+      var filter = args[1];
+
+      var config = {};
+      config.dataObj = {};
+      config.dataObj.fields = this.dataRequestFields;
+      config.dataObj.filter = {
+         eventGroup: this, 
+         filterId: filter.filterId, 
+         filterData: filter.filterData, 
+         searchFields: { props: {}, assocs: {} }
+      };
+      if( filter.filterId == "due" )
+      {
+         var start = new Date();
+         var end = new Date();
+         if( filter.filterData == "today" )
+         {
+         }
+         if( filter.filterData == "tomorrow" )
+         {
+            start.setDate(start.getDate()+1);
+            end.setDate(end.getDate()+1);
+         }
+         if( filter.filterData == "next7Days" )
+         {
+            start.setDate(start.getDate()+1);
+            end.setDate(end.getDate()+7);
+         }
+         if( filter.filterData == "overdue" )
+         {
+            start.setDate(start.getDate()-365*10);
+            end.setDate(end.getDate()-1);
+         }
+         if( filter.filterData == "noDate" )
+         {
+            start = end = null;
+         }
+         if( start != null && end != null )
+         {
+            var sY = start.getFullYear();
+            var sM = start.getMonth() + 1;
+            var sD = start.getDate();
+            var eY = end.getFullYear();
+            var eM = end.getMonth() + 1;
+            var eD = end.getDate();
+            config.dataObj.filter.searchFields.props.bpm_dueDate 
+               = "[" + sY + "\\-" + sM + "\\-" + sD + "T00:00:00 TO " + eY + "\\-" + eM + "\\-" + eD + "T23:59:59]";
+         }
+         else
+         {
+            config.dataObj.filter.searchFields.props.bpm_dueDate = "NULL";
+         }
+      }
+      if( filter.filterId == "priority" )
+      {
+         config.dataObj.filter.searchFields.props.bpm_priority = filter.filterData;
+      }
+      if( filter.filterId == "assignee" )
+      {
+         if( filter.filterData == "unassigned" )
+            config.dataObj.filter.searchFields.props.pooledTasksOnly = "true";
+         else
+            config.dataObj.filter.searchFields.props.pooledTasksOnly = "false";
+      }
+      if( filter.filterId == "workflows" )
+      {
+         if( filter.filterData == "active" )
+         {
+            config.dataObj.filter.searchFields.props.workflowState = "IN_PROGRESS";
+         }
+         else if( filter.filterData == "completed" )
+         {
+            config.dataObj.filter.searchFields.props.workflowState = "COMPLETED";
+            config.dataObj.filter.searchFields.props.pooledTasksOnly = "false";
+         }
+      }
+      this._updateDataGrid(config.dataObj);
+   };
 //]]></script>

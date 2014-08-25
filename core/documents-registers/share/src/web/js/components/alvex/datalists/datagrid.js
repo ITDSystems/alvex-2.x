@@ -931,7 +931,8 @@ if (typeof Alvex == "undefined" || !Alvex)
             {
                for( var field in oParsedResponse.results[0].itemData )
                {
-                  if( ! oParsedResponse.results[0].itemData[field].value )
+                  if( ! oParsedResponse.results[0].itemData[field]
+                           || ! oParsedResponse.results[0].itemData[field].value )
                      continue;
                   
                   var type = typeof oParsedResponse.results[0].itemData[field].value;
@@ -1549,6 +1550,7 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onChangeFilter: function DataGrid_onChangeFilter(layer, args)
       {
+         this.onChangeFilterInterceptor(layer, args);
          if( args[1].eventGroup !== "*" && !$hasEventInterest(this, args) )
             return;
          
@@ -1598,6 +1600,10 @@ if (typeof Alvex == "undefined" || !Alvex)
             }
          }
       },
+
+      onChangeFilterInterceptor: function(layer, args)
+      {
+	  },
 
       /**
        * DataGrid View Filter changed event handler

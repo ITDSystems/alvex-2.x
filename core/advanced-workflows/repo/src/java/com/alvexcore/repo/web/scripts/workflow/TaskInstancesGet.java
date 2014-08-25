@@ -87,7 +87,7 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         String authority = getAuthority(req);
         
         // state is also not included into filters list, for the same reason
-        WorkflowTaskState state = getState(req);
+        WorkflowTaskState state = getState(req.getParameter(PARAM_STATE));
         
         // look for a workflow instance id
         String workflowInstanceId = params.get(VAR_WORKFLOW_INSTANCE_ID);
@@ -111,6 +111,20 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         {
             query = null;
         }
+		if("search".equals(filter) && query != null)
+		{
+			String[] queryArray = query.split(",");
+			for(String q : queryArray)
+			{
+				String[] lv = q.split(":");
+				String fieldName = lv[0].replace("_", ":");
+				String fieldValue = lv[1];
+				if("pooledTasksOnly".equals(fieldName))
+					pooledTasksOnly = Boolean.parseBoolean(fieldValue);
+				if("workflowState".equals(fieldName))
+					state = getState(fieldValue);
+			}
+		}
         
         // get filter param values
         filters.put(PARAM_PRIORITY, req.getParameter(PARAM_PRIORITY));
@@ -274,9 +288,8 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
      * @param req
      * @return
      */
-    private WorkflowTaskState getState(WebScriptRequest req)
+    private WorkflowTaskState getState(String stateName)
     {
-        String stateName = req.getParameter(PARAM_STATE);
         if (stateName != null)
         {
             try
@@ -340,6 +353,13 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
 				Serializable propValue = entry.getValue();
 				if(propName.equals(fieldName) || ("bpm:"+propName).equals(fieldName))
 				{
+					if( "NULL".equals(fieldValue) )
+					{
+						if( propValue == null )
+							continue;
+						else
+							return false;
+					}
 					if( propValue == null )
 						return false;
 					if( propValue instanceof String )
