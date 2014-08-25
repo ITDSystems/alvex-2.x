@@ -4,12 +4,16 @@
 	
 	<!-- Web scripts -->
 	<bean id="webscript.tasks-instances.task-instances.get"
-		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
-		parent="abstractWorkflowWebScript" />
+				class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
+				parent="abstractWorkflowWebScript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
 	
 	<bean id="webscript.tasks-instances.task-instances-simple.get"
-		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
-		parent="abstractWorkflowWebScript" />
+				class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
+				parent="abstractWorkflowWebScript">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
 	
 	<bean id="webscript.workflow-instances-detailed.workflow-instances-detailed.get"
 		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"

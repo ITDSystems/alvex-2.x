@@ -29,7 +29,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.alfresco.model.ContentModel;
 import org.alfresco.repo.workflow.WorkflowModel;
+import org.alfresco.service.ServiceRegistry;
+import org.alfresco.service.cmr.security.PersonService;
+import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.workflow.WorkflowTask;
 import org.alfresco.service.cmr.workflow.WorkflowTaskQuery;
 import org.alfresco.service.cmr.workflow.WorkflowTaskState;
@@ -46,6 +51,8 @@ import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
 
 import java.io.Serializable;
+
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Webscript impelementation to return workflow task instances.
@@ -76,7 +83,18 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
     private WorkflowTaskDueAscComparator taskDueComparator = new WorkflowTaskDueAscComparator();
     private WorkflowTaskStartAscComparator taskStartComparator = new WorkflowTaskStartAscComparator();
 	private WorkflowTaskCompleteAscComparator taskCompleteComparator = new WorkflowTaskCompleteAscComparator();
+	
+	protected ServiceRegistry serviceRegistry;
 
+	/**
+	 * Sets service registry
+	 * @param serviceRegistry ServiceRegistry instance
+	 */
+	@Required
+	public void setServiceRegistry(ServiceRegistry serviceRegistry) {
+		this.serviceRegistry = serviceRegistry;
+	}
+	
     @Override
     protected Map<String, Object> buildModel(WorkflowModelBuilder modelBuilder, WebScriptRequest req, Status status, Cache cache)
     {
@@ -347,6 +365,19 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
 			String[] lv = q.split(":");
 			String fieldName = lv[0].replace("_", ":");
 			String fieldValue = lv[1];
+			if( "initiator".equals(fieldName) )
+			{
+				NodeService ns = serviceRegistry.getNodeService();
+				NodeRef personRef = task.getPath().getInstance().getInitiator();
+				String userName = (String)ns.getProperty(personRef, ContentModel.PROP_USERNAME);
+				String firstName = (String)ns.getProperty(personRef, ContentModel.PROP_FIRSTNAME);
+				String lastName = (String)ns.getProperty(personRef, ContentModel.PROP_LASTNAME);
+				String v1 = userName.toLowerCase() + firstName.toLowerCase() + lastName.toLowerCase();
+				String v2 = fieldValue.toLowerCase();
+				if( ! v1.contains(v2) )
+					return false;
+				continue;
+			}
 			for(Map.Entry<QName,Serializable> entry : props.entrySet())
 			{
 				String propName = entry.getKey().getPrefixString();
@@ -362,7 +393,20 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
 					}
 					if( propValue == null )
 						return false;
-					if( propValue instanceof String )
+					if( "owner".equals(fieldName) )
+					{
+						String propString = (String)propValue;
+						NodeService ns = serviceRegistry.getNodeService();
+						PersonService ps = serviceRegistry.getPersonService();
+						NodeRef personRef = ps.getPerson(propString.toLowerCase());
+						String firstName = (String)ns.getProperty(personRef, ContentModel.PROP_FIRSTNAME);
+						String lastName = (String)ns.getProperty(personRef, ContentModel.PROP_LASTNAME);
+						String v1 = propString.toLowerCase() + firstName.toLowerCase() + lastName.toLowerCase();
+						String v2 = fieldValue.toLowerCase();
+						if( ! v1.contains(v2) )
+							return false;
+					}
+					else if( propValue instanceof String )
 					{
 						String propString = (String)propValue;
 						String v1 = propString.toLowerCase();
@@ -370,14 +414,14 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
 						if( ! v1.contains(v2) )
 							return false;
 					}
-					if( propValue instanceof Integer )
+					else if( propValue instanceof Integer )
 					{
 						Integer fieldInt = Integer.parseInt(fieldValue);
 						Integer propInt = (Integer)propValue;
 						if( fieldInt != propInt )
 							return false;
 					}
-					if( propValue instanceof Date )
+					else if( propValue instanceof Date )
 					{
 						Date propDate = (Date)propValue;
 						String[] tokens = fieldValue.split("-");
