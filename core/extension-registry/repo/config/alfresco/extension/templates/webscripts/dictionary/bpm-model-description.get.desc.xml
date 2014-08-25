@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>bpm-model-description</shortname>
+	<description>Returns bpm model description</description>
+	<url>/api/alvex/dictionary/bpm</url>
+	<transaction>none</transaction>
+	<authentication>user</authentication>
+	<format default="json">any</format>
+</webscript>

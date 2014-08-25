@@ -23,13 +23,20 @@
          "type": "${col.type}",
          "name": "${col.name}",
          "formsName": "<#if col.type == "association">assoc<#else>prop</#if>_${col.name?replace(":", "_")}",
-         "label": "${col.label!""}",
-      <#if col.dataType??>
-         "dataType": "${col.dataType}",
-      <#else>
-         "dataType": "${col.endpointType}",
+      <#if col.width??>
+         "width": ${col.width},
       </#if>
-         "constraints": [<#list col.constraints as c>"${c}"<#if c_has_next>,</#if></#list>]
+      <#if col.label??>
+         "label": "${col.label!""}",
+      </#if>
+      <#if col.labelid??>
+         "label-id": "${col.labelid!""}",
+      </#if>
+      <#if col.dataType??>
+         "dataType": "${col.dataType}"
+      <#else>
+         "dataType": "${col.endpointType}"
+      </#if>
       }<#if col_has_next>,</#if>
    </#list>
    ]

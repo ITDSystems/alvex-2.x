@@ -1,0 +1,8 @@
+<webscript>
+	<shortname>class-description</shortname>
+	<description>Returns class description</description>
+	<url>/api/alvex/dictionary?type={type}</url>
+	<transaction>none</transaction>
+	<authentication>user</authentication>
+	<format default="json">any</format>
+</webscript>

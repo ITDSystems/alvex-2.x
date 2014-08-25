@@ -40,9 +40,10 @@ Alvex.DatagridDateRenderer = function (elCell, oRecord, oColumn, oData)
 	if( !oData )
 		return;
 	
-	elCell.innerHTML = Alfresco.util.formatDate(
-			Alfresco.util.fromISO8601(oData.displayValue), "dd.mm.yyyy"
-		);
+	var dg = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+	var date = Alfresco.util.fromISO8601(oData.displayValue);
+	elCell.innerHTML = ( date !== null ?
+			Alfresco.util.formatDate(date, "dd.mm.yyyy") : dg.msg("label.none") );
 };
 
 Alvex.DatagridBoolRenderer = function (elCell, oRecord, oColumn, oData)
@@ -130,4 +131,70 @@ Alvex.DatagridRecordRenderer = function (elCell, oRecord, oColumn, oData)
 		}
 	}
 	elCell.innerHTML = html;
+};
+
+Alvex.DatagridTaskDescRenderer = function (elCell, oRecord, oColumn, oData)
+{
+	var dg = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+	var data = oRecord.getData();
+	var taskId = data.id;
+	var type = Alfresco.util.encodeHTML(data.title);
+	oData = oRecord.getData("itemData")[oColumn.field];
+
+	var message;
+	if (oData.value === type)
+		message = dg.msg("workflow.no_message");
+	else
+		message = oData.displayValue;
+	
+	var due = oRecord.getData("itemData")["prop_bpm_dueDate"];
+	var dueDate = (due ? Alfresco.util.fromISO8601( due.value ) : null );
+	var overdue = (dueDate !== null && dueDate.getTime() < (new Date()).getTime());
+
+	var href;
+	if (oRecord.getData('isEditable'))
+		href = Alfresco.util.siteURL('task-edit?taskId=' + taskId + '&referrer=tasks&myTasksLinkBack=true');
+	else
+		href = Alfresco.util.siteURL('task-details?taskId=' + taskId + '&referrer=tasks&myTasksLinkBack=true');
+
+	var info = '<h3' + (overdue ? ' class="task-delayed" title="' + dg.msg("status.overdue") + '"' : '') + '>' 
+			+ '<a href="' + href + '">' + message + '</a></h3>';
+	elCell.innerHTML = info;
+};
+
+Alvex.DatagridTaskPrioRenderer = function (elCell, oRecord, oColumn, oData)
+{
+	oData = oRecord.getData("itemData")[oColumn.field];
+	if( !oData )
+		return;
+	
+	var priorityMap = {"1": "high", "2": "medium", "3": "low"};
+	var	priorityKey = priorityMap[oData.value + ""];
+	var dg = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+	
+	var desc = '<div class="cell-centered cell-spaced">' 
+			+ '<img src="' + Alfresco.constants.URL_RESCONTEXT 
+			+ 'components/images/priority-' + priorityKey + '-16.png" ' + 'title="' 
+			+ dg.msg("label.priority", dg.msg("priority." + priorityKey)) + '"/></div>';
+	elCell.innerHTML = desc;
+};
+
+Alvex.DatagridTaskStateRenderer = function(elCell, oRecord, oColumn, oData)
+{
+	var dg = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+	var record = oRecord.getData();
+	var msgId, imgSrc;
+	if( !record.isWorkflowActive ) {
+		msgId = "label.completedWorkflow";
+		imgSrc = Alfresco.constants.URL_RESCONTEXT + "components/images/completed-16.png";
+	} else {
+		if( record.taskState === "IN_PROGRESS" ) {
+			msgId = "label.activeTask";
+			imgSrc = Alfresco.constants.URL_RESCONTEXT + "components/images/to-do-16.png";
+		} else {
+			msgId = "label.completedTaskActiveWorkflow";
+			imgSrc = Alfresco.constants.URL_RESCONTEXT + "components/images/pending-16.png";
+		}
+	}
+	elCell.innerHTML = '<span title="' + dg.msg( msgId ) + '"><img src="' + imgSrc + '"/></span>';
 };

@@ -28,7 +28,9 @@ import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.dictionary.TypeDefinition;
 import org.alfresco.service.cmr.dictionary.PropertyDefinition;
+import org.alfresco.service.cmr.dictionary.AssociationDefinition;
 import org.alfresco.service.cmr.dictionary.AspectDefinition;
+import org.alfresco.service.cmr.dictionary.ConstraintDefinition;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -140,22 +142,22 @@ public class AlvexDictionaryServiceImpl implements InitializingBean, AlvexDictio
 	}
 	
 	@Override
-	public Map<QName, PropertyDefinition> getCompleteTypeDescription(String shortName)
+	public Map<QName, PropertyDefinition> getAllTypeProperties(String shortName)
 	{
 		TypeDefinition type = getDataType(shortName);
-		return getCompleteTypeDescription(type);
+		return getAllTypeProperties(type);
 	}
 	
 	@Override
-	public Map<QName, PropertyDefinition> getCompleteTypeDescription(NodeRef ref)
+	public Map<QName, PropertyDefinition> getAllTypeProperties(NodeRef ref)
 	{
 		QName typeName = nodeService.getType(ref);
 		TypeDefinition type = dictionaryService.getType(typeName);
-		return getCompleteTypeDescription(type);
+		return getAllTypeProperties(type);
 	}
 	
 	@Override
-	public Map<QName, PropertyDefinition> getCompleteTypeDescription(TypeDefinition type)
+	public Map<QName, PropertyDefinition> getAllTypeProperties(TypeDefinition type)
 	{
 		Map<QName, PropertyDefinition> results = new HashMap<QName, PropertyDefinition>();
 		
@@ -176,6 +178,48 @@ public class AlvexDictionaryServiceImpl implements InitializingBean, AlvexDictio
 				PropertyDefinition prop = entry.getValue();
 				QName name = entry.getKey();
 				results.put(name, prop);
+			}
+		}
+		return results;
+	};
+
+	@Override
+	public Map<QName, AssociationDefinition> getAllTypeAssocs(String shortName)
+	{
+		TypeDefinition type = getDataType(shortName);
+		return getAllTypeAssocs(type);
+	}
+	
+	@Override
+	public Map<QName, AssociationDefinition> getAllTypeAssocs(NodeRef ref)
+	{
+		QName typeName = nodeService.getType(ref);
+		TypeDefinition type = dictionaryService.getType(typeName);
+		return getAllTypeAssocs(type);
+	}
+	
+	@Override
+	public Map<QName, AssociationDefinition> getAllTypeAssocs(TypeDefinition type)
+	{
+		Map<QName, AssociationDefinition> results = new HashMap<QName, AssociationDefinition>();
+		
+		Map<QName, AssociationDefinition> assocs = type.getAssociations();
+		for (Map.Entry<QName, AssociationDefinition> entry : assocs.entrySet())
+		{
+			AssociationDefinition assoc = entry.getValue();
+			QName name = entry.getKey();
+			results.put(name, assoc);
+		}
+		
+		List<AspectDefinition> aspects = type.getDefaultAspects(true);
+		for (AspectDefinition def : aspects)
+		{
+			assocs = def.getAssociations();
+			for (Map.Entry<QName, AssociationDefinition> entry : assocs.entrySet())
+			{
+				AssociationDefinition assoc = entry.getValue();
+				QName name = entry.getKey();
+				results.put(name, assoc);
 			}
 		}
 		return results;

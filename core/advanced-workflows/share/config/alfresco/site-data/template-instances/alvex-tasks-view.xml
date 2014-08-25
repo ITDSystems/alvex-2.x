@@ -5,13 +5,13 @@
 	<components>
 		
 		<!-- Title -->
-		<component>
+		<!--component>
 			<region-id>task-title</region-id>
 			<url>/components/alvex/tasks-title</url>
 			<properties>
 				<title>page.alvexTasks.title</title>
 			</properties>
-		</component>
+		</component-->
 		<!-- All Filter -->
 		<component>
 			<region-id>all-filter</region-id>

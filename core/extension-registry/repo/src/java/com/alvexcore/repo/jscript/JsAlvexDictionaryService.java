@@ -27,6 +27,9 @@ import org.springframework.beans.factory.annotation.Required;
 import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.dictionary.TypeDefinition;
 import org.alfresco.service.cmr.dictionary.PropertyDefinition;
+import org.alfresco.service.cmr.dictionary.AssociationDefinition;
+import org.alfresco.service.cmr.dictionary.ConstraintDefinition;
+import org.alfresco.service.cmr.dictionary.Constraint;
 
 import org.alfresco.repo.jscript.ScriptNode;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -86,22 +89,57 @@ public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 	public Scriptable getCompleteTypeDescription(String shortName)
 	{
 		ScriptableHashMap<String, Object> jsType = new ScriptableHashMap<String, Object>();
-		ArrayList<ScriptableHashMap<String,String>> fields = new ArrayList<ScriptableHashMap<String,String>>();
+		ArrayList<ScriptableHashMap<String,Object>> fields = new ArrayList<ScriptableHashMap<String,Object>>();
+		ArrayList<ScriptableHashMap<String,Object>> assocs = new ArrayList<ScriptableHashMap<String,Object>>();
 		
 		TypeDefinition typeDef = alvexDictionaryService.getDataType(shortName);
-		Map<QName, PropertyDefinition> typeDesc = alvexDictionaryService.getCompleteTypeDescription(typeDef);
+		Map<QName, PropertyDefinition> typeProps = alvexDictionaryService.getAllTypeProperties(typeDef);
+		Map<QName, AssociationDefinition> typeAssocs = alvexDictionaryService.getAllTypeAssocs(typeDef);
 		
 		jsType.put("title", typeDef.getTitle(dictionaryService));
 		jsType.put("type", typeDef.getName().getPrefixString());
-		for (Map.Entry<QName, PropertyDefinition> entry : typeDesc.entrySet())
+		
+		for (Map.Entry<QName, PropertyDefinition> entry : typeProps.entrySet())
 		{
 			PropertyDefinition def = entry.getValue();
-			ScriptableHashMap<String, String> pr = new ScriptableHashMap<String, String>();
-			pr.put("type", def.getName().getPrefixString());
+			ScriptableHashMap<String, Object> pr = new ScriptableHashMap<String, Object>();
+			pr.put("name", def.getName().getPrefixString());
 			pr.put("title", def.getTitle(dictionaryService));
+			
+			List<ConstraintDefinition> constraints = def.getConstraints();
+			for (ConstraintDefinition cdef : constraints)
+			{
+				Constraint c = cdef.getConstraint();
+				String type = c.getType();
+				String lovType = org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint.CONSTRAINT_TYPE;
+				if( lovType.equalsIgnoreCase(type) )
+				{
+					ArrayList<ScriptableHashMap<String, String>> vals = new ArrayList<ScriptableHashMap<String, String>>();
+					org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint lovc = (org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint)c;
+					List<String> allowedValues = lovc.getAllowedValues();
+					for(String val : allowedValues)
+					{
+						ScriptableHashMap<String, String> v = new ScriptableHashMap<String, String>();
+						v.put("value", val);
+						v.put("label", lovc.getDisplayLabel(val,dictionaryService));
+						vals.add(v);
+					}
+					pr.put("allowedValues", vals);
+				}
+			}
 			fields.add(pr);
 		}
 		jsType.put("fields", fields);
+		
+		for (Map.Entry<QName, AssociationDefinition> entry : typeAssocs.entrySet())
+		{
+			AssociationDefinition def = entry.getValue();
+			ScriptableHashMap<String, Object> pr = new ScriptableHashMap<String, Object>();
+			pr.put("name", def.getName().getPrefixString());
+			pr.put("title", def.getTitle(dictionaryService));
+			assocs.add(pr);
+		}
+		jsType.put("assocs", assocs);
 		
 		return (Scriptable)converter.convertValueForScript(
 								alvexDictionaryService.getServiceRegistry(), 

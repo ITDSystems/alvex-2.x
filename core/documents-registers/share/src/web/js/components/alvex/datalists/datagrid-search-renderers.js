@@ -23,6 +23,11 @@ if (typeof Alvex === "undefined" || !Alvex)
 	var Alvex = {};
 }
 
+Alvex.DatagridEmptySearchRenderer = function (searchFieldHtmlId, key, curValue, availableOptions)
+{
+	YAHOO.util.Dom.get(searchFieldHtmlId + "-c").innerHTML = "";
+};
+
 Alvex.DatagridTextSearchRenderer = function (searchFieldHtmlId, key, curValue, availableOptions)
 {
 	YAHOO.util.Dom.get(searchFieldHtmlId + "-c").innerHTML = 
@@ -36,11 +41,11 @@ Alvex.DatagridSelectSearchRenderer = function (searchFieldHtmlId, key, curValue,
 	html += '<option></option>';
 	for( var o in availableOptions )
 	{
-		var option = availableOptions[o].split('|');
+		var option = availableOptions[o];
 		html += '<option ';
-		if( option[0] === curValue )
+		if( option.value === curValue )
 			html += "selected";
-		html += ' value="' + option[0] + '">' + option[1] + '</option>';
+		html += ' value="' + option.value + '">' + option.label + '</option>';
 	}
 	html += '</select></span>';
 	YAHOO.util.Dom.get(searchFieldHtmlId + "-c").innerHTML =  html;

@@ -38,11 +38,6 @@
          </div>
          <div id="${id}-paginator" class="paginator" <#if hidePaginator>style="display:none"</#if>></div>
       </div>
-      <div class="yui-u align-right">
-         <div class="items-per-page" style="visibility: hidden;">
-            <button id="${id}-itemsPerPage-button">${msg("menu.items-per-page")}</button>
-         </div>
-      </div>
    </div>
 
    <div id="${id}-search-form" name="search">

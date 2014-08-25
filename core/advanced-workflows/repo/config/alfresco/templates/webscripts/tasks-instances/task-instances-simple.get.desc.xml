@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>Simple List Workflow Tasks</shortname>
+   <url>/api/alvex/task-instances-simple?authority={authority?}&amp;state={state?}&amp;priority={priority?}&amp;pooledTasks={pooledTasks?}&amp;dueBefore={dueBefore?}&amp;dueAfter={dueAfter?}&amp;properties={properties?}&amp;maxItems={maxItems?}&amp;skipCount={skipCount?}&amp;exclude={exclude?}</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction allow="readonly">required</transaction>
+   <lifecycle>public_api</lifecycle>
+</webscript>

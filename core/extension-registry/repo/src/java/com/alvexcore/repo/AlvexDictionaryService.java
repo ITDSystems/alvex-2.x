@@ -27,6 +27,7 @@ import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.dictionary.DictionaryService;
 import org.alfresco.service.cmr.dictionary.TypeDefinition;
 import org.alfresco.service.cmr.dictionary.PropertyDefinition;
+import org.alfresco.service.cmr.dictionary.AssociationDefinition;
 
 public interface AlvexDictionaryService {
 
@@ -37,9 +38,12 @@ public interface AlvexDictionaryService {
 	public abstract boolean isRegistry(NodeRef ref);
 	public abstract boolean isRegistryItem(NodeRef ref);
 	
-	public abstract Map<QName, PropertyDefinition> getCompleteTypeDescription(String shortName);
-	public abstract Map<QName, PropertyDefinition> getCompleteTypeDescription(NodeRef ref);
-	public abstract Map<QName, PropertyDefinition> getCompleteTypeDescription(TypeDefinition type);
+	public abstract Map<QName, PropertyDefinition> getAllTypeProperties(String shortName);
+	public abstract Map<QName, PropertyDefinition> getAllTypeProperties(NodeRef ref);
+	public abstract Map<QName, PropertyDefinition> getAllTypeProperties(TypeDefinition type);
+	public abstract Map<QName, AssociationDefinition> getAllTypeAssocs(String shortName);
+	public abstract Map<QName, AssociationDefinition> getAllTypeAssocs(NodeRef ref);
+	public abstract Map<QName, AssociationDefinition> getAllTypeAssocs(TypeDefinition type);
 	
 	public abstract ServiceRegistry getServiceRegistry();
 	public abstract DictionaryService getDictionaryService();

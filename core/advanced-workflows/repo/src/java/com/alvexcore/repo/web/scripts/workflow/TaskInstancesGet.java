@@ -43,6 +43,9 @@ import org.alfresco.repo.web.scripts.workflow.AbstractWorkflowWebscript;
 import org.alfresco.repo.web.scripts.workflow.WorkflowModelBuilder;
 
 import org.alfresco.service.namespace.NamespaceService;
+import org.alfresco.service.namespace.QName;
+
+import java.io.Serializable;
 
 /**
  * Webscript impelementation to return workflow task instances.
@@ -54,6 +57,8 @@ import org.alfresco.service.namespace.NamespaceService;
 public class TaskInstancesGet extends AbstractWorkflowWebscript
 {
     public static final String PARAM_AUTHORITY = "authority";
+	public static final String PARAM_FILTER = "filter";
+	public static final String PARAM_QUERY = "query";
     public static final String PARAM_STATE = "state";
     public static final String PARAM_PRIORITY = "priority";
     public static final String PARAM_DUE_BEFORE = "dueBefore";
@@ -95,6 +100,17 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
                 
         // get field to sort by
         String sortField = getSortField(req);
+		
+        String filter = req.getParameter(PARAM_FILTER);
+        if (filter == null || filter.length() == 0)
+        {
+            filter = null;
+        }
+		String query = req.getParameter(PARAM_QUERY);
+        if (query == null || query.length() == 0)
+        {
+            query = null;
+        }
         
         // get filter param values
         filters.put(PARAM_PRIORITY, req.getParameter(PARAM_PRIORITY));
@@ -195,10 +211,13 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         {
             if (matches(task, filters))
             {
-                results.add(modelBuilder.buildSimple(task, properties));
+				if( !"search".equals(filter) || searchMatches(task, query))
+				{
+					results.add(modelBuilder.buildSimple(task, properties));
+				}
             }
         }
-                
+		
         // create and return results, paginated if necessary
         return createResultModel(req, "taskInstances", results);
     }
@@ -304,6 +323,62 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
         return order;
     }
 
+	private boolean searchMatches(WorkflowTask task, String query)
+	{
+		if(query == null)
+			return true;
+		Map<QName,Serializable> props = task.getProperties();
+		String[] queryArray = query.split(",");
+		for(String q : queryArray)
+		{
+			String[] lv = q.split(":");
+			String fieldName = lv[0].replace("_", ":");
+			String fieldValue = lv[1];
+			for(Map.Entry<QName,Serializable> entry : props.entrySet())
+			{
+				String propName = entry.getKey().getPrefixString();
+				Serializable propValue = entry.getValue();
+				if(propName.equals(fieldName) || ("bpm:"+propName).equals(fieldName))
+				{
+					if( propValue == null )
+						return false;
+					if( propValue instanceof String )
+					{
+						String propString = (String)propValue;
+						String v1 = propString.toLowerCase();
+						String v2 = fieldValue.toLowerCase();
+						if( ! v1.contains(v2) )
+							return false;
+					}
+					if( propValue instanceof Integer )
+					{
+						Integer fieldInt = Integer.parseInt(fieldValue);
+						Integer propInt = (Integer)propValue;
+						if( fieldInt != propInt )
+							return false;
+					}
+					if( propValue instanceof Date )
+					{
+						Date propDate = (Date)propValue;
+						String[] tokens = fieldValue.split("-");
+						Date startDate = new Date(Integer.parseInt(tokens[0]) - 1900, 
+													Integer.parseInt(tokens[1]) - 1, 
+													Integer.parseInt(tokens[2]), 
+													0, 0, 0);
+						Date endDate = new Date(Integer.parseInt(tokens[3]) - 1900, 
+													Integer.parseInt(tokens[4]) - 1, 
+													Integer.parseInt(tokens[5]), 
+													23, 59, 59);
+						if( propDate.getTime() < startDate.getTime() 
+								|| propDate.getTime() > endDate.getTime() )
+							return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
     /**
      * Determine if the given task should be included in the response.
      * 

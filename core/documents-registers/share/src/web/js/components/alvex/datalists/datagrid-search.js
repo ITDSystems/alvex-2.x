@@ -63,12 +63,11 @@ if (typeof Alvex === "undefined" || !Alvex)
          Dom.removeClass(this.id + "-search-container", "hidden");
 
          // Get constraints for fields in question
-         // WA: very-very long form description to parse
-         var text = response.serverResponse.responseText;
-         var constraints = text.replace(/[\s\S]*fieldConstraints:/, "").replace(/\}\)\.setMessages\([\s\S]*/, "");
-         var json = eval('(' + constraints + ')');
-         for(var i in json)
-            this.datalistColumnsConstraints[ json[i].fieldId.replace(/^tmp_/,"") ] = json[i];
+         for(var i in response.json.fields)
+         {
+            var field = response.json.fields[i];
+            this.datalistColumnsConstraints[ "prop_" + field.name.replace(":","_") ] = field.allowedValues;
+		 }
 
          // Clear everything
          if( this.widgets.searchForm )
@@ -76,7 +75,7 @@ if (typeof Alvex === "undefined" || !Alvex)
          Dom.get(this.id + '-search').innerHTML = '';
 
          // Render table to hold search field
-         var outerEl = this.widgets.dataTable.getColumn('nodeRef').getThEl();
+         var outerEl = this.widgets.dataTable.getColumn(this.ITEM_KEY).getThEl();
          var width = Number(outerEl.offsetWidth) - 4;
          var row = '<td id="' + this.id + '-search-span-' + 'nodeRef' + '-c" class="datagrid-search-field" ' 
                    + 'style="min-width:' + width + 'px;">&nbsp;</td>';
@@ -106,11 +105,10 @@ if (typeof Alvex === "undefined" || !Alvex)
             var availableOptions = null;
 
             // List constraint is a special case, set custom datatype value
-            if( this.datalistColumnsConstraints[key] 
-                 && ( this.datalistColumnsConstraints[key].handler === Alfresco.forms.validation.inList ) )
+            if( this.datalistColumnsConstraints[key] )
             {
                datatype = "select";
-               availableOptions = this.datalistColumnsConstraints[key].params.allowedValues;
+               availableOptions = this.datalistColumnsConstraints[key];
             // Other cases - just determine datatype
             } else {
                datatype = datalistColumn.dataType.toLowerCase();
@@ -121,6 +119,8 @@ if (typeof Alvex === "undefined" || !Alvex)
                renderer = $func(this.defaultSearchRenderersNames[datatype]);
             else if( datalistColumn.type === "association" )
                renderer = $func(this.defaultSearchRenderersNames["association"]);
+            else if( datatype === "ghost" )
+               renderer = Alvex.DatagridEmptySearchRenderer;
             else
                renderer = $func(this.defaultSearchRenderersNames["default"]);
 
@@ -185,14 +185,14 @@ if (typeof Alvex === "undefined" || !Alvex)
       {
          var config = {};
          config.dataObj = {};
-         config.url = Alfresco.constants.PROXY_URI
-                 + "api/alvex/datalists/search/node/" + Alfresco.util.NodeRef( this.datalistMeta.nodeRef ).uri;
          config.dataObj.fields = this.dataRequestFields;
          config.dataObj.filter = {eventGroup: this, filterId: "search", filterData: "", searchFields: { props: {}, assocs: {} }};
-         //for(var i in config.dataObj) {
          for( var col = 0; col < this.datalistColumns.length; col++ )
          {
             var key = this.dataResponseFields[col];
+            var type = this.datalistColumns[key].dataType;
+            if( type === "ghost" )
+               continue;
 			var searchFieldHtmlId = this.id + '-search-span-' + key; 
             var val = Dom.get(searchFieldHtmlId).value;
             if( key.match(/^prop_/) ) {

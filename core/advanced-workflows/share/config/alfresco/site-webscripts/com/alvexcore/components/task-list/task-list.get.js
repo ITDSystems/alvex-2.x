@@ -18,3 +18,30 @@ for each(var xmlSorter in myConfig..sorter)
    });
 }
 model.sorters = sorters;
+
+
+// Actions
+var actionSet = [],
+   xmlActionSet = myConfig.actionSet;
+
+for each (var xmlAction in xmlActionSet.action)
+{
+   actionSet.push(
+   {
+      className: xmlAction.@className.toString(),
+      type: xmlAction.@type.toString(),
+      permission: xmlAction.@permission.toString(),
+      href: xmlAction.@href.toString(),
+      func: xmlAction.@func.toString(),
+      label: xmlAction.@label.toString()
+   });
+}
+
+model.actionSet = actionSet;
+
+// Widget instantiation metadata...
+var taskListHeader = {
+   id : "TaskListHeader",
+   name : "Alvex.TaskListHeader"
+};
+model.widgets = [taskListHeader];

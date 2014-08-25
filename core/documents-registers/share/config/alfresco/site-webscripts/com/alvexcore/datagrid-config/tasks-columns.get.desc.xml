@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Tasks Columns Configuration</shortname>
+    <description>Tasks columns configuration webscript</description>
+    <url>/alvex/components/tasks/config/columns</url>
+    <format default="json"></format>
+</webscript>

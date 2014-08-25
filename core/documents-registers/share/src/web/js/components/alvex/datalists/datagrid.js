@@ -152,6 +152,8 @@ if (typeof Alvex == "undefined" || !Alvex)
           */
          pageMode: true,
          
+         waitListChangeEvent: true,
+         
          /**
           * Current siteId.
           * 
@@ -332,6 +334,18 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       dataResponseFields: null,
 	  
+	  //
+	  DATASOURCE_METHOD: "",
+	  ITEM_KEY: "",
+	  DEFAULT_ACTION: "onActionView",
+      
+	  // Functions that should be defined on DataGrid create
+      getColumnsConfigUrl: null,
+	  getPrefsStoreId: null,
+	  getDataSource: null,
+      _buildDataGridParams: null,
+	  getSearchFormUrl: null,
+      
       /**
        * DataTable Cell Renderers
        */
@@ -563,6 +577,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          //Dom.removeClass(this.id + "-selectListMessage", "hidden");
 
          this.deferredListPopulation.fulfil("onReady");
+         if( !this.options.waitListChangeEvent )
+            this.deferredListPopulation.fulfil("onActiveDataListChanged");
 
          // Finally show the component body here to prevent UI artifacts on YUI button decoration
          //Dom.setStyle(this.id + "-body", "visibility", "visible");
@@ -650,10 +666,11 @@ if (typeof Alvex == "undefined" || !Alvex)
          
          this.renderDataListMeta();
          
+         var url = this.getColumnsConfigUrl(this.datalistMeta);
          // Query the visible columns for this list's item type
          Alfresco.util.Ajax.jsonGet(
          {
-            url: $combine(Alfresco.constants.URL_SERVICECONTEXT, "alvex/components/data-lists/config/columns?itemType=" + encodeURIComponent(this.datalistMeta.itemType)),
+            url: url,
             successCallback:
             {
                fn: this.onDatalistAvailableColumns,
@@ -684,7 +701,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			this.allAvailableColumns = response.json.columns;
 			
 			this.services.preferences = new Alfresco.service.Preferences();
-			this.services.preferences.request("test.datagrid." + this.datalistMeta.nodeRef,
+			this.services.preferences.request(this.getPrefsStoreId(this.datalistMeta),
 			{
 				successCallback:
 				{
@@ -698,7 +715,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 	  
 	  onDatalistVisibleColumns: function(p_response)
 	  {
-		  var data = Alfresco.util.findValueByDotNotation(p_response.json, "test.datagrid." + this.datalistMeta.nodeRef, "");
+		  var data = Alfresco.util.findValueByDotNotation(p_response.json, this.getPrefsStoreId(this.datalistMeta), "");
 		  var savedColumnsStr = (data !== null ? data.split(',') : []);
 		  
          this.datalistColumns = [];
@@ -890,7 +907,6 @@ if (typeof Alvex == "undefined" || !Alvex)
       {
          this.dataRequestFields = [];
          this.dataResponseFields = [];
-         var listNodeRef = new Alfresco.util.NodeRef(this.datalistMeta.nodeRef);
          
          for (var i = 0, ii = this.datalistColumns.length; i < ii; i++)
          {
@@ -904,20 +920,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          }
          
          // DataSource definition
-         this.widgets.dataSource = new YAHOO.util.DataSource(Alfresco.constants.PROXY_URI + "api/alvex/datalists/search/node/" + listNodeRef.uri,
-         {
-            connMethodPost: true,
-            responseType: YAHOO.util.DataSource.TYPE_JSON,
-            responseSchema:
-            {
-               resultsList: "items",
-               metaFields:
-               {
-                  paginationRecordOffset: "startIndex",
-                  totalRecords: "totalRecords"
-               }
-            }
-         });
+         this.widgets.dataSource = this.getDataSource(this.datalistMeta);
 
          // Intercept data returned from data webscript to extract custom metadata
          this.widgets.dataSource.doBeforeCallback = function DataGrid_doBeforeCallback(oRequest, oFullResponse, oParsedResponse)
@@ -940,7 +943,9 @@ if (typeof Alvex == "undefined" || !Alvex)
                   {
                      var value = ( oParsedResponse.results[i].itemData[field] 
                                        ? oParsedResponse.results[i].itemData[field].value : undefined );
-                     if( value && ! value.match(/^[0-9]+/g) )
+                     var date = Alfresco.util.fromISO8601(value);
+                     if( value && 
+                          ( ! value.match(/^[0-9]+/g) || (date !== null) ) )
                      {
                         convert = false;
                         break;
@@ -961,14 +966,17 @@ if (typeof Alvex == "undefined" || !Alvex)
             }
             
             // Container userAccess event
-            var permissions = oFullResponse.metadata.parent.permissions;
-            if (permissions && permissions.userAccess)
-            {
-               Bubbling.fire("userAccess",
-               {
-                  userAccess: permissions.userAccess
-               });
-            }
+			if( oFullResponse.metadata && oFullResponse.metadata.parent )
+			{
+				var permissions = oFullResponse.metadata.parent.permissions;
+				if (permissions && permissions.userAccess)
+				{
+				   Bubbling.fire("userAccess",
+				   {
+					  userAccess: permissions.userAccess
+				   });
+				}
+			}
             
             return oParsedResponse;
          };
@@ -985,7 +993,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          // YUI DataTable column definitions
          var columnDefinitions =
          [
-            { key: "nodeRef", label: "", sortable: false, formatter: this.fnRenderCellSelected(), width: 16 }
+            { key: this.ITEM_KEY, label: "", sortable: false, formatter: this.fnRenderCellSelected(), width: 16 }
          ];
 
          var column;
@@ -1005,10 +1013,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 			   }
 			}
             
-            columnDefinitions.push(
-            {
+            var label = (column.label ? column.label : this.msg(column["label-id"]));
+            var width = column.width;
+            var cDef = {
                key: this.dataResponseFields[i],
-               label: column.label,
+               label: label,
                sortable: true,
                sortOptions:
                {
@@ -1016,8 +1025,13 @@ if (typeof Alvex == "undefined" || !Alvex)
                   sortFunction: this.getSortFunction()
                },
                formatter: this.getCellFormatter(column.type, column.dataType, column.renderer),
-               minWidth: 80
-            });
+               resizable: true
+            };
+            if ( width > 0 )
+               cDef.width = width;
+            else
+               cDef.minWidth = 1000;
+            columnDefinitions.push(cDef);
          }
 
          // Add actions as last column
@@ -1156,11 +1170,12 @@ if (typeof Alvex == "undefined" || !Alvex)
 
          this.widgets.dataTable.subscribe("postRenderEvent", function()
          {
+            var url = this.getSearchFormUrl(this.datalistMeta);
             // Query create form - it gives us complete content model including constraints
             Alfresco.util.Ajax.jsonGet(
             {
-               url: $combine(Alfresco.constants.URL_SERVICECONTEXT, "components/form?itemKind=type&htmlid=tmp&itemId="
-                                                                         + encodeURIComponent(this.datalistMeta.itemType)),
+               url: url,
+               
                successCallback:
                {
                   fn: this.renderSearch,
@@ -1188,7 +1203,7 @@ if (typeof Alvex == "undefined" || !Alvex)
             var theTarget = aArgs.target;
             var theRecord = this.getRecord(theTarget);
             var actionSetEl = theTarget.childNodes[theTarget.childNodes.length-1];
-            var viewLinkDivs = YAHOO.util.Selector.query("div.onActionView", actionSetEl);
+            var viewLinkDivs = YAHOO.util.Selector.query("div." + me.DEFAULT_ACTION, actionSetEl);
             if( viewLinkDivs.length > 0 )
             {
                var viewLinkEl = YAHOO.util.Selector.query("a", viewLinkDivs[0])[0];
@@ -1260,7 +1275,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                action = actions[i];
                aTag = action.firstChild;
                if( aTag.href[aTag.href.length-1] === '=')
-                  aTag.href += record.getData("nodeRef");
+                  aTag.href += record.getData(this.ITEM_KEY);
                spanTag = aTag.firstChild;
                if (spanTag && actionLabels[action.className])
                {
@@ -1395,7 +1410,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          for (var i = startRecord; i <= endRecord; i++)
          {
             record = recordSet.getRecord(i);
-            if (this.selectedItems[record.getData("nodeRef")])
+            if (this.selectedItems[record.getData(this.ITEM_KEY)])
             {
                items.push(record.getData());
             }
@@ -1457,7 +1472,7 @@ if (typeof Alvex == "undefined" || !Alvex)
          for (i = 0; i < len; i++)
          {
             record = recordSet.getRecord(i + startRecord);
-            this.selectedItems[record.getData("nodeRef")] = checks[i].checked = fnCheck(record.getData("type"), checks[i].checked);
+            this.selectedItems[record.getData(this.ITEM_KEY)] = checks[i].checked = fnCheck(record.getData("type"), checks[i].checked);
          }
          
          Bubbling.fire("selectedItemsChanged");
@@ -1613,6 +1628,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onDataItemCreated: function DataGrid_onDataItemCreated(layer, args)
       {
+         // WA for using with not-only-records
+         this._updateDataGrid();
+         return;
          var obj = args[1];
          if (obj && (obj.nodeRef !== null))
          {
@@ -1868,6 +1886,8 @@ if (typeof Alvex == "undefined" || !Alvex)
          
          // Update the DataSource
          var requestParams = this._buildDataGridParams(params);
+		 if( this.DATASOURCE_METHOD === "POST" )
+			 requestParams = YAHOO.lang.JSON.stringify(requestParams);
          Alfresco.logger.debug("DataSource requestParams: ", requestParams);
 
          // TODO: No-cache? - add to URL retrieved from DataSource
@@ -1876,37 +1896,12 @@ if (typeof Alvex == "undefined" || !Alvex)
          {
             this.widgets.dataSource.connMgr.initHeader(Alfresco.util.CSRFPolicy.getHeader(), Alfresco.util.CSRFPolicy.getToken(), false);
          }
-         this.widgets.dataSource.sendRequest(YAHOO.lang.JSON.stringify(requestParams),
+         this.widgets.dataSource.sendRequest(requestParams,
          {
             success: successHandler,
             failure: failureHandler,
             scope: this
          });
-      },
-
-      /**
-       * Build URI parameter string for doclist JSON data webscript
-       *
-       * @method _buildDataGridParams
-       * @param p_obj.filter {string} [Optional] Current filter
-       * @return {Object} Request parameters. Can be given directly to Alfresco.util.Ajax, but must be JSON.stringified elsewhere.
-       */
-      _buildDataGridParams: function DataGrid__buildDataGridParams(p_obj)
-      {
-         var request =
-         {
-            fields: this.dataRequestFields
-         };
-         
-         if (p_obj && p_obj.filter)
-         {
-            request.filter = {}
-            for (var field in p_obj.filter)
-               if( field != "eventGroup" )
-                  request.filter[field] = p_obj.filter[field];
-         }
-
-         return request;
       },
 
       /**
@@ -2063,7 +2058,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			img.src = Alfresco.constants.URL_CONTEXT + "res/yui/assets/skins/default/transparent.gif";
 			img.alt = '';
 			var span = document.createElement('span');
-			span.innerHTML = column.label;
+			span.innerHTML = (column.label ? column.label : this.msg(column["label-id"]));
 			var div = document.createElement('div');
 			div.className = "dnd-draggable";
 			div.title = this.msg("dnd.help.message");
@@ -2104,7 +2099,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				result.push(j + '$' + id);
 			}
 			
-			this.services.preferences.set("test.datagrid." + this.datalistMeta.nodeRef, result.join(','), 
+			this.services.preferences.set(this.getPrefsStoreId(this.datalistMeta), result.join(','), 
 				{
 					successCallback: {
 						fn: this.onPreferencesSaved,

@@ -249,6 +249,7 @@ function main()
                for each( var datagridField in datagridDefaultFields )
                   if( datagridField == item.name )
                      item.showByDefault = true;
+               item.constraints = [];
                // if there is a datagrid config for the field
                if( formFields[item.name] )
                {
@@ -270,6 +271,9 @@ function main()
                   item.sortOrder = attrs["sortOrder"];
                   item.isItemName = (attrs["isItemName"] !== null ? true : false);
                   item.renderer = (templ ? templ : "");
+                  var constraints = formFields[item.name].getConstraintDefinitionMap();
+                  for(var c in constraints)
+                     item.constraints.push(c);
                }
                else
                {

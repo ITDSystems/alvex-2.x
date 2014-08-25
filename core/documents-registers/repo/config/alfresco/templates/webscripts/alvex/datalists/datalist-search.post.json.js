@@ -83,7 +83,7 @@ var Filters =
                endDate.setSeconds( 59.0 );
                endDate.setMilliseconds( 999.0 );
                var value = node.properties[prop];
-               filterMatch = ( value.getTime() >= startDate.getTime() ) && ( value.getTime() <= endDate.getTime() );
+               filterMatch = (value !== null) && ( value.getTime() >= startDate.getTime() ) && ( value.getTime() <= endDate.getTime() );
             }
             totalMatch = (totalMatch && filterMatch);
          }

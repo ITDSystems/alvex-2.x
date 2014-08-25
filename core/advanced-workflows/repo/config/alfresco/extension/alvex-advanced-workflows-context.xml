@@ -7,6 +7,10 @@
 		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
 		parent="abstractWorkflowWebScript" />
 	
+	<bean id="webscript.tasks-instances.task-instances-simple.get"
+		class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
+		parent="abstractWorkflowWebScript" />
+	
 	<bean id="webscript.workflow-instances-detailed.workflow-instances-detailed.get"
 		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"
 		parent="abstractWorkflowWebScript">

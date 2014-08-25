@@ -70,7 +70,7 @@ public class JsAlvexRegistriesService extends BaseScopableProcessorExtension {
 		String itemTypeShortName 
 				= (String) nodeService.getProperty(registry.getNodeRef(), DataListModel.PROP_DATALIST_ITEM_TYPE);
 		Map<QName, PropertyDefinition> props 
-				= alvexDictionaryService.getCompleteTypeDescription(itemTypeShortName);
+				= alvexDictionaryService.getAllTypeProperties(itemTypeShortName);
 		for(Map.Entry<QName, PropertyDefinition> entry : props.entrySet())
 		{
 			String propName = entry.getKey().getPrefixString();
