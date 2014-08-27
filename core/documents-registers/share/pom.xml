@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.share</groupId>
   <artifactId>documents-registers</artifactId>
-  <version>1.26</version>
+  <version>1.33</version>
   <parent>
     <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>
