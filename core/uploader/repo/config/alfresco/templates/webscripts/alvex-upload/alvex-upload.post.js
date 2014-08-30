@@ -126,7 +126,7 @@ function main()
                      uploadDirectory = uploadDirectory.substr(1);
                   }
                   // Ensure uploadDirectory ends with "/" if not the root folder
-                  if ((uploadDirectory.length() > 0) && (uploadDirectory.substring(uploadDirectory.length() - 1) != "/"))
+                  if ((uploadDirectory.length > 0) && (uploadDirectory.substring(uploadDirectory.length - 1) != "/"))
                   {
                      uploadDirectory = uploadDirectory + "/";
                   }
