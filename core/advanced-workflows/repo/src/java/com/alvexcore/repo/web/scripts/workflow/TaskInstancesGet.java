@@ -35,6 +35,7 @@ import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.security.PersonService;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
+import org.alfresco.service.cmr.workflow.WorkflowService;
 import org.alfresco.service.cmr.workflow.WorkflowTask;
 import org.alfresco.service.cmr.workflow.WorkflowTaskQuery;
 import org.alfresco.service.cmr.workflow.WorkflowTaskState;
@@ -46,6 +47,7 @@ import org.springframework.extensions.webscripts.WebScriptRequest;
 
 import org.alfresco.repo.web.scripts.workflow.AbstractWorkflowWebscript;
 import org.alfresco.repo.web.scripts.workflow.WorkflowModelBuilder;
+import org.alfresco.repo.security.authentication.AuthenticationUtil;
 
 import org.alfresco.service.namespace.NamespaceService;
 import org.alfresco.service.namespace.QName;
@@ -85,6 +87,7 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
 	private WorkflowTaskCompleteAscComparator taskCompleteComparator = new WorkflowTaskCompleteAscComparator();
 	
 	protected ServiceRegistry serviceRegistry;
+	protected WorkflowService alvexWorkflowService;
 
 	/**
 	 * Sets service registry
@@ -95,9 +98,17 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
 		this.serviceRegistry = serviceRegistry;
 	}
 	
+	@Required
+	public void setAlvexWorkflowService(WorkflowService alvexWorkflowService)
+	{
+		this.alvexWorkflowService = alvexWorkflowService;
+	}
+	
     @Override
     protected Map<String, Object> buildModel(WorkflowModelBuilder modelBuilder, WebScriptRequest req, Status status, Cache cache)
     {
+		String requesterUserName = AuthenticationUtil.getFullyAuthenticatedUser();
+		
         Map<String, String> params = req.getServiceMatch().getTemplateVars();
         Map<String, Object> filters = new HashMap<String, Object>(4);
 
@@ -245,7 +256,10 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
             {
 				if( !"search".equals(filter) || searchMatches(task, query))
 				{
-					results.add(modelBuilder.buildSimple(task, properties));
+					Map<String, Object> taskProps = modelBuilder.buildSimple(task, properties);
+					taskProps.put(WorkflowModelBuilder.TASK_IS_REASSIGNABLE, 
+						alvexWorkflowService.isTaskReassignable(task, requesterUserName));
+					results.add(taskProps);
 				}
             }
         }

@@ -7,12 +7,20 @@
 				class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
 				parent="abstractWorkflowWebScript">
 		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="alvexWorkflowService" ref="workflowServiceImpl" />
 	</bean>
 	
 	<bean id="webscript.tasks-instances.task-instances-simple.get"
 				class="com.alvexcore.repo.web.scripts.workflow.TaskInstancesGet"
 				parent="abstractWorkflowWebScript">
 		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="alvexWorkflowService" ref="workflowServiceImpl" />
+	</bean>
+	
+	<bean id="webscript.tasks-instances.task-instance.get"
+				class="com.alvexcore.repo.web.scripts.workflow.TaskInstanceGet"
+				parent="abstractWorkflowWebScript">
+		<property name="alvexWorkflowService" ref="workflowServiceImpl" />
 	</bean>
 	
 	<bean id="webscript.workflow-instances-detailed.workflow-instances-detailed.get"
@@ -31,6 +39,32 @@
 		<property name="authorityService"><ref bean="authorityService"/></property>
 		<property name="workflowHelper"><ref bean="alvexWorkflowHelper" /></property>
 	</bean>	
+	
+	<!-- Orgchart-aware WorkflowService -->
+	<bean id="workflowServiceImpl" class="com.alvexcore.repo.workflow.AlvexWorkflowServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="transactionService" ref="transactionService"/>
+		<property name="authorityService" ref="authorityService"/>
+		<property name="BPMEngineRegistry" ref="bpm_engineRegistry"/>
+		<property name="workflowPackageComponent" ref="workflowPackageImpl"/>
+		<property name="nodeService" ref="nodeService"/>
+		<property name="contentService" ref="contentService"/>
+		<property name="avmSyncService" ref="AVMSyncService"/>
+		<property name="dictionaryService" ref="dictionaryService"/>
+		<property name="protectedNodeService" ref="NodeService"/>
+		<property name="workflowAdminService" ref="workflowAdminService"/>
+		<property name="workflowNotification" ref="workflowNotification"/>
+		<property name="maxAuthoritiesForPooledTasks">
+			<value>${system.workflow.maxAuthoritiesForPooledTasks}</value>
+		</property>
+		<property name="maxPooledTasks">
+			<value>${system.workflow.maxPooledTasks}</value>
+		</property>
+		<property name="multiTenantWorkflowDeploymentEnabled">
+			<value>${system.workflow.deployWorkflowsInTenant}</value>
+		</property>
+		<property name="orgchartService" ref="alvexOrgchartService"/>
+	</bean>
 	
 	<!-- Workflow helper -->
 	<bean id="alvex-workflow-helper-transaction"

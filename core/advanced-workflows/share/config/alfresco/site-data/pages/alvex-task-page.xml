@@ -71,7 +71,7 @@
          <region-id>task-data-loader</region-id>
          <url>/components/data/data-loader</url>
          <properties>
-            <url>api/task-instances/{taskId}?detailed=true</url>
+            <url>api/alvex/task-instances/{taskId}?detailed=true</url>
             <eventName>taskDetailedData</eventName>
             <eventData>data</eventData>
          </properties>

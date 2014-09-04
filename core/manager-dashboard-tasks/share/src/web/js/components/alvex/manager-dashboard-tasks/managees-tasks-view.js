@@ -129,7 +129,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				},
 				dataSource:
 				{
-					url: Alfresco.constants.PROXY_URI + "api/task-instances?" 
+					url: Alfresco.constants.PROXY_URI + "api/alvex/task-instances?" 
 							+ "authority=" + this.options.managees[m].userName
 							+ "&properties=bpm_priority,bpm_status,bpm_dueDate,bpm_description"
 							+ "&exclude=" + this.options.hiddenTaskTypes.join(",")
