@@ -30,6 +30,10 @@
       <artifactId>extension-registry</artifactId>
       <version>${extension_registry.version}</version>
     </dependency>
+    <dependency>
+      <groupId>${alfresco.groupId}</groupId>
+      <artifactId>alfresco-remote-api</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

@@ -71,6 +71,8 @@ public class TaskInstanceGet extends AbstractWorkflowWebscript
         Map<String, Object> taskProps = modelBuilder.buildDetailed(workflowTask);
         taskProps.put(WorkflowModelBuilder.TASK_IS_REASSIGNABLE, 
                 alvexWorkflowService.isTaskReassignable(workflowTask, requesterUserName));
+        taskProps.put(WorkflowModelBuilder.TASK_IS_EDITABLE, 
+                alvexWorkflowService.isTaskEditable(workflowTask, requesterUserName));
         model.put("workflowTask", taskProps);
 
         return model;

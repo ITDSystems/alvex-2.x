@@ -229,9 +229,11 @@ public class AlvexWorkflowServiceImpl extends WorkflowServiceImpl
             return false;
         }
 
-        if (isUserOwnerOrInitiator(task, username) || isAdminUser(username))
+        Map<QName, Serializable> props = task.getProperties();
+        String ownerName = (String) props.get(ContentModel.PROP_OWNER);
+        boolean canModify = ( username != null && username.equalsIgnoreCase(ownerName) );
+        if (canModify || isAdminUser(username))
         {
-            // editable if the current user is the task owner or initiator
             return true;
         }
         
@@ -284,8 +286,8 @@ public class AlvexWorkflowServiceImpl extends WorkflowServiceImpl
             return false;
         }
 
-		RunAsWork<Boolean> work = new canReassignTask(serviceRegistry, orgchartService, task, username);
-		boolean canReassign = AuthenticationUtil.runAsSystem(work);
+        RunAsWork<Boolean> work = new canReassignTask(serviceRegistry, orgchartService, task, username);
+        boolean canReassign = AuthenticationUtil.runAsSystem(work);
         if (canReassign || isAdminUser(username))
         {
             return true;
