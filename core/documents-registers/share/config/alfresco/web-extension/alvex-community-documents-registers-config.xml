@@ -31,9 +31,9 @@
 							<control-param name="style">width: 98%</control-param>
 						</control>
 					</field>
-					<field set="format" id="alvexdr:idFormat" help-id="alvex.docreg.numberingFormatHelp">
-						<control template="/org/alfresco/components/form/controls/textfield.ftl">
-							<control-param name="style">width: 90%</control-param>
+					<field set="info" id="cm:description">
+						<control template="/org/alfresco/components/form/controls/textarea.ftl">
+							<control-param name="style">width: 98%</control-param>
 						</control>
 					</field>
 					<field set="format" id="alvexdr:allowIdEdit" />
