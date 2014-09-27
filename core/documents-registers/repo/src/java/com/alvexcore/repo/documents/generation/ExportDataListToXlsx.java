@@ -217,17 +217,14 @@ public class ExportDataListToXlsx
 			for(int c = 0; c < cells.size(); c++)
 			{
 				String displayValue;
-				if( cells.get(c) instanceof Boolean )
-				{
-					if( (Boolean)cells.get(c) )
-						displayValue = I18NUtil.getMessage("label.yes");
-					else
-						displayValue = I18NUtil.getMessage("label.no");
-				}
+				Object item = cells.get(c);
+				if (item == null)
+					displayValue = I18NUtil.getMessage("label.empty");
 				else
-				{
-					displayValue = (String)cells.get(c);
-				}
+					if(item instanceof Boolean )
+						displayValue = (Boolean)item ? I18NUtil.getMessage("label.yes") : I18NUtil.getMessage("label.no");
+					else
+						displayValue = item.toString();
 				row.createCell(c).setCellValue( createHelper.createRichTextString( displayValue ) );
 			}
 		}
