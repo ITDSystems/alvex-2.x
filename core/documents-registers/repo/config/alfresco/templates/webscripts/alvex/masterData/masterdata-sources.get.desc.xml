@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Get Master Data Sources</shortname>
+  <url>/api/alvex/masterdata/sources</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

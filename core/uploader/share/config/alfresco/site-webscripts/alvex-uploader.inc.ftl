@@ -410,11 +410,12 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 
       return request;
    };
-	  
+
    dg.getSearchFormUrl = function(meta)
    {
-      return Alfresco.util.combinePaths(Alfresco.constants.PROXY_URI, "api/alvex/dictionary?type=" + encodeURIComponent(meta.itemType));
-   }; 
+      return Alfresco.util.combinePaths(Alfresco.constants.PROXY_URI,
+               "api/alvex/dictionary?type=" + encodeURIComponent(meta.itemType) + "&container=" + encodeURIComponent(meta.nodeRef));
+   };	  
 
 	</#if>
 }

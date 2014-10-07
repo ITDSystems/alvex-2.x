@@ -48,8 +48,8 @@ var Filters =
          {
             var filterMatch = true;
             var pattern = filter.searchFields.props[prop];
-            var isDate = pattern.match("[(.*)T(.*) TO (.*)T(.*)]");
-           
+            var isDate = /\[(.*)T(.*) TO (.*)T(.*)\]/.test(pattern);
+
             prop = prop.replace("_",":");
             if( pattern != "" && !isDate )
             {

@@ -31,6 +31,7 @@ public interface AlvexContentModel {
 	final static String ALVEXDR_MODEL_URI = "http://alvexcore.com/prefix/alvexdr";
 	final static String ALVEXDT_MODEL_URI = "http://alvexcore.com/prefix/alvexdt";
 	final static String ALVEXEM_MODEL_URI = "http://alvexcore.com/prefix/alvexem";
+	final static String ALVEXMD_MODEL_URI = "http://alvexcore.com/prefix/alvexmd";
 	
 	final static String ALVEX_MODEL_PREFIX = "alvex";
 	final static String ALVEXWF_MODEL_PREFIX = "alvexwf";
@@ -39,6 +40,7 @@ public interface AlvexContentModel {
 	final static String ALVEXDOCREG_MODEL_PREFIX = "alvexdocreg20";
 	final static String ALVEXDR_MODEL_PREFIX = "alvexdr";
 	final static String ALVEXDT_MODEL_PREFIX = "alvexdt";
+	final static String ALVEXMD_MODEL_PREFIX = "alvexmd";
 	final static String ALVEXEM_MODEL_PREFIX = "alvexem";
 	
 	final static QName TYPE_EXTENSION_CONFIG = QName.createQName(ALVEX_MODEL_URI, "extensionConfig");
@@ -49,6 +51,7 @@ public interface AlvexContentModel {
 	final static QName TYPE_ROLE_DEF = QName.createQName(ALVEXOC_MODEL_URI, "roleDefinition");
 	final static QName TYPE_ROLE_INST = QName.createQName(ALVEXOC_MODEL_URI, "roleInstance");
 	final static QName TYPE_DOCUMENT_REGISTER = QName.createQName(ALVEXDR_MODEL_URI, "documentRegister");
+	final static QName TYPE_DOCUMENT_REGISTER_MASTER_DATA = QName.createQName(ALVEXDR_MODEL_URI, "masterDataServiceConfig");
 	final static QName TYPE_DOCUMENT_REGISTER_ITEM = QName.createQName(ALVEXDT_MODEL_URI, "object");
 
 	final static QName TYPE_EMAIL_CONTAINER = QName.createQName(ALVEXEM_MODEL_URI, "container");
@@ -56,6 +59,11 @@ public interface AlvexContentModel {
 	final static QName TYPE_EMAIL_MESSAGE = QName.createQName(ALVEXEM_MODEL_URI, "message");
 	final static QName TYPE_EMAIL_ATTACHMENT = QName.createQName(ALVEXEM_MODEL_URI, "attachment");
 	final static QName TYPE_EMAIL_PROVIDER = QName.createQName(ALVEXEM_MODEL_URI, "emailProvider");
+	
+	final static QName TYPE_DATALIST_MASTER_DATA_SOURCE = QName.createQName(ALVEXMD_MODEL_URI, "datalistMasterDataSource");
+	final static QName TYPE_REST_JSON_MASTER_DATA_SOURCE = QName.createQName(ALVEXMD_MODEL_URI, "restJsonMasterDataSource");
+	final static QName TYPE_REST_XML_MASTER_DATA_SOURCE = QName.createQName(ALVEXMD_MODEL_URI, "restXmlMasterDataSource");
+	final static QName TYPE_MASTER_DATA_ITEM = QName.createQName(ALVEXMD_MODEL_URI, "masterDataItem");
 
 	final static QName ASPECT_ATTACHED_TO_REGISTRY_ITEM = QName.createQName(ALVEXDR_MODEL_URI, "attachedToRegistryItem");
 	final static QName ASPECT_ORGCHART_MEMBER = QName.createQName(ALVEXOC_MODEL_URI, "orgchartMember");
@@ -75,8 +83,10 @@ public interface AlvexContentModel {
 	final static QName ASSOC_FILES = QName.createQName(ALVEXDT_MODEL_URI, "files");
 	final static QName ASSOC_DOCUMENT_ASSIGNEE = QName.createQName(ALVEXDT_MODEL_URI, "assignee");
 	final static QName ASSOC_PARENT_REGISTRY = QName.createQName(ALVEXDR_MODEL_URI, "parentRegister");
+	final static QName ASSOC_ATTACHED_MASTER_DATA = QName.createQName(ALVEXDR_MODEL_URI, "attachedMasterData");
 	final static QName ASSOC_EMAIL_ATTACHMENTS = QName.createQName(ALVEXEM_MODEL_URI, "attachments");
 	final static QName ASSOC_EMAIL_PROVIDER = QName.createQName(ALVEXEM_MODEL_URI, "provider");
+	final static QName ASSOC_MASTER_DATA_STORAGE = QName.createQName(ALVEXMD_MODEL_URI, "masterDataStorage");
 	
 	final static QName ASSOC_NAME_SYSTEM = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "system");
 	final static QName ASSOC_NAME_ALVEX = QName.createQName(NamespaceService.SYSTEM_MODEL_1_0_URI, "alvex");
@@ -103,6 +113,8 @@ public interface AlvexContentModel {
 	final static QName PROP_REGISTRY_ID_FORMAT = QName.createQName(ALVEXDR_MODEL_URI, "idFormat");
 	final static QName PROP_REGISTRY_CREATE_ID_MODE = QName.createQName(ALVEXDR_MODEL_URI, "createIdMode");
 	final static QName PROP_REGISTRY_ALLOW_ID_EDIT = QName.createQName(ALVEXDR_MODEL_URI, "allowIdEdit");
+	final static QName PROP_REGISTRY_MASTER_DATA_TARGET_FIELD = QName.createQName(ALVEXDR_MODEL_URI, "masterDataTargetField");
+	final static QName PROP_REGISTRY_MASTER_DATA_DATASOURCE_NAME = QName.createQName(ALVEXDR_MODEL_URI, "masterDataDataSourceName");
 	final static QName PROP_DOCUMENT_STATUS = QName.createQName(ALVEXDT_MODEL_URI, "status");
 	final static QName PROP_DOCUMENT_ID = QName.createQName(ALVEXDT_MODEL_URI, "id");
 	final static QName PROP_RELATED_WORKFLOWS = QName.createQName(ALVEXRWF_MODEL_URI, "relatedWorkflows");
@@ -127,8 +139,23 @@ public interface AlvexContentModel {
 	final static QName PROP_EMAIL_PROVIDER_OUTGOING_PROTO = QName.createQName(ALVEXEM_MODEL_URI, "outgoingProto");
 	final static QName PROP_EMAIL_PROVIDER_OUTGOING_SERVER = QName.createQName(ALVEXEM_MODEL_URI, "outgoingServer");
 	final static QName PROP_EMAIL_PROVIDER_OUTGOING_PORT = QName.createQName(ALVEXEM_MODEL_URI, "outgoingPort");
+	final static QName PROP_MASTER_DATA_SOURCE_TYPE = QName.createQName(ALVEXMD_MODEL_URI, "sourceType");
+	final static QName PROP_MASTER_DATA_DATALIST_COLUMN_VALUE = QName.createQName(ALVEXMD_MODEL_URI, "datalistColumnValueField");
+	final static QName PROP_MASTER_DATA_DATALIST_COLUMN_LABEL = QName.createQName(ALVEXMD_MODEL_URI, "datalistColumnLabelField");
+	final static QName PROP_MASTER_DATA_REST_URL = QName.createQName(ALVEXMD_MODEL_URI, "masterDataURL");
+	final static QName PROP_MASTER_DATA_REST_CACHE_MODE = QName.createQName(ALVEXMD_MODEL_URI, "caching");
+	final static QName PROP_MASTER_DATA_JSON_ROOT_QUERY = QName.createQName(ALVEXMD_MODEL_URI, "dataRootJsonQuery");
+	final static QName PROP_MASTER_DATA_JSON_VALUE_FIELD = QName.createQName(ALVEXMD_MODEL_URI, "valueJsonField");
+	final static QName PROP_MASTER_DATA_JSON_LABEL_FIELD = QName.createQName(ALVEXMD_MODEL_URI, "labelJsonField");
+	final static QName PROP_MASTER_DATA_XPATH_ROOT_QUERY = QName.createQName(ALVEXMD_MODEL_URI, "dataRootXpathQuery");
+	final static QName PROP_MASTER_DATA_XPATH_VALUE = QName.createQName(ALVEXMD_MODEL_URI, "valueXpath");
+	final static QName PROP_MASTER_DATA_XPATH_LABEL = QName.createQName(ALVEXMD_MODEL_URI, "labelXpath");
 	
 	final static String DOCUMENT_STATUS_NOT_STARTED = "notStarted";
 	final static String DOCUMENT_STATUS_IN_PROGRESS = "inProgress";
 	final static String DOCUMENT_STATUS_COMPLETED = "completed";
+	
+	final static String MASTERDATA_TYPE_DATALIST = "datalist";
+	final static String MASTERDATA_TYPE_REST_JSON = "restJSON";
+	final static String MASTERDATA_TYPE_REST_XML = "restXML";
 }

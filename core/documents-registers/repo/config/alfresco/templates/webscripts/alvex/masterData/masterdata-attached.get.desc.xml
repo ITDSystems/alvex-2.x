@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Get Master Data Source Attached to Container</shortname>
+  <url>/api/alvex/masterdata/attached?contRef={contRef}</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

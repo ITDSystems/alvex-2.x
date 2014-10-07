@@ -20,7 +20,7 @@
 package com.alvexcore.repo;
 
 import com.alvexcore.repo.AlvexContentModel;
-import com.alvexcore.repo.AlvexDictionaryService;
+import com.alvexcore.repo.masterdata.AlvexMasterDataService;
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
@@ -56,11 +56,16 @@ import java.io.Serializable;
 
 public class DocumentsRegistersExtension extends RepositoryExtension {
 	
+	public static final String ID_MASTER_DATA_CONFIG_PATH = "masterDataConfigPath";
+	public static final String ID_MASTER_DATA_DATA_PATH = "masterDataDataPath";
+	public static final String ID_MASTER_DATA_SERVICE_CONFIG_PATH = "masterDataServiceConfigPath";
+	
 	protected JavaBehaviour onUpdateRegistryItemPropertiesBehaviour;
 	protected JavaBehaviour onUpdateRegistryPropertiesBehaviour;
 	
 	protected PolicyComponent policyComponent;
 	protected AlvexDictionaryService alvexDictionaryService;
+	protected AlvexMasterDataService alvexMasterDataService;
 	
 	public void setPolicyComponent(PolicyComponent policyComponent)
 	{
@@ -70,6 +75,11 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 	public void setAlvexDictionaryService(AlvexDictionaryService alvexDictionaryService)
 	{
 		this.alvexDictionaryService = alvexDictionaryService;
+	}
+	
+	public void setAlvexMasterDataService(AlvexMasterDataService alvexMasterDataService)
+	{
+		this.alvexMasterDataService = alvexMasterDataService;
 	}
 	
 	// constructor
@@ -83,6 +93,35 @@ public class DocumentsRegistersExtension extends RepositoryExtension {
 	public void init(boolean failIfInitialized) throws Exception {
 		super.init(failIfInitialized);
 		initializeStorage();
+		
+		// Create storage for master data
+		QName[] MASTER_DATA_SERVICE_CONFIG_PATH = new QName[DATA_PATH.length + 2];
+		QName[] MASTER_DATA_CONFIG_PATH = new QName[DATA_PATH.length + 2];
+		QName[] MASTER_DATA_DATA_PATH = new QName[DATA_PATH.length + 2];
+		for(int i = 0; i < DATA_PATH.length; i++) {
+			MASTER_DATA_SERVICE_CONFIG_PATH[i] = MASTER_DATA_CONFIG_PATH[i] = MASTER_DATA_DATA_PATH[i] = DATA_PATH[i];
+		}
+		MASTER_DATA_SERVICE_CONFIG_PATH[DATA_PATH.length] 
+				= MASTER_DATA_CONFIG_PATH[DATA_PATH.length] 
+				= MASTER_DATA_DATA_PATH[DATA_PATH.length] 
+				= QName.createQName(AlvexContentModel.ALVEX_MODEL_URI, "masterData");
+		MASTER_DATA_SERVICE_CONFIG_PATH[DATA_PATH.length + 1] 
+				= QName.createQName(AlvexContentModel.ALVEX_MODEL_URI, "config");
+		MASTER_DATA_CONFIG_PATH[DATA_PATH.length + 1] 
+				= QName.createQName(AlvexContentModel.ALVEX_MODEL_URI, "sources");
+		MASTER_DATA_DATA_PATH[DATA_PATH.length + 1] 
+				= QName.createQName(AlvexContentModel.ALVEX_MODEL_URI, "storage");
+		// create data folder if needed
+		NodeRef masterDataServiceConfigPath = extensionRegistry.createPath(MASTER_DATA_SERVICE_CONFIG_PATH, null, null);
+		NodeRef masterDataConfigPath = extensionRegistry.createPath(MASTER_DATA_CONFIG_PATH, null, null);
+		NodeRef masterDataDataPath = extensionRegistry.createPath(MASTER_DATA_DATA_PATH, null, null);
+		addNodeToCache(ID_MASTER_DATA_SERVICE_CONFIG_PATH, masterDataServiceConfigPath);
+		addNodeToCache(ID_MASTER_DATA_CONFIG_PATH, masterDataConfigPath);
+		addNodeToCache(ID_MASTER_DATA_DATA_PATH, masterDataDataPath);
+		
+		// Init service
+		alvexMasterDataService.setDocumentsRegistersExtension(this);
+		alvexMasterDataService.setUp();
 		
 		// Bind content policies
 		

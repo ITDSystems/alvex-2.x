@@ -37,7 +37,111 @@
 			</list>
 		</property>
 	</bean>
+
+	<bean id="alvex-master-data-deployer" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
+		<!-- Register resource bundles -->
+		<property name="labels">
+			<list>
+				<value>alfresco.extension.messages.alvex-master-data</value>
+			</list>
+		</property>
+		<!-- Register models -->
+		<property name="models">
+			<list>
+				<value>alfresco/extension/models/alvex-master-data-model.xml</value>
+			</list>
+		</property>
+	</bean>
 	
+	<bean id="formServiceScript" parent="baseJavaScriptExtension"
+		  class="org.alfresco.repo.forms.script.MasterDataAwareScriptFormService">
+		<property name="extensionName">
+			<value>formService</value>
+		</property>
+		<property name="formService" ref="FormService" />
+	</bean>
+	
+    <!-- ensures model-compliance of node structures -->
+    <bean id="integrityChecker" class="org.alfresco.repo.node.integrity.MasterDataAwareIntegrityChecker" init-method="init">
+        <property name="alvexMasterDataService" ref="alvex-master-data-service" />
+        <property name="policyComponent" ref="policyComponent"/>
+        <property name="dictionaryService" ref="dictionaryService" />
+        <property name="nodeService" ref="nodeService" />
+        <property name="tenantService" ref="tenantService" />
+        <property name="enabled" value="${system.integrity.enabled}" />
+        <property name="traceOn" value="${system.integrity.trace}" />
+        <property name="failOnViolation" value="${system.integrity.failOnViolation}" />
+        <property name="maxErrorsPerTransaction" value="5" />
+        <property name="storesToIgnore">
+            <list>
+                <value>${version.store.version2Store}</value>
+                <!--  <value>${version.store.deprecated.lightWeightVersionStore}</value> -->
+            </list>
+        </property>
+    </bean>
+	
+	<!-- We need this to set static properties for all MasterDataConstraint instances -->
+	<bean id="MasterDataConstraintHelper" class="com.alvexcore.repo.masterdata.MasterDataConstraint" depends-on="alvex-documents-registers">
+		<property name="alvexMasterDataService" ref="alvex-master-data-service" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	
+	<bean id="MasterDataNodeFilter" class="com.alvexcore.repo.masterdata.MasterDataFormFilter" parent="baseFormFilter">
+		<property name="filterRegistry" ref="nodeFilterRegistry" />
+		<property name="nodeService" ref="nodeService" />
+		<property name="alvexMasterDataService" ref="alvex-master-data-service" />
+		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+	</bean>
+	<bean id="MasterDataTypeFilter" class="com.alvexcore.repo.masterdata.MasterDataFormFilter" parent="baseFormFilter">
+		<property name="filterRegistry" ref="typeFilterRegistry" />
+		<property name="nodeService" ref="nodeService" />
+		<property name="alvexMasterDataService" ref="alvex-master-data-service" />
+		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+	</bean>
+	
+	<!-- AlvexDictionaryService -->
+	<bean id="alvex-dictionary-service-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexDictionaryService" class="com.alvexcore.repo.AlvexDictionaryServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+	</bean>
+	<bean id="AlvexDictionaryService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexDictionaryService" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.AlvexDictionaryService</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-dictionary-service-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexDictionaryService" alias="alvex-dictionary-service" />
+	<bean id="alvex-dictionary-service-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.JsAlvexDictionaryService">
+		<property name="extensionName">
+			<value>alvexDictionaryService</value>
+		</property>
+		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+		<property name="alvexMasterDataService" ref="alvex-master-data-service" />
+		<property name="nodeService" ref="nodeService" />
+	</bean>
+
 	<!-- AlvexRegistriesService -->
 	<bean id="alvex-registries-service-transaction"
 		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
@@ -80,6 +184,49 @@
 		</property>
 		<property name="alvexRegistriesService" ref="alvex-registries-service" />
 		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+	</bean>
+	
+	<!-- AlvexMasterDataService -->
+	<bean id="alvex-master-data-service-transaction"
+		class="org.alfresco.repo.transaction.RetryingTransactionInterceptor">
+		<property name="transactionService" ref="TransactionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="*Exists">${server.transaction.mode.readOnly}</prop>
+				<prop key="is*">${server.transaction.mode.readOnly}</prop>
+				<prop key="resolve*">${server.transaction.mode.readOnly}</prop>
+				<prop key="get*">${server.transaction.mode.readOnly}</prop>
+				<prop key="*">${server.transaction.mode.default}</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="alvexMasterDataService" class="com.alvexcore.repo.masterdata.AlvexMasterDataServiceImpl">
+		<property name="serviceRegistry" ref="ServiceRegistry" />
+		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+	</bean>
+	<bean id="AlvexMasterDataService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="alvexMasterDataService" />
+		<property name="proxyInterfaces">
+			<list>
+				<value>com.alvexcore.repo.masterdata.AlvexMasterDataService</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="alvex-master-data-service-transaction" />
+			</list>
+		</property>
+	</bean>
+	<alias name="AlvexMasterDataService" alias="alvex-master-data-service" />
+	<bean id="alvex-master-data-service-js" parent="baseJavaScriptExtension"
+		class="com.alvexcore.repo.masterdata.JsAlvexMasterDataService">
+		<property name="extensionName">
+			<value>alvexMasterDataService</value>
+		</property>
+		<property name="alvexMasterDataService" ref="alvex-master-data-service" />
+		<property name="serviceRegistry" ref="ServiceRegistry" />
 	</bean>
 
 	<bean id="alvex-template-service-transaction"
@@ -266,5 +413,6 @@
 										depends-on="alvex-custom-workflows" parent="alvex-extension">
 		<property name="policyComponent" ref="policyComponent" />
 		<property name="alvexDictionaryService" ref="alvex-dictionary-service" />
+		<property name="alvexMasterDataService" ref="alvex-master-data-service" />
 	</bean>
 </beans>
