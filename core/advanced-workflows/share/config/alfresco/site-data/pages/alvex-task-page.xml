@@ -80,7 +80,7 @@
          <region-id>workflow-data-loader</region-id>
          <url>/components/data/data-loader</url>
          <properties>
-            <url>api/workflow-instances/{workflowId}?includeTasks=true</url>
+            <url>api/alvex/workflow-instances/{workflowId}?includeTasks=true</url>
             <eventName>workflowDetailedData</eventName>
             <eventData>data</eventData>
          </properties>

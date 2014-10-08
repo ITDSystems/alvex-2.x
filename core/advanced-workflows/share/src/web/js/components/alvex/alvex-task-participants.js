@@ -124,7 +124,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		var me = this;
          Alfresco.util.Ajax.jsonGet(
 				 {
-					url: Alfresco.constants.PROXY_URI + "api/workflow-instances/" 
+					url: Alfresco.constants.PROXY_URI + "api/alvex/workflow-instances/" 
 							+ task.workflowInstance.id + "?includeTasks=true",
 					successCallback:
 					{

@@ -230,7 +230,9 @@ public class TaskInstancesGet extends AbstractWorkflowWebscript
                 taskQuery.setTaskState(state);
                 taskQuery.setActive(null);
                 // taskQuery.setOrderBy(new OrderBy[] { OrderBy.TaskDue_Asc });
-                allTasks = workflowService.queryTasks(taskQuery);
+                List<WorkflowTask> tasks = workflowService.queryTasks(taskQuery);
+                allTasks = new ArrayList<WorkflowTask>(tasks.size());
+                allTasks.addAll(tasks);
             }
         }
         
