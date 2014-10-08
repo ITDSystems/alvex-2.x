@@ -425,7 +425,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			req['itemValueType'] = 'nodeRef';
 			
 			Alfresco.util.Ajax.jsonRequest({
-				url: Alfresco.constants.PROXY_URI + "api/forms/picker/items",
+				url: Alfresco.constants.PROXY_URI + "api/alvex/forms/picker/items",
 				method:Alfresco.util.Ajax.POST,
 				dataObj: req,
 				successCallback:
@@ -483,7 +483,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			req['itemValueType'] = 'nodeRef';
 			
 			Alfresco.util.Ajax.jsonRequest({
-				url: Alfresco.constants.PROXY_URI + "api/forms/picker/items",
+				url: Alfresco.constants.PROXY_URI + "api/alvex/forms/picker/items",
 				method:Alfresco.util.Ajax.POST,
 				dataObj: req,
 				successCallback:

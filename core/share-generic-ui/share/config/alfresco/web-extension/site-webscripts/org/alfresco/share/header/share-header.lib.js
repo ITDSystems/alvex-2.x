@@ -27,6 +27,23 @@ function getLicenseUsage() {
    return usage;
 }
 
+function getServerInfo() {
+   var info = null;
+   var result = remote.call("/api/server");
+   if (result.status.code == status.STATUS_OK)
+   {
+      info = eval('(' + result + ')');
+   }
+   return info.data;
+}
+
+function isNewShare() {
+   var server = getServerInfo();
+   if(server.version.match(/^4.2.3 \(.1/) || server.version.match(/^5./))
+      return true;
+   return false;
+}
+
 
 /* *********************************************************************************
  *                                                                                 *
@@ -1305,17 +1322,32 @@ function getUserMenuWidgets()
       });
    if (!context.externalAuthentication)
    {
-      userMenuWidgets.push({
-         id: "HEADER_USER_MENU_LOGOUT",
-         name: "alfresco/header/AlfMenuItem",
-         config:
-         {
+      if(isNewShare())
+      {
+         userMenuWidgets.push({
             id: "HEADER_USER_MENU_LOGOUT",
-            label: "logout.label",
-            iconClass: "alf-user-logout-icon",
-            targetUrl: "dologout"
-         }
-      });
+            name: "alfresco/header/AlfMenuItem",
+            config:
+            {
+               id: "HEADER_USER_MENU_LOGOUT",
+               label: "logout.label",
+               iconClass: "alf-user-logout-icon",
+               publishTopic: "ALF_DOLOGOUT"
+            }
+         });
+      } else {
+         userMenuWidgets.push({
+            id: "HEADER_USER_MENU_LOGOUT",
+            name: "alfresco/header/AlfMenuItem",
+            config:
+            {
+               id: "HEADER_USER_MENU_LOGOUT",
+               label: "logout.label",
+               iconClass: "alf-user-logout-icon",
+               targetUrl: "dologout"
+            }
+         });
+      }
    }
    return userMenuWidgets;
 }
@@ -1720,17 +1752,36 @@ var userPreferences = getUserPreferences();
  *                                                                                 *
  ***********************************************************************************/
 function getHeaderServices() {
-   var services = [
-      {
-         name: "alfresco/services/PreferenceService",
-         config: {
-            localPreferences: userPreferences
-         }
-      },
-      "alfresco/services/NavigationService",
-      "alfresco/services/UserService",
-      "alfresco/services/SiteService"
-   ];
+   var services = null;
+   if( isNewShare() )
+   {
+      services = 
+      [
+         {
+            name: "alfresco/services/PreferenceService",
+            config: {
+               localPreferences: userPreferences
+            }
+         },
+         "alfresco/services/NavigationService",
+         "alfresco/services/UserService",
+         "alfresco/services/SiteService",
+         "alfresco/services/LogoutService"
+      ];
+   } else {
+      services = 
+      [
+         {
+            name: "alfresco/services/PreferenceService",
+            config: {
+               localPreferences: userPreferences
+            }
+         },
+         "alfresco/services/NavigationService",
+         "alfresco/services/UserService",
+         "alfresco/services/SiteService"
+      ];
+   }
    // Only add the logging service when in client-debug mode...
    if (config.global.flags.getChildValue("client-debug") == "true")
    {

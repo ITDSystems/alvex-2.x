@@ -312,6 +312,7 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 	<@renderPickerJS field "picker" />
 	picker.setOptions(
 	{
+		itemsAPI: "/share/proxy/alfresco/api/alvex/forms/picker/items",
 		maintainAddedRemovedItems: false,
 		itemFamily: "node",
 		itemType: '${(field.control.params.pickerContentType!"cm:content")?string}',
