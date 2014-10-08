@@ -17,9 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alvexcore.repo.jscript;
+package com.alvexcore.repo;
 
 import com.alvexcore.repo.AlvexDictionaryService;
+import com.alvexcore.repo.masterdata.AlvexMasterDataService;
 
 import org.alfresco.repo.jscript.BaseScopableProcessorExtension;
 import org.springframework.beans.factory.annotation.Required;
@@ -31,6 +32,8 @@ import org.alfresco.service.cmr.dictionary.AssociationDefinition;
 import org.alfresco.service.cmr.dictionary.ConstraintDefinition;
 import org.alfresco.service.cmr.dictionary.Constraint;
 
+import org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint;
+
 import org.alfresco.repo.jscript.ScriptNode;
 import org.alfresco.service.cmr.repository.NodeRef;
 
@@ -41,12 +44,16 @@ import java.util.ArrayList;
 import java.util.List;
 import org.alfresco.repo.jscript.ScriptableHashMap;
 import java.util.Map;
+import org.alfresco.service.cmr.repository.ChildAssociationRef;
+import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.namespace.QName;
 
 public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 	
 	private DictionaryService dictionaryService;
+	private NodeService nodeService;
 	private AlvexDictionaryService alvexDictionaryService;
+	private AlvexMasterDataService alvexMasterDataService;
 	private ValueConverter converter = new ValueConverter();
 	
 	@Required
@@ -54,6 +61,18 @@ public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 	{
 		this.alvexDictionaryService = alvexDictionaryService;
 		this.dictionaryService = alvexDictionaryService.getDictionaryService();
+	}
+	
+	@Required
+	public void setAlvexMasterDataService(AlvexMasterDataService alvexMasterDataService)
+	{
+		this.alvexMasterDataService = alvexMasterDataService;
+	}
+	
+	@Required
+	public void setNodeService(NodeService nodeService)
+	{
+		this.nodeService = nodeService;
 	}
 	
 	public Scriptable getParentHierarchy(String shortName)
@@ -86,7 +105,7 @@ public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 		return alvexDictionaryService.isRegistryItem(node.getNodeRef());
 	}
 	
-	public Scriptable getCompleteTypeDescription(String shortName)
+	public Scriptable getCompleteTypeDescription(String shortName, ScriptNode containerNode)
 	{
 		ScriptableHashMap<String, Object> jsType = new ScriptableHashMap<String, Object>();
 		ArrayList<ScriptableHashMap<String,Object>> fields = new ArrayList<ScriptableHashMap<String,Object>>();
@@ -106,16 +125,29 @@ public class JsAlvexDictionaryService extends BaseScopableProcessorExtension {
 			pr.put("name", def.getName().getPrefixString());
 			pr.put("title", def.getTitle(dictionaryService));
 			
-			List<ConstraintDefinition> constraints = def.getConstraints();
-			for (ConstraintDefinition cdef : constraints)
+			List<Constraint> constraints = new ArrayList<Constraint>();
+			// 'normal' constraints from model
+			List<ConstraintDefinition> constraintDefs = def.getConstraints();
+			for (ConstraintDefinition cdef : constraintDefs)
 			{
-				Constraint c = cdef.getConstraint();
+				constraints.add(cdef.getConstraint());
+			}
+			// 'not normal' constraint from master data aspect
+			if (containerNode != null)
+			{
+				NodeRef nodeRef = containerNode.getNodeRef();
+				Constraint c = alvexMasterDataService.getConstraint(nodeRef, def.getName().getPrefixString());
+				if(c != null)
+					constraints.add(c);
+			}
+			for (Constraint c : constraints)
+			{
 				String type = c.getType();
-				String lovType = org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint.CONSTRAINT_TYPE;
+				String lovType = ListOfValuesConstraint.CONSTRAINT_TYPE;
 				if( lovType.equalsIgnoreCase(type) )
 				{
 					ArrayList<ScriptableHashMap<String, String>> vals = new ArrayList<ScriptableHashMap<String, String>>();
-					org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint lovc = (org.alfresco.repo.dictionary.constraint.ListOfValuesConstraint)c;
+					ListOfValuesConstraint lovc = (ListOfValuesConstraint)c;
 					List<String> allowedValues = lovc.getAllowedValues();
 					for(String val : allowedValues)
 					{
