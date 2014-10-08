@@ -23,6 +23,10 @@
 		<property name="alvexWorkflowService" ref="workflowServiceImpl" />
 	</bean>
 	
+	<bean id="webscript.tasks-instances.workflow-instance.get"
+				class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstanceGet"
+				parent="abstractWorkflowWebScript"></bean>
+	
 	<bean id="webscript.workflow-instances-detailed.workflow-instances-detailed.get"
 		class="com.alvexcore.repo.web.scripts.workflow.WorkflowInstancesDetailedGet"
 		parent="abstractWorkflowWebScript">

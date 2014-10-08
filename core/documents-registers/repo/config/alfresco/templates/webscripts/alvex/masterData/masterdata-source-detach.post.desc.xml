@@ -1,0 +1,8 @@
+<webscript>
+  <shortname>Detach Master Data Source from Container</shortname>
+  <url>/api/alvex/masterdata/sources/detach</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+  <transaction>none</transaction>
+  <lifecycle>public_api</lifecycle>
+</webscript>

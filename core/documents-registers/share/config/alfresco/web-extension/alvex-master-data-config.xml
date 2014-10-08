@@ -1,0 +1,174 @@
+<alfresco-config>
+
+	<config>
+		<forms>      
+			<dependencies>
+				<js  src="/components/alvex/datalist-picker.js" />
+				<js  src="/components/alvex/datalist-field-picker.js" />
+			</dependencies>
+		</forms>
+	</config>
+	
+	<!-- Datalist Based -->	
+	<config evaluator="model-type" condition="alvexmd:datalistMasterDataSource">
+		<forms>
+			<form>
+				<field-visibility>
+					<show id="cm:name" />
+					<show id="alvexmd:masterDataStorage" />
+					<show id="alvexmd:datalistColumnValueField" />
+					<show id="alvexmd:datalistColumnLabelField" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label=""/>
+					<field set="info" id="cm:name" />
+					<field set="info" id="alvexmd:masterDataStorage">
+						<control template="/alvex-datalist-picker.ftl" />
+					</field>
+					<field set="info" id="alvexmd:datalistColumnValueField">
+						<control template="/alvex-datalist-field-picker.ftl" />
+					</field>
+					<field set="info" id="alvexmd:datalistColumnLabelField">
+						<control template="/alvex-datalist-field-picker.ftl" />
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexmd:datalistMasterDataSource">
+		<forms>
+			<form>
+				<field-visibility>
+					<show id="cm:name" />
+					<show id="alvexmd:masterDataStorage" />
+					<show id="alvexmd:datalistColumnValueField" />
+					<show id="alvexmd:datalistColumnLabelField" />
+				</field-visibility>
+				<view-form template="/alvex-form.ftl" />
+				<edit-form template="/alvex-form.ftl" />
+				<appearance>
+					<set id="info" appearance="" label=""/>
+					<field set="info" id="cm:name" />
+					<field set="info" id="alvexmd:masterDataStorage">
+						<control template="/alvex-datalist-picker.ftl" />
+					</field>
+					<field set="info" id="alvexmd:datalistColumnValueField">
+						<control template="/alvex-datalist-field-picker.ftl" />
+					</field>
+					<field set="info" id="alvexmd:datalistColumnLabelField">
+						<control template="/alvex-datalist-field-picker.ftl" />
+					</field>
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<!-- REST / JSON Based -->
+
+	<config evaluator="model-type" condition="alvexmd:restJsonMasterDataSource">
+		<forms>
+			<form>
+				<field-visibility>
+					<show id="cm:name" />
+					<show id="alvexmd:masterDataURL" />
+					<show id="alvexmd:dataRootJsonQuery" />
+					<show id="alvexmd:valueJsonField" />
+					<show id="alvexmd:labelJsonField" />
+					<show id="alvexmd:caching" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label=""/>
+					<field set="info" id="cm:name" />
+					<field set="info" id="alvexmd:masterDataURL" />
+					<field set="info" id="alvexmd:dataRootJsonQuery" />
+					<field set="info" id="alvexmd:valueJsonField" />
+					<field set="info" id="alvexmd:labelJsonField" />
+					<field set="info" id="alvexmd:caching" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexmd:restJsonMasterDataSource">
+		<forms>
+			<form>
+				<field-visibility>
+					<show id="cm:name" />
+					<show id="alvexmd:masterDataURL" />
+					<show id="alvexmd:dataRootJsonQuery" />
+					<show id="alvexmd:valueJsonField" />
+					<show id="alvexmd:labelJsonField" />
+					<show id="alvexmd:caching" />
+				</field-visibility>
+				<view-form template="/alvex-form.ftl" />
+				<edit-form template="/alvex-form.ftl" />
+				<appearance>
+					<set id="info" appearance="" label=""/>
+					<field set="info" id="cm:name" />
+					<field set="info" id="alvexmd:masterDataURL" />
+					<field set="info" id="alvexmd:dataRootJsonQuery" />
+					<field set="info" id="alvexmd:valueJsonField" />
+					<field set="info" id="alvexmd:labelJsonField" />
+					<field set="info" id="alvexmd:caching" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<!-- REST / XML Based -->
+
+	<config evaluator="model-type" condition="alvexmd:restXmlMasterDataSource">
+		<forms>
+			<form>
+				<field-visibility>
+					<show id="cm:name" />
+					<show id="alvexmd:masterDataURL" />
+					<show id="alvexmd:dataRootXpathQuery" />
+					<show id="alvexmd:valueXpath" />
+					<show id="alvexmd:labelXpath" />
+					<show id="alvexmd:caching" />
+				</field-visibility>
+				<create-form template="/org/alfresco/components/data-lists/forms/dataitem.ftl" />
+				<appearance>
+					<set id="info" appearance="" label=""/>
+					<field set="info" id="cm:name" />
+					<field set="info" id="alvexmd:masterDataURL" />
+					<field set="info" id="alvexmd:dataRootXpathQuery" />
+					<field set="info" id="alvexmd:valueXpath" />
+					<field set="info" id="alvexmd:labelXpath" />
+					<field set="info" id="alvexmd:caching" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+	<config evaluator="node-type" condition="alvexmd:restXmlMasterDataSource">
+		<forms>
+			<form>
+				<field-visibility>
+					<show id="cm:name" />
+					<show id="alvexmd:masterDataURL" />
+					<show id="alvexmd:dataRootXpathQuery" />
+					<show id="alvexmd:valueXpath" />
+					<show id="alvexmd:labelXpath" />
+					<show id="alvexmd:caching" />
+				</field-visibility>
+				<view-form template="/alvex-form.ftl" />
+				<edit-form template="/alvex-form.ftl" />
+				<appearance>
+					<set id="info" appearance="" label=""/>
+					<field set="info" id="cm:name" />
+					<field set="info" id="alvexmd:masterDataURL" />
+					<field set="info" id="alvexmd:dataRootXpathQuery" />
+					<field set="info" id="alvexmd:valueXpath" />
+					<field set="info" id="alvexmd:labelXpath" />
+					<field set="info" id="alvexmd:caching" />
+				</appearance>
+			</form>
+		</forms>
+	</config>
+
+</alfresco-config>

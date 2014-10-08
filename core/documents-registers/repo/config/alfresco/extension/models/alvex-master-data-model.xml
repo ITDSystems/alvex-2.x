@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+	Content model to represent Alvex master data
+	@since 2.1
+ -->
+ <model
+	xmlns="http://www.alfresco.org/model/dictionary/1.0"
+	name="alvexmd:master_data_model"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.alfresco.org/model/dictionary/1.0 modelSchema.xsd">
+
+	<imports>
+		<import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+		<import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+		<import uri="http://www.alfresco.org/model/system/1.0" prefix="sys"/>
+	</imports>
+
+	<namespaces>
+		<namespace prefix="alvexmd" uri="http://alvexcore.com/prefix/alvexmd" />
+	</namespaces>
+	
+	<constraints>
+		<constraint name="alvexmd:availableSourcesTypes" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+					<value>datalist</value>
+					<value>restJSON</value>
+					<value>restXML</value>
+				</list>
+			</parameter>
+		</constraint>
+		<constraint name="alvexmd:availableCachingTypes" type="LIST">
+			<parameter name="allowedValues">
+				<list>
+					<value>cached</value>
+					<value>notCached</value>
+				</list>
+			</parameter>
+		</constraint>
+	</constraints>
+
+	<types>
+		
+		<type name="alvexmd:masterDataSource">
+			<title>Config for Master Data Source</title>
+			<parent>cm:cmobject</parent>
+			<properties>
+				<property name="alvexmd:sourceType">
+					<type>d:text</type>
+					<constraints>
+						<constraint ref="alvexmd:availableSourcesTypes" />
+					</constraints>
+				</property>
+			</properties>
+			<associations>
+				<association name="alvexmd:masterDataStorage">
+					<source>
+						<mandatory>false</mandatory>
+						<many>true</many>
+					</source>
+					<target>
+						<class>cm:folder</class>
+						<mandatory>true</mandatory>
+						<many>false</many>
+					</target>
+				</association>
+			</associations>
+		</type>
+		
+		<!-- Final type -->
+		<type name="alvexmd:datalistMasterDataSource">
+			<title>Config for Datalist-Backed Master Data Source</title>
+			<parent>alvexmd:masterDataSource</parent>
+			<properties>
+				<property name="alvexmd:datalistColumnValueField">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexmd:datalistColumnLabelField">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+			</properties>
+		</type>
+
+		<type name="alvexmd:restMasterDataSource">
+			<title>Config for REST-Backed Master Data Source</title>
+			<parent>alvexmd:masterDataSource</parent>
+			<properties>
+				<property name="alvexmd:masterDataURL">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexmd:caching">
+					<type>d:text</type>
+					<default>notCached</default>
+					<constraints>
+						<constraint ref="alvexmd:availableCachingTypes" />
+					</constraints>
+				</property>
+			</properties>
+		</type>
+		
+		<!-- Final type -->
+		<type name="alvexmd:restJsonMasterDataSource">
+			<title>Config for REST/JSON-Backed Master Data Source</title>
+			<parent>alvexmd:restMasterDataSource</parent>
+			<properties>
+				<property name="alvexmd:dataRootJsonQuery">
+					<type>d:text</type>
+				</property>
+				<property name="alvexmd:labelJsonField">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexmd:valueJsonField">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+			</properties>
+		</type>
+		
+		<!-- Final type -->
+		<type name="alvexmd:restXmlMasterDataSource">
+			<title>Config for REST/XML-Backed Master Data Source</title>
+			<parent>alvexmd:restMasterDataSource</parent>
+			<properties>
+				<property name="alvexmd:dataRootXpathQuery">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexmd:labelXpath">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+				<property name="alvexmd:valueXpath">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+			</properties>
+		</type>
+
+		<type name="alvexmd:masterDataItem">
+			<title>Master Data Item</title>
+			<parent>cm:folder</parent>
+		</type>
+
+	</types>
+	
+</model>

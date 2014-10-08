@@ -4,7 +4,7 @@
 		<forms>
 			<dependencies>
 				<js  src="/components/alvex/masterData-select.js" />
-				<js  src="/components/alvex/masterData-config.js" />
+				<js  src="/components/alvex/alvex-masterdata-config.js" />
 				<js  src="/components/alvex/auto-numberer.js" />
 				<js  src="/components/alvex/simple-dialog.js" />
 				<js  src="/components/alvex/share-site-picker.js" />

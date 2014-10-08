@@ -19,6 +19,7 @@
 
 package com.alvexcore.repo;
 
+import com.alvexcore.repo.AlvexContentModel;
 import org.alfresco.model.ContentModel;
 import org.alfresco.service.cmr.repository.AssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
@@ -182,6 +183,39 @@ public class AlvexDictionaryServiceImpl implements InitializingBean, AlvexDictio
 		}
 		return results;
 	};
+	
+	@Override
+	public QName getPropertyQName(String shortTypeName, String shortPropName)
+	{
+		return getProperty(shortTypeName, shortPropName).getName();
+	}
+	
+	@Override
+	public QName getPropertyQName(TypeDefinition type, String shortPropName)
+	{
+		return getProperty(type, shortPropName).getName();
+	}
+	
+	@Override
+	public PropertyDefinition getProperty(String shortTypeName, String shortPropName)
+	{
+		TypeDefinition type = getDataType(shortTypeName);
+		return getProperty(type, shortPropName);
+	}
+	
+	@Override
+	public PropertyDefinition getProperty(TypeDefinition type, String shortPropName)
+	{
+		Map<QName, PropertyDefinition> properties = getAllTypeProperties(type);
+		for (Map.Entry<QName, PropertyDefinition> entry : properties.entrySet())
+		{
+			PropertyDefinition prop = entry.getValue();
+			QName name = entry.getKey();
+			if(name.getPrefixString().equals(shortPropName))
+				return prop;
+		}
+		return null;
+	}
 
 	@Override
 	public Map<QName, AssociationDefinition> getAllTypeAssocs(String shortName)

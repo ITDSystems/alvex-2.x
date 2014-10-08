@@ -312,6 +312,7 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 	<@renderPickerJS field "picker" />
 	picker.setOptions(
 	{
+		itemsAPI: "/share/proxy/alfresco/api/alvex/forms/picker/items",
 		maintainAddedRemovedItems: false,
 		itemFamily: "node",
 		itemType: '${(field.control.params.pickerContentType!"cm:content")?string}',
@@ -410,11 +411,12 @@ if( "${packageActionGroup}" == "add_package_item_actions" ) {
 
       return request;
    };
-	  
+
    dg.getSearchFormUrl = function(meta)
    {
-      return Alfresco.util.combinePaths(Alfresco.constants.PROXY_URI, "api/alvex/dictionary?type=" + encodeURIComponent(meta.itemType));
-   }; 
+      return Alfresco.util.combinePaths(Alfresco.constants.PROXY_URI,
+               "api/alvex/dictionary?type=" + encodeURIComponent(meta.itemType) + "&container=" + encodeURIComponent(meta.nodeRef));
+   };	  
 
 	</#if>
 }

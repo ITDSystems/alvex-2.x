@@ -32,6 +32,10 @@ import org.alfresco.service.cmr.dictionary.AssociationDefinition;
 public interface AlvexDictionaryService {
 
 	public abstract TypeDefinition getDataType(String shortName);
+	public abstract PropertyDefinition getProperty(String shortTypeName, String shortPropName);
+	public abstract PropertyDefinition getProperty(TypeDefinition type, String shortPropName);
+	public abstract QName getPropertyQName(String shortTypeName, String shortPropName);
+	public abstract QName getPropertyQName(TypeDefinition type, String shortPropName);
 	public abstract List<TypeDefinition> getParentHierarchy(TypeDefinition type);
 	public abstract List<TypeDefinition> getParentHierarchy(NodeRef ref);
 	public abstract boolean isContent(NodeRef ref);

@@ -29,10 +29,13 @@ import org.springframework.extensions.webscripts.Cache;
 import org.springframework.extensions.webscripts.connector.Response;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
 import org.json.JSONException;
@@ -43,6 +46,8 @@ import org.springframework.extensions.surf.ServletUtil;
 import org.springframework.extensions.surf.exception.ConnectorServiceException;
 import org.springframework.extensions.surf.support.ThreadLocalRequestContext;
 import org.springframework.extensions.surf.util.I18NUtil;
+import org.springframework.extensions.surf.util.StringBuilderWriter;
+import org.springframework.extensions.webscripts.json.JSONWriter;
 import org.springframework.extensions.webscripts.connector.Connector;
 import org.springframework.extensions.webscripts.connector.ConnectorContext;
 import org.springframework.extensions.webscripts.connector.ConnectorService;
@@ -131,7 +136,7 @@ public class TaskFormUIGet extends FormUIGet
         List<String> visibleFields = getVisibleFields(mode, formConfig);
         
         // get the form definition from the form service
-        Response formSvcResponse = retrieveFormDefinition(itemKind, itemId, visibleFields, formConfig);
+        Response formSvcResponse = retrieveFormDefinition(itemKind, itemId, visibleFields, formConfig, request);
         if (formSvcResponse.getStatus().getCode() == Status.STATUS_OK)
         {
             model = generateFormModel(request, mode, formSvcResponse, formConfig);
@@ -148,5 +153,134 @@ public class TaskFormUIGet extends FormUIGet
         }
         
         return model;
+    }
+
+    /**
+     * Retrieves the form definition from the repository FormService for the
+     * given item.
+     * 
+     * @param itemKind The form item kind
+     * @param itemId The form item id
+     * @param visibleFields The list of field names to return or null
+     *        to return all fields
+     * @param formConfig The form configuration
+     * @return Response object from the remote call
+     */
+    protected Response retrieveFormDefinition(String itemKind, String itemId,
+                List<String> visibleFields, FormConfigElement formConfig, WebScriptRequest request)
+    {
+        Response response = null;
+
+        try
+        {
+            // setup the connection
+            ConnectorService connService = FrameworkUtil.getConnectorService();
+            RequestContext requestContext = ThreadLocalRequestContext.getRequestContext();
+            String currentUserId = requestContext.getUserId();
+            HttpSession currentSession = ServletUtil.getSession(true);
+            Connector connector = connService.getConnector(ENDPOINT_ID, currentUserId, currentSession);
+            ConnectorContext context = new ConnectorContext(HttpMethod.POST, null, buildDefaultHeaders());
+            context.setContentType("application/json");
+
+            // call the form service
+            response = connector.call("/api/formdefinitions", context, generateFormDefPostBody(itemKind,
+                        itemId, visibleFields, formConfig, request));
+
+            //if (logger.isDebugEnabled())
+            //    logger.debug("Response status: " + response.getStatus().getCode());
+        }
+        catch (Exception e)
+        {
+            //if (logger.isErrorEnabled())
+            //    logger.error("Failed to get form definition: ", e);
+        }
+
+        return response;
+    }
+
+    /**
+     * Generates the POST body to send to the FormService.
+     * 
+     * @param itemKind The form item kind
+     * @param itemId The form item id
+     * @param visibleFields The list of field names to return or null
+     *        to return all fields
+     * @param formConfig The form configuration
+     * @return ByteArrayInputStream representing the POST body
+     * @throws IOException
+     */
+    protected ByteArrayInputStream generateFormDefPostBody(String itemKind, String itemId, 
+                List<String> visibleFields, FormConfigElement formConfig, WebScriptRequest request) throws IOException
+    {
+        StringBuilderWriter buf = new StringBuilderWriter(512);
+        JSONWriter writer = new JSONWriter(buf);
+        
+        writer.startObject();
+        writer.writeValue(PARAM_ITEM_KIND, itemKind);
+        
+        String destination = getParameter(request, MODEL_DESTINATION);
+        if (destination != null && destination.length() > 0)
+        {
+            writer.writeValue(MODEL_DESTINATION, destination);
+        }
+        
+        writer.writeValue(PARAM_ITEM_ID, itemId.replace(":/", ""));
+
+        List<String> forcedFields = null;
+        if (visibleFields != null && visibleFields.size() > 0)
+        {
+            // list the requested fields
+            writer.startValue(MODEL_FIELDS);
+            writer.startArray();
+
+            forcedFields = new ArrayList<String>(visibleFields.size());
+            for (String fieldId : visibleFields)
+            {
+                // write out the fieldId
+                writer.writeValue(fieldId);
+                
+                // determine which fields need to be forced
+                if (formConfig.isFieldForced(fieldId))
+                {
+                    forcedFields.add(fieldId);
+                }
+            }
+            
+            // close the fields array
+            writer.endArray();
+        }
+        
+        // list the forced fields, if present
+        if (forcedFields != null && forcedFields.size() > 0)
+        {
+            writer.startValue(MODEL_FORCE);
+            writer.startArray();
+            
+            for (String fieldId : forcedFields)
+            {
+                writer.writeValue(fieldId);
+            }
+            
+            writer.endArray();
+        }
+        
+        // end the JSON object
+        writer.endObject();
+        
+        // return the JSON body as a stream
+        return new ByteArrayInputStream(buf.toString().getBytes());
+    }
+
+    /**
+     * Helper to build a map of the default headers for script requests - we send over
+     * the current users locale so it can be respected by any appropriate REST APIs.
+     *  
+     * @return map of headers
+     */
+    private static Map<String, String> buildDefaultHeaders()
+    {
+        Map<String, String> headers = new HashMap<String, String>(1, 1.0f);
+        headers.put("Accept-Language", I18NUtil.getLocale().toString().replace('_', '-'));
+        return headers;
     }
 }

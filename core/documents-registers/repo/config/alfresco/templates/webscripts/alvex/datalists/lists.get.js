@@ -41,7 +41,7 @@ function getDataLists()
       var type = dl.properties["dl:dataListItemType"];
       lists.push( {
          dl: dl,
-         typeTitle: alvexDictionaryService.getCompleteTypeDescription(type)["title"]
+         typeTitle: alvexDictionaryService.getCompleteTypeDescription(type, null)["title"]
       });
    }
    

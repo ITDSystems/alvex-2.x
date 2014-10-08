@@ -105,6 +105,17 @@
 				</property>
 			</properties>
 		</type>
+		
+		<type name="alvexdr:masterDataServiceConfig">
+			<title>Master Data Service Config</title>
+			<parent>alvexdr:masterData</parent>
+			<properties>
+				<property name="alvexdr:masterDataDataSourceName">
+					<type>d:text</type>
+					<mandatory enforced='true'>true</mandatory>
+				</property>
+			</properties>
+		</type>
 
 		<type name="alvexdr:internalMasterData">
 			<title>Internal masterData config</title>
