@@ -376,6 +376,11 @@ public class AlvexMasterDataServiceImplCE implements InitializingBean, AlvexMast
 		for(AssociationRef md : mds)
 		{
 			NodeRef ref = md.getTargetRef();
+			QName type = nodeService.getType(ref);
+			// Skip legacy data to avoid 'null' for 'src'
+			// We consider manual migration only
+			if( ! AlvexContentModel.TYPE_DOCUMENT_REGISTER_MASTER_DATA.equals(type) )
+				continue;
 			String prop = (String)nodeService.getProperty(ref, 
 					AlvexContentModel.PROP_REGISTRY_MASTER_DATA_TARGET_FIELD);
 			String src = (String)nodeService.getProperty(ref, 
