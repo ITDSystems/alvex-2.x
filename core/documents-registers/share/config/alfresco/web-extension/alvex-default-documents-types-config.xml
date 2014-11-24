@@ -1162,7 +1162,7 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:summary" />
-               <show id="alvexdt:contactName" />
+               <show id="alvexdt:To" />
                <show id="alvexdt:assignees" />
             </field-visibility>
             <appearance>
@@ -1177,7 +1177,7 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:summary" />
-               <show id="alvexdt:contactName" />
+               <show id="alvexdt:To" />
                <show id="alvexdt:creator"/>
                <show id="alvexdt:assignees" />
                <show id="alvexdt:dueDate"/>
@@ -1206,7 +1206,7 @@
                <field set="people" id="alvexdt:creator">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="people" id="alvexdt:contactName">
+               <field set="people" id="alvexdt:To">
                   <control template="/orgchart-picker.ftl" />
                </field>
                <field set="people" id="alvexdt:assignees">
@@ -1234,7 +1234,7 @@
                <show id="alvexdt:id" />
                <show id="alvexdt:registerDate" />
                <show id="alvexdt:summary" />
-               <show id="alvexdt:contactName" />
+               <show id="alvexdt:To" />
                <show id="alvexdt:creator"/>
                <show id="alvexdt:assignees" />
                <show id="alvexdt:dueDate"/>
@@ -1264,7 +1264,7 @@
                <field set="people" id="alvexdt:creator">
                   <control template="/orgchart-picker.ftl" />
                </field>
-               <field set="people" id="alvexdt:contactName">
+               <field set="people" id="alvexdt:To">
                   <control template="/orgchart-picker.ftl" />
                </field>
                <field set="people" id="alvexdt:assignees">
