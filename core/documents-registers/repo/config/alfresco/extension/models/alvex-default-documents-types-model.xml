@@ -754,22 +754,6 @@
 			</properties>
 		</aspect>
 
-		<aspect name="alvexdt:withTo">
-			<associations>
-				<association name="alvexdt:To">
-					<source>
-						<mandatory>false</mandatory>
-						<many>true</many>
-					</source>
-					<target>
-						<class>cm:person</class>
-						<mandatory>false</mandatory>
-						<many>true</many>
-					</target>
-				</association>
-			</associations>
-		</aspect>
-
 		<aspect name="alvexdt:withDeliveryType">
 			<properties>
 				<property name="alvexdt:deliveryType">
@@ -799,21 +783,37 @@
 			</associations>
 		</aspect>
 
-        <aspect name="alvexdt:withcreator">
-        	<associations>
-				<association name="alvexdt:creator">
-					<source>
-						<mandatory>false</mandatory>
-						<many>true</many>
-					</source>
-					<target>
-						<class>cm:person</class>
-						<mandatory>false</mandatory>
-						<many>true</many>
-					</target>
-				</association>
-			</associations>
-        </aspect>
+		<aspect name="alvexdt:withcreator">
+			<associations>
+					<association name="alvexdt:creator">
+						<source>
+							<mandatory>false</mandatory>
+							<many>true</many>
+						</source>
+						<target>
+							<class>cm:person</class>
+							<mandatory>false</mandatory>
+							<many>true</many>
+						</target>
+					</association>
+				</associations>
+		</aspect>
+
+		<aspect name="alvexdt:withTo">
+			<associations>
+					<association name="alvexdt:assocTo">
+						<source>
+							<mandatory>false</mandatory>
+							<many>true</many>
+						</source>
+						<target>
+							<class>cm:person</class>
+							<mandatory>false</mandatory>
+							<many>true</many>
+						</target>
+					</association>
+				</associations>
+		</aspect>
 
 	</aspects>
 
