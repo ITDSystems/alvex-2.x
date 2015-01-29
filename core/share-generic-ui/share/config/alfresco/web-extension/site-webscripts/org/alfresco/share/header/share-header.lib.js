@@ -39,7 +39,7 @@ function getServerInfo() {
 
 function isNewShare() {
    var server = getServerInfo();
-   if(server.version.match(/^4.2.3 \(.1/) || server.version.match(/^5./))
+   if(server.version.match(/^4.2.[3-9] \(.[1-9]/) || server.version.match(/^5./))
       return true;
    return false;
 }
