@@ -76,6 +76,12 @@
    padding-left: 24px;
 }
 
+.datalist-toolbar .manage-rules span.first-child
+{
+   background: url(/share/res/components/documentlibrary/actions/folder-manage-rules-16.png) no-repeat 12px 4px;
+   padding-left: 24px;
+}
+
 .datalist-toolbar .print span.first-child
 {
    background: url(/share/res/components/images/printer-16.png) no-repeat 12px 4px;

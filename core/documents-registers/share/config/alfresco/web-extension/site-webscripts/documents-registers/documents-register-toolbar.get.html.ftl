@@ -34,6 +34,13 @@
                </span>
             </span>
          </div>
+         <div class="manage-rules <#if showRegistryConfig?? && !showRegistryConfig>hidden</#if>">
+            <span id="${id}-rulesButton" class="yui-button yui-push-button">
+               <span class="first-child">
+                  <button type="button">${msg('button.manage-rules')}</button>
+               </span>
+            </span>
+         </div>
          <div class="selected-items">
             <button class="no-access-check" id="${args.htmlid}-selectedItems-button" name="doclist-selectedItems-button">${msg("menu.selected-items")}</button>
             <div id="${args.htmlid}-selectedItems-menu" class="yuimenu">

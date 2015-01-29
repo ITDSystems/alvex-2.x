@@ -124,6 +124,15 @@ if (typeof Alvex == "undefined" || !Alvex)
             });
          }
 
+         if( Dom.get( this.id + '-rulesButton' ) )
+         {
+            this.widgets.rulesButton = Alfresco.util.createYUIButton(this, "rulesButton", this.onManageRules,
+            {
+               disabled: true,
+               value: "create"
+            });
+         }
+
          // Selected Items menu button
          this.widgets.selectedItems = Alfresco.util.createYUIButton(this, "selectedItems-button", this.onSelectedItems,
          {
@@ -235,7 +244,14 @@ if (typeof Alvex == "undefined" || !Alvex)
          });
 
       },
-      
+
+      onManageRules: function()
+      {
+         if( !this.modules.dataGrid )
+            this.modules.dataGrid = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+         var rulesURL =  Alfresco.constants.URL_PAGECONTEXT + "folder-rules?nodeRef=" + this.modules.dataGrid.datalistMeta.nodeRef;
+         Alfresco.util.navigateTo(rulesURL, "GET", null);
+      },
       /**
        * New Row button click handler
        *
