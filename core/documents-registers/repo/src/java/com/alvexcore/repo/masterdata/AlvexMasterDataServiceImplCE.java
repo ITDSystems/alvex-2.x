@@ -523,7 +523,7 @@ public class AlvexMasterDataServiceImplCE implements InitializingBean, AlvexMast
 		this.alvexDictionaryService = alvexDictionaryService;
 	}
 	
-	@Required
+	// @Required
 	public void setDocumentsRegistersExtension(DocumentsRegistersExtension extension) {
 		this.extension = extension;
 	}
