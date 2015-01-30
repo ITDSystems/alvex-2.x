@@ -305,6 +305,11 @@
    background-image: url(/share/res/components/images/delete-row-16.png);
 }
 
+.datagrid .onActionPermissions a
+{
+   background-image: url(/share/res/components/documentlibrary/actions/document-manage-permissions-16.png);
+}
+
 .datagrid .onActionAttach a
 {
    background-image: url(/share/res/components/images/add-icon-16.png);

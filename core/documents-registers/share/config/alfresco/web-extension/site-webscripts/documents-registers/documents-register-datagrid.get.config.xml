@@ -6,6 +6,7 @@
 	  <action type="action-link" href="view-metadata?nodeRef=" className="onActionView" permission="" label="actions.view" />
       <action type="action-link" func="Alvex.DatagridItemStartWorkflowAction" className="onActionStartWorkflow" permission="start-workflow" label="actions.start-workflow" />
       <action type="action-link" href="edit-metadata?nodeRef=" className="onActionEdit" permission="edit" label="actions.edit" />
+      <action type="action-link" href="manage-permissions?nodeRef=" className="onActionPermissions" permission="delete" label="actions.permissions" />
       <action type="action-link" func="Alvex.DatagridItemDeleteAction" className="onActionDelete" permission="delete" label="actions.delete-row" />
    </actionSet>
 </dataGrid>
