@@ -1,8 +1,0 @@
-<page>
-	<title>Alvex Project Tasks</title>
-	<title-id>page.projectTasks.title</title-id>
-	<description>Work with project tasks</description>
-	<description-id>page.projectTasks.description</description-id>
-	<template-instance>alvex-project-tasks</template-instance>
-	<authentication>user</authentication>
-</page>
