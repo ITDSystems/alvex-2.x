@@ -52,6 +52,7 @@
 <@markup id="js">
    <#-- JavaScript Dependencies -->
    <@script src="${url.context}/res/components/alvex/task-list-header.js" group="workflow"/>
+   <@script src="${url.context}/res/modules/simple-dialog.js" group="workflow"/>
 </@>
 
 <@markup id="widgets">

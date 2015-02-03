@@ -1,5 +1,6 @@
 <#assign id = args.htmlid>
 <#assign showRegistryConfig = (args.registryConfig?? && args.registryConfig == "true")>
+<#assign showRegistryConfig = (showRegistryConfig && isSiteAdmin)>
 
 <script type="text/javascript">//<![CDATA[
    new Alvex.DataListsToolbar("${id}").setOptions(

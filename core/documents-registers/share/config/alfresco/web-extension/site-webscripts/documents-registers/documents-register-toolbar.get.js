@@ -42,6 +42,20 @@ function main()
       });
    }
    
+   var userId = user.id;
+   var siteId = page.url.templateArgs.site;
+   
+   var resp = remote.call("/api/sites/" + siteId + "/memberships/" + userId);
+   
+   var isAdmin = false;
+   
+   if (resp.status == 200)
+   {
+      var data = eval('(' + resp + ')');
+      if(data.role == "SiteManager")
+         isAdmin = true;
+   }
+   model.isSiteAdmin = isAdmin;
    model.actionSet = actionSet;
 }
 
