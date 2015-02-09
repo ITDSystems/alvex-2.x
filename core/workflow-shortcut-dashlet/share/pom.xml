@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.share</groupId>
   <artifactId>workflow-shortcut-dashlet</artifactId>
-  <version>1.11</version>
+  <version>1.12</version>
   <parent>
     <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>
