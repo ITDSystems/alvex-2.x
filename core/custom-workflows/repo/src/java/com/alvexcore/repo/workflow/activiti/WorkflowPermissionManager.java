@@ -19,7 +19,9 @@
 
 package com.alvexcore.repo.workflow.activiti;
 
+import com.alvexcore.repo.AlvexContentModel;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -31,9 +33,12 @@ import org.activiti.engine.delegate.VariableScope;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.security.authentication.AuthenticationUtil.RunAsWork;
 import org.alfresco.repo.workflow.activiti.ActivitiScriptNode;
+import org.alfresco.repo.workflow.activiti.ActivitiScriptNodeList;
 import org.alfresco.service.ServiceRegistry;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
+import org.alfresco.service.cmr.repository.AssociationRef;
 import org.alfresco.service.cmr.repository.NodeRef;
+import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.security.AuthorityService;
 import org.alfresco.service.cmr.security.AuthorityType;
 import org.alfresco.service.cmr.security.PermissionService;
@@ -96,26 +101,29 @@ class SetPermissionsWork implements RunAsWork<Void> {
 
 	private String permission;
 
-	private NodeRef pkg;
+	private List<NodeRef> attachments;
 	private String groupId;
 	private ServiceRegistry serviceRegistry;
 
-	public SetPermissionsWork(ServiceRegistry serviceRegistry, NodeRef pkg,
+	public SetPermissionsWork(ServiceRegistry serviceRegistry, List<NodeRef> attachments,
 			String groupId, String permission) {
 		this.permission = permission;
 		this.serviceRegistry = serviceRegistry;
-		this.pkg = pkg;
+		this.attachments = attachments;
 		this.groupId = serviceRegistry.getAuthorityService().getName(
 				AuthorityType.GROUP, groupId);
 	}
 
 	@Override
 	public Void doWork() throws Exception {
-		List<ChildAssociationRef> assocs = serviceRegistry.getNodeService()
-				.getChildAssocs(pkg);
-		for (ChildAssociationRef assoc : assocs) {
-			serviceRegistry.getPermissionService().setPermission(
-					assoc.getChildRef(), groupId, permission, true);
+		NodeService ns = serviceRegistry.getNodeService();
+		PermissionService ps = serviceRegistry.getPermissionService();
+		
+		for (NodeRef docRef : attachments) {
+			ps.setPermission(docRef, groupId, permission, true);
+			// Handle register items with attached files
+			for (AssociationRef file: ns.getTargetAssocs(docRef, AlvexContentModel.ASSOC_FILES))
+				ps.setPermission(file.getTargetRef(), groupId, permission, true);
 		}
 		return null;
 	}
@@ -151,10 +159,16 @@ public class WorkflowPermissionManager extends AlvexActivitiListener implements
 		TaskListener, InitializingBean, ExecutionListener {
 
 	public static final String ZONE_ALVEX = "ZONE.ALVEX";
-	private static final String PACKAGE_VARIABLE = "bpm_package";
+	private static final String BPM_PACKAGE_VARIABLE = "bpm_package";
 	private static final String DISCUSSION_VARIABLE = "alvexwfd_discussion";
-	
+
+	private String packageVariable = "bpm_package";
 	private String filePermission = PermissionService.CONSUMER;
+	
+	public void setPackageVariable(String variableName)
+	{
+		packageVariable = variableName;
+	}
 	
 	public void setFilePermission(String permission)
 	{
@@ -185,11 +199,30 @@ public class WorkflowPermissionManager extends AlvexActivitiListener implements
 	}
 
 	public void setPermissions(VariableScope scope, String groupId) {
-		// get reference to workflow package
-		NodeRef pkg = ((ActivitiScriptNode) scope.getVariable(PACKAGE_VARIABLE))
-				.getNodeRef();
+		ArrayList<NodeRef> attachments = new ArrayList<NodeRef>();
+		
+		// Handle bpm:package
+		if(BPM_PACKAGE_VARIABLE.equalsIgnoreCase(packageVariable)) {
+			// get reference to workflow package
+			NodeRef pkg = ((ActivitiScriptNode) scope
+					.getVariable(packageVariable)).getNodeRef();
+			List<ChildAssociationRef> assocs = serviceRegistry.getNodeService().getChildAssocs(pkg);
+			for (ChildAssociationRef assoc : assocs) {
+				NodeRef docRef = assoc.getChildRef();
+				attachments.add(docRef);
+			}
+		// Handle other variables
+		} else {
+			ActivitiScriptNodeList documents = (ActivitiScriptNodeList) scope
+					.getVariable(packageVariable);
+			for (ActivitiScriptNode document : documents) {
+				NodeRef docRef = document.getNodeRef();
+				attachments.add(docRef);
+			}
+		}
+		
 		// run work to set permissions on all documents in package
-		RunAsWork<Void> work = new SetPermissionsWork(serviceRegistry, pkg,
+		RunAsWork<Void> work = new SetPermissionsWork(serviceRegistry, attachments,
 				groupId, filePermission);
 		AuthenticationUtil.runAsSystem(work);
 	}
