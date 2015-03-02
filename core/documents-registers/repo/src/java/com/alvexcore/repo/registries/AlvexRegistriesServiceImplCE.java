@@ -74,6 +74,37 @@ class getRegistryDetailsWork implements RunAsWork<Map<String,String>>
 	}
 }
 
+class getParentRegistryItems implements RunAsWork<List<Map<String,String>>>
+{
+	private NodeService nodeService;
+	private NodeRef fileRef;
+	
+	public getParentRegistryItems(NodeService nodeService, NodeRef fileRef)
+	{
+		this.nodeService = nodeService;
+		this.fileRef = fileRef;
+	}
+	
+	@Override
+	public List<Map<String,String>> doWork() throws Exception {
+		List<Map<String,String>> results = new ArrayList<Map<String,String>>();
+		List<AssociationRef> assocs = nodeService.getTargetAssocs(fileRef, AlvexContentModel.ASSOC_PARENT_REGISTRY);
+		for(AssociationRef assoc : assocs)
+		{
+			NodeRef recordRef = assoc.getTargetRef();
+			NodeRef registryRef = nodeService.getPrimaryParent(recordRef).getParentRef();
+			NodeRef containerRef = nodeService.getPrimaryParent(registryRef).getParentRef();
+			NodeRef siteRef = nodeService.getPrimaryParent(containerRef).getParentRef();
+			
+			Map<String,String> parent = new HashMap<String,String>();
+			parent.put("itemRef", recordRef.toString());
+			parent.put("siteName", (String)nodeService.getProperty(siteRef, ContentModel.PROP_NAME));
+			results.add(parent);
+		}
+		return results;
+	}
+}
+
 class incCounterWork implements RunAsWork<Void>
 {
 	private NodeService nodeService;
@@ -202,20 +233,8 @@ public class AlvexRegistriesServiceImplCE implements InitializingBean, AlvexRegi
 	@Override
 	public List<Map<String,String>> getParentRegistryItems(NodeRef fileRef)
 	{
-		List<Map<String,String>> results = new ArrayList<Map<String,String>>();
-		List<AssociationRef> assocs = nodeService.getTargetAssocs(fileRef, AlvexContentModel.ASSOC_PARENT_REGISTRY);
-		for(AssociationRef assoc : assocs)
-		{
-			NodeRef recordRef = assoc.getTargetRef();
-			NodeRef registryRef = nodeService.getPrimaryParent(recordRef).getParentRef();
-			NodeRef containerRef = nodeService.getPrimaryParent(registryRef).getParentRef();
-			NodeRef siteRef = nodeService.getPrimaryParent(containerRef).getParentRef();
-			
-			Map<String,String> parent = new HashMap<String,String>();
-			parent.put("itemRef", recordRef.toString());
-			parent.put("siteName", (String)nodeService.getProperty(siteRef, ContentModel.PROP_NAME));
-			results.add(parent);
-		}
+		RunAsWork<List<Map<String,String>>> work = new getParentRegistryItems(nodeService, fileRef);
+		List<Map<String,String>> results = AuthenticationUtil.runAsSystem(work);
 		return results;
 	}
 	

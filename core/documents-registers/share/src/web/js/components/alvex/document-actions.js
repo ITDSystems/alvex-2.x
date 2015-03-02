@@ -33,9 +33,12 @@
 					{
 						if( resp.json.parents && resp.json.parents.length > 0 )
 						{
-							window.location = Alfresco.constants.URL_PAGECONTEXT 
-								+ "site/" + encodeURIComponent(resp.json.parents[0].siteName) 
-								+ "/view-metadata?nodeRef=" + encodeURIComponent(resp.json.parents[0].itemRef);
+							var url = Alfresco.constants.URL_PAGECONTEXT;
+							if(Alfresco.constants.SITE !== "") {
+								url = url + "site/" + encodeURIComponent(resp.json.parents[0].siteName) + "/";
+							}
+							url = url + "view-metadata?nodeRef=" + encodeURIComponent(resp.json.parents[0].itemRef);
+							window.location = url;
 						}
 					},
 					scope:this
