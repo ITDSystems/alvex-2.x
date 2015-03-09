@@ -41,9 +41,14 @@ Alvex.DatagridDateRenderer = function (elCell, oRecord, oColumn, oData)
 		return;
 	
 	var dg = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
-	var date = Alfresco.util.fromISO8601(oData.displayValue);
-	elCell.innerHTML = ( date !== null ?
-			Alfresco.util.formatDate(date, "dd.mm.yyyy") : dg.msg("label.none") );
+	// Commented out since it causes TZ issues - see ALV-847 for details
+	//var date = Alfresco.util.fromISO8601(oData.displayValue);
+	//elCell.innerHTML = ( date !== null ?
+	//		Alfresco.util.formatDate(date, "dd.mm.yyyy") : dg.msg("label.none") );
+	// WA: parse date from format 2012-10-08T00:00:00.000+04:00 manually
+	var datePart = oData.displayValue.replace(/T.*/, "");
+	var parts = datePart.split("-");
+	elCell.innerHTML = parts[2] + "." + parts[1] + "." + parts[0];
 };
 
 Alvex.DatagridBoolRenderer = function (elCell, oRecord, oColumn, oData)
