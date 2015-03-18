@@ -40,7 +40,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		Alfresco.util.ComponentManager.register(this);
 
 		Alfresco.util.YUILoaderHelper.require(["button", "container", "datasource", 
-			"datatable", "json", "history"], this.onComponentsLoaded, this);
+			"datatable", "json", "history", "autocomplete"], this.onComponentsLoaded, this);
 
 		var parent = this;
 
@@ -56,29 +56,6 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			onLoad: function onLoad()
 			{
-				// Add workflow button
-				parent.widgets.addButton = new YAHOO.widget.Button(parent.id
-					 + "-add-wfl-button",
-					{
-						type: "menu",
-						menu: parent.id + "-workflow-definition-menu"
-					});
-				parent.widgets.addButton.set("label", parent.msg("wsa.button.add_workflow"));
-				parent.widgets.addButton.set("title", parent.msg("wsa.button.add_workflow"));
-				parent.widgets.addButton.getMenu().subscribe( "click", 
-					parent.onWorkflowAdd, null, parent);
-
-				// Select group button
-				parent.widgets.selectGroupButton = new YAHOO.widget.Button(parent.id
-					 + "-select-group-button",
-					{
-						type: "menu",
-						menu: parent.id + "-group-menu"
-					});
-				parent.widgets.selectGroupButton.set("label", parent.options.groups[0].displayName);
-				parent.widgets.selectGroupButton.set("title", parent.options.groups[0].displayName);
-				parent.widgets.selectGroupButton.getMenu().subscribe( "click", 
-					parent.onSelectGroup, null, parent);
 
 				parent.cur_group = parent.options.groups[0].shortName;
 
@@ -108,7 +85,37 @@ if (typeof Alvex == "undefined" || !Alvex)
 					}
 					return updatedResponse;
 				};
-
+				
+				parent.widgets.DSGroups = new YAHOO.util.LocalDataSource(parent.options.groups);
+			    parent.widgets.DSGroups.responseSchema = {
+			        fields : ["displayName", "shortName"]
+			    };
+			    
+			    parent.widgets.AutoCompGroups = new YAHOO.widget.AutoComplete(parent.id + "-group-input", parent.id + "-group-container", parent.widgets.DSGroups);
+			    parent.widgets.AutoCompGroups.animVert = true;
+			    parent.widgets.AutoCompGroups.maxResultsDisplayed = 20;
+			    parent.widgets.AutoCompGroups.useIFrame = true;
+			    parent.widgets.AutoCompGroups.applyLocalFilter = true;
+			    parent.widgets.AutoCompGroups.queryMatchContains = true;
+			    parent.widgets.AutoCompGroups.minQueryLength = 0;
+			    parent.widgets.AutoCompGroups.textboxFocusEvent.subscribe(function(){parent.widgets.AutoCompGroups.sendQuery("");});
+				parent.widgets.AutoCompGroups.itemSelectEvent.subscribe(parent.onEnterGroup, null, parent);
+			    
+				parent.widgets.DSWorkflows = new YAHOO.util.LocalDataSource(parent.options.workflowDefinitions);
+			    parent.widgets.DSWorkflows.responseSchema = {
+			        fields : ["title", "name"]
+			    };
+			    
+			    parent.widgets.AutoCompWorkflows = new YAHOO.widget.AutoComplete(parent.id + "-workflow-input", parent.id + "-workflow-container", parent.widgets.DSWorkflows);
+			    parent.widgets.AutoCompWorkflows.animVert = true;
+			    parent.widgets.AutoCompWorkflows.maxResultsDisplayed = 10;
+			    parent.widgets.AutoCompWorkflows.useIFrame = true;
+			    parent.widgets.AutoCompWorkflows.applyLocalFilter = true;
+			    parent.widgets.AutoCompWorkflows.queryMatchContains = true;
+			    parent.widgets.AutoCompWorkflows.minQueryLength = 0;
+			    parent.widgets.AutoCompWorkflows.textboxFocusEvent.subscribe(function(){parent.widgets.AutoCompWorkflows.sendQuery("");});
+			    parent.widgets.AutoCompWorkflows.itemSelectEvent.subscribe(parent.onWorkflowAdd, null, parent);
+				
 				var renderActions = function renderActions(elCell, oRecord, oColumn, oData)
 				{
 					var removeLink = document.createElement("a");
@@ -194,20 +201,16 @@ if (typeof Alvex == "undefined" || !Alvex)
 			});
 		},
 
-		onSelectGroup: function WSA_onSelectGroup(e, args)
+		onEnterGroup: function WSA_onEnterGroup(sType, aArgs) 
 		{
-			var index = args[1].index;
-			this.cur_group = this.options.groups[index].shortName;
-			this.widgets.selectGroupButton.set("label", this.options.groups[index].displayName);
-			this.widgets.selectGroupButton.set("title", this.options.groups[index].displayName);
-
+			this.cur_group = aArgs[1]._oResultData[1];
 			this.updateTable();
-		},
-
-		onWorkflowAdd: function WSA_onWorkflowAdd(e, args)
+			this.widgets.AutoCompGroups.sendQuery("");
+	    },
+	
+		onWorkflowAdd: function WSA_onWorkflowAdd(sType, aArgs)
 		{
-			var index = args[1].index;
-			var workflow = this.options.workflowDefinitions[index].name;
+			var workflow = aArgs[1]._oResultData[1];
 			var req = { group: this.cur_group, workflow: workflow };
 			Alfresco.util.Ajax.request({
 				url: Alfresco.constants.PROXY_URI + "api/alvex/workflow-shortcut/admin/allowed-workflows",
@@ -226,7 +229,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 				}
 			});
 		},
-
+		
 		updateTable: function WSA_updateTable(resp)
 		{
 			this.widgets.dataTable.getDataSource().sendRequest(

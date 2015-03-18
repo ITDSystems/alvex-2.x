@@ -28,57 +28,31 @@
 <div id="${el}-body" class="users">
 	<div id="${el}-main" class="hidden">
 		<div class="title"><label>${msg("wsa.title")}</label></div>
+		<br/>
 		<div class="yui-g">
 			<div class="yui-u first">
 				<!-- Select group button -->
-				<div>
-					<span class="yui-button yui-push-button" id="${el}-select-group-button">
-						<span class="first-child">
-							<button></button>
-						</span>
-					</span>
+				<div id="AutoComplete-groups">
+					<label for="${el}-group-input">${msg("wsa.button.select_group")}</label>
+    				<input id="${el}-group-input" type="text">
+    				<div id="${el}-group-container"></div>
 				</div>
+				<br/><br/>
 			</div>
 			<div class="yui-u">
 				<!-- Add workflow button -->
-				<div>
-					<span class="yui-button yui-push-button" id="${el}-add-wfl-button">
-						<span class="first-child">
-							<button>${msg("wsa.button.add_workflow")}</button>
-						</span>
-					</span>
+				<div id="AutoComplete-workflows">
+					<label for="${el}-workflow-input">${msg("wsa.button.add_workflow")}</label>
+    				<input id="${el}-workflow-input" type="text">
+    				<div id="${el}-workflow-container"></div>
 				</div>
 			</div>
 		</div>
 		<div id="${el}-list"></div>
+
 		<div>
 			<div id="${el}-datatable"></div>
 		</div>
-		<#-- Group menu -->
-		<div id="${el}-group-menu" class="yuimenu">
-			<div class="bd">
-				<ul>
-					<#list groups as group>
-					<li style="text-align: left; margin-top: 3px; margin-bottom: 3px;">
-						<span class="yuimenuitemlabel">${group.displayName?js_string}</span>
-						<span style="padding-left: 20px; padding-right: 20px;">${group.displayName?js_string}</span>
-					</li>
-					</#list>
-				</ul>
-			</div>
-		</div>
-		<#-- Workflow type menu -->
-		<div id="${el}-workflow-definition-menu" class="yuimenu">
-			<div class="bd">
-				<ul>
-					<#list workflowDefinitions as wfl>
-					<li style="text-align: left; margin-top: 3px; margin-bottom: 3px;">
-						<span class="yuimenuitemlabel">${wfl.title?js_string}</span>
-						<span style="padding-left: 20px; padding-right: 20px;">${wfl.description?js_string}</span>
-					</li>
-					</#list>
-				</ul>
-			</div>
-		</div>
+
 	</div>
 </div>
