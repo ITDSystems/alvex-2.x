@@ -93,7 +93,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			    
 			    parent.widgets.AutoCompGroups = new YAHOO.widget.AutoComplete(parent.id + "-group-input", parent.id + "-group-container", parent.widgets.DSGroups);
 			    parent.widgets.AutoCompGroups.animVert = true;
-			    parent.widgets.AutoCompGroups.maxResultsDisplayed = 20;
+			    parent.widgets.AutoCompGroups.maxResultsDisplayed = 50;
 			    parent.widgets.AutoCompGroups.useIFrame = true;
 			    parent.widgets.AutoCompGroups.applyLocalFilter = true;
 			    parent.widgets.AutoCompGroups.queryMatchContains = true;
@@ -108,7 +108,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			    
 			    parent.widgets.AutoCompWorkflows = new YAHOO.widget.AutoComplete(parent.id + "-workflow-input", parent.id + "-workflow-container", parent.widgets.DSWorkflows);
 			    parent.widgets.AutoCompWorkflows.animVert = true;
-			    parent.widgets.AutoCompWorkflows.maxResultsDisplayed = 10;
+			    parent.widgets.AutoCompWorkflows.maxResultsDisplayed = 50;
 			    parent.widgets.AutoCompWorkflows.useIFrame = true;
 			    parent.widgets.AutoCompWorkflows.applyLocalFilter = true;
 			    parent.widgets.AutoCompWorkflows.queryMatchContains = true;
