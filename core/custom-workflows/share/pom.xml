@@ -50,7 +50,7 @@
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-5.11-connector</artifactId>
-          <version>1.7</version>
+          <version>${activiti-5.11-connector.version}</version>
         </dependency>
       </dependencies>
     </profile>
@@ -63,7 +63,7 @@
         <dependency>
           <groupId>${alvex.share.groupId}</groupId>
           <artifactId>activiti-5.13-connector</artifactId>
-          <version>1.7</version>
+          <version>${activiti-5.13-connector.version}</version>
         </dependency>
       </dependencies>
     </profile>
