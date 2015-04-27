@@ -87,6 +87,9 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		
 		onWorkflowDetailedData: function(layer, args)
 		{
+			// Skip duplicate events. No idea what causes them. Fix CUST-130
+			if(args[1] instanceof Array)
+				return;
 			this.workflow = args[1];
 			this.thread = '';
 			this.initUI();
