@@ -403,7 +403,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		 */
 		processReplyResponse: function (param, obj)
 		{
-			for (var i = 0; i < param.json.items.length; i++)
+			for (var i = param.json.items.length-1; i >= 0; i--)
 			{
 				// get item
 				var item = param.json.items[i];
