@@ -177,7 +177,7 @@ public class ExportDataListToXlsx
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			wb.write(baos);
 			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			writer.setMimetype(MimetypeMap.MIMETYPE_EXCEL);
+			writer.setMimetype(MimetypeMap.MIMETYPE_OPENXML_SPREADSHEET);
 			writer.putContent(bais);
 		} catch (Exception e)
 		{
