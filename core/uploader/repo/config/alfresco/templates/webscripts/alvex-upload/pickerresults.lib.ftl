@@ -11,6 +11,7 @@
 		${indent}"title": "${node.properties.title!""}",
 		${indent}"description": "${node.properties.description!""}",
 		<#if node.properties.modified??>${indent}"modified": "${xmldate(node.properties.modified)}",</#if>
+		<#if node.properties.created??>${indent}"created": "${xmldate(node.properties.created)}",</#if>
 		<#if node.properties.modifier??>${indent}"modifier": "${node.properties.modifier}",</#if>
 		${indent}"displayPath": "${node.displayPath!""}",
 		${indent}"nodeRef": "${node.nodeRef}"
@@ -37,6 +38,7 @@
 				"title": "${row.item.properties.title!""}",
 				"description": "${row.item.properties.description!""}",
 				<#if row.item.properties.modified??>"modified": "${xmldate(row.item.properties.modified)}",</#if>
+				<#if row.item.properties.created??>"created": "${xmldate(row.item.properties.created)}",</#if>
 				<#if row.item.properties.modifier??>"modifier": "${row.item.properties.modifier}",</#if>
 				<#if row.item.siteShortName??>"site": "${row.item.siteShortName}",</#if>
 				"displayPath": "${row.item.displayPath!""}",

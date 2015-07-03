@@ -475,6 +475,22 @@ if (typeof Alvex == "undefined" || !Alvex)
 			});
 		},
 		
+		sortNewestFirst: function(a,b)
+		{
+			if (a.modified == undefined || b.modified == undefined || a.created == undefined || b.created == undefined)
+				return 0;
+
+			if (a.modified < b.modified)
+				return 1;
+			if (a.modified > b.modified)
+				return -1;
+			if (a.created < b.created)
+				return 1;
+			if (a.created > b.created)
+				return -1;
+			return 0;
+		},
+
 		// Gets the list of existing files uploaded on other workflow stages and adds them to the list
 		initUiWithFiles: function (_allowDelete, fileRefs)
 		{
@@ -490,9 +506,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 				{
 					fn:function(resp)
 					{
-						for( var i = 0; i < resp.json.data.items.length; i++ )
+						var files = resp.json.data.items;
+						files.sort(this.sortNewestFirst);
+						for( var i = 0; i < files.length; i++ )
 						{
-							var file = resp.json.data.items[i];
+							var file = files[i];
 							this.options.files.push({
 								name: file.name,
 								nodeRef: file.nodeRef,

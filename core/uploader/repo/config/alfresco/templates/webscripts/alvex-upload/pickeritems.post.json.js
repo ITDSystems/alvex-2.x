@@ -1,5 +1,24 @@
 <import resource="classpath:/alfresco/templates/webscripts/alvex-upload/pickerresults.lib.js">
 
+function sortNewestFirst(a,b) {
+   if (a.properties == undefined || b.properties == undefined
+         || a.properties["cm:modified"] == undefined
+         || b.properties["cm:modified"] == undefined
+         || a.properties["cm:created"] == undefined
+         || b.properties["cm:created"] == undefined)
+      return 0;
+
+   if (a.properties["cm:modified"] < b.properties["cm:modified"])
+      return 1;
+   if (a.properties["cm:modified"] > b.properties["cm:modified"])
+      return -1;
+   if (a.properties["cm:created"] < b.properties["cm:created"])
+      return 1;
+   if (a.properties["cm:created"] > b.properties["cm:created"])
+      return -1;
+   return 0;
+}
+
 function main()
 {
    var count = 0,
@@ -61,6 +80,8 @@ function main()
          }
       }
    }
+
+   results.sort(sortNewestFirst);
 
    if (logger.isLoggingEnabled())
        logger.log("#items = " + count + ", #results = " + results.length);

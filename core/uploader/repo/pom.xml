@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.repo</groupId>
   <artifactId>uploader</artifactId>
-  <version>1.32</version>
+  <version>1.34</version>
   <parent>
     <groupId>com.alvexcore.ce.repo</groupId>
     <artifactId>master-pom</artifactId>
