@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.distr.all</groupId>
   <artifactId>alvex</artifactId>
-  <version>2015.02</version>
+  <version>2015.08</version>
   <modelVersion>4.0.0</modelVersion>
   <name>Alvex AMPs+JARs [distr]</name>
   <packaging>pom</packaging>
