@@ -54,13 +54,15 @@ var Filters =
             if( pattern != "" && !isDate )
             {
                filterMatch = false;
-               var value = node.properties[prop];
-               if( value.toLowerCase != undefined )
-                  if( value.toLowerCase().match(pattern.toLowerCase()) )
-                     filterMatch = true;
-               else
-                  if( value == pattern )
-                     filterMatch = true;
+               if (node.properties[prop] != null) {
+                  var value = node.properties[prop];
+                  if( value.toLowerCase != undefined )
+                     if( value.toLowerCase().match(pattern.toLowerCase()) )
+                        filterMatch = true;
+                  else
+                     if( value == pattern )
+                        filterMatch = true;
+               }
             }
             else if( pattern != "" && isDate )
             {
