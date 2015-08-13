@@ -341,9 +341,11 @@ if (typeof Alvex == "undefined" || !Alvex)
 	  
       onWorkflowDetailedData: function(layer, args)
       {
-         this.workflow = args[1];
-         if( !this.workflow.id )
+         if( !args[1].id || !args[1].diagramUrl )
             return;
+
+         this.workflow = args[1];
+         
          // Display the view diagrambutton if diagram is available
          if (this.workflow.diagramUrl)
          {
