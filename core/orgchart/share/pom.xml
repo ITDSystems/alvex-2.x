@@ -2,7 +2,7 @@
 <project>
   <groupId>com.alvexcore.ce.share</groupId>
   <artifactId>orgchart</artifactId>
-  <version>1.24</version>
+  <version>1.25</version>
   <parent>
     <groupId>com.alvexcore.ce.share</groupId>
     <artifactId>master-pom</artifactId>
