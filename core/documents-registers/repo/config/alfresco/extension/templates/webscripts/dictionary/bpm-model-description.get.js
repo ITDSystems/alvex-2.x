@@ -11,15 +11,15 @@
 			"allowedValues": [
 				{
 					"value": "1",
-					"label": "Low"
+					"label": msg.get("listconstraint.bpm_allowedPriority.1")
 				},
 				{
 					"value": "2",
-					"label": "Medium"
+					"label": msg.get("listconstraint.bpm_allowedPriority.2")
 				},
 				{
 					"value": "3",
-					"label": "High"
+					"label": msg.get("listconstraint.bpm_allowedPriority.3")
 				}
 			],
 			"title": ""
@@ -40,15 +40,23 @@
 			"allowedValues": [
 				{
 					"value": "Not Yet Started",
-					"label": "Not Yet Started"
+					"label": msg.get("listconstraint.bpm_allowedStatus.Not\ Yet\ Started")
 				},
 				{
 					"value": "In Progress",
-					"label": "In Progress"
+					"label": msg.get("listconstraint.bpm_allowedStatus.In\ Progress")
 				},
 				{
 					"value": "Completed",
-					"label": "Completed"
+					"label": msg.get("listconstraint.bpm_allowedStatus.Completed")
+				},
+				{
+					"value": "On Hold",
+					"label": msg.get("listconstraint.bpm_allowedStatus.On\ Hold")
+				},
+				{
+					"value": "Cancelled",
+					"label": msg.get("listconstraint.bpm_allowedStatus.Cancelled")
 				}
 			],
 			"title": ""
