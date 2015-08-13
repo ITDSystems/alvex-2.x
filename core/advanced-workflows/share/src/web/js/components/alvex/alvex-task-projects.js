@@ -114,6 +114,8 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onWorkflowDetailedData: function TEH_onTaskDetailedData(layer, args)
       {
+         if(!args[1].id)
+             return;
          this.workflow = args[1];
 		 this.workflowId = args[1].id;
 		 if( !this.workflowId )

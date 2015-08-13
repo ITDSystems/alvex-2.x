@@ -341,8 +341,8 @@ if (typeof Alvex == "undefined" || !Alvex)
 	  
       onWorkflowDetailedData: function(layer, args)
       {
-         if( !args[1].id || !args[1].diagramUrl )
-            return;
+         if(!args[1].id)
+             return;
 
          this.workflow = args[1];
          
