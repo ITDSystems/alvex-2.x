@@ -503,6 +503,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onSelectedItemsChanged: function DataListToolbar_onSelectedItemsChanged(layer, args)
       {
+         if( !this.modules.dataGrid )
+            this.modules.dataGrid = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+
          if (this.modules.dataGrid)
          {
             var items = this.modules.dataGrid.getSelectedItems(), item,
