@@ -309,7 +309,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                   if(this.options.autoNumbererField == '')
                      return true;
                   var prop = this.options.autoNumbererField.replace(/.*_prop_/,'').replace(/-cntrl/,'');
-                  var number = Dom.get(this.options.autoNumbererField).value;
+                  var number =  YAHOO.lang.trim(Dom.get(this.options.autoNumbererField).value);
                   var json = JSON.stringify( {
                      register: this.modules.dataGrid.datalistMeta.nodeRef,
                      number: number,
