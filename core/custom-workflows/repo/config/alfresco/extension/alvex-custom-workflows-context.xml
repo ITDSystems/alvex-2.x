@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
 <beans>
-	<bean id="alvex-custom-workflows-wd" parent="workflowDeployer">
-		<!-- Register workflows -->
+	<!--bean id="alvex-custom-workflows-wd" parent="workflowDeployer">
 		<property name="workflowDefinitions">
 			<list>
 				<props>
@@ -13,24 +12,22 @@
 				</props>
 			</list>
 		</property>
-		<!-- Register resource bundles -->
 		<property name="labels">
 			<list>
 				<value>alfresco.extension.messages.alvex-custom-workflows</value>
 			</list>
 		</property>
-		<!-- Register models -->
 		<property name="models">
 			<list>
 				<value>alfresco/extension/models/alvex-arbitrary-task-task-model.xml</value>
 			</list>
 		</property>
-	</bean>
+	</bean-->
 	<bean id="alvex-custom-workflows-permission-manager" abstract="true"
 		parent="alvex-activiti-connector-activiti-listener"
 		class="com.alvexcore.repo.workflow.activiti.WorkflowPermissionManager">
 	</bean>
-	<bean id="alvex-custom-workflows-permission-manager1" parent="alvex-custom-workflows-permission-manager">
+	<!--bean id="alvex-custom-workflows-permission-manager1" parent="alvex-custom-workflows-permission-manager">
 		<property name="matches">
 			<list>
 				<value>task-assign-after-change:.*@alvex-arbitrary-task</value>
@@ -38,8 +35,8 @@
 				<value>process-start@alvex-arbitrary-task</value>
 			</list>
 		</property>
-	</bean>
-	<bean id="alvex-custom-workflows-default-variables-setter"
+	</bean-->
+	<!--bean id="alvex-custom-workflows-default-variables-setter"
 		class="com.alvexcore.repo.workflow.activiti.WorkflowDefaultVariablesSetter"
 		parent="alvex-activiti-connector-activiti-listener">
 		<property name="matches">
@@ -47,8 +44,8 @@
 				<value>process-start@alvex-arbitrary-task</value>
 			</list>
 		</property>
-	</bean>
+	</bean-->
 	<bean id="alvex-custom-workflows" parent="alvex-extension"
 		class="com.alvexcore.repo.CustomWorkflowsExtension"
-		depends-on="alvex-custom-workflows-wd,alvex-orgchart,alvex-uploader" />
+		depends-on="alvex-orgchart,alvex-uploader" />
 </beans>

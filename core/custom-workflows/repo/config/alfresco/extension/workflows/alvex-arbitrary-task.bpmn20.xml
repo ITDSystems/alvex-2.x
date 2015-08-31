@@ -62,7 +62,6 @@
       </userTask>
       <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
       <scriptTask id="alfrescoScripttask1" name="Submit" scriptFormat="javascript">
-        <script></script>
       </scriptTask>
       <scriptTask id="alfrescoScripttask10" name="Done">
         <extensionElements>
@@ -72,7 +71,6 @@
             </activiti:field>
           </activiti:executionListener>
         </extensionElements>
-        <script></script>
       </scriptTask>
       <startEvent id="startevent1" name="Start"></startEvent>
       <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
