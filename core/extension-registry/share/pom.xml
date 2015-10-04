@@ -28,12 +28,38 @@
     <dependency>
       <groupId>${alfresco.groupId}</groupId>
       <artifactId>alfresco-web-framework-commons</artifactId>
+      <version>5.1.a-EA</version>
+      <type>war</type>
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.5</version>
     </dependency>
+    <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>            
+    </dependency>
+    <dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-beans</artifactId>
+	<version>3.0.5.RELEASE</version>
+    </dependency>
+   <dependency>
+     <groupId>org.springframework.extensions.surf</groupId>
+     <artifactId>spring-webscripts</artifactId>
+     <version>5.1.2</version>
+   </dependency>
+<dependency>
+  <groupId>org.springframework.extensions.surf</groupId>
+  <artifactId>spring-surf</artifactId>
+  <version>5.1.a-EA</version>
+</dependency>
+<dependency>
+  <groupId>org.springframework.extensions.surf</groupId>
+  <artifactId>spring-surf-archetype</artifactId>
+  <version>5.1.a-EA</version>
+</dependency>
   </dependencies>
   <build>
     <plugins>
