@@ -183,11 +183,17 @@ if (typeof Alvex == "undefined" || !Alvex)
             for( var i = 0; i < headers.length; i++ ) {
                var data = records[r].getData();
                var key = headers[i].formsName;
-               if( data.itemData[key] )
+               var item = data.itemData[key];
+               if( item )
                   if( (headers[i].dataType.toLowerCase() == "datetime") || (headers[i].dataType.toLowerCase() == "date") )
                      row.push( Alfresco.util.formatDate(Alfresco.util.fromISO8601(data.itemData[key].displayValue), "dd.mm.yyyy") );
-                  else
-                     row.push( data.itemData[key].displayValue );
+                  else {
+                     if (item.length)
+                        for (var j = 0; j < item.length; j++ )
+                          row.push( item[j].displayValue );
+                     else
+                        row.push( item.displayValue );
+                  }
                else
                   row.push( '' );
             }
@@ -309,7 +315,7 @@ if (typeof Alvex == "undefined" || !Alvex)
                   if(this.options.autoNumbererField == '')
                      return true;
                   var prop = this.options.autoNumbererField.replace(/.*_prop_/,'').replace(/-cntrl/,'');
-                  var number = Dom.get(this.options.autoNumbererField).value;
+                  var number =  YAHOO.lang.trim(Dom.get(this.options.autoNumbererField).value);
                   var json = JSON.stringify( {
                      register: this.modules.dataGrid.datalistMeta.nodeRef,
                      number: number,
@@ -503,6 +509,9 @@ if (typeof Alvex == "undefined" || !Alvex)
        */
       onSelectedItemsChanged: function DataListToolbar_onSelectedItemsChanged(layer, args)
       {
+         if( !this.modules.dataGrid )
+            this.modules.dataGrid = Alfresco.util.ComponentManager.findFirst("Alvex.DataGrid");
+
          if (this.modules.dataGrid)
          {
             var items = this.modules.dataGrid.getSelectedItems(), item,

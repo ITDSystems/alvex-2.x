@@ -396,7 +396,20 @@ function getData()
       {
          try
          {
-             items.push(Evaluator.run(node, fields));
+             // WA for ALV-847. Теперь server-side! More ugly hacks!
+             var evaledData = Evaluator.run(node, fields);
+             for (var field in evaledData['nodeData'])
+             {
+                var data = evaledData['nodeData'][field];
+                if(data['type'] == "date")
+                {
+                   var date = utils.fromISO8601(data['value']);
+                   date.setHours(date.getHours() + 12);
+                   data['value'] = utils.toISO8601(date);
+                   data['displayValue'] = utils.toISO8601(date);
+                }
+             }
+             items.push(evaledData);
          }
          catch(e) {}
       }

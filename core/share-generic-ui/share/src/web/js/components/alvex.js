@@ -132,7 +132,7 @@ Alvex.util.isInRelatedWorkflowForm = function Alvex_isInRelatedWorkflowForm(id)
 	// It happens if we are on workflow details page - there is not form in this case
 	if( !form )
 		return false;
-	var idMatches = (form.id.match('(prop_alvexrwf_relatedWorkflows|prop_itdrwf_relatedWorkflows)') != null);
+	var idMatches = (form.id.match('(_task-relations_|prop_alvexrwf_relatedWorkflows|prop_itdrwf_relatedWorkflows)') != null);
 	var urlMatches = (form.action.match('alfresco/api/workflow') != null);
 	if(idMatches && urlMatches)
 		return true;

@@ -403,7 +403,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 		 */
 		processReplyResponse: function (param, obj)
 		{
-			for (var i = param.json.items.length-1; i >= 0; i--)
+			for (var i = 0; i < param.json.items.length; i++)
 			{
 				// get item
 				var item = param.json.items[i];
@@ -448,7 +448,7 @@ if (typeof Alvex == 'undefined' || !Alvex)
 					contentDiv.appendChild(publishedDiv);
 					contentDiv.appendChild(textDiv);
 					commentDiv.appendChild(contentDiv);
-					obj.appendChild(commentDiv);
+					obj.insertBefore(commentDiv, obj.firstChild);
 					
 					// subscribe to events
 					YAHOO.util.Event.addListener(contentDiv, 'mouseover', this.highlightComment, contentDiv, this);
