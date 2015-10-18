@@ -634,13 +634,17 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 	 */
 	@Override
 	public RoleInstance addRole(OrgchartUnit unit, RoleDefinition role) {
-		NodeRef node = nodeService.createNode(unit.getNode(),
-				AlvexContentModel.ASSOC_ROLE,
-				getRoleAssocQName(role.getName()),
-				AlvexContentModel.TYPE_ROLE_INST).getChildRef();
-		nodeService.createAssociation(node, role.getNode(),
-				AlvexContentModel.ASSOC_ROLE_DEF);
-		return new RoleInstance(node, role.getNode());
+		if (!isRoleAddedToUnit(unit, role)) {
+			NodeRef node = nodeService.createNode(unit.getNode(),
+					AlvexContentModel.ASSOC_ROLE,
+					getRoleAssocQName(role.getName()),
+					AlvexContentModel.TYPE_ROLE_INST).getChildRef();
+			nodeService.createAssociation(node, role.getNode(),
+					AlvexContentModel.ASSOC_ROLE_DEF);
+			return new RoleInstance(node, role.getNode());
+		} else {
+			return null;
+		}
 	}
 
 	/* (non-Javadoc)
