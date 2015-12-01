@@ -7,4 +7,3 @@ core/*/bin
 core/activiti-connector/*/bin
 .idea
 *.iml
-*.log

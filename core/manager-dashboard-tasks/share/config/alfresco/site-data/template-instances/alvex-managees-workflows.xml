@@ -1,0 +1,18 @@
+<template-instance>
+	<template-type>alvex/managees-workflows/managees-view</template-type>
+
+	<components>
+		<component>
+			<region-id>title</region-id>
+			<url>/components/title/simple-title</url>
+			<properties>
+				<title>alvex.managees-workflows.pageTitle.managees-workflows</title>
+			</properties>
+		</component>
+		<component>
+			<region-id>tasks-view</region-id>
+			<url>/components/alvex/managees-workflows/managees-view</url>
+		</component>
+	</components>
+
+</template-instance>

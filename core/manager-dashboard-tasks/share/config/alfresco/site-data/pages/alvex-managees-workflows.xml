@@ -1,0 +1,5 @@
+<page>
+	<title-id>alvex.managees-workflows.pageTitle.managees-workflows</title-id>
+	<template-instance>alvex-managees-workflows</template-instance>
+	<authentication>user</authentication>
+</page>

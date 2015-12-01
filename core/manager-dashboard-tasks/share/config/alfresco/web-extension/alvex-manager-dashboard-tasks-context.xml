@@ -20,6 +20,7 @@
 		</property>
 	</bean>
 	<bean id="alvex-manager-dashboard-tasks" parent="alvex-extension"
-		class="com.alvexcore.share.ManagerDashboardTasksExtension"
-		depends-on="alvex-manager-dashboard-tasks-rd,alvex-manager-dashboard-tasks-cd" />
+		  class="com.alvexcore.share.ManagerDashboardTasksExtension"
+		  depends-on="alvex-manager-dashboard-tasks-rd,alvex-manager-dashboard-tasks-cd" />
+
 </beans>
