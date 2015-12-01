@@ -131,11 +131,6 @@ if (typeof Alvex == "undefined" || !Alvex)
 					url: Alfresco.constants.PROXY_URI + "api/workflow-instances?"
 							+ "initiator=" + this.options.managees[m].userName
 
-					/*url: Alfresco.constants.PROXY_URI + "api/alvex/task-instances?"
-							+ "authority=" + this.options.managees[m].userName
-							+ "&properties=bpm_priority,bpm_status,bpm_dueDate,bpm_description"
-							+ "&exclude=" + this.options.hiddenTaskTypes.join(",")
-							+ "&state=IN_PROGRESS"*/
 				},
 				paginator:
 				{
@@ -234,8 +229,6 @@ if (typeof Alvex == "undefined" || !Alvex)
 		*/
 		renderCellActions: function WL_renderCellActions(elCell, oRecord, oColumn, oData)
 		{
-            // TODO! This function not being called for now.
-            // TODO make cell actions - "view journal" and "get rid of this workflow" and uncomment
 			var info = '';
 
 			if(this.options.compactMode)
