@@ -1,9 +1,0 @@
-target
-*.sublime-*
-core/*/manifest.mf
-core/*/nbbuild.xml
-core/*/nbproject/*
-core/*/bin
-core/activiti-connector/*/bin
-.idea
-*.iml
