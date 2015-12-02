@@ -1,0 +1,5 @@
+<webscript>
+	<shortname>managees-workflows-view</shortname>
+	<description>Renders page component with managees workflows view</description>
+	<url>/components/alvex/managees-workflows/managees-view</url>
+</webscript>

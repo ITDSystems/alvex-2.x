@@ -1,0 +1,6 @@
+<webscript>
+	<shortname>Alvex Manager's Dashboard - Workflows</shortname>
+	<description>Shows current workflows of managees</description>
+	<family>user-dashlet</family>
+	<url>/components/dashlets/managees-workflows</url>
+</webscript>
