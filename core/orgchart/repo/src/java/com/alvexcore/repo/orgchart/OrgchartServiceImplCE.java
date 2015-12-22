@@ -291,7 +291,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 				displayName == null ? node.getId() : displayName);
 		props.put(AlvexContentModel.PROP_UNIT_WEIGHT, weight);
 		nodeService.setProperties(node, props);
-		return new OrgchartUnit(node, name, displayName, groupFullName, weight);
+		return new OrgchartUnit(node, name, displayName, groupFullName, weight, 
+                        authorityService.getAuthorityNodeRef(groupFullName));
 	}
 
 	/**
@@ -317,7 +318,8 @@ public class OrgchartServiceImplCE implements InitializingBean, OrgchartService,
 				(String) props.get(AlvexContentModel.PROP_UNIT_NAME),
 				(String) props.get(AlvexContentModel.PROP_UNIT_DISPLAY_NAME),
 				(String) props.get(AlvexContentModel.PROP_GROUP_NAME),
-				(Integer) props.get(AlvexContentModel.PROP_UNIT_WEIGHT));
+				(Integer) props.get(AlvexContentModel.PROP_UNIT_WEIGHT), 
+				authorityService.getAuthorityNodeRef((String) props.get(AlvexContentModel.PROP_GROUP_NAME)));
 	}
 
 	/**

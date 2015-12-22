@@ -5,6 +5,7 @@
  	"name": "${unit.name}",
  	"displayName": "${unit.displayName}",
  	"weight": "${unit.weight}",
+ 	"groupRef": "${unit.groupRef}",
  	"id": "${unit.id}",
  	"children":
  	[

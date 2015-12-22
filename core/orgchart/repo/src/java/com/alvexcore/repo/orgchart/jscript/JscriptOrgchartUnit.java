@@ -51,6 +51,14 @@ public class JscriptOrgchartUnit implements Serializable {
 		this.scope = scope;
 	}
 
+	public String getGroupRef() {
+		return orgchartUnit.getGroupRef().toString();
+	}
+
+	public String getGroupName() {
+		return orgchartUnit.getGroupName();
+	}
+
 	public String getName() {
 		return orgchartUnit.getName();
 	}

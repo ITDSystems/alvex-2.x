@@ -26,15 +26,17 @@ public class OrgchartUnit {
 	private String name;
 	private String displayName;
 	private String groupName;
+	private NodeRef groupRef;
 	private String id;
 	private int weight;
 
 	public OrgchartUnit(NodeRef node, String name, String displayName,
-			String groupName, int weight) {
+			String groupName, int weight, NodeRef groupRef) {
 		this.node = node;
 		this.name = name;
 		this.displayName = displayName;
 		this.groupName = groupName;
+		this.groupRef = groupRef;
 		this.id = node.getId();
 		this.weight = weight;
 	}
@@ -61,5 +63,9 @@ public class OrgchartUnit {
 
 	public String getGroupName() {
 		return groupName;
+	}
+
+	public NodeRef getGroupRef() {
+		return groupRef;
 	}
 }
