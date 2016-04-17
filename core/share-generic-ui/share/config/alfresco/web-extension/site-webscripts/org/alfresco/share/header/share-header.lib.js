@@ -267,7 +267,7 @@ function getPages(includeUnusedPages)
             {
                // Parse json using Java to a org.json.simple.JSONArray (wrap in an object to keep toObject happy)
                sitePages = jsonUtils.toObject('{"tmp":' + sitePages + '}').tmp;
-               
+
                // Print array as json and use eval so we get a Rhino javascript array to execute as usual
                sitePages = eval("(" + sitePages.toString() + ")");
             }
@@ -286,7 +286,7 @@ function getPages(includeUnusedPages)
             {
                // Parse json using Java to a org.json.simple.JSONObject
                pageMetadata = jsonUtils.toObject(pageMetadata);
-               
+
                // Print object as json and use eval so we get a Rhino javascript object to execute as usual
                pageMetadata = eval("(" + pageMetadata.toString() + ")")[0];
             }
@@ -440,7 +440,7 @@ function getSiteNavigationWidgets() {
                label: (pages[i].sitePageTitle) ? pages[i].sitePageTitle : pages[i].title,
                pageId: pages[i].pageId,
                targetUrl: targetUrl,
-               selected: ((page.url.url.startsWith(page.url.servletContext + "/" + targetUrl)) || 
+               selected: ((page.url.url.startsWith(page.url.servletContext + "/" + targetUrl)) ||
                           (pages[i].pageId == "documentlibrary" && page.url.url.startsWith(page.url.servletContext + "/site/" + page.url.templateArgs.site + "/document-details")) ||
                           (pages[i].pageId == "wiki-page" && (page.url.url.startsWith(page.url.servletContext + "/site/" + page.url.templateArgs.site + "/wiki"))) ||
                           (pages[i].pageId == "blog-postlist" && (page.url.url.startsWith(page.url.servletContext + "/site/" + page.url.templateArgs.site + "/blog"))) ||
@@ -517,7 +517,7 @@ function getSubNavigationWidgets() {
                      "&sa=" + (args["a"] != null ? encodeURIComponent(args["a"]) : "") +
                      "&sr=" + (args["r"] != null ? encodeURIComponent(args["r"]) : "") +
                      "&sq=" + (args["q"] != null ? encodeURIComponent(args["q"]) : "");
-         
+
       }
       var advancedSearchUrl = "advsearch?" + query;
       if (page.url.templateArgs.site == null)
@@ -541,10 +541,10 @@ function getSubNavigationWidgets() {
                selected: false
             }
          });
-         
+
          advancedSearchUrl = "site/" + page.url.templateArgs.site + "/" + advancedSearchUrl;
       }
-      
+
       // Add the advanced search link...
       navigationWidgets.push({
          id: "HEADER_ADVANCED_SEARCH",
@@ -571,7 +571,7 @@ function getSubNavigationWidgets() {
                      "&r=" + (args["sr"] != null ? encodeURIComponent(args["sr"]) : "") +
                      "&q=" + (args["sq"] != null ? encodeURIComponent(args["sq"]) : "");
          model.backlink = query;
-         
+
          var searchUrl = "search?" + query;
          if (page.url.templateArgs.site == null)
          {
@@ -581,7 +581,7 @@ function getSubNavigationWidgets() {
          {
             searchUrl = "site/" + page.url.templateArgs.site + "/" + searchUrl;
          }
-         
+
          navigationWidgets.push({
             id: "HEADER_SEARCH_BACK_TO_RESULTS",
             name: "alfresco/menus/AlfMenuBarItem",
@@ -594,7 +594,7 @@ function getSubNavigationWidgets() {
             }
          });
       }
-      
+
       if (page.url.templateArgs.site == null)
       {
          // We're on the basic search page
@@ -1112,7 +1112,7 @@ function generateAppItems() {
             id: "HEADER_TASKS",
             label: "header.menu.tasks.label",
             widgets: [
-               {   
+               {
                   name: "alfresco/menus/AlfMenuGroup",
                   config: {
                      widgets: [
@@ -1137,6 +1137,28 @@ function generateAppItems() {
                               iconClass: "alf-myworkflows-icon",
                               targetUrl: "my-workflows#filter=workflows|active"
                            }
+                        },
+                        {
+                           id: "HEADER_TASKS_OF_MY_TEAM",
+                           name: "alfresco/header/AlfMenuItem",
+                           config:
+                           {
+                              id: "HEADER_TASKS_OF_TEAM",
+                              label: "header.menu.tasksofmyteam.label",
+                              iconClass: "alf-mytasks-icon",
+                              targetUrl: "alvex-manager-dashboard-tasks"
+                           }
+                        },
+                        {
+                           id: "HEADER_WORKFLOWS_OF_MY_TEAM",
+                           name: "alfresco/header/AlfMenuItem",
+                           config:
+                           {
+                              id: "HEADER_WORKFLOWS_OF_TEAM",
+                              label: "header.menu.workflowsofmyteam.label",
+                              iconClass: "alf-myworkflows-icon",
+                              targetUrl: "alvex-managees-workflows"
+                           }
                         }
                      ]
                   }
@@ -1151,7 +1173,7 @@ function generateAppItems() {
             id: "HEADER_FILES",
             label: "header.menu.files.label",
             widgets: [
-               {   
+               {
                   name: "alfresco/menus/AlfMenuGroup",
                   config: {
                      widgets: [
@@ -1755,7 +1777,7 @@ function getHeaderServices() {
    var services = null;
    if( isNewShare() )
    {
-      services = 
+      services =
       [
          {
             name: "alfresco/services/PreferenceService",
@@ -1769,7 +1791,7 @@ function getHeaderServices() {
          "alfresco/services/LogoutService"
       ];
    } else {
-      services = 
+      services =
       [
          {
             name: "alfresco/services/PreferenceService",

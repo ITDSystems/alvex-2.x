@@ -60,7 +60,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 		{
 			Alfresco.util.Ajax.request(
 			{
-				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/user/" 
+				url: Alfresco.constants.PROXY_URI + "api/alvex/orgchart/user/"
 						+ encodeURIComponent(Alfresco.constants.USERNAME) + "/managees",
 				successCallback:
 				{
@@ -76,15 +76,15 @@ if (typeof Alvex == "undefined" || !Alvex)
 
 						for(var m in this.options.managees)
 						{
-							document.getElementById(this.id + "-body").innerHTML += 
-								'<div id="' + this.id + '-user-' + m + '">' 
-								+ '<div class="yui-ge task-list-bar flat-button" ' 
-								+ 'style="width:100%; background-color: #eeeeee; margin: 0;">' 
-								+ '<div class="yui-u first"><h2 id="' + this.id + '-title-' + m 
-								+ '" class="thin"><a href="' + Alfresco.constants.URL_PAGECONTEXT 
-								+ 'user/' + this.options.managees[m].userName + '/profile">' 
-								+ this.options.managees[m].name + '</a></h2></div><div class="yui-u"><div id="' 
-								+ this.id + '-paginator-' + m + '" class="paginator">&nbsp;</div></div></div>' 
+							document.getElementById(this.id + "-body").innerHTML +=
+								'<div id="' + this.id + '-user-' + m + '">'
+								+ '<div class="yui-ge task-list-bar flat-button" '
+								+ 'style="width:100%; background-color: #eeeeee; margin: 0;">'
+								+ '<div class="yui-u first"><h2 id="' + this.id + '-title-' + m
+								+ '" class="thin"><a href="' + Alfresco.constants.URL_PAGECONTEXT
+								+ 'user/' + this.options.managees[m].userName + '/profile">'
+								+ this.options.managees[m].name + '</a></h2></div><div class="yui-u"><div id="'
+								+ this.id + '-paginator-' + m + '" class="paginator">&nbsp;</div></div></div>'
 								+ '<div id="' + this.id + '-workflows-' + m + '" class="workflows" style="margin: 0">'
 								+ '</div></div>';
 							YAHOO.util.Event.onContentReady(this.id + '-user-' + m,
@@ -124,7 +124,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					],
 					config:
 					{
-						MSG_EMPTY: this.msg("message.noTasks")
+						MSG_EMPTY: this.msg("message.noWorkflows")
 					}
 				},
 				dataSource: {
@@ -188,7 +188,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 
                 description = $html(oRecord.getData("description"));
 			var info = '<h3 style="padding-top: 4px"><a href="' + $siteURL('workflow-details?workflowId=' + workflowId )
-					+ '" class="theme-color-1" title="' 
+					+ '" class="theme-color-1" title="'
 					+ this.msg("link.viewTask") + '">' + message + '</a></h3>';
 
 			if(this.options.compactMode)
@@ -197,7 +197,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 					+ this.msg("label.due") + ':</strong> '
 					+ (dueDate ? Alfresco.util.formatDate(dueDate, "longDate") : this.msg("label.none")) + '<br/>';
 
-				info += '<strong style="color: #515D6B">' 
+				info += '<strong style="color: #515D6B">'
 					+ this.msg("label.type", type) + ':</strong> ' + type + '</div>';
 			}
 			else
@@ -239,7 +239,7 @@ if (typeof Alvex == "undefined" || !Alvex)
 			}
 			else
 			{
-				info += '<div class="workflow-view-link"><a href="' + $siteURL('workflow-details?workflowId=' 
+				info += '<div class="workflow-view-link"><a href="' + $siteURL('workflow-details?workflowId='
 					+ oRecord.getData('id')) + '" class="theme-color-1" title="' + this.msg("link.viewWorkflow") + '">'
 					+ this.msg("link.viewWorkflow") + '</a></div>';
 			}
