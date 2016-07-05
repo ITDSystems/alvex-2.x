@@ -26,14 +26,14 @@
     <repository>
       <id>itd-repository</id>
 	  <name>ITD Maven Repository</name>
-      <url>http://maven.itdhq.com/public/maven/repository</url>
+      <url>ftp://maven.itdhq.com/pub/repository</url>
     </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
       <id>itd-repository</id>
       <name>ITD Maven Repository</name>
-      <url>http://maven.itdhq.com/public/maven/repository</url>
+      <url>ftp://maven.itdhq.com/pub/repository</url>
     </pluginRepository>
   </pluginRepositories>
   <dependencies>
